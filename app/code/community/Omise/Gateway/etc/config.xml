@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module configuration
+ *
+ * @author Omise Co., Ltd.
+ */
+-->
+<config>
+  <modules>
+    <Omise_Gateway>
+      <version>0.0.0.1</version>
+    </Omise_Gateway>
+  </modules>
+  
+  <global>
+    <models>
+      <omise_gateway>
+        <resourceModel>omise_gateway_resource</resourceModel>
+      </omise_gateway>
+      <omise_gateway_resource>
+        <entities>
+          <omise>
+            <table>omise_gateway</table>
+          </omise>
+        </entities>
+      </omise_gateway_resource>
+    </models>
+
+    <resources>
+      <omise_gateway_setup>
+        <setup>
+          <module>Omise_Gateway</module>
+          <class>Mage_Core_Model_Resource_Setup</class>
+        </setup>
+      </omise_gateway_setup>
+    </resources>
+  </global>
+
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Omise_Gateway before="Mage_Adminhtml">Omise_Gateway_Adminhtml</Omise_Gateway>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>
+</config>
