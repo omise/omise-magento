@@ -8,15 +8,19 @@
 -->
 <config>
   <menu>
-    <omise translate="title">
+    <omise translate="title" module="omise_gateway">
       <title>Omise</title>
       <sort_order>999</sort_order>
+      <depends>
+        <module>Omise_Gateway</module>
+      </depends>
       <children>
         <dashboard translate="title">
           <title>Dashboard</title>
           <sort_order>1</sort_order>
           <action>adminhtml/omise</action>
         </dashboard>
+        
         <config translate="title">
           <title>Config</title>
           <sort_order>2</sort_order>

@@ -16,6 +16,7 @@
   <global>
     <models>
       <omise_gateway>
+        <!-- <class>Omise_Gateway_Model</class> -->
         <resourceModel>omise_gateway_resource</resourceModel>
       </omise_gateway>
       <omise_gateway_resource>
@@ -35,6 +36,18 @@
         </setup>
       </omise_gateway_setup>
     </resources>
+
+    <blocks>
+      <omise_gateway_adminhtml>
+        <class>Omise_Gateway_Block_Adminhtml</class>
+      </omise_gateway_adminhtml>
+    </blocks>
+
+    <helpers>
+       <omise_gateway>
+           <class>Omise_Gateway_Helper</class>
+       </omise_gateway>
+   </helpers>
   </global>
 
   <admin>

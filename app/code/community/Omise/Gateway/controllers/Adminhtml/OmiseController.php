@@ -20,8 +20,12 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
 
   public function configAction()
   {
-    $this->_title($this->__('Index Action'))
+    $edit_block = $this->getLayout()
+                       ->createBlock('omise_gateway_adminhtml/config_edit');
+
+    $this->_title($this->__('Config Action'))
          ->_initAction()
+         ->_addContent($edit_block)
          ->renderLayout();
   }
 }
