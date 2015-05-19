@@ -8,7 +8,7 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
      */
     protected function _initAction()
     {
-        // load layout, set active menu and breadcrumbs
+        // Load layout, set active menu and breadcrumbs
         $this->loadLayout()
              ->_setActiveMenu('omise');
 
@@ -21,8 +21,55 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
      */
     public function indexAction()
     {
+        $data = array();
+
+        // Retrieve Omise's data.
+        try {
+            $omise_services = Mage::getModel('omise_gateway/omise');
+
+            // Retrieve Omise Account.
+            $omise_account = $omise_services->retrieveOmiseAccount();
+            if (isset($omise_account['error']))
+                throw new Exception('Omise Account:: '.$omise_account['error'], 1);
+
+            // Retrieve Omise Balance.
+            $omise_balance = $omise_services->retrieveOmiseBalance();
+            if (isset($omise_balance['error']))
+                throw new Exception('Omise Balance:: '.$omise_balance['error'], 1);
+
+            // Retrieve Omise Transfer List.
+            $omise_transfer = $omise_services->retrieveOmiseTransfer();
+            if (isset($omise_transfer['error']))
+                throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
+
+            
+            $data['omise'] = array(
+                'email'     => $omise_balance['email'],
+                'created'   => $omise_balance['created'],
+                'available' => $omise_balance['available'],
+                'total'     => $omise_balance['total'],
+                'currency'  => $omise_balance['currency'],
+                'livemode'  => $omise_balance['livemode'],
+                'transfer'  => array(
+                    'from'      => $omise_transfer['from'],
+                    'to'        => $omise_transfer['to'],
+                    'offset'    => $omise_transfer['offset'],
+                    'limit'     => $omise_transfer['limit'],
+                    'total'     => $omise_transfer['total'],
+                    'data'      => array_reverse($omise_transfer['data'])
+                )
+            );
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();
+        }
+
+        $block = $this->getLayout()
+                      ->createBlock('omise_gateway_adminhtml/dashboard_dashboard')
+                      ->setData($data);
+
         $this->_title($this->__('Index Action'))
              ->_initAction()
+             ->_addContent($block)
              ->renderLayout();
     }
 

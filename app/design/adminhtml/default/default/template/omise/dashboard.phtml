@@ -1,0 +1,94 @@
+<?php
+// Retrieve $data from OmiseController
+$data = $this->getData(); ?>
+
+<!-- Include Omise's stylesheet -->
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl(); ?>omise/omise-admin.css" type="text/css" />
+
+<div class="content-header">
+    <table cellspacing="0">
+        <tr><td><h3 class="head-dashboard">Omise Payment Gateway Dashboard</h3></td></tr>
+    </table>
+</div>
+
+<!-- Content -->
+<?php if (isset($data['omise'])): ?>
+    <div class="box">
+        <div class="content">
+
+            <!-- Account Info -->
+            <div class="ostyle-info-box omise-account-info">
+                <dl>
+                    <!-- Account email -->
+                    <dt>Account: </dt>
+                    <dd><?php echo $data['omise']['email']; ?></dd>
+
+                    <!-- Account status -->
+                    <dt>Live Mode: </dt>
+                    <dd><strong><?php echo $data['omise']['livemode'] ? '<span class="livemode-label">Yes</span>' : '<span class="testmode-label">No</span>'; ?></strong></dd>
+                    
+                    <!-- Current Currency -->
+                    <dt>Currency: </dt>
+                    <dd><?php echo strtoupper($data['omise']['currency']); ?></dd>
+                </dl>
+            </div>
+
+            <!-- Balance -->
+            <div class="omise-balance omise-clearfix">
+                <div class="left"><span class="omise-number"><?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/>Total Balance</div>
+                <div class="right"><span class="omise-number"><?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/>Transferable Balance</div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="content">
+    
+            <!-- Transfer History -->
+            <div class="omise-transfer-history"><h3>Transfer History</h3></div>
+            <div class="grid">
+                <form id="omise-transfer" method="post" action="">
+                    <table cellspacing="0" class="data">
+                        <thead>
+                            <tr class="headings">
+                                <th>Amount</th>
+                                <th>Transfer Id</th>
+                                <th>Sent</th>
+                                <th>Paid</th>
+                                <th>Failure Message</th>
+                                <th width="15%" style="text-align: center;">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($data['omise']['transfer']['data'])):
+                                foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                                    <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                                        <td><?php echo number_format(($value['amount']/100), 2); ?></td>
+                                        <td><?php echo $value['id']; ?></td>
+                                        <td><?php echo $value['sent'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
+                                        <td><?php echo $value['paid'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
+                                        <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
+                                        <td style="text-align: center;"><?php echo $date->format('M d, Y H:i'); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <!-- Create transfer form -->
+                                <tr class="<?php echo count($key)%2 == 0 ? '' : 'even'; ?> pointer">
+                                    <td class="a-right" colspan="5">&nbsp;</td>
+                                    <td class="a-center last">&nbsp;</td>
+                                </tr>
+
+                                <tr class="<?php echo count($key)%2 == 0 ? 'even' : ''; ?> pointer">
+                                    <td class="a-right" colspan="5"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="Transfer amount (number only)"></td>
+                                    <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
+                                </tr>
+                            <?php else: ?>
+
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div> <!-- /END .content -->
+    </div> <!-- /END .box -->
+<?php else: ?>
+    ...
+<?php endif; ?>
