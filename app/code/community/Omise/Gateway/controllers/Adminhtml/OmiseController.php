@@ -25,24 +25,21 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
 
         // Retrieve Omise's data.
         try {
-            $omise_services = Mage::getModel('omise_gateway/omise');
-
             // Retrieve Omise Account.
-            $omise_account = $omise_services->retrieveOmiseAccount();
+            $omise_account = Mage::getModel('omise_gateway/omiseaccount')->retrieveOmiseAccount();
             if (isset($omise_account['error']))
                 throw new Exception('Omise Account:: '.$omise_account['error'], 1);
 
             // Retrieve Omise Balance.
-            $omise_balance = $omise_services->retrieveOmiseBalance();
+            $omise_balance = Mage::getModel('omise_gateway/omisebalance')->retrieveOmiseBalance();
             if (isset($omise_balance['error']))
                 throw new Exception('Omise Balance:: '.$omise_balance['error'], 1);
 
             // Retrieve Omise Transfer List.
-            $omise_transfer = $omise_services->retrieveOmiseTransfer();
+            $omise_transfer = Mage::getModel('omise_gateway/omisetransfer')->retrieveOmiseTransfer();
             if (isset($omise_transfer['error']))
                 throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
 
-            
             $data['omise'] = array(
                 'email'     => $omise_balance['email'],
                 'created'   => $omise_balance['created'],
@@ -61,6 +58,8 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             );
         } catch (Exception $e) {
             $data['error'] = $e->getMessage();
+
+            Mage::getSingleton('core/session')->addError($data['error']);
         }
 
         $block = $this->getLayout()
@@ -107,5 +106,40 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
              ->_initAction()
              ->_addContent($edit_block)
              ->renderLayout();
+    }
+
+    /**
+     * Transfers
+     * @return void
+     */
+    public function transfersAction()
+    {
+        if (!Mage::app()->getRequest()->isPost() || (!$post = Mage::app()->getRequest()->getPost('OmiseTransfer'))) {
+            Mage::getSingleton('core/session')->addError('Omise Transfer:: Required amount');
+        } else {
+            try {
+                if (isset($post['action']) && $post['action'] == 'delete') {
+                    // Delete action
+                    $response = Mage::getModel('omise_gateway/omisetransfer')->deleteOmiseTransfer(Mage::app()->getRequest()->getParam('delete'));
+                    if (isset($response['error']))
+                        throw new Exception($response['error'], 1);
+                    
+                    $success = "Deleted";
+                } else {
+                    // Create action
+                    $response = Mage::getModel('omise_gateway/omisetransfer')->createOmiseTransfer($post);
+                    if (isset($response['error']))
+                        throw new Exception($response['error'], 1);
+                        
+                    $success = "Transferred";
+                }
+
+                Mage::getSingleton('core/session')->addSuccess($success);
+            } catch (Exception $e) {
+                Mage::getSingleton('core/session')->addError('Omise Transfer:: '.$e->getMessage());
+            }
+        }
+
+        return $this->_redirect('adminhtml/omise/index', array());
     }
 }

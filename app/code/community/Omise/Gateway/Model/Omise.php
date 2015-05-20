@@ -5,12 +5,12 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
     /**
      * @var string  Omise public key
      */
-    private $_public_key;
+    protected $_public_key;
 
     /**
      * @var string  Omise secret key
      */
-    private $_secret_key;
+    protected $_secret_key;
 
     /**
      * Load necessary file and setup Omise keys
@@ -30,51 +30,6 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
         if ($omise->test_mode) {
             $this->_public_key = $omise->public_key_test;
             $this->_secret_key = $omise->secret_key_test;
-        }
-    }
-
-    /**
-     * Retrieve user's account from their Omise account
-     * @return OmiseAccount|Exception
-     */
-    public function retrieveOmiseAccount()
-    {
-        try {
-            $omise = OmiseAccount::retrieve($this->_public_key, $this->_secret_key);
-
-            return $omise;
-        } catch (Exception $e) {
-            return array('error' => $e->getMessage());
-        }
-    }
-
-    /**
-     * Retrieve user's balance from their Omise account
-     * @return OmiseBalance|Exception
-     */
-    public function retrieveOmiseBalance()
-    {
-        try {
-            $omise = OmiseBalance::retrieve($this->_public_key, $this->_secret_key);
-
-            return $omise;
-        } catch (Exception $e) {
-            return array('error' => $e->getMessage());
-        }
-    }
-
-    /**
-     * @param string $id
-     * @return OmiseTransfer|array
-     */
-    public function retrieveOmiseTransfer($id = '')
-    {
-        try {
-            $omise = OmiseTransfer::retrieve('', $this->_public_key, $this->_secret_key);
-
-            return $omise;
-        } catch (Exception $e) {
-            return array('error' => $e->getMessage());
         }
     }
 }
