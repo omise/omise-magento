@@ -52,6 +52,10 @@
             <omise_gateway_adminhtml>
                 <class>Omise_Gateway_Block_Adminhtml</class>
             </omise_gateway_adminhtml>
+
+            <omise_gateway>
+                <class>Omise_Gateway_Block</class>
+            </omise_gateway>
         </blocks>
 
         <helpers>
@@ -77,4 +81,16 @@
             </adminhtml>
         </routers>
     </admin>
+
+    <default>
+        <payment>
+            <omise_gateway>
+                <active>1</active>
+                <order_status>1</order_status>
+                <model>omise_gateway/paymentMethod</model>
+                <cctypes>VI,MC</cctypes>
+                <title>Credit Card (Powered by Omise)</title>
+            </omise_gateway>
+        </payment>
+    </default>
 </config>
