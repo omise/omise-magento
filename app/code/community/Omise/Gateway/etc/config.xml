@@ -82,11 +82,17 @@
         </routers>
     </admin>
 
+    <!--
+    /**
+     * Payment Method configuration for front-end
+     */
+    -->
     <default>
         <payment>
             <omise_gateway>
                 <active>1</active>
                 <order_status>1</order_status>
+                <payment_action>authorize</payment_action>
                 <model>omise_gateway/paymentMethod</model>
                 <cctypes>VI,MC</cctypes>
                 <title>Credit Card (Powered by Omise)</title>

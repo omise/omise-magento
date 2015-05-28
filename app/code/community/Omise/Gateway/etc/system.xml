@@ -4,14 +4,14 @@
         <payment>
             <groups>
                 <omise_gateway translate="label" module="payment">
-                    <label>Credit Card (Powered by Omise)</label>
+                    <label>Omise Payment Gateway</label>
                     <sort_order>670</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
                         <active translate="label">
-                            <label>Enabled</label>
+                            <label>Module Enabled</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>1</sort_order>
@@ -19,19 +19,32 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </active>
-                       <!--  <title translate="label">
-                            <label>Title</label>
-                            <frontend_type>text</frontend_type>
+
+                        <payment_action translate="label">
+                            <label>Payment Action</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>omise_gateway/config_var_paymentaction</source_model>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </title> -->
+                        </payment_action>
+
+                        <currency translate="label">
+                            <label>Currency</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>omise_gateway/config_var_currency</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </currency>
+                       
                         <order_status translate="label">
                             <label>New order status</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_order_status_processing</source_model>
-                            <sort_order>3</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>

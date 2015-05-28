@@ -1,67 +1,52 @@
 <script type="text/javascript">
     Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
         jQuery.getScript("https://cdn.omise.co/omise.min.js.gz", function() {
-            Omise.setPublicKey("pkey_test_4zfuolwdegumf4k2qba");
 
-            var form = jQuery("#payment_form_omise_gateway");
+            var omiseValidation = new Validation('co-payment-form');
 
-            // Serialize the form fields into a valid card object.
-            var card = {
-                "name": form.find("[data-omise=holder_name]").val(),
-                "number": form.find("[data-omise=number]").val(),
-                "expiration_month": form.find("[data-omise=expiration_month]").val(),
-                "expiration_year": form.find("[data-omise=expiration_year]").val(),
-                "security_code": form.find("[data-omise=security_code]").val()
-            };
+            // If validate pass
+            if (omiseValidation.validate()) {
+                // Set Omise key
+                Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
-            console.log(card);
+                var form                = jQuery("#payment_form_omise_gateway"),
+                    formValidation      = form.find('.omise-validation-advice'),
+                    formValidationMsg   = formValidation.find('.validation-advice');
 
-            // Send a request to create a token 
-            // then trigger the callback function once a response is received from Omise.
-            // * Note that the response could be an error and this needs to be handled
-            // * within the callback.
-            Omise.createToken("card", card, function (statusCode, response) {
-                // If has an error (can not create a card's token).
-                if (response.object == "error") {
-                    // Display an error message - "Omise Response: "+response.message.
-                    console.log(statusCode);
-                    console.log(response);
-                } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                    // Display an error message - "Omise Response: Card authorization failure.".
-                    console.log(statusCode);
-                    console.log(response);
-                } else {
-                    console.log(statusCode);
-                    console.log(response);
-                    // Token was created. Then, charge a card with token.
-                    // var posting = $.post("<?php echo $checkout_url; ?>", {
-                    //     "omise_token": response.id,
-                    //     "amount": "<?php echo str_replace('.', '', $orderamount); ?>",
-                    //     "description": "Charge a card from OpenCart that order id is <?php echo $orderid; ?> from <?php echo $billemail; ?>"
-                    // });
-
-                    // posting
-                    //     .done(function(resp) {
-                    //         resp = JSON.parse(resp);
-
-                    //         if (typeof resp.error != "undefined") {
-                    //             alertError.html("Omise Response: "+resp.error).addClass('show');
-                    //             form.find("input[type=submit]").prop("disabled", false);
-                    //         } else if (resp.failure_code != null) {
-                    //             alertError.html("Bank Response: "+resp.failure_message).addClass('show');
-                    //             form.find("input[type=submit]").prop("disabled", false);
-                    //         } else {
-                    //             alertSuccess.html("Succeed").addClass('show');
-                    //             form.get(0).submit();
-                    //         }
-                    //     })
-                    //     .fail(function(jqXHR, textStatus, errorThrown) {
-                    //         alertError.html("Omise "+errorThrown).addClass('show');
-                    //     });
+                // Serialize the form fields into a valid card object.
+                var card = {
+                    "name": form.find("[data-omise=holder_name]").val(),
+                    "number": form.find("[data-omise=number]").val(),
+                    "expiration_month": form.find("[data-omise=expiration_month]").val(),
+                    "expiration_year": form.find("[data-omise=expiration_year]").val(),
+                    "security_code": form.find("[data-omise=security_code]").val()
                 };
-            });
-            // Prevent the form from being submitted;
-            return false;
+
+                formValidation.css({'opacity': 0, 'display': 'none'});
+
+                // Send a request to create a token
+                // then trigger the callback function once a response is received from Omise.
+                // * Note that the response could be an error and this needs to be handled
+                // * within the callback.
+                Omise.createToken("card", card, function (statusCode, response) {
+                    // If has an error (can not create a card's token).
+                    if (response.object == "error") {
+                        // Display an error message - "Omise Response: "+response.message.
+                        formValidation.css({'opacity': 1, 'display': 'block'});
+                        formValidationMsg.html("Omise Response: "+response.message);
+                    } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                        // Display an error message - "Omise Response: Card authorization failure.".
+                        formValidation.css({'opacity': 1, 'display': 'block'});
+                        formValidationMsg.html("Omise Response: Card authorization failure.");
+                    } else {
+                        form.find("[data-omise=omise_token]").val(response.id);
+
+                        return superMethod();
+                    };
+                });
+                // Prevent the form from being submitted;
+                return false;
+            }
         });
     }, jQuery);
 </script>
@@ -95,14 +80,18 @@
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
 
-<?php /*
-    <li>
-        <div class="input-box">
-            <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
-            <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
-        </div>
-    </li>
-*/ ?>
+    <?php
+        /*
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
+                <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
+            </div>
+        </li>
+        */
+    ?>
+    <li class="omise-validation-advice"><div class="validation-advice"></div></li>
+
     <li>
         <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
@@ -114,13 +103,15 @@
             <?php endforeach ?>
             </select>
         </div>
+
+        <input data-omise="omise_token" type="hidden" name="payment[omise_token]">
     </li>
 
     <!-- Credit Card Holder Name -->
     <li>
-        <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Holder Name') ?></label>
+        <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Credit Card Holder Name') ?></label>
         <div class="input-box">
-            <input type="text" data-omise="holder_name" id="<?php echo $_code ?>_cc_name" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name') ?>" class="input-text" value="" />
+            <input type="text" data-omise="holder_name" id="<?php echo $_code ?>_cc_name" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name') ?>" class="input-text required-entry" value="<?php echo 'NT' //$this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
         </div>
     </li>
 
@@ -128,7 +119,7 @@
     <li>
         <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
         <div class="input-box">
-            <input type="text" data-omise="number" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
+            <input type="text" data-omise="number" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="4242424242424242" />
         </div>
     </li>
 
@@ -162,7 +153,7 @@
         <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input data-omise="security_code" type="password" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+                <input data-omise="security_code" type="password" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="123" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>

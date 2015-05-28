@@ -1,29 +1,4 @@
 <?php
-/**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @category    Mage
- * @package     Mage_Payment
- * @copyright  Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-
 
 class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 {
@@ -35,7 +10,6 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve payment configuration object
-     *
      * @return Mage_Payment_Model_Config
      */
     protected function _getConfig()
@@ -44,8 +18,29 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     }
 
     /**
+     * Retrieve Omise keys from database
+     * @return string|array
+     */
+    public function getOmiseKeys($omise_key = '')
+    {
+        // Create a new model instance and query data from 'omise_gateway' table.
+        $config = Mage::getModel('omise_gateway/config')->load(1);
+        $data   = array('public_key' => $config->public_key,
+                        'secret_key' => $config->secret_key);
+
+        if ($config->test_mode) {
+            $data['public_key'] = $config->public_key_test;
+            $data['secret_key'] = $config->secret_key_test;
+        }
+
+        if ($omise_key == '')
+            return $data;
+        else
+            return isset($data[$omise_key]) ? $data[$omise_key] : '';
+    }
+
+    /**
      * Retrieve availables credit card types
-     *
      * @return array
      */
     public function getCcAvailableTypes()
@@ -67,7 +62,6 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve credit card expire months
-     *
      * @return array
      */
     public function getCcMonths()
@@ -83,7 +77,6 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve credit card expire years
-     *
      * @return array
      */
     public function getCcYears()
@@ -99,7 +92,6 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrive has verification configuration
-     *
      * @return boolean
      */
     public function hasVerification()
@@ -114,9 +106,10 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
         return true;
     }
 
-    /*
-    * Whether switch/solo card type available
-    */
+    /**
+     * Whether switch/solo card type available
+     * @return boolean
+     */
     public function hasSsCardType()
     {
         $availableTypes = explode(',', $this->getMethod()->getConfigData('cctypes'));
@@ -127,10 +120,10 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
         return false;
     }
 
-    /*
-    * solo/switch card start year
-    * @return array
-    */
+    /**
+     * solo/ switch card start year
+     * @return array
+     */
      public function getSsStartYears()
     {
         $years = array();
@@ -146,7 +139,6 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Render block HTML
-     *
      * @return string
      */
     protected function _toHtml()
