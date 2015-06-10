@@ -1,53 +1,64 @@
 <script type="text/javascript">
     Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
-        jQuery.getScript("https://cdn.omise.co/omise.min.js.gz", function() {
+        var paymentMethod = jQuery("#co-payment-form").find("input[name='payment[method]']:checked").val();
 
+        if (typeof paymentMethod == "undefined") {
+            alert('Please select one method');
+
+            return false;
+        } else if (paymentMethod == "omise_gateway") {
             var omiseValidation = new Validation('co-payment-form');
 
             // If validate pass
             if (omiseValidation.validate()) {
-                // Set Omise key
-                Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+                jQuery.getScript("https://cdn.omise.co/omise.min.js.gz", function() {
 
-                var form                = jQuery("#payment_form_omise_gateway"),
-                    formValidation      = form.find('.omise-validation-advice'),
-                    formValidationMsg   = formValidation.find('.validation-advice');
+                    // Set Omise key
+                    Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
-                // Serialize the form fields into a valid card object.
-                var card = {
-                    "name": form.find("[data-omise=holder_name]").val(),
-                    "number": form.find("[data-omise=number]").val(),
-                    "expiration_month": form.find("[data-omise=expiration_month]").val(),
-                    "expiration_year": form.find("[data-omise=expiration_year]").val(),
-                    "security_code": form.find("[data-omise=security_code]").val()
-                };
+                    var form                = jQuery("#payment_form_omise_gateway"),
+                        formValidation      = form.find('.omise-validation-advice'),
+                        formValidationMsg   = formValidation.find('.validation-advice');
 
-                formValidation.css({'opacity': 0, 'display': 'none'});
-
-                // Send a request to create a token
-                // then trigger the callback function once a response is received from Omise.
-                // * Note that the response could be an error and this needs to be handled
-                // * within the callback.
-                Omise.createToken("card", card, function (statusCode, response) {
-                    // If has an error (can not create a card's token).
-                    if (response.object == "error") {
-                        // Display an error message - "Omise Response: "+response.message.
-                        formValidation.css({'opacity': 1, 'display': 'block'});
-                        formValidationMsg.html("Omise Response: "+response.message);
-                    } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                        // Display an error message - "Omise Response: Card authorization failure.".
-                        formValidation.css({'opacity': 1, 'display': 'block'});
-                        formValidationMsg.html("Omise Response: Card authorization failure.");
-                    } else {
-                        form.find("[data-omise=omise_token]").val(response.id);
-
-                        return superMethod();
+                    // Serialize the form fields into a valid card object.
+                    var card = {
+                        "name": form.find("[data-omise=holder_name]").val(),
+                        "number": form.find("[data-omise=number]").val(),
+                        "expiration_month": form.find("[data-omise=expiration_month]").val(),
+                        "expiration_year": form.find("[data-omise=expiration_year]").val(),
+                        "security_code": form.find("[data-omise=security_code]").val()
                     };
+
+                    formValidation.css({'opacity': 0, 'display': 'none'});
+
+                    // Send a request to create a token
+                    // then trigger the callback function once a response is received from Omise.
+                    // * Note that the response could be an error and this needs to be handled
+                    // * within the callback.
+                    Omise.createToken("card", card, function (statusCode, response) {
+                        // If has an error (can not create a card's token).
+                        if (response.object == "error") {
+                            // Display an error message - "Omise Response: "+response.message.
+                            formValidation.css({'opacity': 1, 'display': 'block'});
+                            formValidationMsg.html("Omise Response: "+response.message);
+                        } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                            // Display an error message - "Omise Response: Card authorization failure.".
+                            formValidation.css({'opacity': 1, 'display': 'block'});
+                            formValidationMsg.html("Omise Response: Card authorization failure.");
+                        } else {
+                            form.find("[data-omise=omise_token]").val(response.id);
+
+                            return superMethod();
+                        };
+                    });
+
                 });
-                // Prevent the form from being submitted;
+
                 return false;
             }
-        });
+        } else {
+            return superMethod();
+        }
     }, jQuery);
 </script>
 
