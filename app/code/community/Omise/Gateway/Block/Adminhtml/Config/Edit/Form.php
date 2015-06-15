@@ -29,8 +29,7 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
                                                       'test_mode'       => array(   'label'     => $this->__('Enable Test mode'),
                                                                                     'input'     => 'checkbox',
                                                                                     'required'  => false,
-                                                                                    'value'     => 1,
-                                                                                    'checked'   => true)));
+                                                                                    'onclick'   => 'this.value = this.checked ? 1 : 0;')));
 
         /* Field set for Live Keys */
         $fieldset = $form->addFieldset('omise_key_live', array('legend' => $this->__('Live Keys')));
@@ -65,6 +64,10 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
             // If no new value exists, use the existing data.
             if (!array_key_exists('value', $_data)) {
                 $_data['value'] = $this->_getValue()->getData($name);
+            }
+
+            if ($name == "test_mode") {
+                $_data['checked'] = $this->_getValue()->getData($name);
             }
 
             // Finally, call vanilla functionality to add field.

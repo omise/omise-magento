@@ -84,6 +84,9 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
         // process a submit form if it was submitted.
         if ($post = $this->getRequest()->getPost('configData')) {
             try {
+                if (!isset($post['test_mode']))
+                    $post['test_mode'] = 0;
+
                 $config->addData($post);
                 $config->save();
 
