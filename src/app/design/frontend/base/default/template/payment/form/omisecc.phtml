@@ -91,16 +91,6 @@
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
 
-    <?php
-        /*
-        <li>
-            <div class="input-box">
-                <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
-                <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
-            </div>
-        </li>
-        */
-    ?>
     <li class="omise-validation-advice"><div class="validation-advice"></div></li>
 
     <li>
@@ -122,7 +112,7 @@
     <li>
         <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Credit Card Holder Name') ?></label>
         <div class="input-box">
-            <input type="text" data-omise="holder_name" id="<?php echo $_code ?>_cc_name" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name') ?>" class="input-text required-entry" value="<?php echo 'NT' //$this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
+            <input type="text" data-omise="holder_name" id="<?php echo $_code ?>_cc_name" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name') ?>" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
         </div>
     </li>
 
@@ -130,7 +120,7 @@
     <li>
         <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
         <div class="input-box">
-            <input type="text" data-omise="number" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="4242424242424242" />
+            <input type="text" data-omise="number" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
         </div>
     </li>
 
@@ -164,7 +154,7 @@
         <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input data-omise="security_code" type="password" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="123" />
+                <input data-omise="security_code" type="password" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
