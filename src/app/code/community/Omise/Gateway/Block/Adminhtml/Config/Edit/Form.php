@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     /**
@@ -80,6 +79,7 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
     /**
      * Retrieve the existing brand for pre-populating the form fields.
      * For a new brand entry, this will return an empty brand object.
+     * @return string|int
     */
     protected function _getValue()
     {

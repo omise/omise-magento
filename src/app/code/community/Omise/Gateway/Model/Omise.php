@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
 {
     /**

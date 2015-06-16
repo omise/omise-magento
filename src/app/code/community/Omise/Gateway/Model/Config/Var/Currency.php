@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Model_Config_Var_Currency
 {
     /**
@@ -12,7 +11,7 @@ class Omise_Gateway_Model_Config_Var_Currency
             array(
                 'value' => 'thb',
                 'label' => 'THB'
-            ),
+            )
         );
     }
 }

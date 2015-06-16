@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_Action
 {
     /**

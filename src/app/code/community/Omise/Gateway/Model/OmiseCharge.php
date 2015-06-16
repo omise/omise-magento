@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
 {
     /**

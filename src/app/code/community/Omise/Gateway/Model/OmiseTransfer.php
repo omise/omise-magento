@@ -1,8 +1,7 @@
 <?php
-
 class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
 {
-	/**
+    /**
      * @param string $id
      * @return OmiseTransfer|array
      */

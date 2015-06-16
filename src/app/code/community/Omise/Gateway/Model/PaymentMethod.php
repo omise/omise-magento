@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 {
     /** @var string */

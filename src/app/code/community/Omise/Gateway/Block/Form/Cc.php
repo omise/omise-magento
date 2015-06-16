@@ -1,5 +1,4 @@
 <?php
-
 class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 {
     protected function _construct()
@@ -25,8 +24,10 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     {
         // Create a new model instance and query data from 'omise_gateway' table.
         $config = Mage::getModel('omise_gateway/config')->load(1);
-        $data   = array('public_key' => $config->public_key,
-                        'secret_key' => $config->secret_key);
+        $data   = array(
+            'public_key' => $config->public_key,
+            'secret_key' => $config->secret_key
+        );
 
         if ($config->test_mode) {
             $data['public_key'] = $config->public_key_test;
