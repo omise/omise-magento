@@ -1,7 +1,6 @@
 # Change Log
 
-An [unreleased] version is not available on `master` branch. Elements of unreleased list may be edited or removed at any time.
-## [unreleased]
+## [1.0.1] - 2015-06-23
 #### Dashboard Page
 - *`Added`* Added link to Omise Dashboard [https://dashboard.omise.co](https://dashboard.omise.co) into Magento Omise Dashboard Page.
 - *`Fixed`* Omise Email Account was not shown in dashboard page.
