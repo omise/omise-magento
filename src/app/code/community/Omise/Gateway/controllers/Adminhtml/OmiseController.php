@@ -40,8 +40,8 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
                 throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
 
             $data['omise'] = array(
-                'email'     => $omise_balance['email'],
-                'created'   => $omise_balance['created'],
+                'email'     => $omise_account['email'],
+                'created'   => $omise_account['created'],
                 'available' => $omise_balance['available'],
                 'total'     => $omise_balance['total'],
                 'currency'  => $omise_balance['currency'],
