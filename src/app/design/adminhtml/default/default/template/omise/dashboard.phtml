@@ -19,20 +19,25 @@ $data = $this->getData(); ?>
         <div class="content">
 
             <!-- Account Info -->
-            <div class="ostyle-info-box omise-account-info">
-                <dl>
-                    <!-- Account email -->
-                    <dt>Account: </dt>
-                    <dd><?php echo $data['omise']['email']; ?></dd>
+            <div class="ostyle-info-box omise-account-info omise-clearfix">
+                <div class="left">
+                    <dl>
+                        <!-- Account email -->
+                        <dt>Account: </dt>
+                        <dd><?php echo $data['omise']['email']; ?></dd>
 
-                    <!-- Account status -->
-                    <dt>Live Mode: </dt>
-                    <dd><strong><?php echo $data['omise']['livemode'] ? '<span class="livemode-label">Yes</span>' : '<span class="testmode-label">No</span>'; ?></strong></dd>
-                    
-                    <!-- Current Currency -->
-                    <dt>Currency: </dt>
-                    <dd><?php echo strtoupper($data['omise']['currency']); ?></dd>
-                </dl>
+                        <!-- Account status -->
+                        <dt>Live Mode: </dt>
+                        <dd><strong><?php echo $data['omise']['livemode'] ? '<span class="livemode-label">Yes</span>' : '<span class="testmode-label">No</span>'; ?></strong></dd>
+
+                        <!-- Current Currency -->
+                        <dt>Currency: </dt>
+                        <dd><?php echo strtoupper($data['omise']['currency']); ?></dd>
+                    </dl>
+                </div>
+                <div class="right">
+                    <p class="text-right"><a id="omise-dashboard-link" href="https://dashboard.omise.co/dashboard">see Omise Dashboard (Full Version)</a></p>
+                </div>
             </div>
 
             <!-- Balance -->
@@ -44,7 +49,7 @@ $data = $this->getData(); ?>
     </div>
     <div>
         <div class="content">
-    
+
             <!-- Transfer History -->
             <div class="omise-transfer-history"><h3>Transfer History</h3></div>
             <div class="grid">
@@ -75,19 +80,24 @@ $data = $this->getData(); ?>
                                         <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers/delete/".$value["id"]).'">Cancel</a>': '-'; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
-                                <!-- Create transfer form -->
-                                <tr class="<?php echo count($key)%2 == 0 ? 'even' : ''; ?> pointer">
-                                    <td class="a-right" colspan="6">&nbsp;</td>
-                                    <td class="a-center last">&nbsp;</td>
-                                </tr>
+                            <?php endif; ?>
 
-                                <tr class="<?php echo count($key)%2 == 0 ? '' : 'even'; ?> pointer">
+                            <tr class="pointer">
+                                <td class="a-right" colspan="6">&nbsp;</td>
+                                <td class="a-center last"></td>
+                            </tr>
+
+                            <!-- Create transfer form -->
+                            <tr class="even pointer">
+                                <?php if ($data['omise']['available'] > 3000): ?>
                                     <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="Transfer amount (number only, icluding 'satang')"></td>
                                     <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
-                                </tr>
-                            <?php else: ?>
-
-                            <?php endif; ?>
+                                <?php elseif ($data['omise']['available'] > 0): ?>
+                                    <td class="a-right" colspan="7">Minimum withdrawal is 30 Baht</td>
+                                <?php else: ?>
+                                    <td class="a-right" colspan="7">&nbsp;</td>
+                                <?php endif; ?>
+                            </tr>
                         </tbody>
                     </table>
                 </form>
