@@ -9,7 +9,7 @@ $data = $this->getData(); ?>
 
 <div class="content-header">
     <table cellspacing="0">
-        <tr><td><h3 class="head-dashboard">Omise Payment Gateway Dashboard</h3></td></tr>
+        <tr><td><h3 class="head-dashboard"><?php echo $this->__('Omise Payment Gateway Dashboard') ?></h3></td></tr>
     </table>
 </div>
 
@@ -23,85 +23,139 @@ $data = $this->getData(); ?>
                 <div class="left">
                     <dl>
                         <!-- Account email -->
-                        <dt>Account: </dt>
+                        <dt><?php echo $this->__('Account') ?>: </dt>
                         <dd><?php echo $data['omise']['email']; ?></dd>
 
                         <!-- Account status -->
-                        <dt>Live Mode: </dt>
+                        <dt><?php echo $this->__('Live Mode') ?>: </dt>
                         <dd><strong><?php echo $data['omise']['livemode'] ? '<span class="livemode-label">Yes</span>' : '<span class="testmode-label">No</span>'; ?></strong></dd>
 
                         <!-- Current Currency -->
-                        <dt>Currency: </dt>
+                        <dt><?php echo $this->__('Currency') ?>: </dt>
                         <dd><?php echo strtoupper($data['omise']['currency']); ?></dd>
                     </dl>
                 </div>
                 <div class="right">
-                    <p class="text-right"><a id="omise-dashboard-link" href="https://dashboard.omise.co/dashboard">see Omise Dashboard (Full Version)</a></p>
+                    <p class="text-right"><a id="omise-dashboard-link" href="https://dashboard.omise.co/dashboard"><?php echo $this->__('see Omise Dashboard (Full Version)') ?></a></p>
                 </div>
             </div>
 
             <!-- Balance -->
             <div class="omise-balance omise-clearfix">
-                <div class="left"><span class="omise-number"><?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/>Total Balance</div>
-                <div class="right"><span class="omise-number"><?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/>Transferable Balance</div>
+                <div class="left"><span class="omise-number"><?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/><?php echo $this->__('Total Balance') ?></div>
+                <div class="right"><span class="omise-number"><?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/><?php echo $this->__('Transferable Balance') ?></div>
             </div>
         </div>
     </div>
     <div>
         <div class="content">
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td width="49%">
+                            <!-- Transfer History -->
+                            <div class="omise-transfer-history"><h3><?php echo $this->__('Charge/Refund History') ?></h3></div>
+                            <div class="grid">
+                                <table cellspacing="0" class="data">
+                                    <thead>
+                                        <tr class="headings">
+                                            <th><?php echo $this->__('Amount') ?></th>
+                                            <th><?php echo $this->__('Transaction Id') ?></th>
+                                            <th><?php echo $this->__('Refund') ?></th>
+                                            <th width="100" class="a-center"><?php echo $this->__('Created') ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if (!empty($data['omise']['charge']['data'])):
+                                            foreach ($data['omise']['charge']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                                                <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                                                    <td><?php echo number_format(($value['amount']/100), 2); ?></td>
+                                                    <td><?php echo $value['id']; ?></td>
+                                                    <td>
+                                                        <?php $refund = 0; foreach ($value['refunds']['data'] as $sub_key => $sub_value){
+                                                            $refund += $sub_value['amount'];
+                                                        } ?>
 
-            <!-- Transfer History -->
-            <div class="omise-transfer-history"><h3>Transfer History</h3></div>
-            <div class="grid">
-                <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers"); ?>">
-                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
-                    <table cellspacing="0" class="data">
-                        <thead>
-                            <tr class="headings">
-                                <th>Amount</th>
-                                <th>Transfer Id</th>
-                                <th>Sent</th>
-                                <th>Paid</th>
-                                <th>Failure Message</th>
-                                <th width="15%" class="a-center">Created</th>
-                                <th width="5%" class="a-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($data['omise']['transfer']['data'])):
-                                foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
-                                    <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                        <td><?php echo number_format(($value['amount']/100), 2); ?></td>
-                                        <td><?php echo $value['id']; ?></td>
-                                        <td><?php echo $value['sent'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
-                                        <td><?php echo $value['paid'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
-                                        <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
-                                        <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
-                                        <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers/delete/".$value["id"]).'">Cancel</a>': '-'; ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                                        <?php if($refund!=0): ?>
+                                                        <strong class="error-label"><?php echo number_format(($refund/100), 2);?></strong>
+                                                        <?php else:?>
+                                                        <span>No</span>
+                                                        <?php endif; ?>
 
-                            <tr class="pointer">
-                                <td class="a-right" colspan="6">&nbsp;</td>
-                                <td class="a-center last"></td>
-                            </tr>
+                                                    </td>
+                                                    <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
+                                                    
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                        <tr class="pointer">
+                                            <td class="a-right" colspan="3">&nbsp;</td>
+                                            <td class="a-center last"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td width="1%"></td>
+                        <td width="50%">
 
-                            <!-- Create transfer form -->
-                            <tr class="even pointer">
-                                <?php if ($data['omise']['available'] > 3000): ?>
-                                    <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="Transfer amount (number only, icluding 'satang')"></td>
-                                    <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
-                                <?php elseif ($data['omise']['available'] > 0): ?>
-                                    <td class="a-right" colspan="7">Minimum withdrawal is 30 Baht</td>
-                                <?php else: ?>
-                                    <td class="a-right" colspan="7">&nbsp;</td>
-                                <?php endif; ?>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
+                            <!-- Transfer History -->
+                            <div class="omise-transfer-history"><h3><?php echo $this->__('Transfer History') ?></h3></div>
+                            <div class="grid">
+                                <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers"); ?>">
+                                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
+                                    <table cellspacing="0" class="data">
+                                        <thead>
+                                            <tr class="headings">
+                                                <th><?php echo $this->__('Amount') ?></th>
+                                                <th><?php echo $this->__('Transfer Id') ?></th>
+                                                <th><?php echo $this->__('Sent') ?></th>
+                                                <th><?php echo $this->__('Paid') ?></th>
+                                                <th><?php echo $this->__('Failure Message') ?></th>
+                                                <th width="100" class="a-center"><?php echo $this->__('Created') ?></th>
+                                                <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (!empty($data['omise']['transfer']['data'])):
+                                                foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                                                    <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                                                        <td><?php echo number_format(($value['amount']/100), 2); ?></td>
+                                                        <td><?php echo $value['id']; ?></td>
+                                                        <td><?php echo $value['sent'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
+                                                        <td><?php echo $value['paid'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
+                                                        <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
+                                                        <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
+                                                        <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers/delete/".$value["id"]).'">Cancel</a>': '-'; ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+
+                                            <tr class="pointer">
+                                                <td class="a-right" colspan="6">&nbsp;</td>
+                                                <td class="a-center last"></td>
+                                            </tr>
+
+                                            <!-- Create transfer form -->
+                                            <tr class="even pointer">
+                                                <?php if ($data['omise']['available'] > 3000): ?>
+                                                    <td class="a-right" colspan="7"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="<?php echo $this->__("Transfer amount (number only, icluding 'satang')") ?>"> <button class="button btn-transfer"><?php echo $this->__('CREATE TRANSFER') ?></button></td>
+                                                <?php elseif ($data['omise']['available'] > 0): ?>
+                                                    <td class="a-right" colspan="7"><?php echo $this->__('Minimum withdrawal is 30 Baht') ?></td>
+                                                <?php else: ?>
+                                                    <td class="a-right" colspan="7">&nbsp;</td>
+                                                <?php endif; ?>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
         </div> <!-- /END .content -->
     </div> <!-- /END .box -->
 <?php endif; ?>
