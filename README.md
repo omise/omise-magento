@@ -1,4 +1,4 @@
-![Omise-Magento](https://cdn.omise.co/artwork/magento_omise_bodered.png)
+# Omise extension for Magento eCommerce
 
 ## Magento Version Compatibility
 - Magento (CE) 1.9.1.x 
