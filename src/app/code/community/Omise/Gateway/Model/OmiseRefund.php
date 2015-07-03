@@ -1,11 +1,10 @@
 <?php
 class Omise_Gateway_Model_OmiseRefund extends Omise_Gateway_Model_Omise
 {
-
     /**
-     * Creates a new charge with Omise Payment Gateway.
+     * Creates a new refund with Omise Payment Gateway.
      * @param array $params
-     * @return OmiseCharge|Exception
+     * @return OmiseRefund|Exception
      */
     public function createOmiseRefund($params)
     {
@@ -14,7 +13,7 @@ class Omise_Gateway_Model_OmiseRefund extends Omise_Gateway_Model_Omise
         
         try {
             $charge = OmiseCharge::retrieve($transactionId, $this->_public_key, $this->_secret_key);
-            $refunds = new OmiseRefundList($charge->refunds(), $transactionId, $this->_public_key, $this->_secret_key);
+            $refunds =$charge->refunds();
             $refund = $refunds->create(array('amount' => $amount));
             return $refund;
         } catch (Exception $e) {
