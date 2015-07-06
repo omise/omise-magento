@@ -16,6 +16,7 @@ An [unreleased] version is not available on stable version and is subject to cha
 
 ## [1.0.1] - 2015-06-23
 #### Dashboard Page
+- *`Fixed`* Plugin not working in Magento 1.8 and below version
 - *`Added`* Added link to Omise Dashboard [https://dashboard.omise.co](https://dashboard.omise.co) into Magento Omise Dashboard Page.
 - *`Fixed`* Omise Email Account was not shown in dashboard page.
 

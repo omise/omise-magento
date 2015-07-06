@@ -1,7 +1,7 @@
 # Omise extension for Magento eCommerce
 
 ## Magento Version Compatibility
-- Magento (CE) 1.9.x
+- Magento (CE) 1.8.x
 
 ## Dependencies
 - [omise-php](https://github.com/omise/omise-php) (v2.3.1)
