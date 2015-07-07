@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.9.0.0] - 2015-07-07
+#### Dashboard Page
+- *`Fixed`* jQuery from http to https
+
 ## [1.0.1] - 2015-06-23
 #### Dashboard Page
 - *`Added`* Added link to Omise Dashboard [https://dashboard.omise.co](https://dashboard.omise.co) into Magento Omise Dashboard Page.
