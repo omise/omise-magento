@@ -14,7 +14,7 @@
     -->
     <modules>
         <Omise_Gateway>
-            <version>1.9.0.3</version>
+            <version>1.8.0.0</version>
         </Omise_Gateway>
     </modules>
 
