@@ -6,7 +6,7 @@
 - *`Updated`* Changed version number in module's xml files from `0.0.0.1` to `1.9.0.0`
 
 #### Dashboard Page
-- *`Updated`* jQuery from http to https
+- *`Improved`* jQuery from http to https
 
 ## [1.0.1] - 2015-06-23
 #### Dashboard Page
