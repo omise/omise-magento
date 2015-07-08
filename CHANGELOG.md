@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.9.0.2] - 2015-07-07
+#### Versioning & Document
+- *`Updated`* Updated README.md file
+- *`Updated`* Changed version number in module's xml files from `0.0.0.1` to `1.9.0.2` to match Magento releases
+
+#### Dashboard Page
+- *`Improved`* jQuery from http to https
+
 ## [1.0.1] - 2015-06-23
 #### Dashboard Page
 - *`Added`* Added link to Omise Dashboard [https://dashboard.omise.co](https://dashboard.omise.co) into Magento Omise Dashboard Page.
