@@ -1,9 +1,9 @@
 # Change Log
 
-## [1.9.0.0] - 2015-07-07
+## [1.9.0.2] - 2015-07-07
 #### Versioning & Document
 - *`Updated`* Updated README.md file
-- *`Updated`* Changed version number in module's xml files from `0.0.0.1` to `1.9.0.0`
+- *`Updated`* Changed version number in module's xml files from `0.0.0.1` to `1.9.0.2` to match Magento releases
 
 #### Dashboard Page
 - *`Improved`* jQuery from http to https
