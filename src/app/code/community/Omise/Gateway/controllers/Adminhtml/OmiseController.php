@@ -35,7 +35,9 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
                 throw new Exception('Omise Balance:: '.$omise_balance['error'], 1);
 
             // Retrieve Omise Transfer List.
-            $omise_transfer = Mage::getModel('omise_gateway/omiseTransfer')->retrieveOmiseTransfer();
+            $omise_transfer = Mage::getModel('omise_gateway/omiseTransfer')->retrieveOmiseTransfer(array(
+                'limit' => 5
+            ));
             if (isset($omise_transfer['error']))
                 throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
 
@@ -127,10 +129,10 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
     }
 
     /**
-     * Transfers
+     * Withdraw
      * @return void
      */
-    public function transfersAction()
+    public function withdrawAction()
     {
         if (!Mage::app()->getRequest()->isPost() || (!$post = Mage::app()->getRequest()->getPost('OmiseTransfer'))) {
             Mage::getSingleton('core/session')->addError('Omise Transfer:: Required amount');
@@ -161,4 +163,257 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
 
         return $this->_redirect('adminhtml/omise/index', array());
     }
+
+    /**
+     * Transfers
+     * @return void
+     */
+    public function transfersAction(){
+
+        $omise_transfer = Mage::getModel('omise_gateway/omisetransfer')->retrieveOmiseTransfer(array(
+            'limit' => 5,
+            'page' => $this->getRequest()->getParams()['page']
+        ));
+
+        $result = array(
+                'from'      => $omise_transfer['from'],
+                'to'        => $omise_transfer['to'],
+                'offset'    => $omise_transfer['offset'],
+                'limit'     => $omise_transfer['limit'],
+                'total'     => $omise_transfer['total'],
+                'data'      => array_reverse($omise_transfer['data'])
+            );
+
+        foreach ($result['data'] as $key => $value) {
+            $result['data'][$key]['amount'] = number_format(($value['amount']/100), 2);
+            $date = new \DateTime($value['created']);
+            $result['data'][$key]['created'] = $date->format('M d, Y H:i');
+        }
+        
+
+        echo json_encode($result);
+        return ;
+    }
+
+    /**
+     * Charges
+     * @return void
+     */
+    public function chargesAction(){
+
+        $omise_charge = Mage::getModel('omise_gateway/omisecharge')->retrieveOmiseCharge(array(
+            'limit' => 5,
+            'page' => $this->getRequest()->getParams()['page']
+        ));
+
+        $result = array(
+                'from'      => $omise_charge['from'],
+                'to'        => $omise_charge['to'],
+                'offset'    => $omise_charge['offset'],
+                'limit'     => $omise_charge['limit'],
+                'total'     => $omise_charge['total'],
+                'data'      => array_reverse($omise_charge['data'])
+            );
+
+        foreach ($result['data'] as $key => $value) {
+            $result['data'][$key]['amount'] = number_format(($value['amount']/100), 2);
+            $refund = 0;
+            foreach ($value['refunds']['data'] as $sub_key => $sub_value)
+                $refund += $sub_value['amount'];
+            
+            if($refund!=0)
+                $result['data'][$key]['refund_amount'] = number_format(($refund/100), 2);
+
+            $date = new \DateTime($value['created']);
+            $result['data'][$key]['created'] = $date->format('M d, Y H:i');
+        }
+        
+
+        echo json_encode($result);
+  
+        return ;
+    }
+
+    /**
+     * get requested invoice instance
+     * @param unknown_type $order
+     * @param String $invoiceId
+     */
+    private function getInvoice($order, $invoiceId)
+    {
+        if ($invoiceId) {
+            $invoice = Mage::getModel('sales/order_invoice')
+                ->load($invoiceId)
+                ->setOrder($order);
+            if ($invoice->getId()) {
+                return $invoice;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * get creditmemo model instance
+     *
+     * @return Mage_Sales_Model_Order_Creditmemo
+     * @param unknown_type $order
+     * @param String $invoiceId
+     */
+    private function getCreditmemo($orderId, $invoiceId){
+        $order  = Mage::getModel('sales/order')->load($orderId);
+        $invoice = $this->getInvoice($order, $invoiceId);
+        $data = array();
+        
+        $service = Mage::getModel('sales/service_order', $order);
+        if ($invoice) {
+            $creditmemo = $service->prepareInvoiceCreditmemo($invoice, $data);
+        } else {
+            $creditmemo = $service->prepareCreditmemo($data);
+        }
+
+        Mage::register('current_creditmemo', $creditmemo);
+        return $creditmemo;
+    }
+
+    /**
+     * Save creditmemo and related order, invoice in one transaction
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     */
+    protected function saveCreditmemo($creditmemo)
+    {
+        $transactionSave = Mage::getModel('core/resource_transaction')
+            ->addObject($creditmemo)
+            ->addObject($creditmemo->getOrder());
+        if ($creditmemo->getInvoice()) {
+            $transactionSave->addObject($creditmemo->getInvoice());
+        }
+        $transactionSave->save();
+
+        return $this;
+    }
+
+    /**
+     * get creditmemo model instance
+     *
+     * @return Mage_Sales_Model_Order_Creditmemo
+     * @param String $charge
+     */
+    protected function refundMagento($charge)
+    {
+        $payments = Mage::getResourceModel('sales/order_payment_collection')
+            ->addFieldToSelect('*')
+            ->addFieldToFilter('last_trans_id', $charge)
+        ;
+
+        $payment = $payments->getFirstItem();
+
+        $invoices = Mage::getResourceModel('sales/order_invoice_collection')
+            ->addFieldToSelect('*')
+            ->addFieldToFilter('transaction_id', $charge)
+        ;
+
+        $invoice = $invoices->getFirstItem();
+
+        $orders = Mage::getResourceModel('sales/order_collection')
+            ->addFieldToSelect('*')
+            ->addFieldToFilter('entity_id', $payment->getParentId())
+        ;
+
+        $order = $orders->getFirstItem();
+
+        try {
+            $creditmemo = $this->getCreditmemo($order->getId(), $invoice->getId());
+            if ($creditmemo) {
+                if (($creditmemo->getGrandTotal() <=0) && (!$creditmemo->getAllowZeroGrandTotal())) {
+                    Mage::throwException(
+                        $this->__('Credit memo\'s total must be positive.')
+                    );
+                }
+
+                $comment = '';
+                if (!empty($data['comment_text'])) {
+                    $creditmemo->addComment(
+                        $data['comment_text'],
+                        isset($data['comment_customer_notify']),
+                        isset($data['is_visible_on_front'])
+                    );
+                    if (isset($data['comment_customer_notify'])) {
+                        $comment = $data['comment_text'];
+                    }
+                }
+
+                if (isset($data['do_refund'])) {
+                    $creditmemo->setRefundRequested(true);
+                }
+                if (isset($data['do_offline'])) {
+                    $creditmemo->setOfflineRequested((bool)(int)$data['do_offline']);
+                }
+
+                $creditmemo->register();
+                if (!empty($data['send_email'])) {
+                    $creditmemo->setEmailSent(true);
+                }
+
+                $creditmemo->getOrder()->setCustomerNoteNotify(!empty($data['send_email']));
+                $this->saveCreditmemo($creditmemo);
+                $creditmemo->sendEmail(!empty($data['send_email']), $comment);
+                $this->_getSession()->addSuccess($this->__('The credit memo has been created.'));
+                Mage::getSingleton('adminhtml/session')->getCommentText(true);
+
+                if (isset($refund['error'])){
+                    Mage::throwException(Mage::helper('payment')->__('OmiseRefund:: '.$charge['error']));
+                }else{
+                    return array(
+                        'amount' => $creditmemo->getGrandTotal()
+                    );
+                }
+            }
+
+        } catch (Mage_Core_Exception $e) {
+            
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
+
+
+        return null;
+    }
+
+    /**
+     * get creditmemo model instance
+     *
+     * @return Mage_Sales_Model_Order_Creditmemo
+     * @param String $charge
+     * @param Integer $amount
+     */
+    protected function refundOmise($charge, $amount){
+        $refund = Mage::getModel('omise_gateway/omiserefund')->createOmiseRefund(array(
+            "transaction_id" => $charge ,
+            "amount"        => number_format($amount, 2, '', '')
+        ));
+    }
+
+
+    /**
+     * Refund
+     * @return void
+     */
+    public function refundAction(){
+        $charge = $this->getRequest()->getParams()['charge'];
+        $amount = $this->getRequest()->getParams()['amount'];
+        $partial = $this->getRequest()->getParams()['partial'] === 'true'? true: false;;
+
+        if(!$partial){
+           $refunded = $this->refundMagento($charge);
+            if($refunded!=null){
+                $this->refundOmise($charge, $refunded['amount']);
+                echo '{"refundedAmonut", "'. number_format(($refunded['amount']/100), 2) .'"}';  
+            } 
+        }else{
+
+        }
+        
+        return ;
+    }
+
 }

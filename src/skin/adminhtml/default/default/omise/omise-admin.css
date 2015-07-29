@@ -29,6 +29,28 @@
 .livemode-label                                 { color: #7CA91F; }
 
 .success-label                                  { color: #7CA91F; }
+.warning-label                                  { color: #F2BC3D; }
+.primary-label                                  { color: #24AAF2; }
 .error-label                                    { color: #d1002a; }
 
 input.transfer-amount.input-text.no-changes     { width: 30%; }
+.pagination 									{ float: right;}
+
+.popup-background								{background: rgba(0,0,0,0.6); position:fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000000000; display: none}
+.popup-content									{background: white; margin: auto; border-radius: 10px; width: 400px; min-height: 400px; margin-top: -20px;}
+.custom-template								{display: none;}
+
+.refund-view1									{position: relative; top: 20px}
+.refund-view1 ul li								{background: #ddd; width: 360px; min-height: 50px; padding: 10px; margin: 10px; cursor: pointer; }
+.refund-view1 button							{position:relative; top: 0px; left: 0px; background: #555; padding: 10px; margin: 0 10px 10px 10px; font-size: 20px; color: orange; font-weight: 100; border: none;}
+.refund-view1 .remark							{margin: 0 10px 10px 10px; font-size: 14px; color: #333;}
+.refund-view1 button:active						{top: 1px; left: 1px}
+.refund-view1 ul li .refund-radio				{position:absolute; width: 20px; height: 20px; border-radius: 50px; background-color: white;  border: 2px white solid;}
+.refund-view1 ul li.selected .refund-radio		{background-color: orange; }
+.refund-view1 .refund-option					{margin-left: 35px; margin-top: 2px}
+.refund-view1 .refund-option .title				{font-size: 20px; font-weight: 100; color: orange;}
+.refund-view1 .refund-option .description		{font-size: 14px; color: white;}
+.refund-view1 .refund-option #patial-refund		{padding: 5px; width: 250px; font-size: 14px; color: orange;margin: 5px 0 0 0}
+
+
+
