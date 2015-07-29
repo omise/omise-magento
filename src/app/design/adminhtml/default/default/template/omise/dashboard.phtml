@@ -5,7 +5,7 @@ $data = $this->getData(); ?>
 <!-- Include Omise's stylesheet -->
 <link rel="stylesheet" href="<?php echo $this->getSkinUrl(); ?>omise/omise-admin.css" type="text/css" />
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <div class="content-header">
     <table cellspacing="0">
@@ -47,118 +47,139 @@ $data = $this->getData(); ?>
             </div>
         </div>
     </div>
-    <div>
-        <div class="content">
-            <table width="100%">
+    
+    <!-- Transfer History -->
+    <div class="omise-transfer-history"><h3><?php echo $this->__('Charge/Refund History') ?></h3></div>
+    <div class="grid">
+        <table id="charge-table" cellspacing="0" class="data">
+            <thead>
+                <tr class="headings">
+                    <th width="10%"><?php echo $this->__('Amount') ?></th>
+                    <th width="30%"><?php echo $this->__('Transaction Id') ?></th>
+                    <th width="10%"><?php echo $this->__('Status') ?></th>
+                    <th width="10%"><?php echo $this->__('Refund') ?></th>
+                    <th width="20%"><?php echo $this->__('Failure Message') ?></th>
+                    <th width="10%" class="a-center"><?php echo $this->__('Created') ?></th>
+                    <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($data['omise']['charge']['data'])):
+                    foreach ($data['omise']['charge']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                        <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td class="a-center">&nbsp;</td>
+                            <td class="a-center">&nbsp;</td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <tr class="pointer">
+                    <td class="a-right" colspan="6">&nbsp;</td>
+                    <td class="a-center last"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <?php  $charge_total = ceil($data['omise']['charge']['total']/5); ?>
+    <div class="pagination">
+        <?php echo $this->__('Page No: ') ?> 
+        <span id="charge-pn">1</span> 
+        <a id="charge-btn-back" href="#">back</a> 
+        <a id="charge-btn-next" href="#">next</a>
+    </div>
+
+    <!-- Transfer History -->
+    <div class="omise-transfer-history"><h3><?php echo $this->__('Transfer History') ?></h3></div>
+    <div class="grid">
+        <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw"); ?>">
+            <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
+            <table id="transfer-table" cellspacing="0" class="data">
+                <thead>
+                    <tr class="headings">
+                        <th width="10%"><?php echo $this->__('Amount') ?></th>
+                        <th width="30%"><?php echo $this->__('Transfer Id') ?></th>
+                        <th width="20%"><?php echo $this->__('Status') ?></th>
+                        <th width="20%"><?php echo $this->__('Failure Message') ?></th>
+                        <th width="10%" class="a-center"><?php echo $this->__('Created') ?></th>
+                        <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr>
-                        <td width="49%">
-                            <!-- Transfer History -->
-                            <div class="omise-transfer-history"><h3><?php echo $this->__('Charge/Refund History') ?></h3></div>
-                            <div class="grid">
-                                <table cellspacing="0" class="data">
-                                    <thead>
-                                        <tr class="headings">
-                                            <th><?php echo $this->__('Amount') ?></th>
-                                            <th><?php echo $this->__('Transaction Id') ?></th>
-                                            <th><?php echo $this->__('Refund') ?></th>
-                                            <th width="100" class="a-center"><?php echo $this->__('Created') ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (!empty($data['omise']['charge']['data'])):
-                                            foreach ($data['omise']['charge']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
-                                                <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                                    <td><?php echo number_format(($value['amount']/100), 2); ?></td>
-                                                    <td><?php echo $value['id']; ?></td>
-                                                    <td>
-                                                        <?php $refund = 0; foreach ($value['refunds']['data'] as $sub_key => $sub_value){
-                                                            $refund += $sub_value['amount'];
-                                                        } ?>
+                    <?php if (!empty($data['omise']['transfer']['data'])):
+                        foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                            <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                                <td><?php echo number_format(($value['amount']/100), 2); ?></td>
+                                <td><?php echo $value['id']; ?></td>
+                                <td><?php 
+                                    echo $value['failure_code'] ? '<span class="error-label">Fail</span>' : 
+                                        $value['sent'] ? $value['paid'] ? '<span class="success-label">Paid</span>' :'<span class="primary-label">Request sent</span>' : '<span class="warning-label">Requesting</span>';
 
-                                                        <?php if($refund!=0): ?>
-                                                        <strong class="error-label"><?php echo number_format(($refund/100), 2);?></strong>
-                                                        <?php else:?>
-                                                        <span>No</span>
-                                                        <?php endif; ?>
+                                 ?></td>
+                                <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
+                                <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
+                                <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/".$value["id"]).'">delete</a>': '-'; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
-                                                    </td>
-                                                    <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
-                                                    
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                        <tr class="pointer">
-                                            <td class="a-right" colspan="3">&nbsp;</td>
-                                            <td class="a-center last"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                        <td width="1%"></td>
-                        <td width="50%">
+                    <tr class="pointer">
+                        <td class="a-right" colspan="5">&nbsp;</td>
+                        <td class="a-center last"></td>
+                    </tr>
 
-                            <!-- Transfer History -->
-                            <div class="omise-transfer-history"><h3><?php echo $this->__('Transfer History') ?></h3></div>
-                            <div class="grid">
-                                <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers"); ?>">
-                                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
-                                    <table cellspacing="0" class="data">
-                                        <thead>
-                                            <tr class="headings">
-                                                <th><?php echo $this->__('Amount') ?></th>
-                                                <th><?php echo $this->__('Transfer Id') ?></th>
-                                                <th><?php echo $this->__('Sent') ?></th>
-                                                <th><?php echo $this->__('Paid') ?></th>
-                                                <th><?php echo $this->__('Failure Message') ?></th>
-                                                <th width="100" class="a-center"><?php echo $this->__('Created') ?></th>
-                                                <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if (!empty($data['omise']['transfer']['data'])):
-                                                foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
-                                                    <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                                        <td><?php echo number_format(($value['amount']/100), 2); ?></td>
-                                                        <td><?php echo $value['id']; ?></td>
-                                                        <td><?php echo $value['sent'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
-                                                        <td><?php echo $value['paid'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
-                                                        <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
-                                                        <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
-                                                        <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers/delete/".$value["id"]).'">Cancel</a>': '-'; ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-
-                                            <tr class="pointer">
-                                                <td class="a-right" colspan="6">&nbsp;</td>
-                                                <td class="a-center last"></td>
-                                            </tr>
-
-                                            <!-- Create transfer form -->
-                                            <tr class="even pointer">
-                                                <?php if ($data['omise']['available'] > 3000): ?>
-                                                    <td class="a-right" colspan="7"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="<?php echo $this->__("Transfer amount (number only, icluding 'satang')") ?>"> <button class="button btn-transfer"><?php echo $this->__('CREATE TRANSFER') ?></button></td>
-                                                <?php elseif ($data['omise']['available'] > 0): ?>
-                                                    <td class="a-right" colspan="7"><?php echo $this->__('Minimum withdrawal is 30 Baht') ?></td>
-                                                <?php else: ?>
-                                                    <td class="a-right" colspan="7">&nbsp;</td>
-                                                <?php endif; ?>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </form>
-                            </div>
-
-                        </td>
+                    <!-- Create transfer form -->
+                    <tr class="even pointer">
+                        <?php if ($data['omise']['available'] > 3000): ?>
+                            <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="<?php echo $this->__("Transfer amount (number only, icluding 'satang')") ?>"> <button class="button btn-transfer"><?php echo $this->__('CREATE TRANSFER') ?></button></td>
+                        <?php elseif ($data['omise']['available'] > 0): ?>
+                            <td class="a-right" colspan="6"><?php echo $this->__('Minimum withdrawal is 30 Baht') ?></td>
+                        <?php else: ?>
+                            <td class="a-right" colspan="6">&nbsp;</td>
+                        <?php endif; ?>
                     </tr>
                 </tbody>
             </table>
-            
-        </div> <!-- /END .content -->
-    </div> <!-- /END .box -->
+        </form>
+    </div>
+
+    <?php  $transfer_total = ceil($data['omise']['transfer']['total']/5); ?>
+    <div class="pagination">
+        <?php echo $this->__('Page No: ') ?> 
+        <span id="transfer-pn">1</span> 
+        <a id="transfer-btn-back" href="#">back</a> 
+        <a id="transfer-btn-next" href="#">next</a>
+    </div>
 <?php endif; ?>
+
+<!-- theme refund template -->
+    <div class="custom-template refund-view1">
+        <ul>
+            <li class="selected">
+                <div class="refund-radio"></div>
+                <div class="refund-option">
+                    <div class="title">Full Refund</div>
+                    <div class="description">Refund the full 34,000 Baht of this charge</div>
+                </div>
+            </li>
+            <li>
+                <div class="refund-radio"></div>
+                <div class="refund-option">
+                    <div class="title">Patial Refund</div>
+                    <div class="description">Refund this charge partially up to 4,000</div>
+                    <input type="number" id="patial-refund" >
+                </div>
+            </li>
+        </ul>
+        <button>Refund</button>
+        <div class="remark">*Refund take between 5 or 10 days to be processed</div>
+    </div>
+    <div class="custom-template refund-view2">
+        
+    </div>
 
 <script type="text/javascript">
     jQuery.noConflict();
@@ -177,5 +198,194 @@ $data = $this->getData(); ?>
                 jQuery("#omise-transfer").submit();
             }
         });
+
+        // temporary data
+        var chargeData = null, transferData = null;
+
+        var charge_total = <?php echo $charge_total ?>;
+
+        var setChargeTable = function(i, data){
+            var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
+                td.eq(0).text(data.amount);
+                td.eq(1).text(data.id);
+                td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
+                td.eq(3).text(data.refund_amount?data.refund_amount:'-');
+                td.eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
+                td.eq(5).text(data.created);
+
+                td.eq(6).html('');     
+                var isRefundButtonShow = data.refund_amount?false:true;
+                if(isRefundButtonShow){
+                    var aRefund = jQuery('<a>refund</a>', {href: '#'} );
+                        aRefund.on('click', function(e){
+                            e.preventDefault();
+                                popup = new RefundPopup(data, function(done, d){
+                                    if(done){
+                                        aRefund.hide();
+                                        td.eq(3).text(d.refundedAmount);
+                                    }
+                                });
+                            popup.show();
+                        });
+                    td.eq(6).append([aRefund, ' ']);
+                }
+
+                var aCardInfo = jQuery('<a>card info</a>', {href: '#'} );
+                td.eq(6).append(aCardInfo);
+        }
+
+        var loadChageTable = function(page, callback){
+            jQuery.getJSON( '<?php echo $this->getGetChargeUrl(); ?>', {page: page}, function( charge ) {
+                for(var i=0;i<charge.data.length;i++){
+                    var data = charge.data[i];
+                    setChargeTable(i, data);
+                }
+
+                chargeData = charge;
+
+                if(callback) callback();    
+            });
+        }
+
+        loadChageTable(1);
+
+        var nextChargePage = function(direction){
+            np = parseInt(jQuery('#charge-pn').text()) + direction;
+            np = np < 1 ? 1 : np;
+            np = np > charge_total ? charge_total : np;
+            loadChageTable(np, function(){
+              jQuery('#charge-pn').text(np);  
+            });
+        }
+
+        var transfer_total = <?php echo $transfer_total ?>;
+        var loadTransferTable = function(page, callback){
+            jQuery.getJSON( '<?php echo $this->getGetTransferUrl(); ?>', {page: page}, function( transfer ) {
+                for(var i=0;i<transfer.data.length;i++){
+                    var data = transfer.data[i];
+                    var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
+                    td.eq(0).text(data.amount);
+                    td.eq(1).text(data.id);
+                    td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>' );
+                    td.eq(3).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
+                    td.eq(4).text(data.created);
+                }
+                transferData = transfer;
+                if(callback) callback();    
+            });
+        }
+
+        var nextTransferPage = function(direction){
+            np = parseInt(jQuery('#transfer-pn').text()) + direction;
+            np = np < 1 ? 1 : np;
+            np = np > transfer_total ? transfer_total : np;
+            loadTransferTable(np, function(){
+              jQuery('#transfer-pn').text(np);  
+            });
+        }
+
+        jQuery('#charge-btn-back').on('click', function(e){
+            e.preventDefault();
+            nextChargePage(-1);
+        });
+
+        jQuery('#charge-btn-next').on('click', function(e){
+            e.preventDefault();
+            nextChargePage(1);
+        });
+
+        jQuery('#transfer-btn-back').on('click', function(e){
+            e.preventDefault();
+            nextTransferPage(-1);
+        });
+
+        jQuery('#transfer-btn-next').on('click', function(e){
+            e.preventDefault();
+            nextTransferPage(1);
+        });
+
+        // refund popup object
+        var RefundPopup = function(charge, done){
+
+            var body = jQuery('body'),
+                background = jQuery('<div>', {class: 'popup-background'}),
+                content = jQuery('<div>', {class: 'popup-content'});
+
+            // add popup to frontend
+            background.append(content);
+            body.append(background);
+
+            // popup action
+            var show = function(){
+                    background.fadeIn(200);
+                },
+
+                hide = function(){
+                    background.fadeOut(200, function(){
+                        background.remove();
+                    });
+                };
+
+            // view 1: refund form
+            var view1 = function(){
+                    var selected = 0;
+
+                    var view = jQuery('.custom-template.refund-view1').clone().show(),
+                        list = view.find('ul li'),
+                        button = view.find('button'),
+                        patial = view.find('#patial-refund');
+
+                    list.on('click', function(){
+                        var _this = jQuery(this);
+                        list.removeClass('selected');
+                        _this.addClass('selected');
+                        selected = _this.index();
+
+                        if(selected == 1){
+
+                        }
+                    });
+                    
+                    button.on('click', function(){
+                        var isPartial = (selected==1);
+                        
+                        jQuery.get('<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>', { 
+                            charge: charge.id,
+                            amount: isPartial? patial.val(): charge.amount,
+                            partial: isPartial
+                        }).done(function(data) {
+                            console.log(data);
+                            hide();
+                            done(true, {
+                                refundedAmount: charge.amount
+                            });
+                        }).fail(function(data) {
+                            jQuery(this).removeAttr('disabled');
+                            alert('error');
+                        });
+                    });
+
+                    return view;
+                },
+
+            // view 2: show refund history
+                view2 = function(){
+                    return jQuery('.custom-template.refund-view2').clone().show();
+                }
+
+
+            // add custom view
+            content.append(view1());
+
+            // popup init event
+            background.on('click', function(e){ hide(); });
+            content.on('click', function(e){ e.stopPropagation(); });
+
+            return {
+                show: show,
+                hide: hide
+            }
+        }
+
     });
 </script>
