@@ -6,8 +6,26 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
      * @param string $id
      * @return OmiseTransfer|array
      */
-    public function retrieveOmiseCharge($params)
+    public function retrieveOmiseCharge($id)
     {   
+    
+        try {
+            $charge = OmiseCharge::retrieve($id, $this->_public_key, $this->_secret_key);
+            return $charge;
+        } catch (Exception $e) {
+            return array('error' => $e->getMessage());
+        }
+    }
+
+    /**
+     * @param array $params
+     * @return OmiseTransfer|array
+     */
+    public function retrieveOmiseCharges($params)
+    {   
+        if(!isset($params['page']))
+            $params['page'] = 1;
+        
         if(!isset($params['limit']))
             $params['limit'] = 10;
 
@@ -15,7 +33,7 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
 
             $check = OmiseCharge::retrieve('', $this->_public_key, $this->_secret_key);
             $params = array(
-                'offset' => $check['total'] - $params['limit'],
+                'offset' => $check['total'] - ($params['limit'] * $params['page']),
                 'limit' => $params['limit']
             );
             return OmiseCharge::retrieve("?" . http_build_query($params), $this->_public_key, $this->_secret_key);

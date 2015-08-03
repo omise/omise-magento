@@ -7,11 +7,15 @@ class Omise_Gateway_Block_Adminhtml_Dashboard_Dashboard extends Mage_Adminhtml_B
         $this->setTemplate('omise/dashboard.phtml');
     }
 
-    public function getGetChargeUrl(){
+    public function getChargeUrl(){
+        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/omise/charge/', array('_secure'=>true));
+    }
+
+    public function getChargesUrl(){
         return Mage::getModel('adminhtml/url')->getUrl('adminhtml/omise/charges/', array('_secure'=>true));
     }
 
-    public function getGetTransferUrl(){
+    public function getTransfersUrl(){
         return Mage::getModel('adminhtml/url')->getUrl('adminhtml/omise/transfers/', array('_secure'=>true));
     }
 }

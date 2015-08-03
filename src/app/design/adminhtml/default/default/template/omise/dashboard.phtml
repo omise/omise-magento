@@ -58,8 +58,8 @@ $data = $this->getData(); ?>
                     <th width="30%"><?php echo $this->__('Transaction Id') ?></th>
                     <th width="10%"><?php echo $this->__('Status') ?></th>
                     <th width="10%"><?php echo $this->__('Refund') ?></th>
-                    <th width="20%"><?php echo $this->__('Failure Message') ?></th>
-                    <th width="10%" class="a-center"><?php echo $this->__('Created') ?></th>
+                    <th width="18%"><?php echo $this->__('Failure Message') ?></th>
+                    <th width="12%" class="a-center"><?php echo $this->__('Created') ?></th>
                     <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
                 </tr>
             </thead>
@@ -88,8 +88,10 @@ $data = $this->getData(); ?>
     <div class="pagination">
         <?php echo $this->__('Page No: ') ?> 
         <span id="charge-pn">1</span> 
-        <a id="charge-btn-back" href="#">back</a> 
-        <a id="charge-btn-next" href="#">next</a>
+        <?php if($charge_total > 1):?>
+            <a id="charge-btn-back" href="#">back</a> 
+            <a id="charge-btn-next" href="#">next</a>
+        <?php endif;?>
     </div>
 
     <!-- Transfer History -->
@@ -103,8 +105,8 @@ $data = $this->getData(); ?>
                         <th width="10%"><?php echo $this->__('Amount') ?></th>
                         <th width="30%"><?php echo $this->__('Transfer Id') ?></th>
                         <th width="20%"><?php echo $this->__('Status') ?></th>
-                        <th width="20%"><?php echo $this->__('Failure Message') ?></th>
-                        <th width="10%" class="a-center"><?php echo $this->__('Created') ?></th>
+                        <th width="18%"><?php echo $this->__('Failure Message') ?></th>
+                        <th width="12%" class="a-center"><?php echo $this->__('Created') ?></th>
                         <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
                     </tr>
                 </thead>
@@ -150,8 +152,10 @@ $data = $this->getData(); ?>
     <div class="pagination">
         <?php echo $this->__('Page No: ') ?> 
         <span id="transfer-pn">1</span> 
-        <a id="transfer-btn-back" href="#">back</a> 
-        <a id="transfer-btn-next" href="#">next</a>
+        <?php if($transfer_total > 1):?>
+            <a id="transfer-btn-back" href="#">back</a> 
+            <a id="transfer-btn-next" href="#">next</a>
+        <?php endif;?>
     </div>
 <?php endif; ?>
 
@@ -178,7 +182,19 @@ $data = $this->getData(); ?>
         <div class="remark">*Refund take between 5 or 10 days to be processed</div>
     </div>
     <div class="custom-template refund-view2">
-        
+        <div class="refund-header">
+            <div class="title">&nbsp;</div>
+            <div class="description">&nbsp;</div>
+        </div>
+        <ul>
+            <li>
+                <div class="refund-option">
+                    <div class="title">Full Refund</div>
+                    <div class="description">Refund the full 34,000 Baht of this charge</div>
+                </div>
+            </li>
+        </ul>
+        <button>Create refund</button>
     </div>
 
 <script type="text/javascript">
@@ -206,23 +222,49 @@ $data = $this->getData(); ?>
 
         var setChargeTable = function(i, data){
             var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
-                td.eq(0).text(data.amount);
+                td.eq(0).text(data.amount_format);
                 td.eq(1).text(data.id);
                 td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
-                td.eq(3).text(data.refund_amount?data.refund_amount:'-');
+                if(data.refunded>0){
+                    var aRefund = jQuery('<a>'+data.refund_format+'</a>', {href: '#'} );
+                        aRefund.on('click', function(e){
+                            e.preventDefault();
+                                popup = new RefundPopup(data, 'view2', function(done, d){
+                                    if(done){
+                                        var aRefundAmount = jQuery('<a>'+d.refund_format+'</a>', {href: '#'} );
+                                            aRefundAmount.on('click', function(e){
+                                                e.preventDefault();
+                                                    popup = new RefundPopup(d, 'view2');
+                                                popup.show();
+                                            });
+                                        td.eq(3).html('').append(aRefundAmount);
+                                    }
+                                });
+                            popup.show();
+                        });
+                    td.eq(3).html('').append(aRefund);
+                }
+
+                
                 td.eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
                 td.eq(5).text(data.created);
 
                 td.eq(6).html('');     
-                var isRefundButtonShow = data.refund_amount?false:true;
+                var isRefundButtonShow = data.refund_format?false:true;
                 if(isRefundButtonShow){
                     var aRefund = jQuery('<a>refund</a>', {href: '#'} );
                         aRefund.on('click', function(e){
                             e.preventDefault();
-                                popup = new RefundPopup(data, function(done, d){
+                                popup = new RefundPopup(data, 'view1', function(done, d){
                                     if(done){
                                         aRefund.hide();
-                                        td.eq(3).text(d.refundedAmount);
+                                        var aRefundAmount = jQuery('<a>'+d.refund_format+'</a>', {href: '#'} );
+                                            aRefundAmount.on('click', function(e){
+                                                e.preventDefault();
+                                                    popup = new RefundPopup(d, 'view2');
+                                                popup.show();
+                                            });
+                                        td.eq(3).html('').append(aRefundAmount);
                                     }
                                 });
                             popup.show();
@@ -235,7 +277,7 @@ $data = $this->getData(); ?>
         }
 
         var loadChageTable = function(page, callback){
-            jQuery.getJSON( '<?php echo $this->getGetChargeUrl(); ?>', {page: page}, function( charge ) {
+            jQuery.getJSON( '<?php echo $this->getChargesUrl(); ?>', {page: page}, function( charge ) {
                 for(var i=0;i<charge.data.length;i++){
                     var data = charge.data[i];
                     setChargeTable(i, data);
@@ -247,20 +289,27 @@ $data = $this->getData(); ?>
             });
         }
 
-        loadChageTable(1);
-
         var nextChargePage = function(direction){
             np = parseInt(jQuery('#charge-pn').text()) + direction;
             np = np < 1 ? 1 : np;
             np = np > charge_total ? charge_total : np;
             loadChageTable(np, function(){
+
+                jQuery('#charge-btn-back').show();
+                if(np == 1) jQuery('#charge-btn-back').hide();
+
+                 jQuery('#charge-btn-next').show();
+                if(np == charge_total) jQuery('#charge-btn-next').hide();
+
               jQuery('#charge-pn').text(np);  
             });
         }
 
+        nextChargePage(0);
+
         var transfer_total = <?php echo $transfer_total ?>;
         var loadTransferTable = function(page, callback){
-            jQuery.getJSON( '<?php echo $this->getGetTransferUrl(); ?>', {page: page}, function( transfer ) {
+            jQuery.getJSON( '<?php echo $this->getTransfersUrl(); ?>', {page: page}, function( transfer ) {
                 for(var i=0;i<transfer.data.length;i++){
                     var data = transfer.data[i];
                     var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
@@ -280,7 +329,14 @@ $data = $this->getData(); ?>
             np = np < 1 ? 1 : np;
             np = np > transfer_total ? transfer_total : np;
             loadTransferTable(np, function(){
-              jQuery('#transfer-pn').text(np);  
+                
+                jQuery('#charge-btn-back').show();
+                if(np == 1) jQuery('#charge-btn-back').hide();
+
+                jQuery('#charge-btn-next').show();
+                if(np == transfer_total) jQuery('#charge-btn-next').hide();
+
+                jQuery('#transfer-pn').text(np);  
             });
         }
 
@@ -305,7 +361,7 @@ $data = $this->getData(); ?>
         });
 
         // refund popup object
-        var RefundPopup = function(charge, done){
+        var RefundPopup = function(charge, v, done){
 
             var body = jQuery('body'),
                 background = jQuery('<div>', {class: 'popup-background'}),
@@ -326,10 +382,10 @@ $data = $this->getData(); ?>
                     });
                 };
 
+            var views = {};
             // view 1: refund form
-            var view1 = function(){
+            views.view1 = function(){
                     var selected = 0;
-
                     var view = jQuery('.custom-template.refund-view1').clone().show(),
                         list = view.find('ul li'),
                         button = view.find('button'),
@@ -348,34 +404,94 @@ $data = $this->getData(); ?>
                     
                     button.on('click', function(){
                         var isPartial = (selected==1);
-                        
-                        jQuery.get('<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>', { 
-                            charge: charge.id,
-                            amount: isPartial? patial.val(): charge.amount,
-                            partial: isPartial
-                        }).done(function(data) {
-                            console.log(data);
-                            hide();
-                            done(true, {
-                                refundedAmount: charge.amount
+                        var _this = this;
+                        var final_amount = (charge.amount - charge.refunded);
+                        var amount_valid = (parseInt(patial.val())*100 <= final_amount);
+                        if(amount_valid){
+                            jQuery(_this).attr('disabled','disabled');
+                            jQuery.get('<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>', { 
+                                charge: charge.id,
+                                amount: (isPartial? patial.val(): final_amount),
+                                partial: isPartial
+                            }).done(function(data) {
+                                data = jQuery.parseJSON(data);
+                                jQuery.get('<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>', {
+                                    charge: charge.id
+                                }).done(function(chargeData) {
+                                    chargeData = jQuery.parseJSON(chargeData);
+                                    hide();
+                                    if(done){
+                                        done(true, chargeData);
+                                    }
+                                });
+
+                            }).fail(function(data) {
+                                jQuery(_this).removeAttr('disabled');
+                                alert('error');
                             });
-                        }).fail(function(data) {
-                            jQuery(this).removeAttr('disabled');
-                            alert('error');
-                        });
+                        }else{
+                            alert('Refund amount is not valid!')
+                        }
                     });
 
                     return view;
-                },
+                };
 
             // view 2: show refund history
-                view2 = function(){
-                    return jQuery('.custom-template.refund-view2').clone().show();
-                }
+                views.view2 = function(){
+                    var view = jQuery('.custom-template.refund-view2').clone().show(),
+                        list = view.find('ul li').eq(0).clone(),
+                        button = view.find('button');
+
+                        view.find('ul li').eq(0).hide();
+
+                        view.find('.refund-header .title').text('฿ ' + charge.refund_format);
+                        view.find('.refund-header .description').text('From charge id: ' + charge.id);
+
+                        var cd = charge.refunds.data;
+                        for(var i = 0; i < cd.length; i++){
+                            var li = list.clone();
+                            li.show();
+                            li.find('.title').text('฿ ' + cd[i].refund_format);
+                            li.find('.description').text(cd[i].id);
+                            view.find('ul').append(li);
+                        }
+
+                        jQuery.get('<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>', { 
+                            charge: charge.id
+                        }).done(function(chargeData) {
+                            chargeData = jQuery.parseJSON(chargeData);
+                            view.find('.refund-header .title').text('฿ ' + chargeData.refund_format);
+                            view.find('.refund-header .description').text('From charge id: ' + chargeData.id);
+                            var cd = chargeData.refunds.data;
+                            view.find('ul').html('');
+                            for(var i = 0; i < cd.length; i++){
+                                var li = list.clone();
+                                li.show();
+                                li.find('.title').text('฿ ' + cd[i].refund_format);
+                                li.find('.description').text(cd[i].id);
+                                view.find('ul').append(li);
+                            }
+                        });
+
+                    if(charge.amount == charge.refund){
+                        button.hide();
+                    }else{
+                        button.show();
+                        button.on('click', function(){
+                            content.html('');
+                            content.append(views['view1']());
+                        });  
+                    }
+
+                    
+
+                    return view;
+                };
 
 
             // add custom view
-            content.append(view1());
+            content.append(views[v]());
 
             // popup init event
             background.on('click', function(e){ hide(); });
