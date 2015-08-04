@@ -1,5 +1,6 @@
     jQuery.noConflict();
     jQuery(document).ready(function(){
+        //money withdraw button
         jQuery('.transfer-btn-delete').on('click', function(e) {
             e.preventDefault();
 
@@ -18,6 +19,7 @@
         // temporary data
         var chargeData = null, transferData = null;
 
+        // transform charge data into charge table
         var setChargeTable = function(i, data){
             var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
                 td.eq(0).text(data.amount_format);
@@ -47,6 +49,7 @@
                 td.eq(6).append(aCardInfo);
         }
 
+        // load charge data with specific page
         var loadChageTable = function(page, callback){
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
                 for(var i=0;i<charge.data.length;i++){
@@ -60,6 +63,7 @@
             });
         }
 
+        // handle charge pagination
         var nextChargePage = function(direction){
             np = parseInt(jQuery('#charge-pn').text()) + direction;
             np = np < 1 ? 1 : np;
@@ -76,8 +80,10 @@
             });
         }
 
+        // first load chrage table for the first page
         nextChargePage(0);
 
+        // load transform data and transform into transfer table 
         var loadTransferTable = function(page, callback){
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
                 for(var i=0;i<transfer.data.length;i++){
@@ -94,6 +100,7 @@
             });
         }
 
+        // handle transform pagination
         var nextTransferPage = function(direction){
             np = parseInt(jQuery('#transfer-pn').text()) + direction;
             np = np < 1 ? 1 : np;
@@ -110,6 +117,7 @@
             });
         }
 
+        // event handle for click page number
         jQuery('#charge-btn-back').on('click', function(e){
             e.preventDefault();
             nextChargePage(-1);
@@ -130,6 +138,7 @@
             nextTransferPage(1);
         });
 
+        // custom function to call to show refund popup
         var showRefundPopup = function(view, data, text, ext){
             var aRefund = jQuery('<a>'+ text +'</a>', {href: '#'} );
             aRefund.on('click', function(e){
@@ -176,6 +185,7 @@
                 };
 
             var views = {};
+
             // view 1: refund form
             views.view1 = function(){
                     var selected = 0;
@@ -184,15 +194,13 @@
                         button = view.find('button'),
                         patial = view.find('#patial-refund');
 
+                    // select refund option
+                    // option 0 = full refund, 1 = patial refund
                     list.on('click', function(){
                         var _this = jQuery(this);
                         list.removeClass('selected');
                         _this.addClass('selected');
                         selected = _this.index();
-
-                        if(selected == 1){
-
-                        }
                     });
                     
                     button.on('click', function(){
@@ -201,14 +209,17 @@
                         var _this = this;
                         var final_amount = (charge.amount - charge.refunded);
                         var amount_valid = isPartial?(parseInt(patial.val())*100 <= final_amount): true;
+                        
                         if(amount_valid){
                             jQuery(_this).attr('disabled','disabled');
+
                             jQuery.get(omise_refund_url, { 
                                 charge: charge.id,
                                 amount: (isPartial? patial.val(): final_amount),
                                 partial: isPartial
                             }).done(function(data) {
                                 data = jQuery.parseJSON(data);
+
                                 jQuery.get(omise_charge_url, {
                                     charge: charge.id
                                 }).done(function(chargeData) {
@@ -237,11 +248,14 @@
                         list = view.find('ul li').eq(0).clone(),
                         button = view.find('button');
 
-                        view.find('ul li').eq(0).hide();
 
+                    view.find('ul li').eq(0).hide();
+
+                    var refreshView = function(charge){
                         view.find('.refund-header .title').text('฿ ' + charge.refund_format);
                         view.find('.refund-header .description').text('From charge id: ' + charge.id);
 
+                        view.find('ul').html('');
                         var cd = charge.refunds.data;
                         for(var i = 0; i < cd.length; i++){
                             var li = list.clone();
@@ -250,23 +264,19 @@
                             li.find('.description').text(cd[i].id);
                             view.find('ul').append(li);
                         }
+                    }
 
-                        jQuery.get(omise_charge_url, { 
-                            charge: charge.id
-                        }).done(function(chargeData) {
-                            chargeData = jQuery.parseJSON(chargeData);
-                            view.find('.refund-header .title').text('฿ ' + chargeData.refund_format);
-                            view.find('.refund-header .description').text('From charge id: ' + chargeData.id);
-                            var cd = chargeData.refunds.data;
-                            view.find('ul').html('');
-                            for(var i = 0; i < cd.length; i++){
-                                var li = list.clone();
-                                li.show();
-                                li.find('.title').text('฿ ' + cd[i].refund_format);
-                                li.find('.description').text(cd[i].id);
-                                view.find('ul').append(li);
-                            }
-                        });
+                    refreshView(charge);
+
+                    //try to retrieve new data
+                    jQuery.get(omise_charge_url, { 
+                        charge: charge.id
+                    }).done(function(chargeData) {
+                        chargeData = jQuery.parseJSON(chargeData);
+                        refreshView(chargeData);
+                    });
+
+                    //if no more amount to refund, then hide button to create refund
                     if(charge.amount == charge.refunded){
                         button.hide();
                     }else{
@@ -276,7 +286,7 @@
                             content.append(views['view1']());
                         });  
                     }
-                    
+
                     return view;
                 };
 
