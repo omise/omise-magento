@@ -37,7 +37,7 @@ input.transfer-amount.input-text.no-changes     { width: 30%; }
 
 
 .popup-background								{background: rgba(0,0,0,0.6); position:fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000000000; display: none}
-.popup-content									{background: white; margin: auto; border-radius: 10px; width: 400px; min-height: 400px; margin-top: -20px;}
+.popup-content									{background: white; margin: auto; border-radius: 10px; width: 400px; min-height: 400px; margin-top: -20px; padding-bottom: 20px}
 .custom-template								{display: none;}
 
 .refund-view1									{position: relative; top: 20px}
