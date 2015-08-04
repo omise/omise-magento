@@ -406,7 +406,7 @@ $data = $this->getData(); ?>
                         var isPartial = (selected==1);
                         var _this = this;
                         var final_amount = (charge.amount - charge.refunded);
-                        var amount_valid = (parseInt(patial.val())*100 <= final_amount);
+                        var amount_valid = isPartial?(parseInt(patial.val())*100 <= final_amount): true;
                         if(amount_valid){
                             jQuery(_this).attr('disabled','disabled');
                             jQuery.get('<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>', { 
