@@ -24,22 +24,9 @@
                 td.eq(1).text(data.id);
                 td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
                 if(data.refunded>0){
-                    var aRefund = jQuery('<a>'+data.refund_format+'</a>', {href: '#'} );
-                        aRefund.on('click', function(e){
-                            e.preventDefault();
-                                popup = new RefundPopup(data, 'view2', function(done, d){
-                                    if(done){
-                                        var aRefundAmount = jQuery('<a>'+d.refund_format+'</a>', {href: '#'} );
-                                            aRefundAmount.on('click', function(e){
-                                                e.preventDefault();
-                                                    popup = new RefundPopup(d, 'view2');
-                                                popup.show();
-                                            });
-                                        td.eq(3).html('').append(aRefundAmount);
-                                    }
-                                });
-                            popup.show();
-                        });
+                    var aRefund = showRefundPopup('view2', data, data.refund_format, function(aRefundAmount){
+                        td.eq(3).html('').append(aRefundAmount);
+                    });
                     td.eq(3).html('').append(aRefund);
                 }
 
@@ -50,23 +37,9 @@
                 td.eq(6).html('');     
                 var isRefundButtonShow = data.refund_format?false:true;
                 if(isRefundButtonShow){
-                    var aRefund = jQuery('<a>refund</a>', {href: '#'} );
-                        aRefund.on('click', function(e){
-                            e.preventDefault();
-                                popup = new RefundPopup(data, 'view1', function(done, d){
-                                    if(done){
-                                        aRefund.hide();
-                                        var aRefundAmount = jQuery('<a>'+d.refund_format+'</a>', {href: '#'} );
-                                            aRefundAmount.on('click', function(e){
-                                                e.preventDefault();
-                                                    popup = new RefundPopup(d, 'view2');
-                                                popup.show();
-                                            });
-                                        td.eq(3).html('').append(aRefundAmount);
-                                    }
-                                });
-                            popup.show();
-                        });
+                    var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
+                        td.eq(3).html('').append(aRefundAmount);
+                    });
                     td.eq(6).append([aRefund, ' ']);
                 }
 
@@ -157,12 +130,35 @@
             nextTransferPage(1);
         });
 
+        var showRefundPopup = function(view, data, text, ext){
+            var aRefund = jQuery('<a>'+ text +'</a>', {href: '#'} );
+            aRefund.on('click', function(e){
+                e.preventDefault();
+                    popup = new RefundPopup(data, view, function(done, d){
+                        if(done){
+                            aRefund.hide();
+                            var aRefundAmount = jQuery('<a>'+d.refund_format+'</a>', {href: '#'} );
+                                aRefundAmount.on('click', function(e){
+                                    e.preventDefault();
+                                        popup = new RefundPopup(d, 'view2');
+                                    popup.show();
+                                });
+                            ext(aRefundAmount);
+                        }
+                    });
+                popup.show();
+            });
+
+            return aRefund;
+        }
+
         // refund popup object
         var RefundPopup = function(charge, v, done){
 
             var body = jQuery('body'),
                 background = jQuery('<div>', {class: 'popup-background'}),
-                content = jQuery('<div>', {class: 'popup-content'});
+                content = jQuery('<div>', {class: 'popup-content'}),
+                isBackgroundClikable = true;
 
             // add popup to frontend
             background.append(content);
@@ -200,6 +196,7 @@
                     });
                     
                     button.on('click', function(){
+                        isBackgroundClikable = false;
                         var isPartial = (selected==1);
                         var _this = this;
                         var final_amount = (charge.amount - charge.refunded);
@@ -279,9 +276,7 @@
                             content.append(views['view1']());
                         });  
                     }
-
                     
-
                     return view;
                 };
 
@@ -290,7 +285,13 @@
             content.append(views[v]());
 
             // popup init event
-            background.on('click', function(e){ hide(); });
+            background.on('click', function(e){ 
+                if(isBackgroundClikable) {
+                    hide(); 
+                }else{
+                    alert('Payment is processing');
+                }
+            });
             content.on('click', function(e){ e.stopPropagation(); });
 
             return {
