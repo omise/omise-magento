@@ -29,7 +29,7 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         Mage::log('Start authorize with OmiseCharge API!');
         
         $omise_token = $payment->getData('additional_information');
-        $charge = Mage::getModel('omise_gateway/omisecharge')->createOmiseCharge(array(
+        $charge = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
             "amount"        => number_format($amount, 2, '', ''),
             "currency"      => "thb",
             "description"   => 'Charge a card from Magento that order id is '.$payment->getData('entity_id'),
@@ -59,13 +59,13 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             // Capture only.
             Mage::log('Start capture with OmiseCharge API!');
 
-            $charge = Mage::getModel('omise_gateway/omisecharge')->captureOmiseCharge($authorized);
+            $charge = Mage::getModel('omise_gateway/omiseCharge')->captureOmiseCharge($authorized);
         } else {
             // Authorize and capture.
             Mage::log('Start capture with OmiseCharge API!');
 
             $omise_token = $payment->getData('additional_information');
-            $charge = Mage::getModel('omise_gateway/omisecharge')->createOmiseCharge(array(
+            $charge = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
                 "amount"        => number_format($amount, 2, '', ''),
                 "currency"      => "thb",
                 "description"   => 'Charge a card from Magento that order id is '.$payment->getData('entity_id'),
