@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/obj/OmiseObject.php';
 require_once dirname(__FILE__).'/../exception/OmiseExceptions.php';
 
-define('OMISE_PHP_LIB_VERSION', '2.2.0');
+define('OMISE_PHP_LIB_VERSION', '2.3.1');
 define('OMISE_API_VERSION', '2014-07-27');
 define('OMISE_API_URL', 'https://api.omise.co/');
 define('OMISE_VAULT_URL', 'https://vault.omise.co/');
@@ -214,7 +214,7 @@ class OmiseApiResource extends OmiseObject {
         // Set the request method.
         CURLOPT_CUSTOMREQUEST => $requestMethod,
         // Set the user agent.
-        CURLOPT_USERAGENT => "OmiseMagento/0.1.0 OmisePHP/".OMISE_PHP_LIB_VERSION." OmiseAPI/".OMISE_API_VERSION,
+        CURLOPT_USERAGENT => "OmiseMagento/1.9.0.3 OmisePHP/".OMISE_PHP_LIB_VERSION." OmiseAPI/".OMISE_API_VERSION,
         // Make php-curl returns the data as string.
         CURLOPT_RETURNTRANSFER => true,
         // Do not include the header in the output.
