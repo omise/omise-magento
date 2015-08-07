@@ -25,17 +25,17 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
         // Retrieve Omise's data.
         try {
             // Retrieve Omise Account.
-            $omise_account = Mage::getModel('omise_gateway/omiseaccount')->retrieveOmiseAccount();
+            $omise_account = Mage::getModel('omise_gateway/omiseAccount')->retrieveOmiseAccount();
             if (isset($omise_account['error']))
                 throw new Exception('Omise Account:: '.$omise_account['error'], 1);
 
             // Retrieve Omise Balance.
-            $omise_balance = Mage::getModel('omise_gateway/omisebalance')->retrieveOmiseBalance();
+            $omise_balance = Mage::getModel('omise_gateway/omiseBalance')->retrieveOmiseBalance();
             if (isset($omise_balance['error']))
                 throw new Exception('Omise Balance:: '.$omise_balance['error'], 1);
 
             // Retrieve Omise Transfer List.
-            $omise_transfer = Mage::getModel('omise_gateway/omisetransfer')->retrieveOmiseTransfer();
+            $omise_transfer = Mage::getModel('omise_gateway/omiseTransfer')->retrieveOmiseTransfer();
             if (isset($omise_transfer['error']))
                 throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
 
@@ -122,14 +122,14 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             try {
                 if (isset($post['action']) && $post['action'] == 'delete') {
                     // Delete action
-                    $response = Mage::getModel('omise_gateway/omisetransfer')->deleteOmiseTransfer(Mage::app()->getRequest()->getParam('delete'));
+                    $response = Mage::getModel('omise_gateway/omiseTransfer')->deleteOmiseTransfer(Mage::app()->getRequest()->getParam('delete'));
                     if (isset($response['error']))
                         throw new Exception($response['error'], 1);
                     
                     $success = "Deleted";
                 } else {
                     // Create action
-                    $response = Mage::getModel('omise_gateway/omisetransfer')->createOmiseTransfer($post);
+                    $response = Mage::getModel('omise_gateway/omiseTransfer')->createOmiseTransfer($post);
                     if (isset($response['error']))
                         throw new Exception($response['error'], 1);
                         
