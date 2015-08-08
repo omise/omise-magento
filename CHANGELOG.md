@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.8.0.0] - 2015-07-07
+## [1.8.0.0] - 2015-08-09
 - *`Updated`* Updated **omise-php** library from 2.2.0 to 2.3.1.
 - *`Fixed`* Fix 'CamelCase' class name issue (CamelCaseName of class was not load in some host environment).
 
