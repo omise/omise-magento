@@ -4,7 +4,7 @@
 - Magento (CE) 1.9.x
 
 ## Dependencies
-- [omise-php](https://github.com/omise/omise-php) (v2.2.0)
+- [omise-php](https://github.com/omise/omise-php) (v2.3.1)
 
 ## Installation
 Follow these steps to install **omise-magento:**  

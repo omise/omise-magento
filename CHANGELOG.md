@@ -2,7 +2,7 @@
 
 An [unreleased] version is not available on stable version and is subject to changes and must not be considered final. Elements of unreleased list may be edited or removed at any time.
 
-## [unreleased]
+## [1.9.0.3] - 2015-08-09
 - *`Updated`* Updated **omise-php** library from 2.2.0 to 2.3.1.
 - *`Fixed`* Fix 'CamelCase' class name issue (CamelCaseName of class was not load in some host environment).
 
