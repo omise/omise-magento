@@ -102,7 +102,7 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
         if ($post = $this->getRequest()->getPost('configData')) {
             try {
                 if (!isset($post['test_mode']))
-                    $post['test_mode'] = 0;
+                    $post['test_mode'] = 1;
 
                 $config->addData($post);
                 $config->save();
@@ -211,10 +211,13 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             'refunded'     => $omise_charge['refunded'],
             'refunds'      => $omise_charge['refunds']
         );
+        
         $result['amount_format'] = number_format(($result['amount']/100), 2);
         $result['refund_format'] = number_format(($result['refunded']/100), 2);
         foreach ($result['refunds']['data'] as $sub_key => $sub_value){
             $result['refunds']['data'][$sub_key]['refund_format'] = number_format(($sub_value['amount']/100), 2);
+            $date = new \DateTime($sub_value['created']);
+            $result['refunds']['data'][$sub_key]['created'] = $date->format('M d, Y H:i');
         }
 
         echo json_encode($result);
@@ -248,6 +251,8 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             foreach ($value['refunds']['data'] as $sub_key => $sub_value){
                 $refund += $sub_value['amount'];
                 $result['data'][$key]['refunds']['data'][$sub_key]['refund_format'] = number_format(($sub_value['amount']/100), 2);
+                $date = new \DateTime($sub_value['created']);
+                $result['data'][$key]['refunds']['data'][$sub_key]['created'] = $date->format('M d, Y H:i');
             }
             
             if($refund!=0)
