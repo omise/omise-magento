@@ -348,7 +348,8 @@
                 views.view2 = function(){
                     var view = jQuery('.custom-template.refund-view2').clone().show(),
                         list = view.find('ul li').eq(0).clone(),
-                        button = view.find('.create');
+                        button = view.find('.create'),
+                        remark = view.find('.remark');
 
                     view.find('ul li').eq(0).hide();
 
@@ -381,7 +382,9 @@
                     //if no more amount to refund, then hide button to create refund
                     if(charge.amount == charge.refunded){
                         button.hide();
+                        remark.show();
                     }else{
+                        remark.hide();
                         button.show();
                         button.on('click', function(){
                             content.html('');
