@@ -55,6 +55,9 @@ input.transfer-amount.input-text.no-changes     { width: 30%; }
 .refund-view1 .refund-option .description		{font-size: 14px; color: white;}
 .refund-view1 .refund-option #patial-refund		{padding: 5px; width: 250px; font-size: 14px; color: orange;margin: 5px 0 0 0}
 .refund-view1 .popup-close						{float: right; margin-right: 10px}
+.refund-view1 .load-container					{margin:20px auto; padding: 10px; background: white; border-radius: 20px; width:100px; text-align:center; box-shadow: 3px 3px 3px #aaa;}
+.refund-view1 .load-background					{top:0;left:0;display:none;position:absolute; width:400px; height: 300px; min-width: 0; background: rgba(255,255,255,0.9);z-index: 10000}
+
 
 .refund-view2									{position: relative; top: 20px}
 .refund-view2 ul li								{background: #ddd; width: 360px; min-height: 50px; padding: 10px; margin: 10px; }
@@ -71,3 +74,7 @@ input.transfer-amount.input-text.no-changes     { width: 30%; }
 .refund-view2 .refund-header .description		{font-size: 14px; color: #999; margin-top: 5px}
 .refund-view2 .popup-close						{float: right; margin-right: 10px}
 
+.refund-view3									{position: relative; top: 20px}
+.refund-view3 .content							{margin: 10px; text-align: center;}
+.refund-view3 .content .message					{font-size: 20px; padding-top: 100px}
+.refund-view3 .popup-close						{float: right; margin-right: 10px}

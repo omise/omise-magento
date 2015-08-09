@@ -204,7 +204,8 @@
                     var view = jQuery('.custom-template.refund-view1').clone().show(),
                         list = view.find('ul li'),
                         button = view.find('.create'),
-                        patial = view.find('#patial-refund');
+                        patial = view.find('#patial-refund'),
+                        load = view.find('.refund-loading');
 
                     // select refund option
                     // option 0 = full refund, 1 = patial refund
@@ -214,9 +215,10 @@
                         _this.addClass('selected');
                         selected = _this.index();
                     });
-                    
+
                     button.on('click', function(){
                         isBackgroundClikable = false;
+                        load.show();
                         var isPartial = (selected==1);
                         var _this = this;
                         var final_amount = (charge.amount - charge.refunded);
@@ -236,13 +238,17 @@
                                     charge: charge.id
                                 }).done(function(chargeData) {
                                     chargeData = jQuery.parseJSON(chargeData);
-                                    hide();
                                     if(done){
                                         done(true, chargeData);
                                     }
                                 });
 
+                                content.html('');
+                                content.append(views['view3']());
+
                             }).fail(function(data) {
+                                load.hide();
+                                isBackgroundClikable = true;
                                 jQuery(_this).removeAttr('disabled');
                                 alert('error');
                             });
@@ -304,6 +310,17 @@
                     close(view.find('.popup-close'));
 
                     return view;
+                };
+
+                views.view3 = function(){
+                    var view = jQuery('.custom-template.refund-view3').clone().show(),
+                        list = view.find('ul li').eq(0).clone(),
+                        button = view.find('.create');
+                        isBackgroundClikable = true;
+
+                        close(view.find('.popup-close'));
+
+                        return view;
                 };
 
 

@@ -183,7 +183,10 @@ $data = $this->getData(); ?>
                 </div>
             </li>
         </ul>
-        <button>Refund</button>
+        <div class="refund-loading load-background">
+            <div class="load-container"><img src="http://cdn.rcstatic.com/images/site_graphics/newsite/loader.gif" ></div>
+        </div>
+        <button class="create">Refund</button>
         <div class="remark">*Refund take between 5 or 10 days to be processed</div>
     </div>
     <div class="custom-template refund-view2">
@@ -202,6 +205,13 @@ $data = $this->getData(); ?>
             </li>
         </ul>
         <button class="create">Create refund</button>
+    </div>
+    <div class="custom-template refund-view3">
+        <button class="popup-close">close</button>
+        <div class="content">
+            <div class="message">Refunded successfully</div>
+        </div>
+        
     </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
