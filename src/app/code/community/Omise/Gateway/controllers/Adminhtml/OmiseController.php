@@ -41,11 +41,6 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             if (isset($omise_transfer['error']))
                 throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
 
-            // Retrieve Omise Charge and Refund List.
-            $omise_charge = Mage::getModel('omise_gateway/omisecharge')->retrieveOmiseCharges(array(
-                'limit' => 5
-            ));
-
             if (isset($omise_charge['error']))
                 throw new Exception('Omise Charge:: '.$omise_charge['error'], 1);
 
@@ -63,14 +58,6 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
                     'limit'     => $omise_transfer['limit'],
                     'total'     => $omise_transfer['total'],
                     'data'      => array_reverse($omise_transfer['data'])
-                ),
-                'charge'  => array(
-                    'from'      => $omise_charge['from'],
-                    'to'        => $omise_charge['to'],
-                    'offset'    => $omise_charge['offset'],
-                    'limit'     => $omise_charge['limit'],
-                    'total'     => $omise_charge['total'],
-                    'data'      => array_reverse($omise_charge['data'])
                 )
             );
         } catch (Exception $e) {

@@ -65,8 +65,8 @@ $data = $this->getData(); ?>
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($data['omise']['charge']['data'])):
-                    foreach ($data['omise']['charge']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                <?php 
+                    for  ($i=0; $i<5; $i++): $date = new \DateTime($value['created']); ?>
                         <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
@@ -76,8 +76,7 @@ $data = $this->getData(); ?>
                             <td class="a-center">&nbsp;</td>
                             <td class="a-center">&nbsp;</td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                    <?php endfor; ?>
                 <tr class="pointer">
                     <td class="a-right" colspan="6">&nbsp;</td>
                     <td class="a-center last"></td>
@@ -85,18 +84,13 @@ $data = $this->getData(); ?>
             </tbody>
         </table>
     </div>
-    <?php  $charge_total = ceil($data['omise']['charge']['total']/5); ?>
     <div class="pagination">
-        <?php if($charge_total > 1):?>
             <a id="charge-btn-first" href="#">first</a> 
             <a id="charge-btn-back" href="#">back</a> 
-        <?php endif;?>
         <?php echo $this->__('Page No: ') ?> 
         <span id="charge-pn">1</span> 
-        <?php if($charge_total > 1):?>
             <a id="charge-btn-next" href="#">next</a>
             <a id="charge-btn-last" href="#">last</a>
-        <?php endif;?>
     </div>
 
     <!-- Transfer History -->
@@ -225,7 +219,7 @@ $data = $this->getData(); ?>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
-    var charge_total = <?php echo $charge_total ?>,
+    var charge_total = 0,
         charge_url = '<?php echo $this->getChargesUrl(); ?>',
         transfer_total = <?php echo $transfer_total ?>,
         transfer_url = '<?php echo $this->getTransfersUrl(); ?>',

@@ -53,6 +53,7 @@
         var loadChageTable = function(page, callback){
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
+                charge_total = charge.total / 5;
                 for(var i=0;i<charge.data.length;i++){
                     var data = charge.data[i];
                     setChargeTable(i, data);
@@ -112,7 +113,7 @@
         }
 
         // first load chrage table for the first page
-        nextChargePage(0);
+        gotoChargeFirstPage();
 
         // load transform data and transform into transfer table 
         var loadTransferTable = function(page, callback){
