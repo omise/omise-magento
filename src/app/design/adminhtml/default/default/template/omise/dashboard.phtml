@@ -49,6 +49,9 @@ $data = $this->getData(); ?>
     <!-- Transfer History -->
     <div class="omise-transfer-history"><h3><?php echo $this->__('Charge History') ?></h3></div>
     <div class="grid">
+        <div class="charge-loading load-background">
+            <div class="load-container"><img src="http://cdn.rcstatic.com/images/site_graphics/newsite/loader.gif" ></div>
+        </div>
         <table id="charge-table" cellspacing="0" class="data">
             <thead>
                 <tr class="headings">
@@ -95,6 +98,9 @@ $data = $this->getData(); ?>
     <!-- Transfer History -->
     <div class="omise-transfer-history"><h3><?php echo $this->__('Transfer History') ?></h3></div>
     <div class="grid">
+        <div class="transfer-loading load-background">
+            <div class="load-container"><img src="http://cdn.rcstatic.com/images/site_graphics/newsite/loader.gif" ></div>
+        </div>
         <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw"); ?>">
             <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
             <table id="transfer-table" cellspacing="0" class="data">

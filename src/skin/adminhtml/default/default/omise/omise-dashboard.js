@@ -51,14 +51,15 @@
 
         // load charge data with specific page
         var loadChageTable = function(page, callback){
+            jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
                 for(var i=0;i<charge.data.length;i++){
                     var data = charge.data[i];
                     setChargeTable(i, data);
                 }
 
+                jQuery('.charge-loading.load-background').hide();
                 chargeData = charge;
-
                 if(callback) callback();    
             });
         }
@@ -85,6 +86,7 @@
 
         // load transform data and transform into transfer table 
         var loadTransferTable = function(page, callback){
+            jQuery('.transfer-loading.load-background').show();
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
                 for(var i=0;i<transfer.data.length;i++){
                     var data = transfer.data[i];
@@ -96,6 +98,7 @@
                     td.eq(4).text(data.created);
                 }
                 transferData = transfer;
+                jQuery('.transfer-loading.load-background').show();
                 if(callback) callback();    
             });
         }
