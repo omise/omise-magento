@@ -74,10 +74,40 @@
                 jQuery('#charge-btn-back').show();
                 if(np == 1) jQuery('#charge-btn-back').hide();
 
+                jQuery('#charge-btn-first').show();
+                if(np == 1) jQuery('#charge-btn-first').hide();
+
                  jQuery('#charge-btn-next').show();
                 if(np == charge_total) jQuery('#charge-btn-next').hide();
 
+                jQuery('#charge-btn-last').show();
+                if(np == charge_total) jQuery('#charge-btn-last').hide();
+
               jQuery('#charge-pn').text(np);  
+            });
+        }
+
+        var gotoChargeFirstPage = function(){
+            loadChageTable(1, function(){
+
+                jQuery('#charge-btn-back').hide();
+                jQuery('#charge-btn-first').hide();
+                jQuery('#charge-btn-next').show();
+                jQuery('#charge-btn-last').show();
+
+              jQuery('#charge-pn').text(1);  
+            });
+        }
+
+        var gotoChargeLastPage = function(){
+            loadChageTable(charge_total, function(){
+
+                jQuery('#charge-btn-back').show();
+                jQuery('#charge-btn-first').show();
+                jQuery('#charge-btn-next').hide();
+                jQuery('#charge-btn-last').hide();
+
+              jQuery('#charge-pn').text(charge_total);  
             });
         }
 
@@ -110,13 +140,43 @@
             np = np > transfer_total ? transfer_total : np;
             loadTransferTable(np, function(){
                 
-                jQuery('#charge-btn-back').show();
-                if(np == 1) jQuery('#charge-btn-back').hide();
+                jQuery('#transfer-btn-back').show();
+                if(np == 1) jQuery('#transfer-btn-back').hide();
 
-                jQuery('#charge-btn-next').show();
-                if(np == transfer_total) jQuery('#charge-btn-next').hide();
+                jQuery('#transfer-btn-first').show();
+                if(np == 1) jQuery('#transfer-btn-first').hide();
+
+                jQuery('#transfer-btn-next').show();
+                if(np == transfer_total) jQuery('#transfer-btn-next').hide();
+
+                jQuery('#transfer-btn-last').show();
+                if(np == transfer_total) jQuery('#transfer-btn-last').hide();
 
                 jQuery('#transfer-pn').text(np);  
+            });
+        }
+
+        var gotoTransferFirstPage = function(){
+            loadTransferTable(1, function(){
+
+                jQuery('#transfer-btn-back').hide();
+                jQuery('#transfer-btn-first').hide();
+                jQuery('#transfer-btn-next').show();
+                jQuery('#transfer-btn-last').show();
+
+              jQuery('#transfer-pn').text(1);  
+            });
+        }
+
+        var gotoTransferLastPage = function(){
+            loadTransferTable(transfer_total, function(){
+
+                jQuery('#transfer-btn-back').show();
+                jQuery('#transfer-btn-first').show();
+                jQuery('#transfer-btn-next').hide();
+                jQuery('#transfer-btn-last').hide();
+
+              jQuery('#transfer-pn').text(transfer_total);  
             });
         }
 
@@ -126,9 +186,19 @@
             nextChargePage(-1);
         });
 
+        jQuery('#charge-btn-first').on('click', function(e){
+            e.preventDefault();
+            gotoChargeFirstPage();
+        });
+
         jQuery('#charge-btn-next').on('click', function(e){
             e.preventDefault();
             nextChargePage(1);
+        });
+
+        jQuery('#charge-btn-last').on('click', function(e){
+            e.preventDefault();
+            gotoChargeLastPage();
         });
 
         jQuery('#transfer-btn-back').on('click', function(e){
@@ -136,9 +206,19 @@
             nextTransferPage(-1);
         });
 
+        jQuery('#transfer-btn-first').on('click', function(e){
+            e.preventDefault();
+            gotoTransferFirstPage();
+        });
+
         jQuery('#transfer-btn-next').on('click', function(e){
             e.preventDefault();
             nextTransferPage(1);
+        });
+
+        jQuery('#transfer-btn-last').on('click', function(e){
+            e.preventDefault();
+            gotoTransferLastPage();
         });
 
         // custom function to call to show refund popup
@@ -253,7 +333,9 @@
                                 alert('error');
                             });
                         }else{
-                            alert('Refund amount is not valid!')
+                            alert('Refund amount is not valid!');
+                            isBackgroundClikable = true;
+                            load.hide();
                         }
                     });
 

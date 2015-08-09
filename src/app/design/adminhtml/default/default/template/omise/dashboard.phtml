@@ -87,11 +87,15 @@ $data = $this->getData(); ?>
     </div>
     <?php  $charge_total = ceil($data['omise']['charge']['total']/5); ?>
     <div class="pagination">
+        <?php if($charge_total > 1):?>
+            <a id="charge-btn-first" href="#">first</a> 
+            <a id="charge-btn-back" href="#">back</a> 
+        <?php endif;?>
         <?php echo $this->__('Page No: ') ?> 
         <span id="charge-pn">1</span> 
         <?php if($charge_total > 1):?>
-            <a id="charge-btn-back" href="#">back</a> 
             <a id="charge-btn-next" href="#">next</a>
+            <a id="charge-btn-last" href="#">last</a>
         <?php endif;?>
     </div>
 
@@ -154,11 +158,15 @@ $data = $this->getData(); ?>
 
     <?php  $transfer_total = ceil($data['omise']['transfer']['total']/5); ?>
     <div class="pagination">
+        <?php if($transfer_total > 1):?>
+            <a id="transfer-btn-first" href="#">first</a> 
+            <a id="transfer-btn-back" href="#">back</a> 
+        <?php endif;?>
         <?php echo $this->__('Page No: ') ?> 
         <span id="transfer-pn">1</span> 
         <?php if($transfer_total > 1):?>
-            <a id="transfer-btn-back" href="#">back</a> 
             <a id="transfer-btn-next" href="#">next</a>
+            <a id="transfer-btn-last" href="#">last</a>
         <?php endif;?>
     </div>
 <?php endif; ?>
