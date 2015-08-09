@@ -40,14 +40,14 @@ $data = $this->getData(); ?>
 
             <!-- Balance -->
             <div class="omise-balance omise-clearfix">
-                <div class="left"><span class="omise-number"><?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/><?php echo $this->__('Total Balance') ?></div>
-                <div class="right"><span class="omise-number"><?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/><?php echo $this->__('Transferable Balance') ?></div>
+                <div class="left"><span class="omise-number">฿ <?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/><?php echo $this->__('Total Balance') ?></div>
+                <div class="right"><span class="omise-number">฿ <?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/><?php echo $this->__('Transferable Balance') ?></div>
             </div>
         </div>
     </div>
     
     <!-- Transfer History -->
-    <div class="omise-transfer-history"><h3><?php echo $this->__('Charge/Refund History') ?></h3></div>
+    <div class="omise-transfer-history"><h3><?php echo $this->__('Charge History') ?></h3></div>
     <div class="grid">
         <table id="charge-table" cellspacing="0" class="data">
             <thead>
@@ -112,7 +112,7 @@ $data = $this->getData(); ?>
                     <?php if (!empty($data['omise']['transfer']['data'])):
                         foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
                             <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                <td><?php echo number_format(($value['amount']/100), 2); ?></td>
+                                <td>฿ <?php echo number_format(($value['amount']/100), 2); ?></td>
                                 <td><?php echo $value['id']; ?></td>
                                 <td><?php 
                                     echo $value['failure_code'] ? '<span class="error-label">Fail</span>' : 
@@ -159,6 +159,7 @@ $data = $this->getData(); ?>
 
 <!-- theme refund template -->
     <div class="custom-template refund-view1">
+        <button class="popup-close">close</button>
         <ul>
             <li class="selected">
                 <div class="refund-radio"></div>
@@ -180,6 +181,7 @@ $data = $this->getData(); ?>
         <div class="remark">*Refund take between 5 or 10 days to be processed</div>
     </div>
     <div class="custom-template refund-view2">
+        <button class="popup-close">close</button>
         <div class="refund-header">
             <div class="title">&nbsp;</div>
             <div class="description">&nbsp;</div>
@@ -187,12 +189,13 @@ $data = $this->getData(); ?>
         <ul>
             <li>
                 <div class="refund-option">
-                    <div class="title">Full Refund</div>
-                    <div class="description">Refund the full 34,000 Baht of this charge</div>
+                    <div class="time"></div>
+                    <div class="title"></div>
+                    <div class="description"></div>
                 </div>
             </li>
         </ul>
-        <button>Create refund</button>
+        <button class="create">Create refund</button>
     </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>

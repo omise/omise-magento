@@ -22,11 +22,11 @@
         // transform charge data into charge table
         var setChargeTable = function(i, data){
             var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
-                td.eq(0).text(data.amount_format);
+                td.eq(0).text('฿ '+data.amount_format);
                 td.eq(1).text(data.id);
                 td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
                 if(data.refunded>0){
-                    var aRefund = showRefundPopup('view2', data, data.refund_format, function(aRefundAmount){
+                    var aRefund = showRefundPopup('view2', data, '฿' + data.refund_format, function(aRefundAmount){
                         td.eq(3).html('').append(aRefundAmount);
                     });
                     td.eq(3).html('').append(aRefund);
@@ -146,7 +146,7 @@
                     popup = new RefundPopup(data, view, function(done, d){
                         if(done){
                             aRefund.hide();
-                            var aRefundAmount = jQuery('<a>'+d.refund_format+'</a>', {href: '#'} );
+                            var aRefundAmount = jQuery('<a> ฿'+d.refund_format+'</a>', {href: '#'} );
                                 aRefundAmount.on('click', function(e){
                                     e.preventDefault();
                                         popup = new RefundPopup(d, 'view2');
@@ -182,6 +182,15 @@
                     background.fadeOut(200, function(){
                         background.remove();
                     });
+                },
+                close = function(btn){
+                    btn.on('click', function(e){ 
+                        if(isBackgroundClikable) {
+                            hide(); 
+                        }else{
+                            alert('Payment is processing');
+                        }
+                    });
                 };
 
             var views = {};
@@ -191,7 +200,7 @@
                     var selected = 0;
                     var view = jQuery('.custom-template.refund-view1').clone().show(),
                         list = view.find('ul li'),
-                        button = view.find('button'),
+                        button = view.find('.create'),
                         patial = view.find('#patial-refund');
 
                     // select refund option
@@ -239,6 +248,8 @@
                         }
                     });
 
+                    close(view.find('.popup-close'));
+
                     return view;
                 };
 
@@ -246,13 +257,12 @@
                 views.view2 = function(){
                     var view = jQuery('.custom-template.refund-view2').clone().show(),
                         list = view.find('ul li').eq(0).clone(),
-                        button = view.find('button');
-
+                        button = view.find('.create');
 
                     view.find('ul li').eq(0).hide();
 
                     var refreshView = function(charge){
-                        view.find('.refund-header .title').text('฿ ' + charge.refund_format);
+                        view.find('.refund-header .title').text('Refunded ฿ ' + charge.refund_format);
                         view.find('.refund-header .description').text('From charge id: ' + charge.id);
 
                         view.find('ul').html('');
@@ -262,6 +272,7 @@
                             li.show();
                             li.find('.title').text('฿ ' + cd[i].refund_format);
                             li.find('.description').text(cd[i].id);
+                            li.find('.time').text(cd[i].created);
                             view.find('ul').append(li);
                         }
                     }
@@ -287,6 +298,8 @@
                         });  
                     }
 
+                    close(view.find('.popup-close'));
+
                     return view;
                 };
 
@@ -302,6 +315,7 @@
                     alert('Payment is processing');
                 }
             });
+
             content.on('click', function(e){ e.stopPropagation(); });
 
             return {
