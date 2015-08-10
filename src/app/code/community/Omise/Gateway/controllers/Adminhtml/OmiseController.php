@@ -25,15 +25,15 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
         // Retrieve Omise's data.
         try {
             // Retrieve Omise Account.
-            $omise_account = Mage::getModel('omise_gateway/omiseaccount')->retrieveOmiseAccount();
+            $omise_account = Mage::getModel('omise_gateway/omiseAccount')->retrieveOmiseAccount();
             if (isset($omise_account['error']))
                 throw new Exception('Omise Account:: '.$omise_account['error'], 1);
 
             // Retrieve Omise Balance.
-            $omise_balance = Mage::getModel('omise_gateway/omisebalance')->retrieveOmiseBalance();
+            $omise_balance = Mage::getModel('omise_gateway/omiseBalance')->retrieveOmiseBalance();
             if (isset($omise_balance['error']))
                 throw new Exception('Omise Balance:: '.$omise_balance['error'], 1);
-            
+
             $data['omise'] = array(
                 'email'     => $omise_account['email'],
                 'created'   => $omise_account['created'],
@@ -118,7 +118,7 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
                     $success = "Deleted";
                 } else {
                     // Create action
-                    $response = Mage::getModel('omise_gateway/omisetransfer')->createOmiseTransfer($post);
+                    $response = Mage::getModel('omise_gateway/omiseTransfer')->createOmiseTransfer($post);
                     if (isset($response['error']))
                         throw new Exception($response['error'], 1);
                         
@@ -180,13 +180,15 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             'refunded'     => $omise_charge['refunded'],
             'refunds'      => $omise_charge['refunds']
         );
-        
+
         $result['amount_format'] = number_format(($result['amount']/100), 2);
         $result['refund_format'] = number_format(($result['refunded']/100), 2);
         foreach ($result['refunds']['data'] as $sub_key => $sub_value){
             $result['refunds']['data'][$sub_key]['refund_format'] = number_format(($sub_value['amount']/100), 2);
+
             $date = new \DateTime($sub_value['created']);
             $result['refunds']['data'][$sub_key]['created'] = $date->format('M d, Y H:i');
+
         }
 
         echo json_encode($result);

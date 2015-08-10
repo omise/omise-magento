@@ -7,6 +7,7 @@
         // transform charge data into charge table
         var setChargeTable = function(i, data){
             var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
+
                 td.eq(0).text('฿ '+data.amount_format);
                 td.eq(1).text(data.id);
                 td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
@@ -39,7 +40,6 @@
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
                 charge_total = charge.total / 5;
-
                 for(var i=0;i<charge.data.length;i++){
                     var data = charge.data[i];
                     setChargeTable(i, data);
@@ -118,6 +118,7 @@
                     var data = transfer.data[i];
                     var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
                     td.eq(0).text('฿' + data.amount);
+
                     td.eq(1).text(data.id);
                     td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>' );
                     td.eq(3).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
@@ -143,13 +144,11 @@
                     }else{
                         td.eq(5).text('-');
                     }
-                    
-
-                    // <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/".$value["id"]).'">delete</a>': '-'; ?></td>
 
                 }
                 transferData = transfer;
                 jQuery('.transfer-loading.load-background').hide();
+
                 if(callback) callback();    
             });
         }
@@ -160,7 +159,7 @@
             np = np < 1 ? 1 : np;
             np = np > transfer_total ? transfer_total : np;
             loadTransferTable(np, function(){
-                
+
                 jQuery('#transfer-btn-back').show();
                 if(np == 1) jQuery('#transfer-btn-back').hide();
 
@@ -246,6 +245,7 @@
             nextTransferPage(1);
         });
 
+
         jQuery('#transfer-btn-last').on('click', function(e){
             e.preventDefault();
             gotoTransferLastPage();
@@ -259,7 +259,9 @@
                     popup = new RefundPopup(data, view, function(done, d){
                         if(done){
                             aRefund.hide();
-                            var aRefundAmount = jQuery('<a> ฿'+d.refund_format+'</a>', {href: '#'} );
+
+                            var aRefundAmount = jQuery('<a>฿'+d.refund_format+'</a>', {href: '#'} );
+
                                 aRefundAmount.on('click', function(e){
                                     e.preventDefault();
                                         popup = new RefundPopup(d, 'view2');
@@ -295,6 +297,7 @@
                     background.fadeOut(200, function(){
                         background.remove();
                     });
+
                 },
                 close = function(btn){
                     btn.on('click', function(e){ 
@@ -304,6 +307,7 @@
                             alert('Payment is processing');
                         }
                     });
+
                 };
 
             var views = {};
@@ -317,6 +321,7 @@
                         patial = view.find('#patial-refund'),
                         load = view.find('.refund-loading');
 
+
                     // select refund option
                     // option 0 = full refund, 1 = patial refund
                     list.on('click', function(){
@@ -329,6 +334,7 @@
                     button.on('click', function(){
                         isBackgroundClikable = false;
                         load.show();
+
                         var isPartial = (selected==1);
                         var _this = this;
                         var final_amount = (charge.amount - charge.refunded);
@@ -348,6 +354,7 @@
                                     charge: charge.id
                                 }).done(function(chargeData) {
                                     chargeData = jQuery.parseJSON(chargeData);
+
                                     if(done){
                                         done(true, chargeData);
                                     }
@@ -359,10 +366,12 @@
                             }).fail(function(data) {
                                 load.hide();
                                 isBackgroundClikable = true;
+
                                 jQuery(_this).removeAttr('disabled');
                                 alert('error');
                             });
                         }else{
+
                             alert('Refund amount is not valid!');
                             isBackgroundClikable = true;
                             load.hide();
@@ -378,13 +387,17 @@
                 views.view2 = function(){
                     var view = jQuery('.custom-template.refund-view2').clone().show(),
                         list = view.find('ul li').eq(0).clone(),
+
                         button = view.find('.create'),
                         remark = view.find('.remark');
+
 
                     view.find('ul li').eq(0).hide();
 
                     var refreshView = function(charge){
+
                         view.find('.refund-header .title').text('Refunded ฿ ' + charge.refund_format);
+
                         view.find('.refund-header .description').text('From charge id: ' + charge.id);
 
                         view.find('ul').html('');
@@ -394,7 +407,9 @@
                             li.show();
                             li.find('.title').text('฿ ' + cd[i].refund_format);
                             li.find('.description').text(cd[i].id);
+
                             li.find('.time').text(cd[i].created);
+
                             view.find('ul').append(li);
                         }
                     }
@@ -412,15 +427,18 @@
                     //if no more amount to refund, then hide button to create refund
                     if(charge.amount == charge.refunded){
                         button.hide();
+
                         remark.show();
                     }else{
                         remark.hide();
+
                         button.show();
                         button.on('click', function(){
                             content.html('');
                             content.append(views['view1']());
                         });  
                     }
+
 
                     close(view.find('.popup-close'));
 
@@ -437,7 +455,6 @@
 
                         return view;
                 };
-
 
             // add custom view
             content.append(views[v]());
