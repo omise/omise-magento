@@ -3,9 +3,9 @@ class Omise_Gateway_Model_OmiseRefund extends Omise_Gateway_Model_Omise
 {
 
     /**
-     * Creates a new charge with Omise Payment Gateway.
+     * Creates a new refund with Omise Payment Gateway.
      * @param array $params
-     * @return OmiseCharge|Exception
+     * @return OmiseRefund|Exception
      */
     public function createOmiseRefund($params)
     {
