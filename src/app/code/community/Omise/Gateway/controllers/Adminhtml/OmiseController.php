@@ -33,32 +33,14 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
             $omise_balance = Mage::getModel('omise_gateway/omisebalance')->retrieveOmiseBalance();
             if (isset($omise_balance['error']))
                 throw new Exception('Omise Balance:: '.$omise_balance['error'], 1);
-
-            // Retrieve Omise Transfer List.
-            $omise_transfer = Mage::getModel('omise_gateway/omisetransfer')->retrieveOmiseTransfer(array(
-                'limit' => 5
-            ));
-            if (isset($omise_transfer['error']))
-                throw new Exception('Omise Transfer:: '.$omise_transfer['error'], 1);
-
-            if (isset($omise_charge['error']))
-                throw new Exception('Omise Charge:: '.$omise_charge['error'], 1);
-
+            
             $data['omise'] = array(
                 'email'     => $omise_account['email'],
                 'created'   => $omise_account['created'],
                 'available' => $omise_balance['available'],
                 'total'     => $omise_balance['total'],
                 'currency'  => $omise_balance['currency'],
-                'livemode'  => $omise_balance['livemode'],
-                'transfer'  => array(
-                    'from'      => $omise_transfer['from'],
-                    'to'        => $omise_transfer['to'],
-                    'offset'    => $omise_transfer['offset'],
-                    'limit'     => $omise_transfer['limit'],
-                    'total'     => $omise_transfer['total'],
-                    'data'      => array_reverse($omise_transfer['data'])
-                )
+                'livemode'  => $omise_balance['livemode']
             );
         } catch (Exception $e) {
             $data['error'] = $e->getMessage();

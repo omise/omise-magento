@@ -113,22 +113,18 @@ $data = $this->getData(); ?>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($data['omise']['transfer']['data'])):
-                        foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
+                    <?php 
+                        for ($i=0; $i<5; $i++): $date = new \DateTime($value['created']); ?>
                             <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                <td>฿ <?php echo number_format(($value['amount']/100), 2); ?></td>
-                                <td><?php echo $value['id']; ?></td>
-                                <td><?php 
-                                    echo $value['failure_code'] ? '<span class="error-label">Fail</span>' : 
-                                        $value['sent'] ? $value['paid'] ? '<span class="success-label">Paid</span>' :'<span class="primary-label">Request sent</span>' : '<span class="warning-label">Requesting</span>';
-
-                                 ?></td>
-                                <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
-                                <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
-                                <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/".$value["id"]).'">delete</a>': '-'; ?></td>
+                                
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td class="a-center">&nbsp;</td>
+                            <td class="a-center">&nbsp;</td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                        <?php endfor; ?>
 
                     <tr class="pointer">
                         <td class="a-right" colspan="5">&nbsp;</td>
@@ -150,18 +146,13 @@ $data = $this->getData(); ?>
         </form>
     </div>
 
-    <?php  $transfer_total = ceil($data['omise']['transfer']['total']/5); ?>
     <div class="pagination">
-        <?php if($transfer_total > 1):?>
             <a id="transfer-btn-first" href="#">first</a> 
             <a id="transfer-btn-back" href="#">back</a> 
-        <?php endif;?>
         <?php echo $this->__('Page No: ') ?> 
         <span id="transfer-pn">1</span> 
-        <?php if($transfer_total > 1):?>
             <a id="transfer-btn-next" href="#">next</a>
             <a id="transfer-btn-last" href="#">last</a>
-        <?php endif;?>
     </div>
 <?php endif; ?>
 
@@ -221,9 +212,11 @@ $data = $this->getData(); ?>
 <script type="text/javascript">
     var charge_total = 0,
         charge_url = '<?php echo $this->getChargesUrl(); ?>',
-        transfer_total = <?php echo $transfer_total ?>,
+        transfer_total = 0,
         transfer_url = '<?php echo $this->getTransfersUrl(); ?>',
         omise_refund_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>',
-        omise_charge_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>';
+        omise_charge_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>',
+        omise_transfer_delete = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/transfer_id") ?>';
+
 </script>
 <script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>omise/omise-dashboard.js"></script>

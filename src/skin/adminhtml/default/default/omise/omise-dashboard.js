@@ -1,20 +1,5 @@
     jQuery.noConflict();
     jQuery(document).ready(function(){
-        //money withdraw button
-        jQuery('.transfer-btn-delete').on('click', function(e) {
-            e.preventDefault();
-
-            if (confirm('Delete ?')) {
-                var $this       = jQuery(this),
-                    deleteLink  = $this.attr('href'),
-                    form        = $this.closest('form');
-                
-                form.attr('action', deleteLink)
-                    .append('<input type="hidden" name="OmiseTransfer[action]" value="delete">');
-
-                jQuery("#omise-transfer").submit();
-            }
-        });
 
         // temporary data
         var chargeData = null, transferData = null;
@@ -54,6 +39,7 @@
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
                 charge_total = charge.total / 5;
+
                 for(var i=0;i<charge.data.length;i++){
                     var data = charge.data[i];
                     setChargeTable(i, data);
@@ -90,11 +76,18 @@
 
         var gotoChargeFirstPage = function(){
             loadChageTable(1, function(){
-
-                jQuery('#charge-btn-back').hide();
-                jQuery('#charge-btn-first').hide();
-                jQuery('#charge-btn-next').show();
                 jQuery('#charge-btn-last').show();
+
+                if(charge_total<=1){
+                    jQuery('#charge-btn-back').hide();
+                    jQuery('#charge-btn-first').hide();
+                    jQuery('#charge-btn-next').hide();
+                    jQuery('#charge-btn-last').hide();
+                }else{
+                    jQuery('#charge-btn-back').hide();
+                    jQuery('#charge-btn-first').hide();
+                    jQuery('#charge-btn-next').show();
+                }
 
               jQuery('#charge-pn').text(1);  
             });
@@ -119,17 +112,44 @@
         var loadTransferTable = function(page, callback){
             jQuery('.transfer-loading.load-background').show();
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
+                transfer_total = transfer.total / 5;
+
                 for(var i=0;i<transfer.data.length;i++){
                     var data = transfer.data[i];
                     var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
-                    td.eq(0).text(data.amount);
+                    td.eq(0).text('฿' + data.amount);
                     td.eq(1).text(data.id);
                     td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>' );
                     td.eq(3).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
                     td.eq(4).text(data.created);
+
+                    if(!data.sent && !data.paid){
+                        var aDelete = jQuery('<a>delete</a>', {href: omise_transfer_delete.replace('transfer_id', data.id)} );
+                        td.eq(5).append(aDelete);
+                        //money withdraw button
+                        aDelete.on('click', function(e) {
+                            e.preventDefault();
+                            if (confirm('Delete ?')) {
+                                var $this       = jQuery(this),
+                                    deleteLink  = omise_transfer_delete.replace('transfer_id', data.id),
+                                    form        = $this.closest('form');
+                                
+                                form.attr('action', deleteLink)
+                                    .append('<input type="hidden" name="OmiseTransfer[action]" value="delete">');
+
+                                jQuery("#omise-transfer").submit();
+                            }
+                        });
+                    }else{
+                        td.eq(5).text('-');
+                    }
+                    
+
+                    // <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/".$value["id"]).'">delete</a>': '-'; ?></td>
+
                 }
                 transferData = transfer;
-                jQuery('.transfer-loading.load-background').show();
+                jQuery('.transfer-loading.load-background').hide();
                 if(callback) callback();    
             });
         }
@@ -160,10 +180,17 @@
         var gotoTransferFirstPage = function(){
             loadTransferTable(1, function(){
 
-                jQuery('#transfer-btn-back').hide();
-                jQuery('#transfer-btn-first').hide();
-                jQuery('#transfer-btn-next').show();
-                jQuery('#transfer-btn-last').show();
+                if(transfer_total<=1){
+                    jQuery('#transfer-btn-back').hide();
+                    jQuery('#transfer-btn-first').hide();
+                    jQuery('#transfer-btn-next').hide();
+                    jQuery('#transfer-btn-last').hide();
+                }else{
+                    jQuery('#transfer-btn-back').hide();
+                    jQuery('#transfer-btn-first').hide();
+                    jQuery('#transfer-btn-next').show();
+                    jQuery('#transfer-btn-last').show();
+                }
 
               jQuery('#transfer-pn').text(1);  
             });
@@ -180,6 +207,8 @@
               jQuery('#transfer-pn').text(transfer_total);  
             });
         }
+
+        gotoTransferFirstPage();
 
         // event handle for click page number
         jQuery('#charge-btn-back').on('click', function(e){
