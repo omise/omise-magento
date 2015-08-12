@@ -35,6 +35,9 @@
                     <omise>
                         <table>omise_gateway</table>
                     </omise>
+                    <transaction>
+                        <table>omise_transaction</table>
+                    </transaction>
                 </entities>
             </omise_gateway_resource>
         </models>

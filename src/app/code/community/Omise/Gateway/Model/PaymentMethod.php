@@ -76,6 +76,11 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 
             $order->setAdditionalInformation('omise_charge_id', $charge['id']); 
             $order->save();
+
+            $tran = Mage::getModel('omise_gateway/transaction');
+            $tran->setOrderId($charge['id']);
+            $tran->setTransactionId($order->getId());
+            $tran->save();
             
         }
         Mage::log('This transaction was authorized and captured! (by OmiseCharge API)');
