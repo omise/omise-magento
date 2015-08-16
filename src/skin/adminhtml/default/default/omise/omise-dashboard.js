@@ -37,8 +37,8 @@
                     td.show().eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
                     td.show().eq(5).text(data.created);
 
-                    td.show().eq(6).html('');     
-                    var isRefundButtonShow = data.refund_format?false:true;
+                    td.show().eq(6).html('');   
+                    var isRefundButtonShow = data.refund_format||!data.is_refundable?false:true;
                     if(isRefundButtonShow){
                         var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
                             td.eq(3).html('').append(aRefundAmount);
@@ -472,8 +472,12 @@
                     //if no more amount to refund, then hide button to create refund
                     if(charge.amount == charge.refunded){
                         button.hide();
+                    remark.show().text('*Your refund was completed');
 
-                        remark.show();
+                    }else if(!charge.is_refundable){
+                        button.hide();
+                        remark.show().text('*You can not refund this transaction.');
+
                     }else{
                         remark.hide();
 

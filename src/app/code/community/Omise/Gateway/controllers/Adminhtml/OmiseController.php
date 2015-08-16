@@ -239,6 +239,8 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
 
             $date = new \DateTime($value['created']);
             $result['data'][$key]['created'] = $date->format('M d, Y H:i');
+            $now = new DateTime();
+            $result['data'][$key]['is_refundable'] = ($now->diff($date)->d) > 90?false:true; 
         }
 
 
