@@ -7,48 +7,60 @@
         // transform charge data into charge table
         var setChargeTable = function(i, data){
             var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
-            
-            td.eq(7).hide();
-            if(data.is_magento){
-                td.eq(0).show().text('฿ '+data.amount_format);
-                td.eq(1).show().text(data.id);
-                td.eq(2).show().html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
 
-                td.show().eq(3).html('-');
-                if(data.refunded>0){
-                    var aRefund = showRefundPopup('view2', data, '฿' + data.refund_format, function(aRefundAmount){
-                        td.eq(3).html('').append(aRefundAmount);
-                    });
-                    td.show().eq(3).html('').append(aRefund);
-                }
+            td.eq(0).html('&nbsp;');
+            td.eq(1).html('&nbsp;');
+            td.eq(2).html('&nbsp;');
+            td.eq(3).html('&nbsp;');
+            td.eq(4).html('&nbsp;');
+            td.eq(5).html('&nbsp;');
+            td.eq(6).html('&nbsp;');
+            td.eq(7).html('&nbsp;');
 
-                
-                td.show().eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
-                td.show().eq(5).text(data.created);
+            if(data){
 
-                td.show().eq(6).html('');     
-                var isRefundButtonShow = data.refund_format?false:true;
-                if(isRefundButtonShow){
-                    var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
-                        td.eq(3).html('').append(aRefundAmount);
-                    });
-                    td.eq(6).append([aRefund, ' ']);
-                }
-
-                var aCardInfo = jQuery('<a>card info</a>', {href: '#'} );
-                td.show().eq(6).append(aCardInfo);
                 td.eq(7).hide();
-            }else{
-                td.eq(7).show()
-                    .addClass('text-center')
-                    .text('Not a magento store transaction');
-                td.eq(0).hide();
-                td.eq(1).hide();
-                td.eq(2).hide();
-                td.eq(3).hide();
-                td.eq(4).hide();
-                td.eq(5).hide();
-                td.eq(6).hide();
+                if(data.is_magento){
+                    td.eq(0).show().text('฿ '+data.amount_format);
+                    td.eq(1).show().text(data.id);
+                    td.eq(2).show().html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
+
+                    td.show().eq(3).html('-');
+                    if(data.refunded>0){
+                        var aRefund = showRefundPopup('view2', data, '฿' + data.refund_format, function(aRefundAmount){
+                            td.eq(3).html('').append(aRefundAmount);
+                        });
+                        td.show().eq(3).html('').append(aRefund);
+                    }
+
+                    
+                    td.show().eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
+                    td.show().eq(5).text(data.created);
+
+                    td.show().eq(6).html('');     
+                    var isRefundButtonShow = data.refund_format?false:true;
+                    if(isRefundButtonShow){
+                        var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
+                            td.eq(3).html('').append(aRefundAmount);
+                        });
+                        td.eq(6).append([aRefund, ' ']);
+                    }
+
+                    var aCardInfo = jQuery('<a>card info</a>', {href: '#'} );
+                    td.show().eq(6).append(aCardInfo);
+                    td.eq(7).hide();
+                }else{
+                    td.eq(7).show()
+                        .addClass('text-center')
+                        .text('Not a magento store transaction');
+                    td.eq(0).hide();
+                    td.eq(1).hide();
+                    td.eq(2).hide();
+                    td.eq(3).hide();
+                    td.eq(4).hide();
+                    td.eq(5).hide();
+                    td.eq(6).hide();
+                }
             }
         }
 
@@ -56,9 +68,9 @@
         var loadChageTable = function(page, callback){
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
-                charge_total = charge.total / 5;
+                charge_total = Math.ceil(charge.total / 5);
                 for(var i=0;i<charge.data.length;i++){
-                    var data = charge.data[i];
+                    var data = charge.data[i] || null;
                     setChargeTable(i, data);
                 }
 
@@ -125,42 +137,58 @@
         // first load chrage table for the first page
         gotoChargeFirstPage();
 
+        var setTransferTable = function(i, data){
+            var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
+
+            td.eq(0).html('&nbsp;');
+            td.eq(1).html('&nbsp;');
+            td.eq(2).html('&nbsp;');
+            td.eq(3).html('&nbsp;');
+            td.eq(4).html('&nbsp;');
+            td.eq(5).html('&nbsp;');
+            td.eq(6).html('&nbsp;');
+            td.eq(7).html('&nbsp;');
+
+            if(data){
+                td.eq(0).text('฿' + data.amount);
+
+                td.eq(1).text(data.id);
+                td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>' );
+                td.eq(3).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
+                td.eq(4).text(data.created);
+
+                if(!data.sent && !data.paid){
+                    var aDelete = jQuery('<a>delete</a>', {href: omise_transfer_delete.replace('transfer_id', data.id)} );
+                    td.eq(5).html('').append(aDelete);
+                    //money withdraw button
+                    aDelete.on('click', function(e) {
+                        e.preventDefault();
+                        if (confirm('Delete ?')) {
+                            var $this       = jQuery(this),
+                                deleteLink  = omise_transfer_delete.replace('transfer_id', data.id),
+                                form        = $this.closest('form');
+                            
+                            form.attr('action', deleteLink)
+                                .append('<input type="hidden" name="OmiseTransfer[action]" value="delete">');
+
+                            jQuery("#omise-transfer").submit();
+                        }
+                    });
+                }else{
+                    td.eq(5).text('-');
+                }
+            }
+        }
+
         // load transform data and transform into transfer table 
         var loadTransferTable = function(page, callback){
             jQuery('.transfer-loading.load-background').show();
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
-                transfer_total = transfer.total / 5;
+                transfer_total = Math.ceil(transfer.total / 5);
 
-                for(var i=0;i<transfer.data.length;i++){
-                    var data = transfer.data[i];
-                    var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
-                    td.eq(0).text('฿' + data.amount);
-
-                    td.eq(1).text(data.id);
-                    td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>' );
-                    td.eq(3).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
-                    td.eq(4).text(data.created);
-
-                    if(!data.sent && !data.paid){
-                        var aDelete = jQuery('<a>delete</a>', {href: omise_transfer_delete.replace('transfer_id', data.id)} );
-                        td.eq(5).append(aDelete);
-                        //money withdraw button
-                        aDelete.on('click', function(e) {
-                            e.preventDefault();
-                            if (confirm('Delete ?')) {
-                                var $this       = jQuery(this),
-                                    deleteLink  = omise_transfer_delete.replace('transfer_id', data.id),
-                                    form        = $this.closest('form');
-                                
-                                form.attr('action', deleteLink)
-                                    .append('<input type="hidden" name="OmiseTransfer[action]" value="delete">');
-
-                                jQuery("#omise-transfer").submit();
-                            }
-                        });
-                    }else{
-                        td.eq(5).text('-');
-                    }
+                for(var i=0;i<5;i++){
+                    var data = transfer.data[i] || null;
+                    setTransferTable(i, data);
 
                 }
                 transferData = transfer;

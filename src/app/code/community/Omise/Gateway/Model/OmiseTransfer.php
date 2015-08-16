@@ -5,8 +5,10 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
      * @param string $id
      * @return OmiseTransfer|array
      */
-    public function retrieveOmiseTransfer($id = '')
+    public function retrieveOmiseTransfer($params)
     {
+        if(!isset($params['page']))
+            $params['page'] = 1;
 
         if(!isset($params['limit']))
             $params['limit'] = 10;
@@ -14,9 +16,12 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
         try {
 
             $check = OmiseTransfer::retrieve('', $this->_public_key, $this->_secret_key);
+            $start = ($params['limit'] * $params['page']);
+            $offset = ($start > $check['total']) ? 0 : ($check['total'] - $start);
+            $limit = ($start > $check['total']) ? ($check['total'] - $params['limit']) : $params['limit'];
             $params = array(
-                'offset' => $check['total'] - $params['limit'],
-                'limit' => $params['limit']
+                'offset' => $offset,
+                'limit' => $limit
             );
             return OmiseTransfer::retrieve("?" . http_build_query($params), $this->_public_key, $this->_secret_key);
              
