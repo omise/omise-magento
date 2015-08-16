@@ -51,7 +51,7 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
         $block = $this->getLayout()
                       ->createBlock('omise_gateway_adminhtml/dashboard_dashboard')
                       ->setData($data);
-
+                      
         $this->_title($this->__('Index Action'))
              ->_initAction()
              ->_addContent($block)
@@ -226,13 +226,21 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
                 $result['data'][$key]['refunds']['data'][$sub_key]['created'] = $date->format('M d, Y H:i');
             }
             
+            $result['data'][$key]['is_magento'] = false;
+            $tran = Mage::getModel('omise_gateway/transaction');
+            $tran->load($value['id'],'transaction_id');
+            if($tran->getId()!=null){
+                $result['data'][$key]['is_magento'] = true;
+                $result['data'][$key]['orderid'] = $tran->getOrderId();
+            }
+
             if($refund!=0)
                 $result['data'][$key]['refund_format'] = number_format(($refund/100), 2);
 
             $date = new \DateTime($value['created']);
             $result['data'][$key]['created'] = $date->format('M d, Y H:i');
         }
-        
+
 
         echo json_encode($result);
   
@@ -440,6 +448,7 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
         }
         
         return ;
+
     }
 
 }

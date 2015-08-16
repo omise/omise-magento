@@ -66,8 +66,8 @@ $data = $this->getData(); ?>
             </thead>
             <tbody>
                 <?php 
-                    for  ($i=0; $i<5; $i++): $date = new \DateTime($value['created']); ?>
-                        <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                    for  ($i=0; $i<5; $i++): ?>
+                        <tr class="<?php echo $i%2 == 0 ? 'even' : ''; ?> pointer">
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
@@ -75,6 +75,7 @@ $data = $this->getData(); ?>
                             <td>&nbsp;</td>
                             <td class="a-center">&nbsp;</td>
                             <td class="a-center">&nbsp;</td>
+                            <td class="a-center" style="display:none;" colspan="7">&nbsp;</td>
                         </tr>
                     <?php endfor; ?>
                 <tr class="pointer">
@@ -116,8 +117,8 @@ $data = $this->getData(); ?>
                 </thead>
                 <tbody>
                     <?php 
-                        for ($i=0; $i<5; $i++): $date = new \DateTime($value['created']); ?>
-                            <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
+                        for ($i=0; $i<5; $i++): ?>
+                            <tr class="<?php echo $i%2 == 0 ? 'even' : ''; ?> pointer">
                                 
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
@@ -206,6 +207,7 @@ $data = $this->getData(); ?>
         <button class="popup-close">close</button>
         <div class="content">
             <div class="message">Refunded successfully</div>
+            <a href=""></a>
         </div>
         
     </div>
@@ -218,6 +220,7 @@ $data = $this->getData(); ?>
         transfer_url = '<?php echo $this->getTransfersUrl(); ?>',
         omise_refund_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>',
         omise_charge_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>',
-        omise_transfer_delete = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/transfer_id") ?>';
+        omise_transfer_delete = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/transfer_id") ?>',
+        order_url = '<?php echo $this->getOrderUrl(); ?>';
 </script>
 <script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>omise/omise-dashboard.js"></script>

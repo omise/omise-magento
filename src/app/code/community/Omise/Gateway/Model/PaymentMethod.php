@@ -78,8 +78,8 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             $order->save();
 
             $tran = Mage::getModel('omise_gateway/transaction');
-            $tran->setOrderId($charge['id']);
-            $tran->setTransactionId($order->getId());
+            $tran->setOrderId($order->getId());
+            $tran->setTransactionId($charge['id']);
             $tran->save();
             
         }

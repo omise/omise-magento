@@ -7,22 +7,26 @@
         // transform charge data into charge table
         var setChargeTable = function(i, data){
             var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
+            
+            td.eq(7).hide();
+            if(data.is_magento){
+                td.eq(0).show().text('฿ '+data.amount_format);
+                td.eq(1).show().text(data.id);
+                td.eq(2).show().html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
 
-                td.eq(0).text('฿ '+data.amount_format);
-                td.eq(1).text(data.id);
-                td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
+                td.show().eq(3).html('-');
                 if(data.refunded>0){
                     var aRefund = showRefundPopup('view2', data, '฿' + data.refund_format, function(aRefundAmount){
                         td.eq(3).html('').append(aRefundAmount);
                     });
-                    td.eq(3).html('').append(aRefund);
+                    td.show().eq(3).html('').append(aRefund);
                 }
 
                 
-                td.eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
-                td.eq(5).text(data.created);
+                td.show().eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
+                td.show().eq(5).text(data.created);
 
-                td.eq(6).html('');     
+                td.show().eq(6).html('');     
                 var isRefundButtonShow = data.refund_format?false:true;
                 if(isRefundButtonShow){
                     var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
@@ -32,7 +36,20 @@
                 }
 
                 var aCardInfo = jQuery('<a>card info</a>', {href: '#'} );
-                td.eq(6).append(aCardInfo);
+                td.show().eq(6).append(aCardInfo);
+                td.eq(7).hide();
+            }else{
+                td.eq(7).show()
+                    .addClass('text-center')
+                    .text('Not a magento store transaction');
+                td.eq(0).hide();
+                td.eq(1).hide();
+                td.eq(2).hide();
+                td.eq(3).hide();
+                td.eq(4).hide();
+                td.eq(5).hide();
+                td.eq(6).hide();
+            }
         }
 
         // load charge data with specific page
@@ -348,6 +365,7 @@
                                 amount: (isPartial? patial.val(): final_amount),
                                 partial: isPartial
                             }).done(function(data) {
+                                console.log(data);
                                 data = jQuery.parseJSON(data);
 
                                 jQuery.get(omise_charge_url, {
@@ -390,7 +408,6 @@
 
                         button = view.find('.create'),
                         remark = view.find('.remark');
-
 
                     view.find('ul li').eq(0).hide();
 
@@ -448,11 +465,14 @@
                 views.view3 = function(){
                     var view = jQuery('.custom-template.refund-view3').clone().show(),
                         list = view.find('ul li').eq(0).clone(),
-                        button = view.find('.create');
-                        isBackgroundClikable = true;
+                        button = view.find('.create'),
+                        aOrder = view.find('a');
+
+                    isBackgroundClikable = true;
+
+                        aOrder.attr('href', order_url.replace(':orderid', charge.orderid)).text('Go to order #' + charge.orderid);
 
                         close(view.find('.popup-close'));
-
                         return view;
                 };
 
