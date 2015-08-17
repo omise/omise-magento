@@ -6,62 +6,46 @@
 
         // transform charge data into charge table
         var setChargeTable = function(i, data){
-            var td = jQuery('#charge-table>tbody').find('tr').eq(i).find('td');
-
-            td.eq(0).html('&nbsp;');
-            td.eq(1).html('&nbsp;');
-            td.eq(2).html('&nbsp;');
-            td.eq(3).html('&nbsp;');
-            td.eq(4).html('&nbsp;');
-            td.eq(5).html('&nbsp;');
-            td.eq(6).html('&nbsp;');
-            td.eq(7).html('&nbsp;');
+            var tr = jQuery('<tr>');
 
             if(data){
-
-                td.eq(7).hide();
                 if(data.is_magento){
-                    td.eq(0).show().text('฿ '+data.amount_format);
-                    td.eq(1).show().text(data.id);
-                    td.eq(2).show().html(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>');
+                    tr.append('<td>฿ '+data.amount_format+'</td>');
+                    tr.append('<td>'+data.id+'</td>');
+                    tr.append('<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>')+'</td>');
 
-                    td.show().eq(3).html('-');
+                    var td3 = jQuery('<td>').html('-');
                     if(data.refunded>0){
                         var aRefund = showRefundPopup('view2', data, '฿' + data.refund_format, function(aRefundAmount){
-                            td.eq(3).html('').append(aRefundAmount);
+                            td3.html('').append(aRefundAmount);
                         });
-                        td.show().eq(3).html('').append(aRefund);
+                        td3.html('').append(aRefund);
                     }
-
+                    tr.append(td3);
                     
-                    td.show().eq(4).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
-                    td.show().eq(5).text(data.created);
+                    tr.append('<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>');
+                    tr.append('<td class="a-center">'+data.created+'</td>');
 
-                    td.show().eq(6).html('');   
+                    var td6 = jQuery('<td>').html('');
+                    td6.addClass('a-center');
                     var isRefundButtonShow = data.refund_format||!data.is_refundable?false:true;
                     if(isRefundButtonShow){
                         var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
-                            td.eq(3).html('').append(aRefundAmount);
+                            td3.html('').append(aRefundAmount);
                         });
-                        td.eq(6).append([aRefund, ' ']);
+                        td6.append([aRefund, ' ']);
                     }
 
-                    var aCardInfo = jQuery('<a>card info</a>', {href: '#'} );
-                    td.show().eq(6).append(aCardInfo);
-                    td.eq(7).hide();
+                    var aCardInfo = jQuery('<a class="clickable">card info</a>', {href: '#'} );
+                    td6.append(aCardInfo);
+                    tr.append(td6);
                 }else{
-                    td.eq(7).show()
-                        .addClass('text-center')
-                        .text('Not a magento store transaction');
-                    td.eq(0).hide();
-                    td.eq(1).hide();
-                    td.eq(2).hide();
-                    td.eq(3).hide();
-                    td.eq(4).hide();
-                    td.eq(5).hide();
-                    td.eq(6).hide();
+                    tr.html('<td class="text-center a-center" colspan="7">Not a magento store transaction</td>')
                 }
+            }else{
+                tr.html('<td class="text-center a-center" colspan="7">&nbsp;</td>')
             }
+            jQuery('#charge-table>tbody').append(tr);
         }
 
         // load charge data with specific page
@@ -69,8 +53,9 @@
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
                 if(charge && charge.data){
+                    jQuery('#charge-table>tbody').html('')
                     charge_total = Math.ceil(charge.total / 5);
-                    for(var i=0;i<charge.data.length;i++){
+                    for(var i=0;i<5;i++){
                         var data = charge.data[i] || null;
                         setChargeTable(i, data);
                     }
@@ -140,28 +125,21 @@
         gotoChargeFirstPage();
 
         var setTransferTable = function(i, data){
-            var td = jQuery('#transfer-table>tbody').find('tr').eq(i).find('td');
-
-            td.eq(0).html('&nbsp;');
-            td.eq(1).html('&nbsp;');
-            td.eq(2).html('&nbsp;');
-            td.eq(3).html('&nbsp;');
-            td.eq(4).html('&nbsp;');
-            td.eq(5).html('&nbsp;');
-            td.eq(6).html('&nbsp;');
-            td.eq(7).html('&nbsp;');
+            var tr = jQuery('<tr>');
 
             if(data){
-                td.eq(0).text('฿' + data.amount);
+                tr.append('<td>฿' + data.amount + '</td>');
 
-                td.eq(1).text(data.id);
-                td.eq(2).html(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>' );
-                td.eq(3).text(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-');
-                td.eq(4).text(data.created);
+                tr.append('<td>'+data.id+'</td>');
+                tr.append('<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>')+'</td>' );
+                tr.append('<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>');
+                tr.append('<td>'+data.created+'</td>');
 
+                var td5 = jQuery('<td>');
+                td5.addClass('a-center');
                 if(!data.sent && !data.paid){
-                    var aDelete = jQuery('<a>delete</a>', {href: omise_transfer_delete.replace('transfer_id', data.id)} );
-                    td.eq(5).html('').append(aDelete);
+                    var aDelete = jQuery('<a class="clickable">delete</a>', {href: omise_transfer_delete.replace('transfer_id', data.id)} );
+                    td5.append(aDelete);
                     //money withdraw button
                     aDelete.on('click', function(e) {
                         e.preventDefault();
@@ -177,17 +155,22 @@
                         }
                     });
                 }else{
-                    td.eq(5).text('-');
+                    td5.text('-');
                 }
+
+                tr.append(td5);
+            }else{
+                tr.html('<td class="text-center a-center" colspan="6">&nbsp;</td>')
             }
+            jQuery('#transfer-table>tbody').append(tr);
         }
 
         // load transform data and transform into transfer table 
         var loadTransferTable = function(page, callback){
             jQuery('.transfer-loading.load-background').show();
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
-                
                 if(transfer && transfer.data){
+                    jQuery('#transfer-table>tbody').html('');
                     transfer_total = Math.ceil(transfer.total / 5);
                     for(var i=0;i<5;i++){
                         var data = transfer.data[i] || null;
@@ -195,7 +178,7 @@
 
                     }
                 }
-                
+
                 transferData = transfer;
                 jQuery('.transfer-loading.load-background').hide();
 
@@ -303,7 +286,7 @@
 
         // custom function to call to show refund popup
         var showRefundPopup = function(view, data, text, ext){
-            var aRefund = jQuery('<a>'+ text +'</a>', {href: '#'} );
+            var aRefund = jQuery('<a class="clickable">'+ text +'</a>', {href: '#'} );
             aRefund.on('click', function(e){
                 e.preventDefault();
                     popup = new RefundPopup(data, view, function(done, d){

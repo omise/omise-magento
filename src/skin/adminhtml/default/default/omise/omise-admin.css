@@ -88,3 +88,4 @@ input.transfer-amount.input-text.no-changes     { width: 30%; }
 .refund-view3 .content .message					{font-size: 20px; padding-top: 100px}
 .refund-view3 .popup-close						{float: right; margin-right: 10px}
 
+.clickable										{cursor: pointer}
