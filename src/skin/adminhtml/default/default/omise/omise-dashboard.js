@@ -68,10 +68,12 @@
         var loadChageTable = function(page, callback){
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
-                charge_total = Math.ceil(charge.total / 5);
-                for(var i=0;i<charge.data.length;i++){
-                    var data = charge.data[i] || null;
-                    setChargeTable(i, data);
+                if(charge && charge.data){
+                    charge_total = Math.ceil(charge.total / 5);
+                    for(var i=0;i<charge.data.length;i++){
+                        var data = charge.data[i] || null;
+                        setChargeTable(i, data);
+                    }
                 }
 
                 jQuery('.charge-loading.load-background').hide();
@@ -184,13 +186,16 @@
         var loadTransferTable = function(page, callback){
             jQuery('.transfer-loading.load-background').show();
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
-                transfer_total = Math.ceil(transfer.total / 5);
+                
+                if(transfer && transfer.data){
+                    transfer_total = Math.ceil(transfer.total / 5);
+                    for(var i=0;i<5;i++){
+                        var data = transfer.data[i] || null;
+                        setTransferTable(i, data);
 
-                for(var i=0;i<5;i++){
-                    var data = transfer.data[i] || null;
-                    setTransferTable(i, data);
-
+                    }
                 }
+                
                 transferData = transfer;
                 jQuery('.transfer-loading.load-background').hide();
 
