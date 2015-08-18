@@ -6,13 +6,13 @@
 
         // transform charge data into charge table
         var setChargeTable = function(i, data){
-            var tr = jQuery('<tr>');
+            var tr = '<tr>';
 
             if(data){
                 if(data.is_magento){
-                    tr.append('<td>฿ '+data.amount_format+'</td>');
-                    tr.append('<td>'+data.id+'</td>');
-                    tr.append('<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>')+'</td>');
+                    tr += '<td>฿ '+data.amount_format+'</td>';
+                    tr += '<td>'+data.id+'</td>';
+                    tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>')+'</td>';
 
                     var td3 = jQuery('<td>').html('-');
                     if(data.refunded>0){
@@ -21,10 +21,10 @@
                         });
                         td3.html('').append(aRefund);
                     }
-                    tr.append(td3);
+                    tr += '<td>'+td3.html()+'</td>';
                     
-                    tr.append('<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>');
-                    tr.append('<td class="a-center">'+data.created+'</td>');
+                    tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
+                    tr += '<td class="a-center">'+data.created+'</td>';
 
                     var td6 = jQuery('<td>').html('');
                     td6.addClass('a-center');
@@ -38,13 +38,14 @@
 
                     var aCardInfo = jQuery('<a class="clickable">card info</a>', {href: '#'} );
                     td6.append(aCardInfo);
-                    tr.append(td6);
+                    tr += '<td>'+td6.html()+'</td>';
                 }else{
-                    tr.html('<td class="text-center a-center" colspan="7">Not a magento store transaction</td>')
+                    tr += '<td class="text-center a-center" colspan="7">Not a magento store transaction</td>';
                 }
             }else{
-                tr.html('<td class="text-center a-center" colspan="7">&nbsp;</td>')
+                tr += '<td class="text-center a-center" colspan="7">&nbsp;</td>';
             }
+            tr += '</tr>';
             jQuery('#charge-table>tbody').append(tr);
         }
 
@@ -125,15 +126,15 @@
         gotoChargeFirstPage();
 
         var setTransferTable = function(i, data){
-            var tr = jQuery('<tr>');
+            var tr = '<tr>';
 
             if(data){
-                tr.append('<td>฿' + data.amount + '</td>');
+                tr += '<td>฿' + data.amount + '</td>';
 
-                tr.append('<td>'+data.id+'</td>');
-                tr.append('<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>')+'</td>' );
-                tr.append('<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>');
-                tr.append('<td>'+data.created+'</td>');
+                tr += '<td>'+data.id+'</td>';
+                tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>')+'</td>';
+                tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
+                tr += '<td>'+data.created+'</td>';
 
                 var td5 = jQuery('<td>');
                 td5.addClass('a-center');
@@ -158,10 +159,11 @@
                     td5.text('-');
                 }
 
-                tr.append(td5);
+                tr += '<td>'+td5.html()+'</td>';
             }else{
-                tr.html('<td class="text-center a-center" colspan="6">&nbsp;</td>')
+                tr += '<td class="text-center a-center" colspan="6">&nbsp;</td>';
             }
+            tr += '</tr>';
             jQuery('#transfer-table>tbody').append(tr);
         }
 

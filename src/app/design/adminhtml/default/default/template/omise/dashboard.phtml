@@ -50,7 +50,7 @@ $data = $this->getData(); ?>
     <div class="omise-transfer-history"><h3><?php echo $this->__('Charge History') ?></h3></div>
     <div class="grid">
         <div class="charge-loading load-background">
-            <div class="load-container"><img src="http://cdn.rcstatic.com/images/site_graphics/newsite/loader.gif" ></div>
+            <div class="load-container"><img src="<?php echo $this->getSkinUrl(); ?>omise/loading.gif" ></div>
         </div>
         <table id="charge-table" cellspacing="0" class="data">
             <thead>
@@ -64,13 +64,7 @@ $data = $this->getData(); ?>
                     <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-            </tbody>
+            <tbody></tbody>
         </table>
         <table cellspacing="0" class="data" style="border-top:0;">
             <tbody>
@@ -95,7 +89,7 @@ $data = $this->getData(); ?>
     <div class="grid">
 
         <div class="transfer-loading load-background">
-            <div class="load-container"><img src="http://cdn.rcstatic.com/images/site_graphics/newsite/loader.gif" ></div>
+            <div class="load-container"><img src="<?php echo $this->getSkinUrl(); ?>omise/loading.gif" ></div>
         </div>
 
         <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw"); ?>">
@@ -111,13 +105,7 @@ $data = $this->getData(); ?>
                         <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                    <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                    <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                    <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                    <tr><td class="text-center a-center" colspan="6">&nbsp;</td></tr>
-                </tbody>
+                <tbody></tbody>
             </table>
             <table cellspacing="0" class="data" style="border-top:0;">
                 <tbody>
@@ -214,5 +202,6 @@ $data = $this->getData(); ?>
         omise_charge_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>',
         omise_transfer_delete = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/transfer_id") ?>',
         order_url = '<?php echo $this->getOrderUrl(); ?>';
+
 </script>
 <script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>omise/omise-dashboard.js"></script>
