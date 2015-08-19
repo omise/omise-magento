@@ -354,6 +354,7 @@
                         patial = view.find('#patial-refund'),
                         load = view.find('.refund-loading');
 
+                    view.find('.full-refund .description').text('Refund the full '+ charge.amount_format +' Baht of this charge');
 
                     // select refund option
                     // option 0 = full refund, 1 = patial refund
