@@ -34,7 +34,7 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
             $check = OmiseCharge::retrieve('?limit=1', $this->_public_key, $this->_secret_key);
             $start = ($params['limit'] * $params['page']);
             $offset = ($start > $check['total']) ? 0 : ($check['total'] - $start);
-            $limit = ($start > $check['total']) ? ($check['total'] - $params['limit']) : $params['limit'];
+            $limit = ($start > $check['total']) ? ($check['total'] - ($params['limit']*($params['page']-1))) : $params['limit'];
             $params = array(
                 'offset' => $offset,
                 'limit' => $limit

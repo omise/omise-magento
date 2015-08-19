@@ -139,9 +139,10 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
      * @return void
      */
     public function transfersAction(){
+        $transferNum = 5;
 
         $omise_transfer = Mage::getModel('omise_gateway/omisetransfer')->retrieveOmiseTransfer(array(
-            'limit' => 5,
+            'limit' => $transferNum,
             'page' => $this->getRequest()->getParams()['page']
         ));
 
@@ -201,9 +202,10 @@ class Omise_Gateway_Adminhtml_OmiseController extends Mage_Adminhtml_Controller_
      * @return void
      */
     public function chargesAction(){
+        $chargeNum = 5;
 
         $omise_charge = Mage::getModel('omise_gateway/omisecharge')->retrieveOmiseCharges(array(
-            'limit' => 5,
+            'limit' => $chargeNum,
             'page' => $this->getRequest()->getParams()['page']
         ));
 

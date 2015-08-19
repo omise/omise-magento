@@ -1,6 +1,10 @@
     jQuery.noConflict();
     jQuery(document).ready(function(){
 
+        // number data of charge and transfer table
+        var chargeNum = 5;
+        var transferNum = 5;
+
         // temporary data
         var chargeData = null, transferData = null;
 
@@ -47,9 +51,8 @@
                 var tbody = jQuery('#charge-table>tbody');
                 if(charge && charge.data){
                     tbody.html('');
-                    var num = (charge.data.length<5?5:charge.data.length);
-                    charge_total = Math.ceil(charge.total / num);
-                    for(var i=0;i<num;i++){
+                    charge_total = Math.ceil(charge.total / chargeNum);
+                    for(var i=0;i<chargeNum;i++){
                         var data = charge.data[i] || null;
                         setChargeTable(i, data);
                     }
@@ -177,9 +180,8 @@
                 var tbody = jQuery('#transfer-table>tbody');
                 if(transfer && transfer.data){
                     tbody.html('');
-                    var num = (transfer.data.length<5?5:transfer.data.length);
-                    transfer_total = Math.ceil(transfer.total / num);
-                    for(var i=0;i<num;i++){
+                    transfer_total = Math.ceil(transfer.total / transferNum);
+                    for(var i=0;i<transferNum;i++){
                         var data = transfer.data[i] || null;
                         setTransferTable(i, data);
 

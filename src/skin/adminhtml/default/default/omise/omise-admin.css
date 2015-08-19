@@ -58,7 +58,7 @@ table#transfer-table>tbody>tr:nth-child(even)   {background: #F6F6F6}
 .refund-view1 ul li .refund-radio               {position:absolute; width: 20px; height: 20px; border-radius: 50px; background-color: white;  border: 2px white solid;}
 .refund-view1 ul li.selected .refund-radio      {background-color: orange; }
 .refund-view1 .refund-option                    {margin-left: 35px; margin-top: 2px}
-.refund-view1 .refund-option #patial-refund	    {padding: 5px; width: 250px; font-size: 14px; color: orange;margin: 5px 0 0 0}
+.refund-view1 .refund-option #patial-refund     {padding: 5px; width: 250px; font-size: 14px; color: orange;margin: 5px 0 0 0}
 .refund-view1 .load-container                   {margin:20px auto; padding: 10px; background: white; border-radius: 20px; width:100px; text-align:center; box-shadow: 3px 3px 3px #aaa;}
 .refund-view1 .load-background                  {top:0;left:0;display:none;position:absolute; width:400px; height: 300px; min-width: 0; background: rgba(255,255,255,0.9);z-index: 10000}
 
