@@ -26,16 +26,17 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         Mage::log('Start authorize with OmiseCharge API!');
         
         $order = $payment->getOrder();
+        $currency = $this->getConfigData('currency');
         $omise_token = $payment->getData('additional_information');
-        $charge = Mage::getModel('omise_gateway/omisecharge')->createOmiseCharge(array(
+        $charge = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
             "amount"        => number_format($amount, 2, '', ''),
-            "currency"      => strtolower($order->getBaseCurrencyCode()),
+            "currency"      => ($currency==null?'thb':strtolower($currency)),
             "description"   => 'Charge a card from Magento that order id is '.$payment->getData('entity_id'),
             "capture"       => false,
             "card"          => $omise_token['omise_token']
         ));
         if (isset($charge['error']))
-            Mage::throwException(Mage::helper('payment')->__('OmiseCharge:: '.$charge['error']));
+            Mage::throwException(Mage::helper('payment')->__($this->getConfigData('currency')));
         $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $charge['id']);
         Mage::log('This transaction was authorized! (by OmiseCharge API)');
         return $this;
@@ -50,18 +51,19 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
     {   
 
         $order = $payment->getOrder();
+        $currency = $this->getConfigData('currency');
         $authorized = isset($payment->getData('additional_information')['omise_charge_id']) ? $payment->getData('additional_information')['omise_charge_id'] : false;
         if ($authorized) {
             // Capture only.
             Mage::log('Start capture with OmiseCharge API!');
-            $charge = Mage::getModel('omise_gateway/omisecharge')->captureOmiseCharge($authorized);
+            $charge = Mage::getModel('omise_gateway/omiseCharge')->captureOmiseCharge($authorized);
         } else {
             // Authorize and capture.
             Mage::log('Start capture with OmiseCharge API!');
             $omise_token = $payment->getData('additional_information');
-            $charge = Mage::getModel('omise_gateway/omisecharge')->createOmiseCharge(array(
+            $charge = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
                 "amount"        => number_format($amount, 2, '', ''),
-                "currency"      => strtolower($order->getBaseCurrencyCode()),
+                "currency"      => ($currency==null?'thb':strtolower($currency)),
                 "description"   => 'Charge a card from Magento that order id is '.$payment->getData('entity_id'),
                 "card"          => $omise_token['omise_token']
             ));
@@ -96,7 +98,7 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
     {
         $transactionId = $payment->getParentTransactionId();
         # request to refund
-        $refund = Mage::getModel('omise_gateway/omiserefund')->createOmiseRefund(array(
+        $refund = Mage::getModel('omise_gateway/omiseRefund')->createOmiseRefund(array(
             "transaction_id" => $transactionId,
             "amount"        => number_format($amount, 2, '', ''),
         ));
