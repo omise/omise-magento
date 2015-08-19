@@ -13,39 +13,29 @@
                     tr += '<td>฿ '+data.amount_format+'</td>';
                     tr += '<td>'+data.id+'</td>';
                     tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>')+'</td>';
-
-                    var td3 = jQuery('<td>').html('-');
+                    tr += '<td class="refund-amount">'
                     if(data.refunded>0){
-                        var aRefund = showRefundPopup('view2', data, '฿' + data.refund_format, function(aRefundAmount){
-                            td3.html('').append(aRefundAmount);
-                        });
-                        td3.html('').append(aRefund);
-                    }
-                    tr += '<td>'+td3.html()+'</td>';
+                        tr += '<a class="refund-number clickable" data-index="'+i+'" href="#">฿' + data.refund_format + '</a>';
+                    }else
+                        tr += '<a class="refund-number normal-text" data-index="'+i+'" href="#">-</a>';
                     
+                    tr += '</td>'
                     tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
                     tr += '<td class="a-center">'+data.created+'</td>';
-
-                    var td6 = jQuery('<td>').html('');
-                    td6.addClass('a-center');
+                    tr += '<td class="a-center">'
                     var isRefundButtonShow = data.refund_format||!data.is_refundable?false:true;
                     if(isRefundButtonShow){
-                        var aRefund = showRefundPopup('view1', data, 'refund', function(aRefundAmount){
-                            td3.html('').append(aRefundAmount);
-                        });
-                        td6.append([aRefund, ' ']);
+                        tr += '<a class="refund-button clickable" data-index="'+i+'" href="#">refund</a>'
                     }
-
-                    var aCardInfo = jQuery('<a class="clickable">card info</a>', {href: '#'} );
-                    td6.append(aCardInfo);
-                    tr += '<td>'+td6.html()+'</td>';
-                }else{
-                    tr += '<td class="text-center a-center" colspan="7">Not a magento store transaction</td>';
-                }
-            }else{
-                tr += '<td class="text-center a-center" colspan="7">&nbsp;</td>';
-            }
+                    tr += '&nbsp;';
+                    tr += '<a class="clickable">card info</a>';
+                    tr += '</td>';
+                }else
+                    tr += '<td class="a-center" colspan="7">Not a magento store transaction</td>';
+            }else
+                tr += '<td class="a-center" colspan="7">&nbsp;</td>';
             tr += '</tr>';
+
             jQuery('#charge-table>tbody').append(tr);
         }
 
@@ -53,8 +43,10 @@
         var loadChageTable = function(page, callback){
             jQuery('.charge-loading.load-background').show();
             jQuery.getJSON( charge_url, {page: page}, function( charge ) {
+                
+                var tbody = jQuery('#charge-table>tbody');
                 if(charge && charge.data){
-                    jQuery('#charge-table>tbody').html('');
+                    tbody.html('');
                     var num = (charge.data.length<5?5:charge.data.length);
                     charge_total = Math.ceil(charge.total / num);
                     for(var i=0;i<num;i++){
@@ -63,8 +55,37 @@
                     }
                 }
 
+                tbody.find('.refund-button').on('click', function(e) {
+                    e.preventDefault();
+                    var _this = jQuery(this);
+                    var popup = new RefundPopup(charge.data[jQuery(this).attr('data-index')], 'view1', function(done, d){
+                            if(done){
+                                var refundAmonth = _this.parent().parent().find('.refund-amount>a');
+                                _this.hide();
+                                refundAmonth.removeClass('normal-text');
+                                refundAmonth.addClass('clickable');
+                                refundAmonth.text('฿'+d.refund_format+'');
+                            }
+                        });
+                    popup.show();
+                });
+
+                tbody.find('.refund-number').on('click', function(e) {
+                    e.preventDefault();
+                    var _this = jQuery(this);
+                    if(_this.hasClass('clickable')){
+                        var popup = new RefundPopup(charge.data[jQuery(this).attr('data-index')], 'view2', function(done, d){
+                                if(done){
+                                    _this.parent().parent().find('.refund-amount>a').text('฿'+d.refund_format+'');
+                                }
+                            });
+                        popup.show();
+                    }
+                });
+
                 jQuery('.charge-loading.load-background').hide();
                 chargeData = charge;
+                
                 if(callback) callback();    
             });
         }
@@ -131,23 +152,45 @@
 
             if(data){
                 tr += '<td>฿' + data.amount + '</td>';
-
                 tr += '<td>'+data.id+'</td>';
                 tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>')+'</td>';
                 tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
                 tr += '<td>'+data.created+'</td>';
-
-                var td5 = jQuery('<td>');
-                td5.addClass('a-center');
+                tr += '<td class="a-center">'
                 if(!data.sent && !data.paid){
-                    var aDelete = jQuery('<a class="clickable">delete</a>', {href: omise_transfer_delete.replace('transfer_id', data.id)} );
-                    td5.append(aDelete);
+                    tr += '<a href="'+omise_transfer_delete.replace('transfer_id', data.id)+'" class="delete-transfer clickable">delete</a>'
+                }else
+                    tr += '-';
+                tr += '</td>';
+            }else
+                tr += '<td class="a-center" colspan="6">&nbsp;</td>';
+            tr += '</tr>';
+
+            jQuery('#transfer-table>tbody').append(tr);
+        }
+
+        // load transform data and transform into transfer table 
+        var loadTransferTable = function(page, callback){
+            jQuery('.transfer-loading.load-background').show();
+            jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
+                
+                var tbody = jQuery('#transfer-table>tbody');
+                if(transfer && transfer.data){
+                    tbody.html('');
+                    var num = (transfer.data.length<5?5:transfer.data.length);
+                    transfer_total = Math.ceil(transfer.total / num);
+                    for(var i=0;i<num;i++){
+                        var data = transfer.data[i] || null;
+                        setTransferTable(i, data);
+
+                    }
+
                     //money withdraw button
-                    aDelete.on('click', function(e) {
+                    tbody.find('.delete-transfer').on('click', function(e) {
                         e.preventDefault();
                         if (confirm('Delete ?')) {
                             var $this       = jQuery(this),
-                                deleteLink  = omise_transfer_delete.replace('transfer_id', data.id),
+                                deleteLink  = $this.attr('href'),
                                 form        = $this.closest('form');
                             
                             form.attr('action', deleteLink)
@@ -156,31 +199,7 @@
                             jQuery("#omise-transfer").submit();
                         }
                     });
-                }else{
-                    td5.text('-');
-                }
 
-                tr += '<td>'+td5.html()+'</td>';
-            }else{
-                tr += '<td class="text-center a-center" colspan="6">&nbsp;</td>';
-            }
-            tr += '</tr>';
-            jQuery('#transfer-table>tbody').append(tr);
-        }
-
-        // load transform data and transform into transfer table 
-        var loadTransferTable = function(page, callback){
-            jQuery('.transfer-loading.load-background').show();
-            jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
-                if(transfer && transfer.data){
-                    jQuery('#transfer-table>tbody').html('');
-                    var num = (transfer.data.length<5?5:transfer.data.length);
-                    transfer_total = Math.ceil(transfer.total / num);
-                    for(var i=0;i<num;i++){
-                        var data = transfer.data[i] || null;
-                        setTransferTable(i, data);
-
-                    }
                 }
 
                 transferData = transfer;
@@ -288,31 +307,6 @@
             gotoTransferLastPage();
         });
 
-        // custom function to call to show refund popup
-        var showRefundPopup = function(view, data, text, ext){
-            var aRefund = jQuery('<a class="clickable">'+ text +'</a>', {href: '#'} );
-            aRefund.on('click', function(e){
-                e.preventDefault();
-                    popup = new RefundPopup(data, view, function(done, d){
-                        if(done){
-                            aRefund.hide();
-
-                            var aRefundAmount = jQuery('<a>฿'+d.refund_format+'</a>', {href: '#'} );
-
-                                aRefundAmount.on('click', function(e){
-                                    e.preventDefault();
-                                        popup = new RefundPopup(d, 'view2');
-                                    popup.show();
-                                });
-                            ext(aRefundAmount);
-                        }
-                    });
-                popup.show();
-            });
-
-            return aRefund;
-        }
-
         // refund popup object
         var RefundPopup = function(charge, v, done){
 
@@ -385,7 +379,6 @@
                                 amount: (isPartial? patial.val(): final_amount),
                                 partial: isPartial
                             }).done(function(data) {
-                                console.log(data);
                                 data = jQuery.parseJSON(data);
 
                                 jQuery.get(omise_charge_url, {

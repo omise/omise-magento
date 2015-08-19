@@ -89,3 +89,5 @@ input.transfer-amount.input-text.no-changes     { width: 30%; }
 .refund-view3 .popup-close						{float: right; margin-right: 10px}
 
 .clickable										{cursor: pointer}
+.normal-text									{cursor: default; color: black; text-decoration: none}
+.normal-text:hover								{color: black; text-decoration: none}
