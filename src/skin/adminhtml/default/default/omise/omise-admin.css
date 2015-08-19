@@ -36,7 +36,7 @@ input.transfer-amount.input-text.no-changes     { width: 30%; }
 .pagination                                     { float: right;}
 
 
-.load-container                                 {margin:20px auto; padding: 10px; background: white; border-radius: 20px; width:100px; text-align:center; box-shadow: 3px 3px 3px #aaa;}
+.load-container                                 {margin:20px auto; padding: 10px; background: white; border-radius: 40%; width: 40px; text-align:center; box-shadow: 3px 3px 3px #aaa;}
 .load-background                                {display:none;position:absolute;width:calc(100% - 55px); min-width: 905px; height: 160px; background: rgba(255,255,255,0);}
 table#charge-table>tbody>tr:nth-child(even)     {background: #F6F6F6}
 table#transfer-table>tbody>tr:nth-child(even)   {background: #F6F6F6}

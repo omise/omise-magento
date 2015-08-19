@@ -2,60 +2,77 @@
     jQuery(document).ready(function(){
 
         // number data of charge and transfer table
-        var chargeNum = 5;
-        var transferNum = 5;
+        var chargeNum           = 5,
+            transferNum         = 5;
 
         // temporary data
-        var chargeData = null, transferData = null;
+        var chargeData          = null,
+            transferData        = null;
+
+        // Spinner DOM element
+        var chargeSpinner       = jQuery('.charge-loading.load-background'),
+            transferSpinner     = jQuery('.transfer-loading.load-background');
+
 
         // transform charge data into charge table
-        var setChargeTable = function(i, data){
+        var setChargeTable = function(i, data) {
             var tr = '<tr>';
 
-            if(data){
-                if(data.is_magento){
-                    tr += '<td>฿ '+data.amount_format+'</td>';
-                    tr += '<td>'+data.id+'</td>';
-                    tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>')+'</td>';
-                    tr += '<td class="refund-amount">'
-                    if(data.refunded>0){
-                        tr += '<a class="refund-number clickable" data-index="'+i+'" href="#">฿' + data.refund_format + '</a>';
-                    }else
-                        tr += '<a class="refund-number normal-text" data-index="'+i+'" href="#">-</a>';
-                    
-                    tr += '</td>'
-                    tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
-                    tr += '<td class="a-center">'+data.created+'</td>';
-                    tr += '<td class="a-center">'
-                    var isRefundButtonShow = data.refund_format||!data.is_refundable?false:true;
-                    if(isRefundButtonShow){
-                        tr += '<a class="refund-button clickable" data-index="'+i+'" href="#">refund</a>'
-                    }
-                    tr += '&nbsp;';
-                    tr += '<a class="clickable">card info</a>';
-                    tr += '</td>';
-                }else
-                    tr += '<td class="a-center" colspan="7">Not a magento store transaction</td>';
-            }else
+            if (data) {
+                var isRefundButtonShow = data.refund_format || !data.is_refundable ? false : true;
+
+                tr += ' <td>฿ '+data.amount_format+'</td>';
+                tr += '<td>'+data.id+''+((data.is_magento) ? '(From another store)' : '')+'</td>';
+                tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.captured?'<span class="success-label">Captured</span>': '<span class="warning-label">Authorized</span>')+'</td>';
+                tr += '<td class="refund-amount">'
+
+                if (data.refunded>0) {
+                    tr += '<a class="refund-number clickable" data-index="'+i+'" href="#">฿ '+data.refund_format+'</a>';
+                } else {
+                    tr += '<a class="refund-number normal-text" data-index="'+i+'" href="#">-</a>';
+                }
+
+                tr += '</td>'
+                tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
+                tr += '<td class="a-center">'+data.created+'</td>';
+                tr += '<td class="a-center">'
+
+                if (isRefundButtonShow) {
+                    tr += '<a class="refund-button clickable" data-index="'+i+'" href="#">refund</a>&nbsp;'
+                }
+
+                tr += '<a class="clickable">card info</a>';
+                tr += '</td>';
+            } else {
                 tr += '<td class="a-center" colspan="7">&nbsp;</td>';
+            }
+
             tr += '</tr>';
 
-            jQuery('#charge-table>tbody').append(tr);
+            return tr;
         }
 
         // load charge data with specific page
-        var loadChageTable = function(page, callback){
-            jQuery('.charge-loading.load-background').show();
-            jQuery.getJSON( charge_url, {page: page}, function( charge ) {
-                
-                var tbody = jQuery('#charge-table>tbody');
-                if(charge && charge.data){
+        var loadChageTable = function(page, callback) {
+            // Show spinner
+            chargeSpinner.show();
+
+            // Request data
+            jQuery.getJSON(charge_url, { page: page }, function(charge) {
+                var tbody       = jQuery('#charge-table>tbody'),
+                    tbodyData   = "";
+
+                if (charge && charge.data) {
                     tbody.html('');
+
                     charge_total = Math.ceil(charge.total / chargeNum);
-                    for(var i=0;i<chargeNum;i++){
+
+                    for (var i = 0; i < chargeNum; i++) {
                         var data = charge.data[i] || null;
-                        setChargeTable(i, data);
+                        tbodyData += setChargeTable(i, data);
                     }
+
+                    tbody.append(tbodyData);
                 }
 
                 tbody.find('.refund-button').on('click', function(e) {
@@ -86,7 +103,7 @@
                     }
                 });
 
-                jQuery('.charge-loading.load-background').hide();
+                chargeSpinner.hide();
                 chargeData = charge;
                 
                 if(callback) callback();    
@@ -94,12 +111,11 @@
         }
 
         // handle charge pagination
-        var nextChargePage = function(direction){
+        var nextChargePage = function (direction) {
             np = parseInt(jQuery('#charge-pn').text()) + direction;
             np = np < 1 ? 1 : np;
             np = np > charge_total ? charge_total : np;
-            loadChageTable(np, function(){
-
+            loadChageTable(np, function() {
                 jQuery('#charge-btn-back').show();
                 if(np == 1) jQuery('#charge-btn-back').hide();
 
@@ -150,42 +166,48 @@
         // first load chrage table for the first page
         gotoChargeFirstPage();
 
-        var setTransferTable = function(i, data){
+        var setTransferTable = function(i, data) {
             var tr = '<tr>';
 
-            if(data){
-                tr += '<td>฿' + data.amount + '</td>';
+            if (data) {
+                tr += '<td>฿ ' + data.amount + '</td>';
                 tr += '<td>'+data.id+'</td>';
                 tr += '<td>'+(data.failure_code?'<span class="error-label">Fail</span>':data.sent?data.paid?'<span class="success-label">Paid</span>':'<span class="primary-label">Request sent</span>':'<span class="warning-label">Requesting</span>')+'</td>';
                 tr += '<td>'+(data.failure_code?('('+data.failure_code+')'+data.failure_code):'-')+'</td>';
                 tr += '<td>'+data.created+'</td>';
                 tr += '<td class="a-center">'
-                if(!data.sent && !data.paid){
+                if (!data.sent && !data.paid) {
                     tr += '<a href="'+omise_transfer_delete.replace('transfer_id', data.id)+'" class="delete-transfer clickable">delete</a>'
-                }else
+                } else {
                     tr += '-';
+                }
                 tr += '</td>';
-            }else
+            } else {
                 tr += '<td class="a-center" colspan="6">&nbsp;</td>';
+            }
+
             tr += '</tr>';
 
-            jQuery('#transfer-table>tbody').append(tr);
+            return tr;
         }
 
         // load transform data and transform into transfer table 
-        var loadTransferTable = function(page, callback){
-            jQuery('.transfer-loading.load-background').show();
+        var loadTransferTable = function(page, callback) {
+            transferSpinner.show();
             jQuery.getJSON( transfer_url, {page: page}, function( transfer ) {
-                
-                var tbody = jQuery('#transfer-table>tbody');
-                if(transfer && transfer.data){
+                var tbody       = jQuery('#transfer-table>tbody'),
+                    tbodyData   = "";
+
+                if (transfer && transfer.data) {
                     tbody.html('');
                     transfer_total = Math.ceil(transfer.total / transferNum);
-                    for(var i=0;i<transferNum;i++){
-                        var data = transfer.data[i] || null;
-                        setTransferTable(i, data);
 
+                    for (var i = 0; i < transferNum; i++) {
+                        var data = transfer.data[i] || null;
+                        tbodyData += setTransferTable(i, data);
                     }
+
+                    tbody.append(tbodyData);
 
                     //money withdraw button
                     tbody.find('.delete-transfer').on('click', function(e) {
@@ -194,18 +216,17 @@
                             var $this       = jQuery(this),
                                 deleteLink  = $this.attr('href'),
                                 form        = $this.closest('form');
-                            
+
                             form.attr('action', deleteLink)
                                 .append('<input type="hidden" name="OmiseTransfer[action]" value="delete">');
 
                             jQuery("#omise-transfer").submit();
                         }
                     });
-
                 }
 
+                transferSpinner.hide();
                 transferData = transfer;
-                jQuery('.transfer-loading.load-background').hide();
 
                 if(callback) callback();    
             });
@@ -476,7 +497,6 @@
                         });  
                     }
 
-
                     close(view.find('.popup-close'));
 
                     return view;
@@ -515,5 +535,4 @@
                 hide: hide
             }
         }
-
     });
