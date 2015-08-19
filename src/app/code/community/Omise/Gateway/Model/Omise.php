@@ -25,8 +25,14 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
         $this->_public_key = $omise->public_key;
         $this->_secret_key = $omise->secret_key;
 
+        // Check if test mode is 0 change to 1
+        if ($omise->test_mode==0) {
+            $omise->setTestMode(2);
+            $omise->save();
+        }
+
         // Replace keys with test keys if test mode was enabled.
-        if ($omise->test_mode) {
+        if ($omise->test_mode==1) {
             $this->_public_key = $omise->public_key_test;
             $this->_secret_key = $omise->secret_key_test;
         }

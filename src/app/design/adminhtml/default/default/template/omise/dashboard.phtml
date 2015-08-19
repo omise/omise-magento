@@ -5,11 +5,9 @@ $data = $this->getData(); ?>
 <!-- Include Omise's stylesheet -->
 <link rel="stylesheet" href="<?php echo $this->getSkinUrl(); ?>omise/omise-admin.css" type="text/css" />
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-
 <div class="content-header">
     <table cellspacing="0">
-        <tr><td><h3 class="head-dashboard">Omise Payment Gateway Dashboard</h3></td></tr>
+        <tr><td><h3 class="head-dashboard"><?php echo $this->__('Omise Payment Gateway Dashboard') ?></h3></td></tr>
     </table>
 </div>
 
@@ -23,105 +21,175 @@ $data = $this->getData(); ?>
                 <div class="left">
                     <dl>
                         <!-- Account email -->
-                        <dt>Account: </dt>
+                        <dt><?php echo $this->__('Account') ?>: </dt>
                         <dd><?php echo $data['omise']['email']; ?></dd>
 
                         <!-- Account status -->
-                        <dt>Live Mode: </dt>
+                        <dt><?php echo $this->__('Live Mode') ?>: </dt>
                         <dd><strong><?php echo $data['omise']['livemode'] ? '<span class="livemode-label">Yes</span>' : '<span class="testmode-label">No</span>'; ?></strong></dd>
 
                         <!-- Current Currency -->
-                        <dt>Currency: </dt>
+                        <dt><?php echo $this->__('Currency') ?>: </dt>
                         <dd><?php echo strtoupper($data['omise']['currency']); ?></dd>
                     </dl>
                 </div>
                 <div class="right">
-                    <p class="text-right"><a id="omise-dashboard-link" href="https://dashboard.omise.co/dashboard">see Omise Dashboard (Full Version)</a></p>
+                    <p class="text-right"><a id="omise-dashboard-link" href="https://dashboard.omise.co/dashboard"><?php echo $this->__('see Omise Dashboard (Full Version)') ?></a></p>
                 </div>
             </div>
 
             <!-- Balance -->
             <div class="omise-balance omise-clearfix">
-                <div class="left"><span class="omise-number"><?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/>Total Balance</div>
-                <div class="right"><span class="omise-number"><?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/>Transferable Balance</div>
+                <div class="left"><span class="omise-number">฿ <?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/><?php echo $this->__('Total Balance') ?></div>
+                <div class="right"><span class="omise-number">฿ <?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/><?php echo $this->__('Transferable Balance') ?></div>
             </div>
         </div>
     </div>
-    <div>
-        <div class="content">
+    
+    <!-- Transfer History -->
+    <div class="omise-transfer-history"><h3><?php echo $this->__('Charge History') ?></h3></div>
+    <div class="grid">
+        <div class="charge-loading load-background">
+            <div class="load-container"><img src="<?php echo $this->getSkinUrl(); ?>omise/loading.gif" ></div>
+        </div>
+        <table id="charge-table" cellspacing="0" class="data">
+            <thead>
+                <tr class="headings">
+                    <th width="10%"><?php echo $this->__('Amount') ?></th>
+                    <th width="30%"><?php echo $this->__('Transaction Id') ?></th>
+                    <th width="10%"><?php echo $this->__('Status') ?></th>
+                    <th width="10%"><?php echo $this->__('Refund') ?></th>
+                    <th width="18%"><?php echo $this->__('Failure Message') ?></th>
+                    <th width="12%" class="a-center"><?php echo $this->__('Created') ?></th>
+                    <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="pagination">
+            <a id="charge-btn-first" href="#">first</a> 
+            <a id="charge-btn-back" href="#">back</a> 
+        <?php echo $this->__('Page No: ') ?> 
+        <span id="charge-pn">1</span> 
+            <a id="charge-btn-next" href="#">next</a>
+            <a id="charge-btn-last" href="#">last</a>
+    </div>
 
-            <!-- Transfer History -->
-            <div class="omise-transfer-history"><h3>Transfer History</h3></div>
-            <div class="grid">
-                <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers"); ?>">
-                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
-                    <table cellspacing="0" class="data">
-                        <thead>
-                            <tr class="headings">
-                                <th>Amount</th>
-                                <th>Transfer Id</th>
-                                <th>Sent</th>
-                                <th>Paid</th>
-                                <th>Failure Message</th>
-                                <th width="15%" class="a-center">Created</th>
-                                <th width="5%" class="a-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($data['omise']['transfer']['data'])):
-                                foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
-                                    <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                        <td><?php echo number_format(($value['amount']/100), 2); ?></td>
-                                        <td><?php echo $value['id']; ?></td>
-                                        <td><?php echo $value['sent'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
-                                        <td><?php echo $value['paid'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
-                                        <td><?php echo $value['failure_code'] ? '('.$value['failure_code'].') '.$value['failure_code'] : '-'; ?></td>
-                                        <td class="a-center"><?php echo $date->format('M d, Y H:i'); ?></td>
-                                        <td class="a-center"><?php echo !$value['sent'] && !$value['paid'] ? '<a class="transfer-btn-delete" href="'.Mage::helper("adminhtml")->getUrl("adminhtml/omise/transfers/delete/".$value["id"]).'">Cancel</a>': '-'; ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+    <!-- Transfer History -->
+    <div class="omise-transfer-history"><h3><?php echo $this->__('Transfer History') ?></h3></div>
+    <div class="grid">
 
-                            <tr class="pointer">
-                                <td class="a-right" colspan="6">&nbsp;</td>
-                                <td class="a-center last"></td>
-                            </tr>
+        <div class="transfer-loading load-background">
+            <div class="load-container"><img src="<?php echo $this->getSkinUrl(); ?>omise/loading.gif" ></div>
+        </div>
 
-                            <!-- Create transfer form -->
-                            <tr class="even pointer">
-                                <?php if ($data['omise']['available'] > 3000): ?>
-                                    <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="Transfer amount (number only, icluding 'satang')"></td>
-                                    <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
-                                <?php elseif ($data['omise']['available'] > 0): ?>
-                                    <td class="a-right" colspan="7">Minimum withdrawal is 30 Baht</td>
-                                <?php else: ?>
-                                    <td class="a-right" colspan="7">&nbsp;</td>
-                                <?php endif; ?>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div> <!-- /END .content -->
-    </div> <!-- /END .box -->
+        <form id="omise-transfer" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw"); ?>">
+            <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>">
+            <table id="transfer-table" cellspacing="0" class="data">
+                <thead>
+                    <tr class="headings">
+                        <th width="10%"><?php echo $this->__('Amount') ?></th>
+                        <th width="30%"><?php echo $this->__('Transfer Id') ?></th>
+                        <th width="20%"><?php echo $this->__('Status') ?></th>
+                        <th width="18%"><?php echo $this->__('Failure Message') ?></th>
+                        <th width="12%" class="a-center"><?php echo $this->__('Created') ?></th>
+                        <th width="10%" class="a-center"><?php echo $this->__('Action') ?></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <table cellspacing="0" class="data" style="border-top:0;">
+                <tbody>
+
+                    <!-- Create transfer form -->
+                    <tr class="even pointer">
+                        <?php if ($data['omise']['available'] > 3000): ?>
+                            <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="<?php echo $this->__("Transfer amount (number only, icluding 'satang')") ?>"> <button class="button btn-transfer"><?php echo $this->__('CREATE TRANSFER') ?></button></td>
+                        <?php elseif ($data['omise']['available'] > 0): ?>
+                            <td class="a-right" colspan="6"><?php echo $this->__('Minimum withdrawal is 30 Baht') ?></td>
+                        <?php else: ?>
+                            <td class="a-right" colspan="6">&nbsp;</td>
+                        <?php endif; ?>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div class="pagination">
+            <a id="transfer-btn-first" href="#">first</a> 
+            <a id="transfer-btn-back" href="#">back</a> 
+        <?php echo $this->__('Page No: ') ?> 
+        <span id="transfer-pn">1</span> 
+            <a id="transfer-btn-next" href="#">next</a>
+            <a id="transfer-btn-last" href="#">last</a>
+    </div>
 <?php endif; ?>
 
+<!-- theme refund template -->
+    <div class="custom-template refund-view1">
+        <button class="popup-close">close</button>
+        <ul>
+            <li class="selected">
+                <div class="refund-radio"></div>
+                <div class="refund-option full-refund">
+                    <div class="title">Full Refund</div>
+                    <div class="description">Refund the full 34,000 Baht of this charge</div>
+                </div>
+            </li>
+            <li>
+                <div class="refund-radio"></div>
+                <div class="refund-option patial-refund">
+                    <div class="title">Patial Refund</div>
+                    <div class="description">Refund this charge partially up to 4,000</div>
+                    <input type="number" id="patial-refund" >
+                </div>
+            </li>
+        </ul>
+        <div class="refund-loading load-background">
+            <div class="load-container"><img src="http://cdn.rcstatic.com/images/site_graphics/newsite/loader.gif" ></div>
+        </div>
+        <button class="create">Refund</button>
+        <div class="remark">*Refund take between 5 or 10 days to be processed</div>
+    </div>
+    <div class="custom-template refund-view2">
+        <button class="popup-close">close</button>
+        <div class="refund-header">
+            <div class="title">&nbsp;</div>
+            <div class="description">&nbsp;</div>
+        </div>
+        <ul>
+            <li>
+                <div class="refund-option">
+                    <div class="time"></div>
+                    <div class="title"></div>
+                    <div class="description"></div>
+                </div>
+            </li>
+        </ul>
+        <button class="create">Create refund</button>
+        <div class="remark">*Your refund was completed</div>
+    </div>
+    <div class="custom-template refund-view3">
+        <button class="popup-close">close</button>
+        <div class="content">
+            <div class="message">Refunded successfully</div>
+            <a href=""></a>
+        </div>
+        
+    </div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
-    jQuery.noConflict();
-    jQuery(document).ready(function(){
-        jQuery('.transfer-btn-delete').on('click', function(e) {
-            e.preventDefault();
+    var charge_total = 0,
+        charge_url = '<?php echo $this->getChargesUrl(); ?>',
+        transfer_total = 0,
+        transfer_url = '<?php echo $this->getTransfersUrl(); ?>',
+        omise_refund_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/refund"); ?>',
+        omise_charge_url = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/charge"); ?>',
+        omise_transfer_delete = '<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/omise/withdraw/delete/transfer_id") ?>',
+        order_url = '<?php echo $this->getOrderUrl(); ?>';
 
-            if (confirm('Delete ?')) {
-                var $this       = jQuery(this),
-                    deleteLink  = $this.attr('href'),
-                    form        = $this.closest('form');
-                
-                form.attr('action', deleteLink)
-                    .append('<input type="hidden" name="OmiseTransfer[action]" value="delete">');
-
-                jQuery("#omise-transfer").submit();
-            }
-        });
-    });
 </script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>omise/omise-dashboard.js"></script>

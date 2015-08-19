@@ -17,28 +17,34 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
 
         /* Field set for Test Keys */
         $fieldset = $form->addFieldset('omise_key_test', array('legend' => $this->__('Test Keys')));
-        $this->_addFieldsToFieldset($fieldset, array( 'public_key_test' => array(   'label'     => $this->__('Public Key for Test'),
+        $this->_addFieldsToFieldset($fieldset, array(   'public_key_test' => array( 'label'     => $this->__('Public Key for Test'),
                                                                                     'input'     => 'password',
                                                                                     'required'  => false),
 
-                                                      'secret_key_test' => array(   'label'     => $this->__('Secret Key for Test'),
+                                                        'secret_key_test' => array( 'label'     => $this->__('Secret Key for Test'),
                                                                                     'input'     => 'password',
-                                                                                    'required'  => false),
-
-                                                      'test_mode'       => array(   'label'     => $this->__('Enable Test mode'),
-                                                                                    'input'     => 'checkbox',
-                                                                                    'required'  => false,
-                                                                                    'onclick'   => 'this.value = this.checked ? 1 : 0;')));
+                                                                                    'required'  => false)));
 
         /* Field set for Live Keys */
         $fieldset = $form->addFieldset('omise_key_live', array('legend' => $this->__('Live Keys')));
-        $this->_addFieldsToFieldset($fieldset, array( 'public_key'      => array(   'label'     => $this->__('Public Key'),
+        $this->_addFieldsToFieldset($fieldset, array(   'public_key'      => array( 'label'     => $this->__('Public Key'),
                                                                                     'input'     => 'password',
                                                                                     'required'  => true),
 
-                                                      'secret_key'      => array(   'label'     => $this->__('Secret Key'),
+                                                        'secret_key'      => array( 'label'     => $this->__('Secret Key'),
                                                                                     'input'     => 'password',
                                                                                     'required'  => true)));
+
+        $fieldset = $form->addFieldset('omise_mode', array('legend' => $this->__('Mode')));
+        $this->_addFieldsToFieldset($fieldset, array(   'test_mode'       => array( 'label'     => $this->__('Enable mode'),
+                                                                                    'input'     => 'radios',
+                                                                                    'required'  => false,
+                                                                                    'html_name' => 'items[]',
+                                                                                    'value'     => $this->_getValue()->getData('test_mode'),
+                                                                                    'values'    => array(
+                                                                                        array('value'=>'1','label'=>' Test mode'),
+                                                                                        array('value'=>'2','label'=>' Live mode'),
+                                                                                    ))));
 
         return $this;
     }
@@ -63,10 +69,6 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
             // If no new value exists, use the existing data.
             if (!array_key_exists('value', $_data)) {
                 $_data['value'] = $this->_getValue()->getData($name);
-            }
-
-            if ($name == "test_mode") {
-                $_data['checked'] = $this->_getValue()->getData($name);
             }
 
             // Finally, call vanilla functionality to add field.
