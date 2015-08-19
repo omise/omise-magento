@@ -27,7 +27,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
 
         // Check if test mode is 0 change to 1
         if ($omise->test_mode==0) {
-            $omise->setTestMode(1);
+            $omise->setTestMode(2);
             $omise->save();
         }
 
