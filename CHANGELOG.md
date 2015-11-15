@@ -1,12 +1,15 @@
 # Change Log
 
-An [unreleased] version is not available on stable version and is subject to changes and must not be considered final. Elements of unreleased list may be edited or removed at any time.
+An [unreleased] version is not available on `master` branch and is subject to changes and must not be considered final. Elements of unreleased list may be edited or removed at any time.
+[unreleased]
+------------
+- *`Updated`* Updated **omise-php** library from 2.3.1 to 2.4.0.
 
-## [1.9.0.3] - 2015-08-09
+## [1.9.0.3] 2015-08-09
 - *`Updated`* Updated **omise-php** library from 2.2.0 to 2.3.1.
 - *`Fixed`* Fix 'CamelCase' class name issue (CamelCaseName of class was not load in some host environment).
 
-## [1.9.0.2] - 2015-07-07
+## [1.9.0.2] 2015-07-07
 #### Versioning & Document
 - *`Updated`* Updated README.md file
 - *`Updated`* Changed version number in module's xml files from `0.0.0.1` to `1.9.0.2` to match Magento releases
@@ -14,7 +17,7 @@ An [unreleased] version is not available on stable version and is subject to cha
 #### Dashboard Page
 - *`Improved`* jQuery from http to https
 
-## [1.0.1] - 2015-06-23
+## [1.0.1] 2015-06-23
 #### Dashboard Page
 - *`Added`* Added link to Omise Dashboard [https://dashboard.omise.co](https://dashboard.omise.co) into Magento Omise Dashboard Page.
 - *`Fixed`* Omise Email Account was not shown in dashboard page.
@@ -22,7 +25,7 @@ An [unreleased] version is not available on stable version and is subject to cha
 ##### Dashboard Page: Transfer section
 - *`Fixed`* Transfer box was not shown when that account doesn't have any transfer history.
 
-## [1.0.0] - 2015-06-15
+## [1.0.0] 2015-06-15
 - *`Added`* Implemented **Omise Dashboard** into Magento's admin page. The features are as follows:
   - Show current account status (live or test) depends on that you configured in *Omise Keys Setting page*.
   - Show total account balance, transferable balance.
@@ -36,5 +39,5 @@ An [unreleased] version is not available on stable version and is subject to cha
 - *`Added`* Added [omise-php](https://github.com/omise/omise-php) library *(v2.2.0)* into this extension.
 - *`Updated`* Updated **README.md**.
 
-## [0.0.1] - 2015-06-15
+## [0.0.1] 2015-06-15
 - Initial version.
