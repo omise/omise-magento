@@ -1,8 +1,6 @@
 # Change Log
 
-An [unreleased] version is not available on `master` branch and is subject to changes and must not be considered final. Elements of unreleased list may be edited or removed at any time.
-[unreleased]
-------------
+## [1.9.0.4] 2015-11-16
 - *`Added`* Added `OmiseMagento/[OmiseMagentoVersion]`, `Magento/[MagentoVersion]` into `OMISE_USER_AGENT_SUFFIX`.
 - *`Updated`* Updated **omise-php** library from 2.3.1 to 2.4.0.
 - *`Fixed`* Supported php version 5.2 - 5.3.

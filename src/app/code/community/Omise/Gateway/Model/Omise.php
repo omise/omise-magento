@@ -1,7 +1,7 @@
 <?php
 // Define 'OMISE_USER_AGENT_SUFFIX'
 if(!defined('OMISE_USER_AGENT_SUFFIX'))
-    define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.9.0.3 Magento/'.Mage::getVersion());
+    define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.9.0.4 Magento/'.Mage::getVersion());
 
 // Define 'OMISE_API_VERSION'
 if(!defined('OMISE_API_VERSION'))
