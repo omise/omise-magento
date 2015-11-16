@@ -4,6 +4,8 @@ An [unreleased] version is not available on `master` branch and is subject to ch
 [unreleased]
 ------------
 - *`Updated`* Updated **omise-php** library from 2.3.1 to 2.4.0.
+- *`Fixed`* Support php version 5.2 - 5.3.
+- *`Fixed`* Add autocomplete attribute into card number and security code fields of the checkout form.
 
 ## [1.9.0.3] 2015-08-09
 - *`Updated`* Updated **omise-php** library from 2.2.0 to 2.3.1.
