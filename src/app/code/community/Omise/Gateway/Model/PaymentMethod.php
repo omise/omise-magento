@@ -54,7 +54,8 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        $authorized = isset($payment->getData('additional_information')['omise_charge_id']) ? $payment->getData('additional_information')['omise_charge_id'] : false;
+        $additional_information = $payment->getData('additional_information');
+        $authorized = isset($additional_information['omise_charge_id']) ? $additional_information['omise_charge_id'] : false;
         if ($authorized) {
             // Capture only.
             Mage::log('Start capture with OmiseCharge API!');

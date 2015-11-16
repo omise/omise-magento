@@ -56,6 +56,24 @@ require_once dirname(__FILE__).'/omise-php/lib/Omise.php';
 
 Please see usage section below for usage examples.
 
+### API version
+
+You can choose which API version to use with Omise. Each API version has new features and might not be compatible with previous versions. You can change the default version by visiting your Omise Dashboard.
+
+To overwrite the API version to use, you can specify it by defining OMISE_API_VERSION.
+The version configured here will have higher priority than the version set in your Omise account.
+This is useful if you have multiple environments with different API versions for testing.
+(e.g. Development on the latest version but production is on an older version).
+
+```php
+require_once dirname(__FILE__).'/omise-php/lib/Omise.php';
+
+define('OMISE_API_VERSION', '2014-07-27');
+```
+
+It is highly recommended to set this version to the current version
+you're using.
+
 ## Usage
 
 ### 1. Flow
