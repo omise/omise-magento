@@ -20,6 +20,8 @@
                         formValidation      = form.find('.omise-validation-advice'),
                         formValidationMsg   = formValidation.find('.validation-advice');
 
+                    jQuery("#payment-buttons-container").find("button").prop("disabled", true);
+
                     // Serialize the form fields into a valid card object.
                     var card = {
                         "name": form.find("[data-omise=holder_name]").val(),
@@ -41,11 +43,21 @@
                             // Display an error message - "Omise Response: "+response.message.
                             formValidation.css({'opacity': 1, 'display': 'block'});
                             formValidationMsg.html("Omise Response: "+response.message);
+
+                            jQuery("#payment-buttons-container").find("button").prop("disabled", false);
                         } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
                             // Display an error message - "Omise Response: Card authorization failure.".
                             formValidation.css({'opacity': 1, 'display': 'block'});
                             formValidationMsg.html("Omise Response: Card authorization failure.");
+
+                            jQuery("#payment-buttons-container").find("button").prop("disabled", false);
                         } else {
+                            form.find("[data-omise=holder_name]").prop("disabled", true);
+                            form.find("[data-omise=number]").prop("disabled", true);
+                            form.find("[data-omise=expiration_month]").prop("disabled", true);
+                            form.find("[data-omise=expiration_year]").prop("disabled", true);
+                            form.find("[data-omise=security_code]").prop("disabled", true);
+
                             form.find("[data-omise=omise_token]").val(response.id);
 
                             return superMethod();

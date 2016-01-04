@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
+class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
     /** @var string */
     protected $_code            = 'omise_gateway';
@@ -40,6 +40,9 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         if (isset($charge['error']))
             Mage::throwException(Mage::helper('payment')->__('OmiseCharge:: '.$charge['error']));
 
+        if (!$charge['authorized'])
+            Mage::throwException(Mage::helper('payment')->__('Your authorize failed:: ('.$charge['failure_code'].') - '.$charge['failure_code']));
+
         $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $charge['id']);
 
         Mage::log('This transaction was authorized! (by OmiseCharge API)');
@@ -76,6 +79,9 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 
         if (isset($charge['error']))
             Mage::throwException(Mage::helper('payment')->__('OmiseCharge:: '.$charge['error']));
+
+        if (!$charge['authorized'] || !$charge['captured'])
+            Mage::throwException(Mage::helper('payment')->__('Your payment failed:: ('.$charge['failure_code'].') - '.$charge['failure_code']));
 
         Mage::log('This transaction was authorized and captured! (by OmiseCharge API)');
         return $this;
