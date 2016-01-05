@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.9.0.5] 2016-01-05
+- *`Fixed`* Check authorized and captured status before continue the charge action.
+- *`Fixed`* Disable submit button action when user clicks submit.
+- *`Updated`* Extends `Mage_Payment_Model_Method_Abstract` class instead of `Mage_Payment_Model_Method_Cc` in the payment method class.
+
 ## [1.9.0.4] 2015-11-16
 - *`Added`* Added `OmiseMagento/[OmiseMagentoVersion]`, `Magento/[MagentoVersion]` into `OMISE_USER_AGENT_SUFFIX`.
 - *`Updated`* Updated **omise-php** library from 2.3.1 to 2.4.0.
