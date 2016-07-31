@@ -1,77 +1,119 @@
 <script type="text/javascript">
-    Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
-        var paymentMethod = jQuery("#co-payment-form").find("input[name='payment[method]']:checked").val();
+    if ((typeof jQuery === 'undefined') && ! window.jQuery) {
 
-        if (typeof paymentMethod == "undefined") {
-            alert('Please select one method');
+        if (typeof $ == 'function') {
+            var dlSignIsUsing = true;
+        } else {
+            var dlSignIsUsing = false;
+        }
 
-            return false;
-        } else if (paymentMethod == "omise_gateway") {
-            var omiseValidation = new Validation('co-payment-form');
+        function getScript(url, success) {
+            var script     = document.createElement('script');
+                script.src = url;
 
-            // If validate pass
-            if (omiseValidation.validate()) {
-                jQuery.getScript("https://cdn.omise.co/omise.min.js.gz", function() {
+            var head = document.getElementsByTagName('head')[0],
+                done = false;
 
-                    // Set Omise key
-                    Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+            // Attach handlers for all browsers
+            script.onload = script.onreadystatechange = function() {
+                if (! done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
+                    done = true;
 
-                    var form                = jQuery("#payment_form_omise_gateway"),
-                        formValidation      = form.find('.omise-validation-advice'),
-                        formValidationMsg   = formValidation.find('.validation-advice');
+                    // callback function provided as param
+                    success();
 
-                    jQuery("#payment-buttons-container").find("button").prop("disabled", true);
+                    script.onload = script.onreadystatechange = null;
+                    head.removeChild(script);
+                };
+            };
 
-                    // Serialize the form fields into a valid card object.
-                    var card = {
-                        "name": form.find("[data-omise=holder_name]").val(),
-                        "number": form.find("[data-omise=number]").val(),
-                        "expiration_month": form.find("[data-omise=expiration_month]").val(),
-                        "expiration_year": form.find("[data-omise=expiration_year]").val(),
-                        "security_code": form.find("[data-omise=security_code]").val()
-                    };
+            head.appendChild(script);
+        };
 
-                    formValidation.css({'opacity': 0, 'display': 'none'});
+        getScript('https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js', function() {
+            $nj = jQuery.noConflict();
+            hookPaymentSave($nj);
+        });
+    } else {
+        $nj = jQuery.noConflict();
+        hookPaymentSave($nj);
+    }
 
-                    // Send a request to create a token
-                    // then trigger the callback function once a response is received from Omise.
-                    // * Note that the response could be an error and this needs to be handled
-                    // * within the callback.
-                    Omise.createToken("card", card, function (statusCode, response) {
-                        // If has an error (can not create a card's token).
-                        if (response.object == "error") {
-                            // Display an error message - "Omise Response: "+response.message.
-                            formValidation.css({'opacity': 1, 'display': 'block'});
-                            formValidationMsg.html("Omise Response: "+response.message);
+    function hookPaymentSave(jQuery) {
+        Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
+            var paymentMethod = jQuery("#co-payment-form").find("input[name='payment[method]']:checked").val();
 
-                            jQuery("#payment-buttons-container").find("button").prop("disabled", false);
-                        } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                            // Display an error message - "Omise Response: Card authorization failure.".
-                            formValidation.css({'opacity': 1, 'display': 'block'});
-                            formValidationMsg.html("Omise Response: Card authorization failure.");
-
-                            jQuery("#payment-buttons-container").find("button").prop("disabled", false);
-                        } else {
-                            form.find("[data-omise=holder_name]").prop("disabled", true);
-                            form.find("[data-omise=number]").prop("disabled", true);
-                            form.find("[data-omise=expiration_month]").prop("disabled", true);
-                            form.find("[data-omise=expiration_year]").prop("disabled", true);
-                            form.find("[data-omise=security_code]").prop("disabled", true);
-
-                            form.find("[data-omise=omise_token]").val(response.id);
-
-                            return superMethod();
-                        };
-                    });
-
-                });
+            if (typeof paymentMethod == "undefined") {
+                alert('Please select one method');
 
                 return false;
+            } else if (paymentMethod == "omise_gateway") {
+                var omiseValidation = new Validation('co-payment-form');
+
+                // If validate pass
+                if (omiseValidation.validate()) {
+                    jQuery.getScript("https://cdn.omise.co/omise.min.js.gz", function() {
+
+                        // Set Omise key
+                        Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+
+                        var form                = jQuery("#payment_form_omise_gateway"),
+                            formValidation      = form.find('.omise-validation-advice'),
+                            formValidationMsg   = formValidation.find('.validation-advice');
+
+                        jQuery("#payment-buttons-container").find("button").prop("disabled", true);
+
+                        // Serialize the form fields into a valid card object.
+                        var card = {
+                            "name": form.find("[data-omise=holder_name]").val(),
+                            "number": form.find("[data-omise=number]").val(),
+                            "expiration_month": form.find("[data-omise=expiration_month]").val(),
+                            "expiration_year": form.find("[data-omise=expiration_year]").val(),
+                            "security_code": form.find("[data-omise=security_code]").val()
+                        };
+
+                        formValidation.css({'opacity': 0, 'display': 'none'});
+
+                        // Send a request to create a token
+                        // then trigger the callback function once a response is received from Omise.
+                        // * Note that the response could be an error and this needs to be handled
+                        // * within the callback.
+                        Omise.createToken("card", card, function (statusCode, response) {
+                            // If has an error (can not create a card's token).
+                            if (response.object == "error") {
+                                // Display an error message - "Omise Response: "+response.message.
+                                formValidation.css({'opacity': 1, 'display': 'block'});
+                                formValidationMsg.html("Omise Response: "+response.message);
+
+                                jQuery("#payment-buttons-container").find("button").prop("disabled", false);
+                            } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                                // Display an error message - "Omise Response: Card authorization failure.".
+                                formValidation.css({'opacity': 1, 'display': 'block'});
+                                formValidationMsg.html("Omise Response: Card authorization failure.");
+
+                                jQuery("#payment-buttons-container").find("button").prop("disabled", false);
+                            } else {
+                                form.find("[data-omise=holder_name]").prop("disabled", true);
+                                form.find("[data-omise=number]").prop("disabled", true);
+                                form.find("[data-omise=expiration_month]").prop("disabled", true);
+                                form.find("[data-omise=expiration_year]").prop("disabled", true);
+                                form.find("[data-omise=security_code]").prop("disabled", true);
+
+                                form.find("[data-omise=omise_token]").val(response.id);
+
+                                return superMethod();
+                            };
+                        });
+
+                    });
+
+                    return false;
+                }
+            } else {
+                return superMethod();
             }
-        } else {
-            return superMethod();
-        }
-    }, jQuery);
+        }, jQuery);
+    }
 </script>
 
 <?php
