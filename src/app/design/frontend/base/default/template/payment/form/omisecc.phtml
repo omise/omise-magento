@@ -1,119 +1,93 @@
 <script type="text/javascript">
-    if ((typeof jQuery === 'undefined') && ! window.jQuery) {
+    function getScript(url, success) {
+        var script     = document.createElement("script");
+            script.src = url;
 
-        if (typeof $ == 'function') {
-            var dlSignIsUsing = true;
-        } else {
-            var dlSignIsUsing = false;
-        }
+        var head = document.getElementsByTagName("head")[0],
+            done = false;
 
-        function getScript(url, success) {
-            var script     = document.createElement('script');
-                script.src = url;
+        // Attach handlers for all browsers
+        script.onload = script.onreadystatechange = function() {
+            if (! done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+                done = true;
 
-            var head = document.getElementsByTagName('head')[0],
-                done = false;
+                // callback function provided as param
+                success();
 
-            // Attach handlers for all browsers
-            script.onload = script.onreadystatechange = function() {
-                if (! done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
-                    done = true;
-
-                    // callback function provided as param
-                    success();
-
-                    script.onload = script.onreadystatechange = null;
-                    head.removeChild(script);
-                };
+                script.onload = script.onreadystatechange = null;
+                head.removeChild(script);
             };
-
-            head.appendChild(script);
         };
 
-        getScript('https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js', function() {
-            $nj = jQuery.noConflict();
-            hookPaymentSave($nj);
-        });
-    } else {
-        $nj = jQuery.noConflict();
-        hookPaymentSave($nj);
-    }
+        head.appendChild(script);
+    };
 
-    function hookPaymentSave(jQuery) {
-        Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
-            var paymentMethod = jQuery("#co-payment-form").find("input[name='payment[method]']:checked").val();
+    // Hook Payment.save function by wrapping Omise logic on top of the 'Payment.prototype.save'
+    Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
+        var omisePayment = document.getElementById("p_method_omise_gateway");
 
-            if (typeof paymentMethod == "undefined") {
-                alert('Please select one method');
+        if (! omisePayment.checked) {
+            return superMethod();
+        }
 
-                return false;
-            } else if (paymentMethod == "omise_gateway") {
-                var omiseValidation = new Validation('co-payment-form');
+        var validator = new Validation("co-payment-form");
 
-                // If validate pass
-                if (omiseValidation.validate()) {
-                    jQuery.getScript("https://cdn.omise.co/omise.min.js.gz", function() {
+        if (validator.validate()) {
+            checkout.setLoadWaiting('payment');
 
-                        // Set Omise key
-                        Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+            getScript("https://cdn.omise.co/omise.min.js.gz", function() {
+                // Set Omise key
+                Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
-                        var form                = jQuery("#payment_form_omise_gateway"),
-                            formValidation      = form.find('.omise-validation-advice'),
-                            formValidationMsg   = formValidation.find('.validation-advice');
+                var form                  = document.getElementById("payment_form_omise_gateway"),
+                    formInput             = {
+                        "name"             : document.getElementById("omise_gateway_cc_name"),
+                        "number"           : document.getElementById("omise_gateway_cc_number"),
+                        "expiration_month" : document.getElementById("omise_gateway_expiration"),
+                        "expiration_year"  : document.getElementById("omise_gateway_expiration_yr"),
+                        "security_code"    : document.getElementById("omise_gateway_cc_cid"),
+                        "omise_token"      : document.getElementById("omise_gateway_token")
+                    },
+                    omiseValidationAdvice = document.getElementById("omise-validation-advice");
 
-                        jQuery("#payment-buttons-container").find("button").prop("disabled", true);
+                var card = {
+                    "name"             : formInput.name.value,
+                    "number"           : formInput.number.value,
+                    "expiration_month" : formInput.expiration_month.value,
+                    "expiration_year"  : formInput.expiration_year.value,
+                    "security_code"    : formInput.security_code.value
+                };
 
-                        // Serialize the form fields into a valid card object.
-                        var card = {
-                            "name": form.find("[data-omise=holder_name]").val(),
-                            "number": form.find("[data-omise=number]").val(),
-                            "expiration_month": form.find("[data-omise=expiration_month]").val(),
-                            "expiration_year": form.find("[data-omise=expiration_year]").val(),
-                            "security_code": form.find("[data-omise=security_code]").val()
-                        };
+                /** 
+                 * Send a request to create a token then trigger the callback function once
+                 * a response is received from Omise.
+                 *
+                 * Note that the response could be an error and this needs to be handled within
+                 * the callback.
+                 */
+                Omise.createToken("card", card, function(statusCode, response) {
+                    if (response.object == "error") {
+                        omiseValidationAdvice.innerHTML = response.message;
+                        checkout.setLoadWaiting(false);
+                    } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                        omiseValidationAdvice.innerHTML = 'This card cannot authorize, please contact our support.';
+                        checkout.setLoadWaiting(false);
+                    } else {
+                        formInput.omise_token.value         = response.id;
 
-                        formValidation.css({'opacity': 0, 'display': 'none'});
+                        formInput.name.disabled             = true;
+                        formInput.number.disabled           = true;
+                        formInput.expiration_month.disabled = true;
+                        formInput.expiration_year.disabled  = true;
+                        formInput.security_code.disabled    = true;
 
-                        // Send a request to create a token
-                        // then trigger the callback function once a response is received from Omise.
-                        // * Note that the response could be an error and this needs to be handled
-                        // * within the callback.
-                        Omise.createToken("card", card, function (statusCode, response) {
-                            // If has an error (can not create a card's token).
-                            if (response.object == "error") {
-                                // Display an error message - "Omise Response: "+response.message.
-                                formValidation.css({'opacity': 1, 'display': 'block'});
-                                formValidationMsg.html("Omise Response: "+response.message);
-
-                                jQuery("#payment-buttons-container").find("button").prop("disabled", false);
-                            } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                                // Display an error message - "Omise Response: Card authorization failure.".
-                                formValidation.css({'opacity': 1, 'display': 'block'});
-                                formValidationMsg.html("Omise Response: Card authorization failure.");
-
-                                jQuery("#payment-buttons-container").find("button").prop("disabled", false);
-                            } else {
-                                form.find("[data-omise=holder_name]").prop("disabled", true);
-                                form.find("[data-omise=number]").prop("disabled", true);
-                                form.find("[data-omise=expiration_month]").prop("disabled", true);
-                                form.find("[data-omise=expiration_year]").prop("disabled", true);
-                                form.find("[data-omise=security_code]").prop("disabled", true);
-
-                                form.find("[data-omise=omise_token]").val(response.id);
-
-                                return superMethod();
-                            };
-                        });
-
-                    });
-
-                    return false;
-                }
-            } else {
-                return superMethod();
-            }
-        }, jQuery);
-    }
+                        checkout.setLoadWaiting(false);
+                        return superMethod();
+                    };
+                });
+            });
+        }
+    });
 </script>
 
 <?php
@@ -145,7 +119,7 @@
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
 
-    <li class="omise-validation-advice"><div class="validation-advice"></div></li>
+    <li><div id="omise-validation-advice" class="validation-advice"></div></li>
 
     <li>
         <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
@@ -159,7 +133,7 @@
             </select>
         </div>
 
-        <input data-omise="omise_token" type="hidden" name="payment[omise_token]">
+        <input id="<?php echo $_code ?>_token" data-omise="omise_token" type="hidden" name="payment[omise_token]">
     </li>
 
     <!-- Credit Card Holder Name -->
