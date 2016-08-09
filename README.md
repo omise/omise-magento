@@ -1,16 +1,16 @@
 # Omise extension for Magento eCommerce
 
 ## Magento Version Compatibility
-- Magento (CE) 1.9.x
+- Magento (CE) 1.9.2.4
 
 ## Dependencies
-- [omise-php](https://github.com/omise/omise-php) (v2.3.1)
+- [omise-php](https://github.com/omise/omise-php) (v2.4.0)
 
 ## Installation
 Follow these steps to install **omise-magento:**  
 
 1. Download this repository and unzip it into your `local machine` (or directly to your server)  
-  Download links: [omise-margento-v1.0.zip](https://github.com/omise/omise-magento/archive/master.zip) or [omise-margento-v1.0.tar.gz](https://github.com/omise/omise-magento/archive/master.tar.gz)
+  Download links: [omise-margento.zip](https://github.com/omise/omise-magento/archive/master.zip) or [omise-margento.tar.gz](https://github.com/omise/omise-magento/archive/master.tar.gz)
   ![omise-magento Folder Structure](https://cdn.omise.co/assets/omise-magento/installation-01.png)  
 
 2. Go to `/omise-magento/src` and copy **all files** into your **Magento Project**  
