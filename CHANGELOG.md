@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.9.0.6] 2016-08-10
+- *`Improved`* Remove jQuery library and update code according to new JS checkout form function
+
 ## [1.9.0.5] 2016-01-05
 - *`Fixed`* Check authorized and captured status before continue the charge action.
 - *`Fixed`* Disable submit button action when user clicks submit.
