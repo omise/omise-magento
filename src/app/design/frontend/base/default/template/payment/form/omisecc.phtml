@@ -39,8 +39,7 @@
                 // Set Omise key
                 Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
-                var form                  = document.getElementById("payment_form_omise_gateway"),
-                    formInput             = {
+                var formInput             = {
                         "name"             : document.getElementById("omise_gateway_cc_name"),
                         "number"           : document.getElementById("omise_gateway_cc_number"),
                         "expiration_month" : document.getElementById("omise_gateway_expiration"),
