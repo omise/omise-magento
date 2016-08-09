@@ -57,7 +57,7 @@
                     "security_code"    : formInput.security_code.value
                 };
 
-                /** 
+                /**
                  * Send a request to create a token then trigger the callback function once
                  * a response is received from Omise.
                  *
@@ -137,7 +137,7 @@
 
     <!-- Credit Card Holder Name -->
     <li>
-        <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Credit Card Holder Name') ?></label>
+        <label for="<?php echo $_code ?>_cc_name" class="required"><em>*</em><?php echo $this->__('Credit Card Holder Name') ?></label>
         <div class="input-box">
             <input type="text" data-omise="holder_name" id="<?php echo $_code ?>_cc_name" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name') ?>" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')) ?>" />
         </div>
