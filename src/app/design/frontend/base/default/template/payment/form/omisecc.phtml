@@ -151,7 +151,7 @@ $_code = $this->getMethodCode();
             <em>*</em><?php echo $this->__('Credit Card Holder Name'); ?>
         </label>
         <div class="input-box">
-            <input id="<?php echo $_code; ?>_cc_name" type="text" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name'); ?>" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')) ?>" class="input-text required-entry" />
+            <input id="<?php echo $_code; ?>_cc_name" type="text" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name'); ?>" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')); ?>" class="input-text required-entry" />
         </div>
     </li>
 
@@ -220,13 +220,13 @@ $_code = $this->getMethodCode();
                         <?php echo $this->__('Issue Number'); ?>:
                     </label>
                     <span class="input-box">
-                        <input id="<?php echo $_code; ?>_cc_issue" type="text" name="payment[cc_ss_issue]" title="<?php echo $this->__('Issue Number') ?>" value="" class="input-text validate-cc-ukss cvv" />
+                        <input id="<?php echo $_code; ?>_cc_issue" type="text" name="payment[cc_ss_issue]" title="<?php echo $this->__('Issue Number'); ?>" value="" class="input-text validate-cc-ukss cvv" />
                     </span>
                 </li>
 
                 <li>
                     <label for="<?php echo $_code; ?>_start_month">
-                        <?php echo $this->__('Start Date') ?>:
+                        <?php echo $this->__('Start Date'); ?>:
                     </label>
                     <div class="input-box">
                         <div class="v-fix">
