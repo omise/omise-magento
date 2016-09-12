@@ -84,13 +84,14 @@ Most of extensions have no any procedure to trigger this step of omise-magento. 
 4. You need to have the technical knowledge about JavaScript and PHP, if not please contact your technical staff.
 
 #### Disclaimer about the example of third-party extension ####
-- The reason that we use the iwd One Page Checkout free version because we found it available for download, use and modify.
+- The reason that we use the IWD One Page Checkout free version because we found it available for download, use and modify.
 - Please contact the third-party about their product or service information.
+- To download the IWD One Page Checkout extension, please go to this [link](https://www.iwdagency.com/extensions/one-step-page-checkout.html).
 
 **Note:**
 With the invalid modification, it may adversely affect to the normal process. So, please do the backup before the modification.
 
-The steps below are an example of modifying the OPC extension, iwd One Page Checkout free version, to work with omise-magento.
+The steps below are an example of modifying the OPC extension, IWD One Page Checkout free version, to work with omise-magento.
 
 1. Add a HTML element, hidden, to be the referece within the checkout page and across the extension
 
