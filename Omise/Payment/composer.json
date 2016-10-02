@@ -1,0 +1,9 @@
+{
+    "name": "omise/payment",
+    "version": "2.1.0",
+    "type": "magento2-module",
+    "license": "MIT",
+    "autoload": {
+        "files": ["registration.php"]
+    }
+}
