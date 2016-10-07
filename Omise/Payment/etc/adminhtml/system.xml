@@ -10,12 +10,12 @@
             <resource>Omise_Payment::omise_payment</resource>
             <group id="setting" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Setting</label>
-                <field id="module_status" translate="label comment" type="checkbox" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="module_status" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enable/Disable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable Omise Payment Module.</comment>
                 </field>
-                <field id="sandbox_status" translate="label comment" type="checkbox" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sandbox_status" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sandbox</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enabling sandbox means that all your transactions will be in TEST mode.</comment>
@@ -43,7 +43,7 @@
                     <label>Title</label>
                     <comment>This controls the title which the user sees during checkout.</comment>
                 </field>
-                <field id="3ds" translate="label comment" type="checkbox" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="3ds" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>3-D Secure support</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.).</comment>
