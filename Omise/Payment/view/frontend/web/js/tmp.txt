@@ -1,6 +1,0 @@
-This file can be deleted.
-
-This file was used to initial the directory structure for the Magnto 2
-module development.
-
-Please delete this file when develop the function or feature.
