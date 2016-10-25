@@ -73,6 +73,7 @@
                                     <select name="payment[cc_exp_year]"
                                             class="select select-year"
                                             data-bind="attr: {id: getCode() + '_expiration_yr', 'data-container': getCode() + '-cc-year', 'data-validate': JSON.stringify({required:true})},
+                                                       options: getCcYearsValues(),
                                                        optionsValue: 'value',
                                                        optionsText: 'year',
                                                        optionsCaption: $t('Year')">

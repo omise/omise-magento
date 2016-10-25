@@ -20,12 +20,18 @@ class OmiseConfigProvider implements ConfigProviderInterface
         return $this->ccConfig->getCcMonths();
     }
 
+    public function getCcYears()
+    {
+        return $this->ccConfig->getCcYears();
+    }
+
     public function getConfig()
     {
         return [
             'payment' => [
                 'ccform' => [
-                    'months' => [self::CODE => $this->getCcMonths()]
+                    'months' => [self::CODE => $this->getCcMonths()],
+                    'years' => [self::CODE => $this->getCcYears()],
                 ],
             ]
         ];
