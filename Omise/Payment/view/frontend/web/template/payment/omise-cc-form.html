@@ -61,6 +61,7 @@
                                     <select  name="payment[cc_exp_month]"
                                              class="select select-month"
                                              data-bind="attr: {id: getCode() + '_expiration', 'data-container': getCode() + '-cc-month', 'data-validate': JSON.stringify({required:true, 'validate-cc-exp':'#' + getCode() + '_expiration_yr'})},
+                                                        options: getCcMonthsValues(),
                                                         optionsValue: 'value',
                                                         optionsText: 'month',
                                                         optionsCaption: $t('Month')">
