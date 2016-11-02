@@ -4,7 +4,7 @@
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Ui\OmiseConfigProvider::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Omise\Payment\Block\Form\Cc</argument>
-            <argument name="infoBlockType" xsi:type="string">Omise\Payment\Block\Info</argument>
+            <argument name="infoBlockType" xsi:type="string">Omise\Payment\Block\Info\Cc</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
