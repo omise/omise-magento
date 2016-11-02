@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="OmiseAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Ui\OmiseConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Omise\Payment\Block\Form\Cc</argument>
+            <argument name="infoBlockType" xsi:type="string">Omise\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Ui\OmiseConfigProvider::CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\OmiseClient</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAuthorizeRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="payment_details" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
+                <item name="payment_comments" xsi:type="string">Omise\Payment\Gateway\Response\PaymentCommentsHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>
