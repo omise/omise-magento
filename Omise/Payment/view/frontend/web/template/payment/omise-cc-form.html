@@ -23,7 +23,10 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
-        <form class="form">
+        <form class="form"
+              data-bind="attr: {
+              id: getCode() + 'Form',
+              }">
             <input type="hidden"
                    name="payment[omise_card_token]"
                    data-bind="attr: {
@@ -42,7 +45,8 @@
                                data-bind="attr: {
                                autocomplete: off,
                                id: getCode() + 'CardNumber',
-                               'data-container': getCode() + '-cc-number'
+                               'data-container': getCode() + '-cc-number',
+                               'data-validate': JSON.stringify({'validate-cc-number':'#' + getCode() + 'CardNumber'})
                                },
                                value: omiseCardNumber"/>
                     </div>
@@ -53,11 +57,12 @@
                     </label>
                     <div class="control">
                         <input type="text"
-                               class="input-text required-entry"
+                               class="input-text"
                                data-bind="attr: {
                                autocomplete: off,
                                id: getCode() + 'CardHolderName',
-                               'data-container': getCode() + '-cc-owner'
+                               'data-container': getCode() + '-cc-owner',
+                               'data-validate': JSON.stringify({'required-entry': '#' + getCode() + 'CardHolderName'})
                                },
                                value: omiseCardHolderName"/>
                     </div>
@@ -79,7 +84,8 @@
                                             options: getCcMonthsValues(),
                                             optionsValue: 'value',
                                             optionsText: 'month',
-                                            optionsCaption: $t('Month')">
+                                            optionsCaption: $t('Month')"
+                                            data-validate="{required: true}">
                                     </select>
                                 </div>
                             </div>
@@ -87,14 +93,15 @@
                                 <div class="control">
                                     <select class="select select-year"
                                             data-bind="attr: {
-                                            id: 'omiseCardExpirationYear',
+                                            id: getCode() + 'CardExpirationYear',
                                             'data-container': getCode() + '-cc-year',
                                             },
                                             value: omiseCardExpirationYear,
                                             options: getCcYearsValues(),
                                             optionsValue: 'value',
                                             optionsText: 'year',
-                                            optionsCaption: $t('Year')">
+                                            optionsCaption: $t('Year')"
+                                            data-validate="{required: true}">
                                     </select>
                                 </div>
                             </div>
@@ -112,6 +119,10 @@
                                data-bind="attr: {
                                id: getCode() + 'CardSecurityCode',
                                'data-container': getCode() + '-cc-cvv',
+                               'data-validate': JSON.stringify({
+                                   'required-number': true,
+                                   'validate-card-cvv': '#' + getCode() + 'CardSecurityCode'
+                               })
                                },
                                value: omiseCardSecurityCode"/>
                     </div>

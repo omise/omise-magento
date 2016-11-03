@@ -2,8 +2,9 @@ define(
     [
         'Magento_Payment/js/view/payment/cc-form',
         'mage/translate',
+        'jquery',
     ],
-    function (Component, $t) {
+    function (Component, $t, $) {
         'use strict';
 
         return Component.extend({
@@ -65,8 +66,16 @@ define(
             placeOrder: function(data, event) {
                 var self = this;
 
+                if (event) {
+                    event.preventDefault();
+                }
+
                 if (typeof Omise === 'undefined') {
                     alert($t('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
+                    return false;
+                }
+
+                if (!self.validate()) {
                     return false;
                 }
 
@@ -86,6 +95,26 @@ define(
                         alert(response.message);
                     }
                 });
+
+                return false;
+            },
+
+            validate: function () {
+                $('#' + this.getCode() + 'Form').validation();
+                
+                var isCardNumberValid          = $('#' + this.getCode() + 'CardNumber').valid();
+                var isCardHolderNameValid      = $('#' + this.getCode() + 'CardHolderName').valid();
+                var isCardExpirationMonthValid = $('#' + this.getCode() + 'CardExpirationMonth').valid();
+                var isCardExpirationYearValid  = $('#' + this.getCode() + 'CardExpirationYear').valid();
+                var isCardSecurityCodeValid    = $('#' + this.getCode() + 'CardSecurityCode').valid();
+
+                if (isCardNumberValid
+                    && isCardHolderNameValid
+                    && isCardExpirationMonthValid
+                    && isCardExpirationYearValid
+                    && isCardSecurityCodeValid) {
+                    return true;
+                }
 
                 return false;
             },
