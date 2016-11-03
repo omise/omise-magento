@@ -3,8 +3,14 @@ define(
         'Magento_Payment/js/view/payment/cc-form',
         'mage/translate',
         'jquery',
+        'Magento_Payment/js/model/credit-card-validation/validator'
     ],
-    function (Component, $t, $) {
+    function (
+        Component,
+        $t,
+        $,
+        validator
+    ) {
         'use strict';
 
         return Component.extend({
