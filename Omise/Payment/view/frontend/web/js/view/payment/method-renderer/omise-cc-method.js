@@ -3,13 +3,15 @@ define(
         'Magento_Payment/js/view/payment/cc-form',
         'mage/translate',
         'jquery',
-        'Magento_Payment/js/model/credit-card-validation/validator'
+        'Magento_Payment/js/model/credit-card-validation/validator',
+        'Magento_Checkout/js/model/full-screen-loader'
     ],
     function (
         Component,
         $t,
         $,
-        validator
+        validator,
+        fullScreenLoader
     ) {
         'use strict';
 
@@ -93,12 +95,19 @@ define(
                     security_code: this.omiseCardSecurityCode()
                 };
 
+                self.isPlaceOrderActionAllowed(false);
+                fullScreenLoader.startLoader();
+
                 Omise.setPublicKey(this.getPublicKey());
                 Omise.createToken('card', card, function(statusCode, response) {
                     if (statusCode === 200) {
+                        fullScreenLoader.stopLoader();
                         self.omiseCardToken(response.id);
                     } else {
+                        fullScreenLoader.stopLoader();
                         alert(response.message);
+                        self.isPlaceOrderActionAllowed(true);
+                        return false;
                     }
                 });
 
