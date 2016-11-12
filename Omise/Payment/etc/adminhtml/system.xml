@@ -30,14 +30,18 @@
                     <label>Secret key for live</label>
                     <comment>The "Live" mode secret key can be found in Omise Dashboard.</comment>
                 </field>
-                <field id="advance_settings" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Payment Action</label>
+                    <source_model>Magento\Authorizenet\Model\Source\PaymentAction</source_model>
+                </field>
+                <field id="advance_settings" translate="label" type="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Advance Settings</label>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="title" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Title</label>
                     <comment>This controls the title which the user sees during checkout.</comment>
                 </field>
-                <field id="3ds" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="3ds" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>3-D Secure support</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.).</comment>
