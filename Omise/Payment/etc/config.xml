@@ -8,6 +8,7 @@
                 <title>Credit / Debit Card</title>
                 <model>OmiseAdapter</model>
                 <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
                 <can_use_checkout>1</can_use_checkout>
                 <is_gateway>1</is_gateway>
                 <payment_action>authorize</payment_action>
