@@ -15,6 +15,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">OmiseCaptureCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -59,6 +60,21 @@
         <arguments>
             <argument name="builders" xsi:type="array">
             </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\OmiseClient</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseCaptureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array"></argument>
         </arguments>
     </virtualType>
 
