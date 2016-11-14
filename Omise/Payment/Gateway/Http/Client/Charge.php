@@ -2,6 +2,8 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 
+require_once dirname(__FILE__).'/../Lib/omise-php/lib/omise/OmiseCharge.php';
+
 class Charge extends AbstractOmiseClient
 {
     /**

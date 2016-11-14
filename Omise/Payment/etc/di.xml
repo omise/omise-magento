@@ -67,7 +67,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\OmiseClient</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Charge</argument>
             <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
         </arguments>
     </virtualType>
