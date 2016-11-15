@@ -4,9 +4,7 @@ namespace Omise\Payment\Gateway\Http\Client;
 
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-
-define('OMISE_PUBLIC_KEY', 'pkey_test_51fl8dfabqmt3m27vl7');
-define('OMISE_SECRET_KEY', 'skey_test_51fl8dfabe7sqnj8th2');
+use Omise\Payment\Model\Ui\OmiseConfigProvider;
 
 abstract class AbstractOmiseClient implements ClientInterface
 {
@@ -30,6 +28,15 @@ abstract class AbstractOmiseClient implements ClientInterface
      * @var string
      */
     const PROCESS_STATUS_FAILED = 'failed';
+
+    protected $publicKey;
+    protected $secretKey;
+
+    public function __construct(OmiseConfigProvider $config)
+    {
+        $this->publicKey = $config->getPublicKey();
+        $this->secretKey = $config->getSecretKey();
+    }
 
     /**
      * @param  \Magento\Payment\Gateway\Http\TransferInterface $transferObject
