@@ -16,7 +16,7 @@ class Charge extends AbstractOmiseClient
         return \OmiseCharge::create([
             'amount'   => 10000,
             'currency' => "thb",
-            'card'     => "tokn_test_55zygut6s3y0s91k0n5",
+            'card'     => $body['omise_card_token'],
             'capture'  => true
         ], $this->publicKey, $this->secretKey);
     }

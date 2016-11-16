@@ -14,7 +14,7 @@ class Authorize extends AbstractOmiseClient
         return \OmiseCharge::create([
             'amount'   => 10000,
             'currency' => "thb",
-            'card'     => "tokn_test_5609gc5d58d32nr4e1g",
+            'card'     => $body['omise_card_token'],
             'capture'  => false
         ], $this->publicKey, $this->secretKey);
     }
