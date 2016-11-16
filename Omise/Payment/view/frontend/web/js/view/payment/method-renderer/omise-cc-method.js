@@ -47,7 +47,9 @@ define(
             getData: function() {
                 return {
                     'method': this.item.method,
-                    'additional_data': {}
+                    'additional_data': {
+                        'omise_card_token': this.omiseCardToken()
+                    }
                 };
             },
 
