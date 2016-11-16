@@ -59,6 +59,7 @@
     <virtualType name="OmiseAuthorizeRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -74,7 +75,9 @@
 
     <virtualType name="OmiseCaptureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
-            <argument name="builders" xsi:type="array"></argument>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+            </argument>
         </arguments>
     </virtualType>
 
