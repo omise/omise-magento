@@ -2,7 +2,7 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 
-require_once dirname(__FILE__).'/../Lib/omise-php/lib/omise/OmiseCharge.php';
+use Omise\Payment\Gateway\Request\PaymentDataBuilder;
 
 class Charge extends AbstractOmiseClient
 {
@@ -13,11 +13,15 @@ class Charge extends AbstractOmiseClient
      */
     public function request(Array $body)
     {
-        return \OmiseCharge::create([
-            'amount'   => 10000,
-            'currency' => "thb",
-            'card'     => $body['omise_card_token'],
-            'capture'  => true
-        ], $this->publicKey, $this->secretKey);
+        return \OmiseCharge::create(
+            [
+                'amount'   => $body[PaymentDataBuilder::AMOUNT],
+                'currency' => $body[PaymentDataBuilder::CURRENCY],
+                'card'     => $body[PaymentDataBuilder::OMISE_TOKEN],
+                'capture'  => true
+            ],
+            $this->publicKey,
+            $this->secretKey
+        );
     }
 }
