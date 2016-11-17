@@ -2,6 +2,8 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 
+use Omise\Payment\Gateway\Request\PaymentDataBuilder;
+
 class Authorize extends AbstractOmiseClient
 {
     /**
@@ -11,11 +13,15 @@ class Authorize extends AbstractOmiseClient
      */
     public function request(Array $body)
     {
-        return \OmiseCharge::create([
-            'amount'   => 10000,
-            'currency' => "thb",
-            'card'     => $body['omise_card_token'],
-            'capture'  => false
-        ], $this->publicKey, $this->secretKey);
+        return \OmiseCharge::create(
+            [
+                'amount'   => $body[PaymentDataBuilder::AMOUNT],
+                'currency' => $body[PaymentDataBuilder::CURRENCY],
+                'card'     => $body[PaymentDataBuilder::OMISE_TOKEN],
+                'capture'  => false
+            ],
+            $this->publicKey,
+            $this->secretKey
+        );
     }
 }

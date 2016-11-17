@@ -78,18 +78,13 @@ abstract class AbstractOmiseClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        $body = $transferObject->getBody();
-        $payload  = [
-            'omise_card_token' => $body['omise_card_token']
-        ];
-
         $response = [
             'status' => self::PROCESS_STATUS_INIT,
             'api'    => null
         ];
         
         try {
-            $response['api']    = $this->request($payload);
+            $response['api']    = $this->request($transferObject->getBody());
             $response['status'] = self::PROCESS_STATUS_SUCCESSFUL;
         } catch (Exception $e) {
             $response['status'] = self::PROCESS_STATUS_FAILED;
