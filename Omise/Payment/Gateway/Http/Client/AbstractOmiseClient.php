@@ -2,6 +2,8 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 
+use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\Module\ModuleListInterface;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Omise\Payment\Model\Ui\OmiseConfigProvider;
@@ -32,10 +34,41 @@ abstract class AbstractOmiseClient implements ClientInterface
     protected $publicKey;
     protected $secretKey;
 
-    public function __construct(OmiseConfigProvider $config)
-    {
+    protected $moduleList;
+    protected $productMetadata;
+
+    public function __construct(
+        OmiseConfigProvider $config,
+        ModuleListInterface $moduleList,
+        ProductMetadataInterface $productMetadata
+    ) {
         $this->publicKey = $config->getPublicKey();
         $this->secretKey = $config->getSecretKey();
+
+        $this->moduleList = $moduleList;
+        $this->productMetadata = $productMetadata;
+
+        $this->defineUserAgent();
+    }
+
+    protected function defineUserAgent()
+    {
+        if (!defined('OMISE_USER_AGENT_SUFFIX')) {
+            $userAgent = 'OmiseMagento2/' . $this->getModuleVersion();
+            $userAgent .= ' Magento2/' . $this->getMagentoVersion();
+
+            define('OMISE_USER_AGENT_SUFFIX', $userAgent);
+        }
+    }
+
+    protected function getMagentoVersion()
+    {
+        return $this->productMetadata->getVersion();
+    }
+
+    protected function getModuleVersion()
+    {
+        return $this->moduleList->getOne(OmiseConfigProvider::MODULE_NAME)['setup_version'];
     }
 
     /**
