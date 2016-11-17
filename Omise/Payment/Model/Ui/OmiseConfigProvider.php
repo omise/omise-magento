@@ -11,6 +11,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      * @var string
      */
     const CODE = 'omise';
+    const MODULE_NAME = 'Omise_Payment';
 
     /**
      * @var \Magento\Payment\Model\CcConfig $ccConfig
