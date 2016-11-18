@@ -105,6 +105,11 @@ define(
                 return false;
             },
 
+            /**
+             * Validate the form fields
+             *
+             * @return {boolean}
+             */
             validate: function () {
                 $('#' + this.getCode() + 'Form').validation();
                 
