@@ -92,7 +92,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return string
      */
-    protected function getPublicKey()
+    public function getPublicKey()
     {
         if ($this->isSandboxEnabled()) {
             return $this->getTestPublicKey();
@@ -126,7 +126,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return string
      */
-    protected function getSecretKey()
+    public function getSecretKey()
     {
         if ($this->isSandboxEnabled()) {
             return $this->getTestSecretKey();
