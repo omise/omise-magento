@@ -37,7 +37,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return array
      */
-    public function getCcMonths()
+    protected function getCcMonths()
     {
         return $this->ccConfig->getCcMonths();
     }
@@ -47,7 +47,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return array
      */
-    public function getCcYears()
+    protected function getCcYears()
     {
         return $this->ccConfig->getCcYears();
     }
@@ -77,7 +77,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return string
      */
-    public function getLivePublicKey()
+    protected function getLivePublicKey()
     {
         return $this->omiseHelper->getConfig('live_public_key');
     }
@@ -87,7 +87,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return string
      */
-    public function getPublicKey()
+    protected function getPublicKey()
     {
         if ($this->isSandboxEnabled()) {
             return $this->getTestPublicKey();
@@ -101,7 +101,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return string
      */
-    public function getTestPublicKey()
+    protected function getTestPublicKey()
     {
         return $this->omiseHelper->getConfig('test_public_key');
     }
@@ -111,7 +111,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return bool
      */
-    public function isSandboxEnabled()
+    protected function isSandboxEnabled()
     {
         if ($this->omiseHelper->getConfig('sandbox_status')) {
             return true;
