@@ -33,26 +33,6 @@ class OmiseConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Retrieve list of months translation
-     *
-     * @return array
-     */
-    protected function getCcMonths()
-    {
-        return $this->ccConfig->getCcMonths();
-    }
-
-    /**
-     * Retrieve array of available years
-     *
-     * @return array
-     */
-    protected function getCcYears()
-    {
-        return $this->ccConfig->getCcYears();
-    }
-
-    /**
      * Retrieve assoc array of checkout configuration
      *
      * @return array
@@ -73,13 +53,37 @@ class OmiseConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Retrieve Omise live public key
+     * Retrieve list of months translation
      *
-     * @return string
+     * @return array
      */
-    protected function getLivePublicKey()
+    protected function getCcMonths()
     {
-        return $this->omiseHelper->getConfig('live_public_key');
+        return $this->ccConfig->getCcMonths();
+    }
+
+    /**
+     * Retrieve array of available years
+     *
+     * @return array
+     */
+    protected function getCcYears()
+    {
+        return $this->ccConfig->getCcYears();
+    }
+
+    /**
+     * Check if Omise's sandbox mode enable or not
+     *
+     * @return bool
+     */
+    protected function isSandboxEnabled()
+    {
+        if ($this->omiseHelper->getConfig('sandbox_status')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -97,6 +101,16 @@ class OmiseConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Retrieve Omise live public key
+     *
+     * @return string
+     */
+    protected function getLivePublicKey()
+    {
+        return $this->omiseHelper->getConfig('live_public_key');
+    }
+
+    /**
      * Retrieve Omise test public key
      *
      * @return string
@@ -104,19 +118,5 @@ class OmiseConfigProvider implements ConfigProviderInterface
     protected function getTestPublicKey()
     {
         return $this->omiseHelper->getConfig('test_public_key');
-    }
-
-    /**
-     * Check if Omise's sandbox mode enable or not
-     *
-     * @return bool
-     */
-    protected function isSandboxEnabled()
-    {
-        if ($this->omiseHelper->getConfig('sandbox_status')) {
-            return true;
-        }
-
-        return false;
     }
 }
