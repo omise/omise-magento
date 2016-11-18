@@ -24,58 +24,58 @@
             <!--/ko-->
         </div>
         <form class="form">
+            <input type="hidden"
+                   name="payment[omise_card_token]"
+                   data-bind="attr: {
+                   'id': getCode() + 'CardToken',
+                   'data-container': getCode() + '-cc-token',
+                   },
+                   value: omiseCardToken"/>
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}">
                 <div class="field number required">
-                    <label data-bind="attr: {for: getCode() + '_cc_number'}" class="label">
+                    <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
                         <span><!-- ko i18n: 'Card number'--><!-- /ko --></span>
                     </label>
                     <div class="control">
                         <input type="number"
-                               name="payment[cc_number]"
                                class="input-text"
-                               value=""
                                data-bind="attr: {
                                autocomplete: off,
-                               id: getCode() + '_cc_number',
-                               title: $t('Credit Card Number'),
+                               id: getCode() + 'CardNumber',
                                'data-container': getCode() + '-cc-number'
-                               }
-                               value: creditCardNumber,
-                               valueUpdate: 'keyup' "/>
+                               },
+                               value: omiseCardNumber"/>
                     </div>
                 </div>
                 <div class="field holdername type required">
-                    <label data-bind="attr: {for: 'cardHolderName'}" class="label">
+                    <label data-bind="attr: {for: getCode() + 'CardHolderName'}" class="label">
                         <span><!-- ko text: $t('Name on card')--><!-- /ko --></span>
                     </label>
                     <div class="control">
                         <input type="text"
                                class="input-text required-entry"
-                               data-encrypted-name="holderName"
-                               value=""
                                data-bind="attr: {
-                               id: 'creditCardHolderName',
-                               title: $t('Credit Card Owner'),
+                               autocomplete: off,
+                               id: getCode() + 'CardHolderName',
                                'data-container': getCode() + '-cc-owner'
-                               }"
-                               data-validate="{required:true}"/>
+                               },
+                               value: omiseCardHolderName"/>
                     </div>
                 </div>
                 <div class="field date required" data-bind="attr: {id: getCode() + '_cc_type_exp_div'}">
-                    <label data-bind="attr: {for: getCode() + '_expiration'}" class="label">
+                    <label data-bind="attr: {for: getCode() + 'CardExpirationMonth'}" class="label">
                         <span><!-- ko i18n: 'Expiry date'--><!-- /ko --></span>
                     </label>
                     <div class="control">
                         <div class="fields group group-2">
                             <div class="field no-label month">
                                 <div class="control">
-                                    <select name="payment[cc_exp_month]"
-                                            class="select select-month"
+                                    <select class="select select-month"
                                             data-bind="attr: {
-                                            id: getCode() + '_expiration',
+                                            id: getCode() + 'CardExpirationMonth',
                                             'data-container': getCode() + '-cc-month',
-                                            'data-validate': JSON.stringify({required:true, 'validate-cc-exp':'#' + getCode() + '_expiration_yr'})
                                             },
+                                            value: omiseCardExpirationMonth,
                                             options: getCcMonthsValues(),
                                             optionsValue: 'value',
                                             optionsText: 'month',
@@ -85,13 +85,12 @@
                             </div>
                             <div class="field no-label year">
                                 <div class="control">
-                                    <select name="payment[cc_exp_year]"
-                                            class="select select-year"
+                                    <select class="select select-year"
                                             data-bind="attr: {
-                                            id: getCode() + '_expiration_yr',
+                                            id: 'omiseCardExpirationYear',
                                             'data-container': getCode() + '-cc-year',
-                                            'data-validate': JSON.stringify({required:true})
                                             },
+                                            value: omiseCardExpirationYear,
                                             options: getCcYearsValues(),
                                             optionsValue: 'value',
                                             optionsText: 'year',
@@ -103,21 +102,18 @@
                     </div>
                 </div>
                 <div class="field cvv required" data-bind="attr: {id: getCode() + '_cc_type_cvv_div'}">
-                    <label data-bind="attr: {for: getCode() + '_cc_cid'}" class="label">
+                    <label data-bind="attr: {for: getCode() + 'CardSecurityCode'}" class="label">
                         <span><!-- ko i18n: 'Security code'--><!-- /ko --></span>
                     </label>
-                    <div class="control _with-tooltip">
+                    <div class="control">
                         <input type="password"
                                autocomplete="off"
                                class="input-text cvv"
-                               name="payment[cc_cid]"
-                               value=""
                                data-bind="attr: {
-                               id: getCode() + '_cc_cid',
-                               title: $t('Card Verification Number'),
+                               id: getCode() + 'CardSecurityCode',
                                'data-container': getCode() + '-cc-cvv',
-                               'data-validate': JSON.stringify({'required-number':true, 'validate-card-cvv':'#' + getCode() + '_cc_type'})
-                               }"/>
+                               },
+                               value: omiseCardSecurityCode"/>
                     </div>
                 </div>
             </fieldset>
@@ -131,12 +127,12 @@
             <div class="primary">
                 <button class="action primary checkout"
                         type="submit"
+                        disabled="disabled"
                         data-bind="
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked())"
-                        disabled>
+                        enable: (getCode() == isChecked())">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>

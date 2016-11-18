@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <head>
+        <script src="https://cdn.omise.co/omise.js.gz" src_type="url" />
+    </head>
     <body>
         <referenceBlock name="checkout.root">
             <arguments>
