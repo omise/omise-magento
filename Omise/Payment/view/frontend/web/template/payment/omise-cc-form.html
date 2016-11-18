@@ -27,10 +27,10 @@
             <input type="hidden"
                    name="payment[omise_card_token]"
                    data-bind="attr: {
-                       'id': getCode() + 'CardToken',
-                       'data-container': getCode() + '-cc-token',
+                   'id': getCode() + 'CardToken',
+                   'data-container': getCode() + '-cc-token',
                    },
-                   value: omiseCardToken" />
+                   value: omiseCardToken"/>
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}">
                 <div class="field number required">
                     <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
@@ -44,12 +44,12 @@
                                id: getCode() + 'CardNumber',
                                'data-container': getCode() + '-cc-number'
                                },
-                               value: omiseCardNumber" />
+                               value: omiseCardNumber"/>
                     </div>
                 </div>
                 <div class="field holdername type required">
                     <label data-bind="attr: {for: getCode() + 'CardHolderName'}" class="label">
-                        <span><!-- ko text: $t('Name on Card')--><!-- /ko --></span>
+                        <span><!-- ko text: $t('Name on card')--><!-- /ko --></span>
                     </label>
                     <div class="control">
                         <input type="text"
@@ -103,7 +103,7 @@
                 </div>
                 <div class="field cvv required" data-bind="attr: {id: getCode() + '_cc_type_cvv_div'}">
                     <label data-bind="attr: {for: getCode() + 'CardSecurityCode'}" class="label">
-                        <span><!-- ko i18n: 'Security Code'--><!-- /ko --></span>
+                        <span><!-- ko i18n: 'Security code'--><!-- /ko --></span>
                     </label>
                     <div class="control">
                         <input type="password"
@@ -113,7 +113,7 @@
                                id: getCode() + 'CardSecurityCode',
                                'data-container': getCode() + '-cc-cvv',
                                },
-                               value: omiseCardSecurityCode" />
+                               value: omiseCardSecurityCode"/>
                     </div>
                 </div>
             </fieldset>

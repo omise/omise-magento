@@ -20,10 +20,20 @@ define(
                 return 'omise';
             },
 
+            /**
+             * Get Omise public key
+             *
+             * @return {string}
+             */
             getPublicKey: function() {
                 return window.checkoutConfig.payment.omise.publicKey;
             },
 
+            /**
+             * Initiate observable fields
+             *
+             * @return this
+             */
             initObservable: function() {
                 this._super()
                     .observe([
@@ -47,6 +57,11 @@ define(
                 return true;
             },
 
+            /**
+             * Place order function
+             *
+             * @return {boolean}
+             */
             placeOrder: function(data, event) {
                 var self = this;
 

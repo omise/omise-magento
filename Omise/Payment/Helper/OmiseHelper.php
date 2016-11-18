@@ -6,7 +6,11 @@ use Magento\Store\Model\ScopeInterface;
 
 class OmiseHelper extends AbstractHelper
 {
-
+    /**
+     * @param  string $fieldId
+     *
+     * @return string
+     */
     public function getConfig($fieldId)
     {
         $path = 'payment/omise/' . $fieldId;

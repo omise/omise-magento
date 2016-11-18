@@ -16,6 +16,10 @@ class OmiseConfigProvider implements ConfigProviderInterface
      * @var \Magento\Payment\Model\CcConfig $ccConfig
      */
     protected $ccConfig;
+
+    /**
+     * @var \Omise\Payment\Helper\OmiseHelper
+     */
     protected $omiseHelper;
 
     /**
@@ -24,7 +28,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      */
     public function __construct(CcConfig $ccConfig, OmiseHelper $omiseHelper)
     {
-        $this->ccConfig = $ccConfig;
+        $this->ccConfig    = $ccConfig;
         $this->omiseHelper = $omiseHelper;
     }
 
@@ -68,31 +72,51 @@ class OmiseConfigProvider implements ConfigProviderInterface
         ];
     }
 
+    /**
+     * Retrieve Omise live public key
+     *
+     * @return string
+     */
     public function getLivePublicKey()
     {
         return $this->omiseHelper->getConfig('live_public_key');
     }
 
+    /**
+     * Retrieve Omise public key whether live or test key
+     *
+     * @return string
+     */
     public function getPublicKey()
     {
         if ($this->isSandboxEnabled()) {
             return $this->getTestPublicKey();
         }
-        
+
         return $this->getLivePublicKey();
     }
 
+    /**
+     * Retrieve Omise test public key
+     *
+     * @return string
+     */
     public function getTestPublicKey()
     {
         return $this->omiseHelper->getConfig('test_public_key');
     }
 
+    /**
+     * Check if Omise's sandbox mode enable or not
+     *
+     * @return bool
+     */
     public function isSandboxEnabled()
     {
         if ($this->omiseHelper->getConfig('sandbox_status')) {
             return true;
         }
-        
+
         return false;
     }
 }
