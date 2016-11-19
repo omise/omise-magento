@@ -1,5 +1,4 @@
 <?php
-
 namespace Omise\Payment\Gateway\Http\Client;
 
 use Magento\Framework\App\ProductMetadataInterface;
@@ -31,29 +30,57 @@ abstract class AbstractOmiseClient implements ClientInterface
      */
     const PROCESS_STATUS_FAILED = 'failed';
 
+    /**
+     * Omise public key
+     *
+     * @var string
+     */
     protected $publicKey;
+
+    /**
+     * Omise secret key
+     *
+     * @var string
+     */
     protected $secretKey;
 
+    /**
+     * @var \Magento\Framework\Module\ModuleListInterface
+     */
     protected $moduleList;
+
+    /**
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
     protected $productMetadata;
 
+    /**
+     * @param \Omise\Payment\Model\Ui\OmiseConfigProvider     $config
+     * @param \Magento\Framework\Module\ModuleListInterface   $moduleList
+     * @param \Magento\Framework\App\ProductMetadataInterface $productMetadata
+     */
     public function __construct(
         OmiseConfigProvider $config,
         ModuleListInterface $moduleList,
         ProductMetadataInterface $productMetadata
     ) {
-        $this->publicKey = $config->getPublicKey();
-        $this->secretKey = $config->getSecretKey();
+        $this->publicKey       = $config->getPublicKey();
+        $this->secretKey       = $config->getSecretKey();
 
-        $this->moduleList = $moduleList;
+        $this->moduleList      = $moduleList;
         $this->productMetadata = $productMetadata;
 
         $this->defineUserAgent();
     }
 
+    /**
+     * Define configuration constant for Omise PHP library
+     *
+     * @return void
+     */
     protected function defineUserAgent()
     {
-        if (!defined('OMISE_USER_AGENT_SUFFIX')) {
+        if (! defined('OMISE_USER_AGENT_SUFFIX')) {
             $userAgent = 'OmiseMagento2/' . $this->getModuleVersion();
             $userAgent .= ' Magento2/' . $this->getMagentoVersion();
 
@@ -61,11 +88,21 @@ abstract class AbstractOmiseClient implements ClientInterface
         }
     }
 
+    /**
+     * Retrieve Magento's current version
+     *
+     * @return string
+     */
     protected function getMagentoVersion()
     {
         return $this->productMetadata->getVersion();
     }
 
+    /**
+     * Retrieve Omise module's current version
+     *
+     * @return string
+     */
     protected function getModuleVersion()
     {
         return $this->moduleList->getOne(OmiseConfigProvider::MODULE_NAME)['setup_version'];
@@ -82,7 +119,7 @@ abstract class AbstractOmiseClient implements ClientInterface
             'status' => self::PROCESS_STATUS_INIT,
             'api'    => null
         ];
-        
+
         try {
             $response['api']    = $this->request($transferObject->getBody());
             $response['status'] = self::PROCESS_STATUS_SUCCESSFUL;

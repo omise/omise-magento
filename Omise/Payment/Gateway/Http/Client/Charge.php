@@ -1,5 +1,4 @@
 <?php
-
 namespace Omise\Payment\Gateway\Http\Client;
 
 use Omise\Payment\Gateway\Request\PaymentDataBuilder;
