@@ -1,17 +1,23 @@
 define(
     [
+        'ko',
         'Magento_Payment/js/view/payment/cc-form',
         'mage/translate',
         'jquery',
         'Magento_Payment/js/model/credit-card-validation/validator',
-        'Magento_Checkout/js/model/full-screen-loader'
+        'Magento_Checkout/js/model/full-screen-loader',
+        'Magento_Checkout/js/action/redirect-on-success',
+        'Magento_Checkout/js/model/quote'
     ],
     function (
+        ko,
         Component,
         $t,
         $,
         validator,
-        fullScreenLoader
+        fullScreenLoader,
+        redirectOnSuccessAction,
+        quote
     ) {
         'use strict';
 
@@ -20,6 +26,10 @@ define(
                 template: 'Omise_Payment/payment/omise-cc-form'
             },
 
+            redirectAfterPlaceOrder: true,
+
+            isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
+
             /**
              * Get payment method code
              *
@@ -27,6 +37,18 @@ define(
              */
             getCode: function() {
                 return 'omise';
+            },
+
+            /**
+             * Get a checkout form data
+             *
+             * @return {Object}
+             */
+            getData: function() {
+                return {
+                    'method': this.item.method,
+                    'additional_data': {}
+                };
             },
 
             /**
@@ -103,6 +125,22 @@ define(
                     if (statusCode === 200) {
                         fullScreenLoader.stopLoader();
                         self.omiseCardToken(response.id);
+
+                        self.getPlaceOrderDeferredObject()
+                            .fail(
+                                function () {
+                                    fullScreenLoader.stopLoader();
+                                    self.isPlaceOrderActionAllowed(true);
+                                }
+                            ).done(
+                                function () {
+                                    self.afterPlaceOrder();
+
+                                    if (self.redirectAfterPlaceOrder) {
+                                        redirectOnSuccessAction.execute();
+                                    }
+                                }
+                            );
                     } else {
                         fullScreenLoader.stopLoader();
                         alert(response.message);
