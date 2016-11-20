@@ -3,8 +3,8 @@
     <virtualType name="OmiseAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Ui\OmiseConfigProvider::CODE</argument>
-            <argument name="formBlockType" xsi:type="string">Omise\Payment\Block\Form\Cc</argument>
-            <argument name="infoBlockType" xsi:type="string">Omise\Payment\Block\Info\Cc</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form\Cc</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
@@ -52,7 +52,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Authorize</argument>
-            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
+            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
         </arguments>
     </virtualType>
 
@@ -69,7 +69,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Charge</argument>
-            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
+            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
         </arguments>
     </virtualType>
 
@@ -77,15 +77,6 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
-        <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="payment_details" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
-                <item name="payment_comments" xsi:type="string">Omise\Payment\Gateway\Response\PaymentCommentsHandler</item>
             </argument>
         </arguments>
     </virtualType>
