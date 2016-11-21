@@ -7,12 +7,21 @@ use Magento\Quote\Api\Data\PaymentInterface;
 
 class OmiseDataAssignObserver extends AbstractDataAssignObserver
 {
+    /**
+     * @var string
+     */
     const OMISE_CARD_TOKEN = 'omise_card_token';
 
+    /**
+     * @var array
+     */
     protected $additionalInformationList = [
         self::OMISE_CARD_TOKEN
     ];
 
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     */
     public function execute(Observer $observer)
     {
         $dataObject = $this->readDataArgument($observer);

@@ -11,6 +11,10 @@ class OmiseConfigProvider implements ConfigProviderInterface
      * @var string
      */
     const CODE = 'omise';
+
+    /**
+     * @var string
+     */
     const MODULE_NAME = 'Omise_Payment';
 
     /**

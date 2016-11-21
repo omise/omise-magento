@@ -10,13 +10,6 @@ use Omise\Payment\Model\Ui\OmiseConfigProvider;
 abstract class AbstractOmiseClient implements ClientInterface
 {
     /**
-     * Client request status represented to initiating step.
-     *
-     * @var string
-     */
-    const PROCESS_STATUS_INIT = 'initiate_request';
-
-    /**
      * Client request status represented to successful request step.
      *
      * @var string
