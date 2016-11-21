@@ -13,6 +13,11 @@ class OmiseConfigProvider implements ConfigProviderInterface
     const CODE = 'omise';
 
     /**
+     * @var string
+     */
+    const MODULE_NAME = 'Omise_Payment';
+
+    /**
      * @var \Magento\Payment\Model\CcConfig $ccConfig
      */
     protected $ccConfig;
@@ -91,7 +96,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
      *
      * @return string
      */
-    protected function getPublicKey()
+    public function getPublicKey()
     {
         if ($this->isSandboxEnabled()) {
             return $this->getTestPublicKey();
@@ -118,5 +123,39 @@ class OmiseConfigProvider implements ConfigProviderInterface
     protected function getTestPublicKey()
     {
         return $this->omiseHelper->getConfig('test_public_key');
+    }
+
+    /**
+     * Retrieve Omise secret key whether live or test key
+     *
+     * @return string
+     */
+    public function getSecretKey()
+    {
+        if ($this->isSandboxEnabled()) {
+            return $this->getTestSecretKey();
+        }
+
+        return $this->getLiveSecretKey();
+    }
+
+    /**
+     * Retrieve Omise live secret key
+     *
+     * @return string
+     */
+    protected function getLiveSecretKey()
+    {
+        return $this->omiseHelper->getConfig('live_secret_key');
+    }
+
+    /**
+     * Retrieve Omise test secret key
+     *
+     * @return string
+     */
+    protected function getTestSecretKey()
+    {
+        return $this->omiseHelper->getConfig('test_secret_key');
     }
 }

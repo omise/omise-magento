@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="OmiseAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Ui\OmiseConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form\Cc</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item>
+                <item name="capture" xsi:type="string">OmiseCaptureCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Ui\OmiseConfigProvider::CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- OmiseAuthorize Command -->
+    <virtualType name="OmiseAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Authorize</argument>
+            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseAuthorizeCommandResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- OmiseAuthorize Command: Request -->
+    <virtualType name="OmiseAuthorizeRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- OmiseCapture Command -->
+    <virtualType name="OmiseCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Charge</argument>
+            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- OmiseCapture Command: Request -->
+    <virtualType name="OmiseCaptureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>
