@@ -39,7 +39,7 @@ class OmiseCaptureCommandResponseValidator extends AbstractValidator
         $omise_object = $validationSubject['response']['data'];
 
         if (! $this->isReponseOmiseObject($omise_object)
-            || ! $this->validateAuthorizedCharge($omise_object)) {
+            || ! $this->validateAuthorizedAndCapturedCharge($omise_object)) {
             throw new CommandException(__($this->message));
         }
 
