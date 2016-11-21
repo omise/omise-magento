@@ -14,10 +14,11 @@ class Charge extends AbstractOmiseClient
     {
         return \OmiseCharge::create(
             [
-                'amount'   => $body[PaymentDataBuilder::AMOUNT],
-                'currency' => $body[PaymentDataBuilder::CURRENCY],
-                'card'     => $body[PaymentDataBuilder::OMISE_TOKEN],
-                'capture'  => true
+                'amount'      => $body[PaymentDataBuilder::AMOUNT],
+                'currency'    => $body[PaymentDataBuilder::CURRENCY],
+                'card'        => $body[PaymentDataBuilder::OMISE_TOKEN],
+                'capture'     => true,
+                'description' => $body[PaymentDataBuilder::ORDER_ID],
             ],
             $this->publicKey,
             $this->secretKey

@@ -14,10 +14,11 @@ class Authorize extends AbstractOmiseClient
     {
         return \OmiseCharge::create(
             [
-                'amount'   => $body[PaymentDataBuilder::AMOUNT],
-                'currency' => $body[PaymentDataBuilder::CURRENCY],
-                'card'     => $body[PaymentDataBuilder::OMISE_TOKEN],
-                'capture'  => false
+                'amount'      => $body[PaymentDataBuilder::AMOUNT],
+                'currency'    => $body[PaymentDataBuilder::CURRENCY],
+                'card'        => $body[PaymentDataBuilder::OMISE_TOKEN],
+                'capture'     => false,
+                'description' => $body[PaymentDataBuilder::ORDER_ID],
             ],
             $this->publicKey,
             $this->secretKey
