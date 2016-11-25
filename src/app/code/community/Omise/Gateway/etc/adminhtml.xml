@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Admin Config
+ *
+ * @author Omise Co., Ltd.
+ */
+-->
+<config>
+    <menu>
+        <omise translate="title" module="omise_gateway">
+            <title>Omise</title>
+            <sort_order>999</sort_order>
+            <depends>
+                <module>Omise_Gateway</module>
+            </depends>
+            <children>
+                <dashboard translate="title">
+                    <title>Dashboard</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/omise</action>
+                </dashboard>
+        
+                <config translate="title">
+                    <title>Keys Setting</title>
+                    <sort_order>2</sort_order>
+                    <action>adminhtml/omise/config</action>
+                </config>
+
+                <moduleconfig translate="title">
+                    <title>Module Setting</title>
+                    <sort_order>3</sort_order>
+                    <action>adminhtml/system_config/edit/section/payment</action>
+                </moduleconfig>
+            </children>
+        </omise>
+    </menu>
+</config>

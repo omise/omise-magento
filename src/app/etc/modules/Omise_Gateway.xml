@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Module initial config
+ *
+ * @author Omise Co., Ltd.
+ */
+-->
+<config>
+    <modules>
+        <Omise_Gateway>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Adminhtml />
+            </depends>
+        </Omise_Gateway>
+    </modules>
+</config>

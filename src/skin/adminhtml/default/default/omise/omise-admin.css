@@ -1,0 +1,34 @@
+/**
+ * Dashboard page
+ */
+.ostyle-info-box                                { padding: 10px; color: #666; text-shadow: 1px 1px #fff; }
+.ostyle-info-box dl dt,
+.ostyle-info-box dl dd                          { display: inline; }
+.ostyle-info-box dl dt                          { display: inline; font-weight: 700; margin-left: 40px; }
+.ostyle-info-box dl dt:first-child              { margin-left: 0; }
+.ostyle-info-box dl dd                          { margin-left: 10px; }
+.ostyle-info-box .left,
+.ostyle-info-box .right                         { float: left; width: 50%; }
+.ostyle-info-box .text-right                    { text-align: right; }
+.ostyle-info-box .text-left                     { text-align: left; }
+.ostyle-info-box .text-center                   { text-align: center; }
+
+.omise-account-info                             { font-size: 1.1em; border-bottom: 1px solid #5A5959; border-radius: 2px 2px 0 0; }
+
+.omise-balance                                  { background: #2d2d2d; color: #D8D8D8; padding: 12px 0; border-top: 1px solid #E5E5E5; border-bottom: 2px solid #1d1d1d; }
+.omise-balance .left,
+.omise-balance .right                           { float: left; width: 50%; text-align: center; line-height: 1.65; }
+.omise-balance .omise-number                    { font-size: 2.5em; color: #fff; }
+
+.omise-clearfix:before,
+.omise-clearfix:after                           { display: table; content: " "; }
+.omise-clearfix:after                           { clear: both; }
+
+
+.testmode-label                                 { color: #d1002a; }
+.livemode-label                                 { color: #7CA91F; }
+
+.success-label                                  { color: #7CA91F; }
+.error-label                                    { color: #d1002a; }
+
+input.transfer-amount.input-text.no-changes     { width: 30%; }
