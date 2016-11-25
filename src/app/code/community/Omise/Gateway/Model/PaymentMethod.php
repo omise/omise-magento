@@ -17,6 +17,7 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     protected $_isGateway       = true;
     protected $_canAuthorize    = true;
     protected $_canCapture      = true;
+    protected $_canRefund       = true;
 
     /**
      * Authorize payment method
@@ -28,10 +29,12 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     {
         Mage::log('Start authorize with OmiseCharge API!');
         
+        $order = $payment->getOrder();
+
         $omise_token = $payment->getData('additional_information');
         $charge = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
             "amount"        => number_format($amount, 2, '', ''),
-            "currency"      => "thb",
+            "currency"      => strtolower($order->getBaseCurrencyCode()),
             "description"   => 'Charge a card from Magento that order id is '.$payment->getData('entity_id'),
             "capture"       => false,
             "card"          => $omise_token['omise_token']
@@ -67,11 +70,12 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         } else {
             // Authorize and capture.
             Mage::log('Start capture with OmiseCharge API!');
+            $order = $payment->getOrder();
 
             $omise_token = $payment->getData('additional_information');
             $charge = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
                 "amount"        => number_format($amount, 2, '', ''),
-                "currency"      => "thb",
+                "currency"      => strtolower($order->getBaseCurrencyCode()),
                 "description"   => 'Charge a card from Magento that order id is '.$payment->getData('entity_id'),
                 "card"          => $omise_token['omise_token']
             ));
@@ -79,6 +83,12 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
 
         if (isset($charge['error']))
             Mage::throwException(Mage::helper('payment')->__('OmiseCharge:: '.$charge['error']));
+        else{
+            $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $charge['id']);
+            $payment
+                ->setTransactionId($charge['id'])
+                ->setIsTransactionClosed(1);
+        }
 
         if (!$charge['authorized'] || !$charge['captured'])
             Mage::throwException(Mage::helper('payment')->__('Your payment failed:: ('.$charge['failure_code'].') - '.$charge['failure_code']));
@@ -86,6 +96,38 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         Mage::log('This transaction was authorized and captured! (by OmiseCharge API)');
         return $this;
     }
+
+    /**
+     * Refund payment method
+     * @param Varien_Object $payment
+     * @param float $amount
+     * @return Mage_Payment_Model_Abstract
+     */
+    public function refund(Varien_Object $payment, $amount)
+    {
+
+        $transactionId = $payment->getParentTransactionId();
+        # request to refund
+        $refund = Mage::getModel('omise_gateway/omiserefund')->createOmiseRefund(array(
+            "transaction_id" => $transactionId,
+            "amount"        => number_format($amount, 2, '', ''),
+        ));
+
+        if (isset($charge['error']))
+            Mage::throwException(Mage::helper('payment')->__('OmiseRefund:: '.$charge['error']));
+        else{
+
+            $this->getInfoInstance()->setAdditionalInformation('omise_refund_id', $refund['id']);
+            
+            $payment
+                ->setTransactionId($transactionId . '-' . Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND)
+                ->setParentTransactionId($transactionId)
+                ->setIsTransactionClosed(1)
+                ->setShouldCloseParentTransaction(1);  
+        }
+         
+        return $this;
+    } 
 
 
     /**
