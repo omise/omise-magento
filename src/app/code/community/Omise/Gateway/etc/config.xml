@@ -65,6 +65,18 @@
         </helpers>
     </global>
 
+    <adminhtml>
+        <translate>
+            <modules>
+                <Omise_Gateway>
+                    <files>
+                        <default>Omise_Gateway.csv</default>
+                    </files>
+                </Omise_Gateway>
+            </modules>
+        </translate>
+    </adminhtml>
+
     <!--
     /**
      * Admin configuration
