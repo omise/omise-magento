@@ -7,6 +7,9 @@
         "omise/omise-php": "dev-master"
     },
     "autoload": {
-        "files": ["registration.php"]
+        "files": ["registration.php"],
+        "psr-4": {
+            "Omise\\Payment\\": ""
+        }
     }
 }
