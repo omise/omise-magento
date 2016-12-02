@@ -1,5 +1,5 @@
 {
-    "name": "omise/payment",
+    "name": "omise/omise-magento",
     "version": "2.1.0",
     "type": "magento2-module",
     "license": "MIT",
