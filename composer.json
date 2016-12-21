@@ -4,7 +4,7 @@
     "type": "magento2-module",
     "license": "MIT",
     "require": {
-        "omise/omise-php": "dev-master"
+        "omise/omise-php": "2.6.0"
     },
     "autoload": {
         "files": ["registration.php"],
