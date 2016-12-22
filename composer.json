@@ -1,12 +1,15 @@
 {
-    "name": "omise/payment",
+    "name": "omise/omise-magento",
     "version": "2.1.0",
     "type": "magento2-module",
     "license": "MIT",
     "require": {
-        "omise/omise-php": "dev-master"
+        "omise/omise-php": "2.6.0"
     },
     "autoload": {
-        "files": ["registration.php"]
+        "files": ["registration.php"],
+        "psr-4": {
+            "Omise\\Payment\\": ""
+        }
     }
 }
