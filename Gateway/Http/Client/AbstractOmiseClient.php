@@ -1,6 +1,7 @@
 <?php
 namespace Omise\Payment\Gateway\Http\Client;
 
+use Exception;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Payment\Gateway\Http\ClientInterface;
