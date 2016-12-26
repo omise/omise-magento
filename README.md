@@ -21,7 +21,7 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 
 ## Getting Started
 
-### Installation Instruction
+### Installation Instructions
 
 #### Manually
 
@@ -29,15 +29,15 @@ The steps below shows how to install the module manually.
 This requires a user account with permission to write your Magento file system, execute the command line and [composer](https://getcomposer.org).
 
 1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/2-1-0.zip).
-2. At your Magento server. Create a new folder, `Omise/Payment` under the directory, `app/code`.
-3. Copy all files to the directory `app/code/Omise/Payment` that you just created from the step 2.
+2. On your Magento server, create a new folder `Omise/Payment` under the directory `app/code`.
+3. Copy all files to the directory `app/code/Omise/Payment` that you created in the step 2.
   <p align="center"><a alt="omise-magento-install-manual-01" href='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'></a></p>
-4. Log in to your Magento server by using Terminal program, then change the current directory to your Magento root directory
-5. Execute command, `composer require omise/omise-php:2.6.0` to install Omise-PHP library.
+4. Log in to your Magento server by using Terminal program, then change the current directory to your Magento root directory.
+5. Execute command `composer require omise/omise-php:2.6.0` to install Omise-PHP library.
 6. Execute `php bin/magento module:enable Omise_Payment --clear-static-content` to enable the module.
   <p align="center"><a alt="omise-magento-install-manual-03" href='https://cloud.githubusercontent.com/assets/2154669/21455545/a2c51e10-c953-11e6-88b6-3eff010860df.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21455545/a2c51e10-c953-11e6-88b6-3eff010860df.png'></a></p>
-7. At the current directory execute another command, `php bin/magento setup:upgrade` to upgrade Magento system.
-8. Now you could start using Omise as a payment method, check the [First Time Setup](https://github.com/omise/omise-magento/tree/2-1-0-update-document#first-time-setup) to continue setup your Omise account to Magento store.
+7. At the current directory, execute the command, `php bin/magento setup:upgrade` to upgrade your Magento system.
+8. Your installation is now completed. Check the [First Time Setup](https://github.com/omise/omise-magento/tree/2-1-0-update-document#first-time-setup) to continue setting up your Omise account to Magento store.
 
 ### First Time Setup
 
@@ -52,19 +52,19 @@ Settings is displayed under the `Omise` section.
 
 The table below is the settings for the module and the description for each setting.
 
-| Setting             | Description                                                                                                                             |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Enable/Disable      | Enables or disables 'Omise Payment Module'                                                                                              |
-| Sandbox             | If selected, all transactions will be performed in TEST mode and TEST keys will be used                                                 |
-| Public key for test | Your TEST public key. It can be found in your Dashboard.                                                                                |
-| Secret key for test | Your TEST secret key. It can be found in your Dashboard.                                                                                |
-| Public key for live | Your LIVE public key. It can be found in your Dashboard.                                                                                |
-| Secret key for live | Your LIVE secret key. It can be found in your Dashboard.                                                                                |
-| Payment Action      | Set `Authorize Only` to just only do authorize a payment or `Authorize and Capture` to automatically capture after authroize a payment. |
-| Title               | Title of Omise Payment gateway shown at checkout                                                                                        |
+| Setting             | Description                                                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Enable/Disable      | Enables or disables 'Omise Payment Module'                                                                              |
+| Sandbox             | If selected, all transactions will be performed in TEST mode and TEST keys will be used                                 |
+| Public key for test | Your TEST public key can be found in your Dashboard.                                                                    |
+| Secret key for test | Your TEST secret key can be found in your Dashboard.                                                                    |
+| Public key for live | Your LIVE public key can be found in your Dashboard.                                                                    |
+| Secret key for live | Your LIVE secret key can be found in your Dashboard.                                                                    |
+| Payment Action      | Set `Authorize Only` to only authorize a payment or `Authorize and Capture` to automatically capture after authroizing. |
+| Title               | Title of Omise Payment gateway shown at checkout.                                                                       |
 
 - To enable the module, select the setting for `Enable/Disable` to `Yes`.
-- To enable the sandbox, select the setting for `Sandbox` to `Yes`.
+- To enable `sandbox` mode, select the setting for `Sandbox` to `Yes`.
 
 **Note:**
 
