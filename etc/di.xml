@@ -63,6 +63,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="3dsecure" xsi:type="string">Omise\Payment\Gateway\Request\ThreeDSecureDataBuilder</item>
             </argument>
         </arguments>
     </virtualType>
