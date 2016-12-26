@@ -28,7 +28,7 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 The steps below shows how to install the module manually.
 This requires a user account with permission to write your Magento file system, execute the command line and [composer](https://getcomposer.org).
 
-1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/2-1-0.zip).
+1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/master.zip).
 2. On your Magento server, create a new folder `Omise/Payment` under the directory `app/code`.
 3. Copy all files to the directory `app/code/Omise/Payment` that you created in the step 2.
   <p align="center"><a alt="omise-magento-install-manual-01" href='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'></a></p>
@@ -37,7 +37,7 @@ This requires a user account with permission to write your Magento file system, 
 6. Execute `php bin/magento module:enable Omise_Payment --clear-static-content` to enable the module.
   <p align="center"><a alt="omise-magento-install-manual-03" href='https://cloud.githubusercontent.com/assets/2154669/21455545/a2c51e10-c953-11e6-88b6-3eff010860df.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21455545/a2c51e10-c953-11e6-88b6-3eff010860df.png'></a></p>
 7. At the current directory, execute the command, `php bin/magento setup:upgrade` to upgrade your Magento system.
-8. Your installation is now completed. Check the [First Time Setup](https://github.com/omise/omise-magento/tree/2-1-0-update-document#first-time-setup) to continue setting up your Omise account to Magento store.
+8. Your installation is now completed. Check the [First Time Setup](https://github.com/omise/omise-magento#first-time-setup) to continue setting up your Omise account to Magento store.
 
 ### First Time Setup
 
@@ -79,7 +79,7 @@ The following subjects are instructions for contributors who consider to submit 
 ### Submit the changes
 
 You're all welcome to submit a pull request.
-Please consider the [pull request template](https://github.com/omise/omise-magento/blob/2-1-0-update-document/.github/PULL_REQUEST_TEMPLATE.md) and fill the form when you submit a new pull request.
+Please consider the [pull request template](https://github.com/omise/omise-magento/blob/master/.github/PULL_REQUEST_TEMPLATE.md) and fill the form when you submit a new pull request.
 
 Learn more about submitting pull request here: [https://help.github.com/articles/about-pull-requests](https://help.github.com/articles/about-pull-requests)
 
