@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <omise>
+                <active>0</active>
+                <sandbox_status>0</sandbox_status>
+                <title>Credit / Debit Card</title>
+                <model>OmiseAdapter</model>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <payment_action>authorize</payment_action>
+            </omise>
+        </payment>
+    </default>
+</config>
