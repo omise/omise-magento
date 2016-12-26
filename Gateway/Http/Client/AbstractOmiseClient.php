@@ -75,8 +75,8 @@ abstract class AbstractOmiseClient implements ClientInterface
     protected function defineUserAgent()
     {
         if (! defined('OMISE_USER_AGENT_SUFFIX')) {
-            $userAgent = 'OmiseMagento2/' . $this->getModuleVersion();
-            $userAgent .= ' Magento2/' . $this->getMagentoVersion();
+            $userAgent = 'OmiseMagento/' . $this->getModuleVersion();
+            $userAgent .= ' Magento/' . $this->getMagentoVersion();
 
             define('OMISE_USER_AGENT_SUFFIX', $userAgent);
         }
