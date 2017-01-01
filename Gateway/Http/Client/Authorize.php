@@ -21,7 +21,7 @@ class Authorize extends AbstractOmiseClient
             'description' => $body[PaymentDataBuilder::ORDER_ID],
         ];
 
-        if ($body[ThreeDSecureDataBuilder::REQUIRE_REDIRECT]) {
+        if ($body[ThreeDSecureDataBuilder::PROCESS_3DSECURE]) {
             $params['return_uri'] = $body[ThreeDSecureDataBuilder::RETURN_URI];
         }
 
