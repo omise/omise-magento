@@ -74,7 +74,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Charge</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">Omise\Payment\Gateway\Response\PaymentDetailsHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
         </arguments>
     </virtualType>
@@ -84,6 +84,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="3dsecure" xsi:type="string">Omise\Payment\Gateway\Request\ThreeDSecureDataBuilder</item>
             </argument>
         </arguments>
     </virtualType>
