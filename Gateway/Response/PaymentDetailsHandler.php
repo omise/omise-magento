@@ -13,8 +13,6 @@ class PaymentDetailsHandler implements HandlerInterface
     {
         $payment = SubjectReader::readPayment($handlingSubject);
         $method  = $payment->getPayment();
-        $order   = $payment->getOrder();
-
         $method->setAdditionalInformation('omise_charge_id', $response['data']['id']);
     }
 }
