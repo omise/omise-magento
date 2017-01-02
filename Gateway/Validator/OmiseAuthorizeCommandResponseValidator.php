@@ -2,7 +2,9 @@
 namespace Omise\Payment\Gateway\Validator;
 
 use Magento\Payment\Gateway\Command\CommandException;
+use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Validator\AbstractValidator;
+use Omise\Payment\Gateway\Request\ThreeDSecureDataBuilder;
 
 class OmiseAuthorizeCommandResponseValidator extends AbstractValidator
 {
@@ -16,9 +18,9 @@ class OmiseAuthorizeCommandResponseValidator extends AbstractValidator
      *
      * @param  array $validationSubject
      *
-     * @throws \Magento\Payment\Gateway\Command\CommandException
-     *
      * @return ResultInterface
+     *
+     * @throws \Magento\Payment\Gateway\Command\CommandException
      */
     public function validate(array $validationSubject)
     {
@@ -38,8 +40,20 @@ class OmiseAuthorizeCommandResponseValidator extends AbstractValidator
 
         $omise_object = $validationSubject['response']['data'];
 
-        if (! $this->isReponseOmiseObject($omise_object)
-            || ! $this->validateAuthorizedCharge($omise_object)) {
+        if (! $this->isReponseOmiseObject($omise_object)) {
+            throw new CommandException(__($this->message));
+        }
+
+        // TODO: Refactor validation class.
+        $payment          = SubjectReader::readPayment($validationSubject);
+        $method           = $payment->getPayment();
+        $process_3dsecure = $method->getAdditionalInformation(ThreeDSecureDataBuilder::PROCESS_3DSECURE);
+
+        if ($process_3dsecure) {
+            return $this->createResult(true, []);
+        }
+
+        if (! $this->validateAuthorizedCharge($omise_object)) {
             throw new CommandException(__($this->message));
         }
 

@@ -70,7 +70,8 @@ class ThreeDSecureDataBuilder implements BuilderInterface
     protected function buildRequestWith3DSecure(array $buildSubject)
     {
         $payment = SubjectReader::readPayment($buildSubject);
-        $order   = $payment->getOrder();
+        $method  = $payment->getPayment();
+        $method->setAdditionalInformation(self::PROCESS_3DSECURE, true);
 
         return [
             self::PROCESS_3DSECURE => true,
