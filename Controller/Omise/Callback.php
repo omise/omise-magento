@@ -6,7 +6,8 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
-use Omise\Payment\Model\Ui\OmiseConfigProvider;
+use Omise\Payment\Model\OmiseConfig;
+use Omise\Payment\Model\PaymentMethodManagement;
 
 class Callback extends Action
 {
@@ -16,34 +17,24 @@ class Callback extends Action
     protected $session;
 
     /**
-     * Omise public key
-     *
-     * @var string
+     * @var \Omise\Payment\Model\OmiseConfig
      */
-    protected $publicKey;
+    protected $omiseConfig;
 
     /**
-     * Omise secret key
-     *
-     * @var string
-     */
-    protected $secretKey;
-
-    /**
-     * @param \Magento\Framework\App\Action\Context       $context
-     * @param \Omise\Payment\Model\Ui\OmiseConfigProvider $config
-     * @param \Magento\Checkout\Model\Session             $session
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Checkout\Model\Session       $session
+     * @param \Omise\Payment\Model\OmiseConfig      $config
      */
     public function __construct(
         Context $context,
-        OmiseConfigProvider $config,
         Session $session
+        OmiseConfig $config,
     ) {
         parent::__construct($context);
 
-        $this->publicKey = $config->getPublicKey();
-        $this->secretKey = $config->getSecretKey();
-        $this->session   = $session;
+        $this->session     = $session;
+        $this->omiseConfig = $omiseConfig;
     }
 
     /**
@@ -63,8 +54,8 @@ class Callback extends Action
 
                 $charge = \OmiseCharge::retrieve(
                     $payment->getAdditionalInformation('omise_charge_id'),
-                    $this->publicKey,
-                    $this->secretKey
+                    $this->config->getPublicKey(),
+                    $this->config->getSecretKey()
                 );
 
                 $this->validateCharge($charge);
