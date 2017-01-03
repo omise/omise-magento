@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Omise\Payment\Api\Data\OmiseChargeInterface" type="Omise\Payment\Model\OmiseCharge" />
+    <preference for="Omise\Payment\Api\PaymentMethodManagementInterface" type="Omise\Payment\Model\PaymentMethodManagement" />
 
     <virtualType name="OmiseAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>

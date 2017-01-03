@@ -1,7 +1,7 @@
 <?php
-namespace Omise\Payment\Api\Data;
+namespace Omise\Payment\Data\Model;
 
-interface OmiseChargeInterface
+class OmiseCharge
 {
     /*
      * Charge id
@@ -32,13 +32,4 @@ interface OmiseChargeInterface
      * Charge's authorize uri.
      */
     const AUTHORIZE_URI = 'authorize_uri';
-
-    /**
-     * Gets charge's authorize uri.
-     *
-     * @param  string $orderId
-     *
-     * @return string|null
-     */
-    public function getAuthorizeUri($orderId);
 }

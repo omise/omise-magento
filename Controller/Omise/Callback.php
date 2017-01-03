@@ -24,12 +24,12 @@ class Callback extends Action
     /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Checkout\Model\Session       $session
-     * @param \Omise\Payment\Model\OmiseConfig      $config
+     * @param \Omise\Payment\Model\OmiseConfig      $omiseConfig
      */
     public function __construct(
         Context $context,
-        Session $session
-        OmiseConfig $config,
+        Session $session,
+        OmiseConfig $omiseConfig
     ) {
         parent::__construct($context);
 
