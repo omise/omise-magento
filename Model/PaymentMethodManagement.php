@@ -20,11 +20,11 @@ class PaymentMethodManagement implements PaymentMethodManagementInterface
 
     /**
      * @param \Magento\Checkout\Model\Session  $session
-     * @param \Omise\Payment\Model\OmiseConfig $config
+     * @param \Omise\Payment\Model\OmiseConfig $omiseConfig
      */
     public function __construct(
         Session $session,
-        OmiseConfig $config
+        OmiseConfig $omiseConfig
     ) {
         $this->session     = $session;
         $this->omiseConfig = $omiseConfig;
