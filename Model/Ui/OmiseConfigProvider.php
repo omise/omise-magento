@@ -42,7 +42,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
                 ],
                 Config::CODE => [
                     'publicKey'       => $this->config->getPublicKey(),
-                    'process3DSecure' => $this->config->getConfig('3ds')
+                    'process3DSecure' => $this->config->is3DSecureEnabled() ? true : false
                 ],
             ]
         ];

@@ -224,6 +224,8 @@ define(
             },
 
             process3DSecure: function(orderId) {
+                var self = this;
+
                 var serviceUrl = urlBuilder.createUrl(
                     '/order/:orderId/payment-authorize-uri',
                     {
@@ -234,14 +236,11 @@ define(
                 storage.get(serviceUrl, false)
                     .fail(
                         function (response) {
-                            console.log("FAILED");
-                            console.log(response);
+                            self.stopPerformingPlaceOrderAction();
                         }
                     )
                     .done(
                         function (response) {
-                            console.log("DONE");
-                            console.log(response);
                             if (response) {
                                 $.mage.redirect(response);
                             }
