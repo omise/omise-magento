@@ -16,20 +16,6 @@ class OmiseConfig
     const MODULE_NAME = 'Omise_Payment';
 
     /**
-     * Omise public key
-     *
-     * @var string
-     */
-    protected $publicKey;
-
-    /**
-     * Omise secret key
-     *
-     * @var string
-     */
-    protected $secretKey;
-
-    /**
      * @var \Omise\Payment\Helper\OmiseHelper
      */
     protected $omiseHelper;
