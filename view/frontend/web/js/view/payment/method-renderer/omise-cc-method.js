@@ -2,22 +2,26 @@ define(
     [
         'ko',
         'Magento_Payment/js/view/payment/cc-form',
+        'mage/storage',
         'mage/translate',
         'jquery',
         'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote'
+        'Magento_Checkout/js/model/quote',
+        'Magento_Checkout/js/model/url-builder'
     ],
     function (
         ko,
         Component,
+        storage,
         $t,
         $,
         validator,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote
+        quote,
+        urlBuilder
     ) {
         'use strict';
 
@@ -91,6 +95,19 @@ define(
             },
 
             /**
+             * Is 3-D Secure config enabled
+             *
+             * @return {boolean}
+             */
+            is3DSecureEnabled: function() {
+                if (window.checkoutConfig.payment.omise.process3DSecure) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */
@@ -136,11 +153,15 @@ define(
                                     self.stopPerformingPlaceOrderAction();
                                 }
                             ).done(
-                                function() {
+                                function(response) {
                                     self.afterPlaceOrder();
 
                                     if (self.redirectAfterPlaceOrder) {
-                                        redirectOnSuccessAction.execute();
+                                        if (self.is3DSecureEnabled()) {
+                                            self.process3DSecure(response);
+                                        } else {
+                                            redirectOnSuccessAction.execute();
+                                        }
                                     }
                                 }
                             );
@@ -182,7 +203,7 @@ define(
              *
              * @return {boolean}
              */
-            validate: function () {
+            validate: function() {
                 $('#' + this.getCode() + 'Form').validation();
                 
                 var isCardNumberValid          = $('#' + this.getCode() + 'CardNumber').valid();
@@ -201,6 +222,32 @@ define(
 
                 return false;
             },
+
+            process3DSecure: function(orderId) {
+                var serviceUrl = urlBuilder.createUrl(
+                    '/order/:orderId/payment-authorize-uri',
+                    {
+                        orderId: orderId
+                    }
+                );
+
+                storage.get(serviceUrl, false)
+                    .fail(
+                        function (response) {
+                            console.log("FAILED");
+                            console.log(response);
+                        }
+                    )
+                    .done(
+                        function (response) {
+                            console.log("DONE");
+                            console.log(response);
+                            if (response) {
+                                $.mage.redirect(response);
+                            }
+                        }
+                    );
+            }
         });
     }
 );
