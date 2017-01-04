@@ -9,6 +9,7 @@ define(
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
+        'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/url-builder'
     ],
     function (
@@ -21,6 +22,7 @@ define(
         fullScreenLoader,
         redirectOnSuccessAction,
         quote,
+        errorProcessor,
         urlBuilder
     ) {
         'use strict';
@@ -155,6 +157,7 @@ define(
                             ).done(
                                 function(response) {
                                     self.afterPlaceOrder();
+                                    self.stopPerformingPlaceOrderAction();
 
                                     if (self.redirectAfterPlaceOrder) {
                                         if (self.is3DSecureEnabled()) {
@@ -223,6 +226,12 @@ define(
                 return false;
             },
 
+            /**
+             * Do process 3-D Secure by retrieving authorize_uri from a charge
+             * and redirect to 3-D Secure aothorization page.
+             *
+             * @return {void}
+             */
             process3DSecure: function(orderId) {
                 var self = this;
 
@@ -236,6 +245,7 @@ define(
                 storage.get(serviceUrl, false)
                     .fail(
                         function (response) {
+                            errorProcessor.process(response, self.messageContainer);
                             self.stopPerformingPlaceOrderAction();
                         }
                     )
@@ -243,6 +253,9 @@ define(
                         function (response) {
                             if (response) {
                                 $.mage.redirect(response);
+                            } else {
+                                alert('Cannot process a payment with 3-D Secure authorization, please contact our support.');
+                                self.stopPerformingPlaceOrderAction();
                             }
                         }
                     );

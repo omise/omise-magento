@@ -1,7 +1,9 @@
 <?php
 namespace Omise\Payment\Model;
 
+use Exception;
 use Magento\Checkout\Model\Session;
+use Magento\Framework\Exception\PaymentException;
 use Omise\Payment\Api\PaymentMethodManagementInterface;
 use Omise\Payment\Model\OmiseConfig;
 use Omise\Payment\Model\Data\OmiseCharge as DataOmiseCharge;
@@ -37,10 +39,10 @@ class PaymentMethodManagement implements PaymentMethodManagementInterface
      */
     public function get3DSecureAuthorizeUri($orderId)
     {
-        $order = $this->session->getLastRealOrder();
+        try {
+            $order = $this->session->getLastRealOrder();
 
-        if ($order->getId() && $orderId === $order->getId()) {
-            try {
+            if ($order->getId() && $orderId == $order->getId()) {
                 $payment = $order->getPayment();
 
                 $charge = \OmiseCharge::retrieve(
@@ -50,9 +52,14 @@ class PaymentMethodManagement implements PaymentMethodManagementInterface
                 );
 
                 return $charge[DataOmiseCharge::AUTHORIZE_URI];
-            } catch (Exception $e) {
-
             }
+
+            throw new Exception("Order not found, please contact our support.");
+        } catch (Exception $e) {
+            throw new PaymentException(
+                __($e->getMessage()),
+                $e
+            );
         }
     }
 }
