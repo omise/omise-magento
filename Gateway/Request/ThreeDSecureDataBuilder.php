@@ -4,6 +4,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Model\OmiseConfig;
 
 class ThreeDSecureDataBuilder implements BuilderInterface
 {
@@ -18,15 +19,24 @@ class ThreeDSecureDataBuilder implements BuilderInterface
     const RETURN_URI = 'return_uri';
 
     /**
+     * @var \Omise\Payment\Model\OmiseConfig
+     */
+    protected $omiseConfig;
+
+    /**
      * @var \Omise\Payment\Helper\OmiseHelper
      */
     protected $omiseHelper;
 
     /**
+     * @param \Omise\Payment\Model\OmiseConfig  $omiseConfig
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      */
-    public function __construct(OmiseHelper $omiseHelper)
-    {
+    public function __construct(
+        OmiseConfig $omiseConfig,
+        OmiseHelper $omiseHelper
+    ) {
+        $this->omiseConfig = $omiseConfig;
         $this->omiseHelper = $omiseHelper;
     }
 
@@ -39,25 +49,11 @@ class ThreeDSecureDataBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
-        if ($this->is3DSecureEnabled()) {
+        if ($this->omiseConfig->is3DSecureEnabled()) {
             return $this->buildRequestWith3DSecure($buildSubject);
         }
 
         return $this->buildRequestWithout3DSecure($buildSubject);
-    }
-
-    /**
-     * Check whether 3-D Secure config enable or not.
-     *
-     * @return boolean
-     */
-    protected function is3DSecureEnabled()
-    {
-        if ($this->omiseHelper->getConfig('3ds')) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
