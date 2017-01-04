@@ -75,7 +75,7 @@ class ThreeDSecureDataBuilder implements BuilderInterface
 
         return [
             self::PROCESS_3DSECURE => true,
-            self::RETURN_URI       => $this->omiseHelper->getUrl('omise/omise/callback', ['_secure' => true])
+            self::RETURN_URI       => $this->omiseHelper->getUrl('omise/callback/validate3dsecure', ['_secure' => true])
         ];
     }
 

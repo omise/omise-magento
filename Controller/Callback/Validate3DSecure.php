@@ -1,5 +1,5 @@
 <?php
-namespace Omise\Payment\Controller\Omise;
+namespace Omise\Payment\Controller\Callback;
 
 use Exception;
 use Magento\Checkout\Model\Session;
@@ -9,7 +9,7 @@ use Magento\Framework\Controller\ResultFactory;
 use Omise\Payment\Model\OmiseConfig;
 use Omise\Payment\Model\PaymentMethodManagement;
 
-class Callback extends Action
+class Validate3DSecure extends Action
 {
     /**
      * @var \Magento\Checkout\Model\Session
@@ -54,8 +54,8 @@ class Callback extends Action
 
                 $charge = \OmiseCharge::retrieve(
                     $payment->getAdditionalInformation('omise_charge_id'),
-                    $this->config->getPublicKey(),
-                    $this->config->getSecretKey()
+                    $this->omiseConfig->getPublicKey(),
+                    $this->omiseConfig->getSecretKey()
                 );
 
                 $this->validateCharge($charge);
@@ -70,7 +70,7 @@ class Callback extends Action
             }
         }
 
-        $this->messageManager->addErrorMessage(__('Cannot process 3-D Secure validation, record not found. Please check your order or contact administrator.'));
+        $this->messageManager->addErrorMessage(__('Cannot process 3-D Secure validation, record not found. Please check your order or contact our support.'));
 
         return $resultRedirect->setPath('checkout/cart', ['_secure' => true]);
     }
