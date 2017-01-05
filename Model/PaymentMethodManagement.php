@@ -47,8 +47,8 @@ class PaymentMethodManagement implements PaymentMethodManagementInterface
 
                 $charge = \OmiseCharge::retrieve(
                     $payment->getAdditionalInformation('omise_charge_id'),
-                    $this->config->getPublicKey(),
-                    $this->config->getSecretKey()
+                    $this->omiseConfig->getPublicKey(),
+                    $this->omiseConfig->getSecretKey()
                 );
 
                 return $charge[DataOmiseCharge::AUTHORIZE_URI];

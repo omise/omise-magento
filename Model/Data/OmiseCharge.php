@@ -1,5 +1,5 @@
 <?php
-namespace Omise\Payment\Data\Model;
+namespace Omise\Payment\Model\Data;
 
 class OmiseCharge
 {
