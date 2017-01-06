@@ -6,6 +6,7 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Sales\Model\Order;
 use Omise\Payment\Model\OmiseConfig;
 use Omise\Payment\Model\PaymentMethodManagement;
 
@@ -62,6 +63,9 @@ class Validate3DSecure extends Action
 
                 return $resultRedirect->setPath('checkout/onepage/success', ['_secure' => true]);
             } catch (Exception $e) {
+                $order->setStatus(Order::STATE_CANCELED);
+                $order->save();
+
                 $this->messageManager->addExceptionMessage($e, $e->getMessage());
 
                 $this->session->restoreQuote();
