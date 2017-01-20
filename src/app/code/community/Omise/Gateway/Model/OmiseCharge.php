@@ -3,7 +3,9 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
 {
     /**
      * Creates a new charge with Omise Payment Gateway.
-     * @param array $params
+     *
+     * @param  array $params
+     *
      * @return OmiseCharge|Exception
      */
     public function createOmiseCharge($params)
@@ -17,7 +19,9 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
 
     /**
      * Capture a charge that retrieve from charge id
-     * @param array $params
+     *
+     * @param  array $params
+     *
      * @return OmiseCharge|Exception
      */
     public function captureOmiseCharge($id)
