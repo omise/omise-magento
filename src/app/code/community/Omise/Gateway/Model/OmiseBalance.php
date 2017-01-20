@@ -3,6 +3,7 @@ class Omise_Gateway_Model_OmiseBalance extends Omise_Gateway_Model_Omise
 {
     /**
      * Retrieve user's balance from their Omise account
+     *
      * @return OmiseBalance|Exception
      */
     public function retrieveOmiseBalance()
