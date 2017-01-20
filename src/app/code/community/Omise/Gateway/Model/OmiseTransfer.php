@@ -2,7 +2,8 @@
 class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
 {
     /**
-     * @param string $id
+     * @param  string $id
+     *
      * @return OmiseTransfer|array
      */
     public function retrieveOmiseTransfer($id = '')
@@ -15,7 +16,8 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
     }
 
     /**
-     * @param unknown $params
+     * @param  array $params
+     *
      * @return OmiseTransfer|array
      */
     public function createOmiseTransfer($params)
@@ -23,11 +25,13 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
         try {
             // Validate $params
             // If it not contain `amount` key.
-            if (!isset($params['amount']))
+            if (! isset($params['amount'])) {
                 throw new Exception("Amount was required", 1);
+            }
 
-            if ($params['amount'] == '')
+            if ($params['amount'] == '') {
                 throw new Exception("Don't let amount with empty value", 1);
+            }
 
             // Remove `.`
             $params['amount'] = str_replace('.', '', $params['amount']);
@@ -39,14 +43,16 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
     }
 
     /**
-     * @param string $id
+     * @param  string $id
+     *
      * @return OmiseTransfer|array
      */
     public function deleteOmiseTransfer($id = '')
     {
         try {
-            if ($id == '')
+            if ($id == '') {
                 throw new Exception("Id was required", 1);
+            }
 
             $object = OmiseTransfer::retrieve($id, $this->_public_key, $this->_secret_key);
 
