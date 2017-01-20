@@ -1,11 +1,13 @@
 <?php
 // Define 'OMISE_USER_AGENT_SUFFIX'
-if(!defined('OMISE_USER_AGENT_SUFFIX'))
-    define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.9.0.6 Magento/'.Mage::getVersion());
+if(! defined('OMISE_USER_AGENT_SUFFIX')) {
+    define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.9.0.6 Magento/' . Mage::getVersion());
+}
 
 // Define 'OMISE_API_VERSION'
-if(!defined('OMISE_API_VERSION'))
+if(! defined('OMISE_API_VERSION')) {
     define('OMISE_API_VERSION', '2014-07-27');
+}
 
 class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
 {
@@ -21,6 +23,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
 
     /**
      * Load necessary file and setup Omise keys
+     *
      * @return void
      */
     protected function _construct()
