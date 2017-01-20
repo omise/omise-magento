@@ -9,10 +9,10 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
     protected function _prepareForm()
     {
         // Instantiate a new form to display our brand for editing.
-        $form = new Varien_Data_Form(array( 'id'     => 'edit_form',
-                                            'action' => $this->getUrl('adminhtml/omise/config/edit', array('_current' => true,
+        $form = new Varien_Data_Form(array('id'     => 'edit_form',
+                                           'action' => $this->getUrl('adminhtml/omise/config/edit', array('_current' => true,
                                                                                                             'continue' => 0)),
-                                            'method' => 'post'));
+                                           'method' => 'post'));
         $form->setUseContainer(true);
         $this->setForm($form);
 
@@ -63,7 +63,7 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
             $_data['title'] = $_data['label'];
 
             // If no new value exists, use the existing data.
-            if ( !array_key_exists('value', $_data)) {
+            if (! array_key_exists('value', $_data)) {
                 $_data['value'] = $this->_getValue()->getData($name);
             }
 
