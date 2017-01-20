@@ -1,5 +1,22 @@
 # Change Log
 
+## [2.6.0] 2016-12-15
+- [added] OmiseLink api is now available. (@turboza)
+- [added] OmiseRecipient object be able to reload resource itself (@guzzilar)
+- [added] OmiseEvent api is now available. (@guzzilar)
+- [updated]  phpunit configuration file. (@oaattia)
+- [updated] Revised code style to match with PSR-2 (http://www.php-fig.org/psr/psr-2) spec. (@guzzilar)
+- [fixed] Autoload OmiseDispute class in lib/Omise.php file (@guzzilar)
+
+For more information, please visit https://github.com/omise/omise-php/releases/tag/v2.6.0
+
+## [2.5.0] 2016-07-01
+- [Added] Add charge reverse method (@zentetsukenz)
+- [Fixed] Change condition when matching phpunit from using fixed string to regex (@zentetsukenz)
+
+## [2.4.1] 2015-12-03
+- [Added] Add fetching options to customer cards (bde7986)
+
 ## [2.4.0] 2015-11-13
 - [Added] Add Omise-Version header to request.
 - [Added] Add `OMISE_USER_AGENT_SUFFIX` constant that let's people add the suffix into the `user-agent` string.
