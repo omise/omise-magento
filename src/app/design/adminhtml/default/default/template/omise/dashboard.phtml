@@ -89,14 +89,8 @@ $data = $this->getData(); ?>
 
                             <!-- Create transfer form -->
                             <tr class="even pointer">
-                                <?php if ($data['omise']['available'] > 3000): ?>
-                                    <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="Transfer amount (number only, icluding 'satang')"></td>
-                                    <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
-                                <?php elseif ($data['omise']['available'] > 0): ?>
-                                    <td class="a-right" colspan="7">Minimum withdrawal is 30 Baht</td>
-                                <?php else: ?>
-                                    <td class="a-right" colspan="7">&nbsp;</td>
-                                <?php endif; ?>
+                                <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="<?php echo Mage::helper('omise_gateway')->formatPrice($data['omise']['currency'], $data['omise']['available']); ?>"></td>
+                                <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
                             </tr>
                         </tbody>
                     </table>
