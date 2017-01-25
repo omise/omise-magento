@@ -19,7 +19,7 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
                 break;
 
             case 'SGD':
-                $amount = "$" . number_format(($amount / 100), 2);
+                $amount = "S$" . number_format(($amount / 100), 2);
                 if (preg_match('/\.00$/', $amount)) {
                     $amount = substr($amount, 0, -3);
                 }
