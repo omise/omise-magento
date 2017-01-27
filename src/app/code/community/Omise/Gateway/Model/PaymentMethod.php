@@ -118,14 +118,16 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         $result = parent::assignData($data);
 
         if (is_array($data)) {
-            if (! isset($data['omise_token']))
+            if (! isset($data['omise_token'])) {
                 Mage::throwException(Mage::helper('payment')->__('Need Omise\'s keys'));
+            }
 
             Mage::log('Data that assign is Array');
             $this->getInfoInstance()->setAdditionalInformation('omise_token', $data['omise_token']);
         } elseif ($data instanceof Varien_Object) {
-            if (! $data->getData('omise_token'))
+            if (! $data->getData('omise_token')) {
                 Mage::throwException(Mage::helper('payment')->__('Need Omise\'s keys'));
+            }
 
             Mage::log('Data that assign is Object');
             $this->getInfoInstance()->setAdditionalInformation('omise_token', $data->getData('omise_token'));

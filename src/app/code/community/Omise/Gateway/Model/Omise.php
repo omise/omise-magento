@@ -1,11 +1,11 @@
 <?php
 // Define 'OMISE_USER_AGENT_SUFFIX'
-if(! defined('OMISE_USER_AGENT_SUFFIX')) {
+if (! defined('OMISE_USER_AGENT_SUFFIX')) {
     define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.9.0.6 Magento/' . Mage::getVersion());
 }
 
 // Define 'OMISE_API_VERSION'
-if(! defined('OMISE_API_VERSION')) {
+if (! defined('OMISE_API_VERSION')) {
     define('OMISE_API_VERSION', '2014-07-27');
 }
 

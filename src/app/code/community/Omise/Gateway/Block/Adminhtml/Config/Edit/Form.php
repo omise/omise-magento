@@ -9,37 +9,56 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
     protected function _prepareForm()
     {
         // Instantiate a new form to display our brand for editing.
-        $form = new Varien_Data_Form(array('id'     => 'edit_form',
-                                           'action' => $this->getUrl('adminhtml/omise/config/edit', array('_current' => true,
-                                                                                                            'continue' => 0)),
-                                           'method' => 'post'));
+        $form = new Varien_Data_Form(array(
+            'id'     => 'edit_form',
+            'action' => $this->getUrl('adminhtml/omise/config/edit', array('_current' => true, 'continue' => 0)),
+            'method' => 'post'
+        ));
+
         $form->setUseContainer(true);
         $this->setForm($form);
 
         /* Field set for Test Keys */
         $fieldset = $form->addFieldset('omise_key_test', array('legend' => $this->__('Test Keys')));
-        $this->_addFieldsToFieldset($fieldset, array('public_key_test' => array('label'    => $this->__('Public Key for Test'),
-                                                                                'input'    => 'password',
-                                                                                'required' => false),
-
-                                                     'secret_key_test' => array('label'    => $this->__('Secret Key for Test'),
-                                                                                'input'    => 'password',
-                                                                                'required' => false),
-
-                                                     'test_mode'       => array('label'    => $this->__('Enable Test mode'),
-                                                                                'input'    => 'checkbox',
-                                                                                'required' => false,
-                                                                                'onclick'  => 'this.value = this.checked ? 1 : 0;')));
+        $this->_addFieldsToFieldset(
+            $fieldset,
+            array(
+                'public_key_test' => array(
+                    'label'    => $this->__('Public Key for Test'),
+                    'input'    => 'password',
+                    'required' => false
+                ),
+                'secret_key_test' => array(
+                    'label'    => $this->__('Secret Key for Test'),
+                    'input'    => 'password',
+                    'required' => false
+                ),
+                'test_mode'       => array(
+                    'label'    => $this->__('Enable Test mode'),
+                    'input'    => 'checkbox',
+                    'required' => false,
+                    'onclick'  => 'this.value = this.checked ? 1 : 0;'
+                )
+            )
+        );
 
         /* Field set for Live Keys */
         $fieldset = $form->addFieldset('omise_key_live', array('legend' => $this->__('Live Keys')));
-        $this->_addFieldsToFieldset($fieldset, array('public_key'      => array('label'    => $this->__('Public Key'),
-                                                                                'input'    => 'password',
-                                                                                'required' => true),
-
-                                                     'secret_key'      => array('label'    => $this->__('Secret Key'),
-                                                                                'input'    => 'password',
-                                                                                'required' => true)));
+        $this->_addFieldsToFieldset(
+            $fieldset,
+            array(
+                'public_key' => array(
+                    'label'    => $this->__('Public Key'),
+                    'input'    => 'password',
+                    'required' => true
+                ),
+                'secret_key' => array(
+                    'label'    => $this->__('Secret Key'),
+                    'input'    => 'password',
+                    'required' => true
+                )
+            )
+        );
 
         return $this;
     }
