@@ -20,7 +20,7 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
     /**
      * Capture a charge that retrieve from charge id
      *
-     * @param  array $params
+     * @param  string $id
      *
      * @return OmiseCharge|Exception
      */
