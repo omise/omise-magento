@@ -43,7 +43,7 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
      */
     public function authorize(Varien_Object $payment, $amount)
     {
-        Mage::log('Start authorize with OmiseCharge API!');
+        Mage::log('Start authorizing with Omise Payment Gateway.');
 
         $payment_data = $payment->getData('additional_information');
         $result       = $this->request(
@@ -74,6 +74,8 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
      */
     public function capture(Varien_Object $payment, $amount)
     {
+        Mage::log('Start capturing with Omise Payment Gateway.');
+
         $additional_information = $payment->getData('additional_information');
         $authorized             = isset($additional_information['omise_charge_id']) ? $additional_information['omise_charge_id'] : false;
         if ($authorized) {
