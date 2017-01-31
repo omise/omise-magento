@@ -76,33 +76,23 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     {
         Mage::log('Start capturing with Omise Payment Gateway.');
 
-        $additional_information = $payment->getData('additional_information');
-        $authorized             = isset($additional_information['omise_charge_id']) ? $additional_information['omise_charge_id'] : false;
+        $payment_data = $payment->getData('additional_information');
+        $authorized   = isset($payment_data['omise_charge_id']) ? $payment_data['omise_charge_id'] : false;
         if ($authorized) {
-            // Capture only.
-            Mage::log('Start capture with OmiseCharge API!');
-
-            $charge = Mage::getModel('omise_gateway/omiseCharge')->captureOmiseCharge($authorized);
+            // Manual capture.
+            $params = array("id" => $authorized);
         } else {
             // Authorize and capture.
-            Mage::log('Start capture with OmiseCharge API!');
-
-            $omise_token = $payment->getData('additional_information');
-            $charge      = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
+            $params = array(
                 "amount"      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
                 "currency"    => $payment->getOrder()->getOrderCurrencyCode(),
                 "description" => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
-                "card"        => $omise_token['omise_token']
-            ));
+                "capture"     => true,
+                "card"        => $payment_data['omise_token']
+            );
         }
 
-        if (isset($charge['error'])) {
-            Mage::throwException(Mage::helper('payment')->__('OmiseCharge:: ' . $charge['error']));
-        }
-
-        if (! $charge['authorized'] || ! $charge['captured']) {
-            Mage::throwException(Mage::helper('payment')->__('Your payment failed:: (' . $charge['failure_code'].') - ' . $charge['failure_code']));
-        }
+        $result = $this->request(self::STRATEGY_CAPTURE, $params);
 
         Mage::log('This transaction was authorized and captured! (by OmiseCharge API)');
 
