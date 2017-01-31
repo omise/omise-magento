@@ -2,6 +2,14 @@
 class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
     /**
+     * Payment strategies
+     *
+     * @var string
+     */
+    const STRATEGY_AUTHORIZE  = 'Authorize';
+    const STRATEGY_CAPTURE    = 'Capture';
+
+    /**
      * @var string
      */
     protected $_code          = 'omise_gateway';
