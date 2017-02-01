@@ -3,6 +3,7 @@ class Omise_Gateway_Model_Config_Var_Paymentaction
 {
     /**
      * Return an array that use for 'payment action' configuration
+     *
      * @return array
      */
     public function toOptionArray()

@@ -9,6 +9,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve payment configuration object
+     *
      * @return Mage_Payment_Model_Config
      */
     protected function _getConfig()
@@ -18,6 +19,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve Omise keys from database
+     *
      * @return string|array
      */
     public function getOmiseKeys($omise_key = '')
@@ -34,14 +36,16 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
             $data['secret_key'] = $config->secret_key_test;
         }
 
-        if ($omise_key == '')
+        if ($omise_key == '') {
             return $data;
-        else
-            return isset($data[$omise_key]) ? $data[$omise_key] : '';
+        }
+
+        return isset($data[$omise_key]) ? $data[$omise_key] : '';
     }
 
     /**
      * Retrieve availables credit card types
+     *
      * @return array
      */
     public function getCcAvailableTypes()
@@ -51,8 +55,8 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
             $availableTypes = $method->getConfigData('cctypes');
             if ($availableTypes) {
                 $availableTypes = explode(',', $availableTypes);
-                foreach ($types as $code=>$name) {
-                    if (!in_array($code, $availableTypes)) {
+                foreach ($types as $code => $name) {
+                    if (! in_array($code, $availableTypes)) {
                         unset($types[$code]);
                     }
                 }
@@ -63,6 +67,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve credit card expire months
+     *
      * @return array
      */
     public function getCcMonths()
@@ -78,6 +83,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Retrieve credit card expire years
+     *
      * @return array
      */
     public function getCcYears()
@@ -85,21 +91,22 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
         $years = $this->getData('cc_years');
         if (is_null($years)) {
             $years = $this->_getConfig()->getYears();
-            $years = array(0=>$this->__('Year'))+$years;
+            $years = array(0 => $this->__('Year')) + $years;
             $this->setData('cc_years', $years);
         }
         return $years;
     }
 
     /**
-     * Retrive has verification configuration
+     * Retrieve has verification configuration
+     *
      * @return boolean
      */
     public function hasVerification()
     {
         if ($this->getMethod()) {
             $configData = $this->getMethod()->getConfigData('useccv');
-            if(is_null($configData)){
+            if (is_null($configData)) {
                 return true;
             }
             return (bool) $configData;
@@ -109,13 +116,14 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * Whether switch/solo card type available
+     *
      * @return boolean
      */
     public function hasSsCardType()
     {
-        $availableTypes = explode(',', $this->getMethod()->getConfigData('cctypes'));
-        $ssPresenations = array_intersect(array('SS', 'SM', 'SO'), $availableTypes);
-        if ($availableTypes && count($ssPresenations) > 0) {
+        $availableTypes  = explode(',', $this->getMethod()->getConfigData('cctypes'));
+        $ssPresentations = array_intersect(array('SS', 'SM', 'SO'), $availableTypes);
+        if ($availableTypes && count($ssPresentations) > 0) {
             return true;
         }
         return false;
@@ -123,30 +131,34 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 
     /**
      * solo/ switch card start year
+     *
      * @return array
      */
-     public function getSsStartYears()
+    public function getSsStartYears()
     {
         $years = array();
         $first = date("Y");
 
-        for ($index=5; $index>=0; $index--) {
+        for ($index = 5; $index >= 0; $index--) {
             $year = $first - $index;
             $years[$year] = $year;
         }
-        $years = array(0=>$this->__('Year'))+$years;
+        $years = array(0 => $this->__('Year')) + $years;
         return $years;
     }
 
     /**
      * Render block HTML
+     *
      * @return string
      */
     protected function _toHtml()
     {
-        Mage::dispatchEvent('payment_form_block_to_html_before', array(
-            'block'     => $this
-        ));
+        Mage::dispatchEvent(
+            'payment_form_block_to_html_before',
+            array('block' => $this)
+        );
+
         return parent::_toHtml();
     }
 }
