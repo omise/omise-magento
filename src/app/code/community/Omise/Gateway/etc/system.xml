@@ -13,10 +13,12 @@
                     <fields>
                         <omise_gateway type="group">
                             <label>Credit Card</label>
+                            <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
                             <sort_order>680</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <frontend_model>omise_gateway/adminhtml_system_config_fieldset_payment</frontend_model>
                             <fields>
                                 <active translate="label">
                                     <label>Module Enabled</label>
