@@ -35,7 +35,7 @@ class Omise_Gateway_Model_Strategies_AuthorizeStrategy extends Omise_Gateway_Mod
         }
 
         if (! $charge['authorized']) {
-            $this->message = 'Your authorize failed:: (' . $charge['failure_code'] . ') - ' . $charge['failure_code'];
+            $this->message = 'Payment authorization failed, ' . $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')';
             return false;
         }
 

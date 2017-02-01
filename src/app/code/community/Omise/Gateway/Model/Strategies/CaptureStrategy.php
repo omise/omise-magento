@@ -40,7 +40,7 @@ class Omise_Gateway_Model_Strategies_CaptureStrategy extends Omise_Gateway_Model
         }
 
         if (! $charge['authorized'] || ! $charge['captured']) {
-            $this->message = 'Your payment failed:: (' . $charge['failure_code'] . ') - ' . $charge['failure_code'];
+            $this->message = 'Payment process failed, ' . $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')';
             return false;
         }
 
