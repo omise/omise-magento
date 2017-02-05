@@ -1,13 +1,14 @@
 <?php
-class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstract
+class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
 {
     /**
      * Payment strategies
      *
      * @var string
      */
-    const STRATEGY_AUTHORIZE  = 'AuthorizeStrategy';
-    const STRATEGY_CAPTURE    = 'CaptureStrategy';
+    const STRATEGY_AUTHORIZE      = 'AuthorizeStrategy';
+    const STRATEGY_CAPTURE        = 'CaptureStrategy';
+    const STRATEGY_MANUAL_CAPTURE = 'ManualCaptureStrategy';
 
     /**
      * @var string
@@ -46,14 +47,14 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         Mage::log('Start authorizing with Omise Payment Gateway.');
 
         $payment_data = $payment->getData('additional_information');
-        $result       = $this->request(
-            self::STRATEGY_AUTHORIZE,
+        $result = $this->perform(
+            Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_AUTHORIZE),
             array(
-                "amount"      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
-                "currency"    => $payment->getOrder()->getOrderCurrencyCode(),
-                "description" => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
-                "capture"     => false,
-                "card"        => $payment_data['omise_token']
+                'amount'      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
+                'currency'    => $payment->getOrder()->getOrderCurrencyCode(),
+                'description' => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
+                'capture'     => false,
+                'card'        => $payment_data['omise_token']
             )
         );
 
@@ -77,22 +78,27 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         Mage::log('Start capturing with Omise Payment Gateway.');
 
         $payment_data = $payment->getData('additional_information');
-        $authorized   = isset($payment_data['omise_charge_id']) ? $payment_data['omise_charge_id'] : false;
-        if ($authorized) {
+        $charge_id    = isset($payment_data['omise_charge_id']) ? $payment_data['omise_charge_id'] : false;
+
+        if ($charge_id) {
             // Manual capture.
-            $params = array("id" => $authorized);
+            $result = $this->perform(
+                Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_MANUAL_CAPTURE),
+                array("id" => $charge_id)
+            );
         } else {
             // Authorize and capture.
-            $params = array(
-                "amount"      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
-                "currency"    => $payment->getOrder()->getOrderCurrencyCode(),
-                "description" => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
-                "capture"     => true,
-                "card"        => $payment_data['omise_token']
+            $result = $this->perform(
+                Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_CAPTURE),
+                array(
+                    'amount'      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
+                    'currency'    => $payment->getOrder()->getOrderCurrencyCode(),
+                    'description' => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
+                    'capture'     => true,
+                    'card'        => $payment_data['omise_token']
+                )
             );
         }
-
-        $result = $this->request(self::STRATEGY_CAPTURE, $params);
 
         Mage::log('This transaction was authorized and captured! (by OmiseCharge API)');
 
@@ -152,33 +158,5 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         }
 
         return $amount;
-    }
-
-    /**
-     * @param  string $name
-     *
-     * @return Omise_Gateway_Model_Strategies_OmisePaymentStrategyInterface
-     */
-    protected function loadStrategy($name)
-    {
-        return Mage::getModel('omise_gateway/Strategies_' . $name);
-    }
-
-    /**
-     * @param  string $strategy_name
-     * @param  mixed  $params
-     *
-     * @return Omise_Gateway_Model_Strategies_OmisePaymentStrategyInterface
-     */
-    protected function request($strategy_name, $params)
-    {
-        $strategy = $this->loadStrategy($strategy_name);
-        $result   = $strategy->execute($params);
-
-        if (! $strategy->validate($result)) {
-            Mage::throwException(Mage::helper('payment')->__($strategy->getMessage()));
-        }
-
-        return $result;
     }
 }
