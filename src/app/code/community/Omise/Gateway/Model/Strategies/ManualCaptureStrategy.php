@@ -1,12 +1,14 @@
 <?php
-class Omise_Gateway_Model_Strategies_CaptureStrategy extends Omise_Gateway_Model_Strategies_StrategyAbstract
+class Omise_Gateway_Model_Strategies_ManualCaptureStrategy extends Omise_Gateway_Model_Strategies_StrategyAbstract
 {
     /**
      * {@inheritDoc}
      */
     public function perform($payment, $params = array())
     {
-        return OmiseCharge::create($params);
+        $charge = OmiseCharge::retrieve($params['id']);
+
+        return $charge->capture();
     }
 
     /**
