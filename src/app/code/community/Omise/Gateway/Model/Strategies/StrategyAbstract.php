@@ -8,14 +8,15 @@ abstract class Omise_Gateway_Model_Strategies_StrategyAbstract implements
     protected $message;
 
     /**
-     * Process a payment.
+     * Perform a payment action.
+     * i.e. authorize a payment, capture a charge, etc.
      *
      * @param  \Omise_Gateway_Model_Payment $payment
      * @param  array                        $params
      *
      * @return mixed
      */
-    abstract public function process($payment, $params = array());
+    abstract public function perform($payment, $params = array());
 
     /**
      * Validate a payment process result.
