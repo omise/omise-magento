@@ -2,13 +2,15 @@
 interface Omise_Gateway_Model_Strategies_StrategyInterface
 {
     /**
-     * Process a payment.
+     * Perform a payment action.
+     * i.e. authorize a payment, capture a charge, etc.
      *
-     * @param  array|mixed $params
+     * @param  \Omise_Gateway_Model_Payment $payment
+     * @param  array                        $params
      *
      * @return mixed
      */
-    public function process($params = array());
+    public function perform($payment, $params = array());
 
     /**
      * Validate a payment process result.
@@ -18,9 +20,4 @@ interface Omise_Gateway_Model_Strategies_StrategyInterface
      * @return boolean
      */
     public function validate($data);
-
-    /**
-     * @return string
-     */
-    public function getMessage();
 }
