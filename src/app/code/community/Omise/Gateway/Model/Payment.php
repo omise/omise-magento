@@ -58,6 +58,8 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     public function perform(Omise_Gateway_Model_Strategies_StrategyInterface $strategy, $params)
     {
         $this->defineOmiseKeys();
+        $this->defineOmiseApiVersion();
+        $this->defineOmiseUserAgent();
 
         try {
             $result = $strategy->perform($this, $params);
@@ -86,6 +88,28 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
 
         if (! defined('OMISE_SECRET_KEY')) {
             define('OMISE_SECRET_KEY', $secret_key ? $secret_key : $this->secret_key);
+        }
+    }
+
+    /**
+     * @param  string $version
+     *
+     * @return void
+     */
+    protected function defineOmiseApiVersion($version = '2014-07-27')
+    {
+        if (! defined('OMISE_API_VERSION')) {
+            define('OMISE_API_VERSION', $version);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function defineOmiseUserAgent()
+    {
+        if (! defined('OMISE_USER_AGENT_SUFFIX')) {
+            define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.9.0.6 Magento/' . Mage::getVersion());
         }
     }
 }
