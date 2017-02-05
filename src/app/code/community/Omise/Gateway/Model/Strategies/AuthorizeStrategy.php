@@ -2,13 +2,9 @@
 class Omise_Gateway_Model_Strategies_AuthorizeStrategy extends Omise_Gateway_Model_Strategies_StrategyAbstract
 {
     /**
-     * Process a payment.
-     *
-     * @param  array|mixed $params
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function process($params = array())
+    public function perform($payment, $params = array())
     {
         return OmiseCharge::create($params);
     }
