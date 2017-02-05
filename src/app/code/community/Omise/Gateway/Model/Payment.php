@@ -60,7 +60,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
         $this->defineOmiseKeys();
 
         try {
-            $result = $strategy->process($this, $params);
+            $result = $strategy->perform($this, $params);
         } catch (Exception $e) {
             Mage::throwException(Mage::helper('payment')->__($e->getMessage()));
         }
