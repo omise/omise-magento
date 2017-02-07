@@ -17,6 +17,22 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
         return Mage::getSingleton('payment/config');
     }
 
+    public function isCurrentCurrencySupported()
+    {
+        $currencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
+
+        switch ($currencyCode) {
+            case 'THB':
+            case 'JPY':
+            case 'IDR':
+            case 'SGD':
+                return true;
+                break;
+        }
+
+        return false;
+    }
+
     /**
      * Retrieve Omise keys from database
      *
