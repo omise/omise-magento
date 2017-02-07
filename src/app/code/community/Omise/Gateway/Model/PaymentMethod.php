@@ -137,26 +137,6 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
-     * @see Mage_Payment_Model_Method_Abstract::canUseForCurrency()
-     */
-    public function canUseForCurrency($currencyCode)
-    {
-        switch ($currencyCode) {
-            case 'THB':
-            case 'JPY':
-            case 'IDR':
-            case 'SGD':
-                return true;
-                break;
-        }
-
-        return false;
-    }
-
-    /**
      * Format a Magento's amount to be a small-unit that Omise's API requires.
      * Note, no specific format for JPY currency.
      *
