@@ -137,26 +137,6 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
-     * @see Mage_Payment_Model_Method_Abstract::canUseForCurrency()
-     */
-    public function canUseForCurrency($currencyCode)
-    {
-        switch ($currencyCode) {
-            case 'THB':
-            case 'JPY':
-            case 'IDR':
-            case 'SGD':
-                return true;
-                break;
-        }
-
-        return false;
-    }
-
-    /**
      * @param  string          $currency
      * @param  integer | float $amount
      *

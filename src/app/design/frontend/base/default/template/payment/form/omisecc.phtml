@@ -120,6 +120,16 @@ $_code = $this->getMethodCode();
 
 <ul id="payment_form_<?php echo $_code; ?>" class="form-list" style="display:none;">
 
+    <?php if (! $this->isCurrentCurrencySupported()): ?>
+
+        <li>
+            <div class="validation-advice">
+                Checkout with Credit Card (Powered by Omise) is not support for the current currency.
+            </div>
+        </li>
+
+    <?php else: ?>
+
     <!-- Omise's validation advice -->
     <li>
         <div id="omise-validation-advice" class="validation-advice"></div>
@@ -264,5 +274,7 @@ $_code = $this->getMethodCode();
                 //]]>
             </script>
         </li>
+    <?php endif; ?>
+
     <?php endif; ?>
 </ul>
