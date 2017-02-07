@@ -4,7 +4,7 @@ class Omise_Gateway_Block_Form_OffsiteInternetBankingPayment extends Mage_Paymen
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('payment/form/omisecc.phtml');
+        $this->setTemplate('payment/form/omiseoffsiteinternetbankingpayment.phtml');
     }
 
     /**
