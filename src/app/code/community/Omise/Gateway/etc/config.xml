@@ -109,6 +109,12 @@
                 <cctypes>VI,MC</cctypes>
                 <title>Credit Card (Powered by Omise)</title>
             </omise_gateway>
+
+            <omise_offsite_internet_banking>
+                <active>0</active>
+                <model>omise_gateway/OffsiteInternetBankingPayment</model>
+                <title>Internet Banking</title>
+            </omise_offsite_internet_banking>
         </payment>
     </default>
 </config>
