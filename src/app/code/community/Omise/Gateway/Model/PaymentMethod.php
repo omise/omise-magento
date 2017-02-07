@@ -157,6 +157,9 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     }
 
     /**
+     * Format a Magento's amount to be a small-unit that Omise's API requires.
+     * Note, no specific format for JPY currency.
+     *
      * @param  string          $currency
      * @param  integer | float $amount
      *
@@ -170,9 +173,6 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
             case 'SGD':
                 // Convert to a small unit
                 $amount = $amount * 100;
-                break;
-
-            case 'JPY':
                 break;
         }
 
