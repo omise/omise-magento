@@ -141,4 +141,23 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
 
         return $amount;
     }
+
+    /**
+     * @return bool
+     */
+    public function isThreeDSecureNeeded()
+    {
+        return Mage::getStoreConfig('payment/omise_gateway/threedsecure') ? true : false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThreeDSecureCallbackUri()
+    {
+        return Mage::getUrl(
+            'omise/callback_validatethreedsecure',
+            array('_secure' => Mage::app()->getStore()->isCurrentlySecure())
+        );
+    }
 }
