@@ -6,9 +6,11 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
      *
      * @var string
      */
-    const STRATEGY_AUTHORIZE         = 'AuthorizeStrategy';
-    const STRATEGY_AUTHORIZE_CAPTURE = 'CaptureStrategy';
-    const STRATEGY_MANUAL_CAPTURE    = 'ManualCaptureStrategy';
+    const STRATEGY_AUTHORIZE                        = 'AuthorizeStrategy';
+    const STRATEGY_AUTHORIZE_THREE_D_SECURE         = 'AuthorizeThreeDSecureStrategy';
+    const STRATEGY_AUTHORIZE_CAPTURE                = 'CaptureStrategy';
+    const STRATEGY_AUTHORIZE_CAPTURE_THREE_D_SECURE = 'CaptureThreeDSecureStrategy';
+    const STRATEGY_MANUAL_CAPTURE                   = 'ManualCaptureStrategy';
 
     /**
      * @var string
