@@ -48,16 +48,56 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
     {
         Mage::log('Start authorizing with Omise Payment Gateway.');
 
+        if ($this->isThreeDSecureNeeded()) {
+            $result = $this->performAuthorizeThreeDSecure($payment, $amount)
+        } else {
+            $result = $this->performAuthorize($payment, $amount)
+        }
+
+        $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $result['id']);
+        Mage::log('Assigned charge id ' . $result['id'] . ' to the transaction');
+
+        return $this;
+    }
+
+    /**
+     * Perform authorize action
+     *
+     * @param  Varien_Object $payment
+     * @param  float         $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    protected function performAuthorize(Varien_Object $payment, $amount)
+    {
         $result = $this->perform(
             Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_AUTHORIZE),
             $payment,
             $amount
         );
 
-        $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $result['id']);
+        Mage::log('The transaction was authorized! (by OmiseCharge API)');
+        return $result;
+    }
 
-        Mage::log('This transaction was authorized! (by OmiseCharge API)');
-        return $this;
+    /**
+     * Perform authorize with 3-D Secure action
+     *
+     * @param  Varien_Object $payment
+     * @param  float         $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    protected function performAuthorizeThreeDSecure(Varien_Object $payment, $amount)
+    {
+        $result = $this->perform(
+            Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_AUTHORIZE_THREE_D_SECURE),
+            $payment,
+            $amount
+        );
+
+        Mage::log('The transaction was created, processing 3-D Secure authentication.');
+        return $result;
     }
 
     /**
