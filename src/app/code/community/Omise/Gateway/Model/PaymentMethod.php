@@ -96,9 +96,7 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
             $amount
         );
 
-        if (isset($result['authorize_uri'])) {
-            Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($result['authorize_uri']);
-        }
+        Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($result['authorize_uri']);
 
         Mage::log('The transaction was created, processing 3-D Secure authentication.');
         return $result;
@@ -163,9 +161,7 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
             $amount
         );
 
-        if (isset($result['authorize_uri'])) {
-            Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($result['authorize_uri']);
-        }
+        Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($result['authorize_uri']);
 
         Mage::log('The transaction was created, processing 3-D Secure authentication by Omise payment gateway.');
         return $result;

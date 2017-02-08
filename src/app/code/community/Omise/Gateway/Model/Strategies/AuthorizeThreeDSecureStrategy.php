@@ -29,6 +29,11 @@ class Omise_Gateway_Model_Strategies_AuthorizeThreeDSecureStrategy extends Omise
      */
     public function validate($charge)
     {
+        if (! isset($charge['authorize_uri'])) {
+            $this->message = 'Payment process failed, cannot retrieve a 3-D Secure authorize uri. Please contact our support to confirm the payment.';
+            return false;
+        }
+
         $this->message = 'dump error.';
         return false;
     }
