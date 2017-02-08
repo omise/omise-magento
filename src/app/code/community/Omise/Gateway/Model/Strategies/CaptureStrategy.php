@@ -4,9 +4,17 @@ class Omise_Gateway_Model_Strategies_CaptureStrategy extends Omise_Gateway_Model
     /**
      * {@inheritDoc}
      */
-    public function perform($payment, $params = array())
+    public function perform($payment, $amount)
     {
-        return OmiseCharge::create($params);
+        $info = $payment->getPaymentInformation();
+
+        return OmiseCharge::create(array(
+            'amount'      => $payment->formatAmount($info->getOrder()->getOrderCurrencyCode(), $amount),
+            'currency'    => $info->getOrder()->getOrderCurrencyCode(),
+            'description' => 'Charge a card from Magento that order id is ' . $info->getData('entity_id'),
+            'capture'     => true,
+            'card'        => $info->getAdditionalInformation('omise_token')
+        ));
     }
 
     /**

@@ -4,9 +4,10 @@ class Omise_Gateway_Model_Strategies_ManualCaptureStrategy extends Omise_Gateway
     /**
      * {@inheritDoc}
      */
-    public function perform($payment, $params = array())
+    public function perform($payment, $amount)
     {
-        $charge = OmiseCharge::retrieve($params['id']);
+        $info   = $payment->getPaymentInformation();
+        $charge = OmiseCharge::retrieve($info->getAdditionalInformation('omise_charge_id'));
 
         return $charge->capture();
     }

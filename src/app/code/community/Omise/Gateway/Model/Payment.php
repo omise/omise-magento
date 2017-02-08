@@ -21,6 +21,11 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     protected $secret_key;
 
     /**
+     * @var \Mage_Sales_Model_Order_Payment
+     */
+    protected $payment_information;
+
+    /**
      * Load necessary file and setup Omise keys
      *
      * @return void
@@ -50,19 +55,33 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     }
 
     /**
+     * @return \Mage_Sales_Model_Order_Payment
+     */
+    public function getPaymentInformation()
+    {
+        return $this->payment_information;
+    }
+
+    /**
      * @param  \Omise_Gateway_Model_Strategies_StrategyInterface $strategy
-     * @param  mixed                                             $payment
+     * @param  \Mage_Sales_Model_Order_Payment                   $payment
+     * @param  int|float                                         $amount
      *
      * @return Mage_Payment_Model_Abstract
      */
-    public function perform(Omise_Gateway_Model_Strategies_StrategyInterface $strategy, $params)
-    {
+    public function perform(
+        Omise_Gateway_Model_Strategies_StrategyInterface $strategy,
+        Mage_Sales_Model_Order_Payment $payment,
+        $amount
+    ) {
         $this->defineOmiseKeys();
         $this->defineOmiseApiVersion();
         $this->defineOmiseUserAgent();
 
+        $this->payment_information = $payment;
+
         try {
-            $result = $strategy->perform($this, $params);
+            $result = $strategy->perform($this, $amount);
         } catch (Exception $e) {
             Mage::throwException(Mage::helper('payment')->__($e->getMessage()));
         }

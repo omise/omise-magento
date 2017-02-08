@@ -10,7 +10,7 @@ abstract class Omise_Gateway_Model_Strategies_StrategyAbstract implements
     /**
      * {@inheritDoc}
      */
-    abstract public function perform($payment, $params = array());
+    abstract public function perform($payment, $amount);
 
     /**
      * {@inheritDoc}
