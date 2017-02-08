@@ -42,8 +42,8 @@ $data = $this->getData(); ?>
 
             <!-- Balance -->
             <div class="omise-balance omise-clearfix">
-                <div class="left"><span class="omise-number"><?php echo number_format(($data['omise']['total']/100), 2); ?></span><br/>Total Balance</div>
-                <div class="right"><span class="omise-number"><?php echo number_format(($data['omise']['available']/100), 2); ?></span><br/>Transferable Balance</div>
+                <div class="left"><span class="omise-number"><?php echo Mage::helper('omise_gateway')->formatPrice($data['omise']['currency'], $data['omise']['total']); ?></span><br/>Total Balance</div>
+                <div class="right"><span class="omise-number"><?php echo Mage::helper('omise_gateway')->formatPrice($data['omise']['currency'], $data['omise']['available']); ?></span><br/>Transferable Balance</div>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@ $data = $this->getData(); ?>
                             <?php if (!empty($data['omise']['transfer']['data'])):
                                 foreach ($data['omise']['transfer']['data'] as $key => $value): $date = new \DateTime($value['created']); ?>
                                     <tr class="<?php echo $key%2 == 0 ? 'even' : ''; ?> pointer">
-                                        <td><?php echo number_format(($value['amount']/100), 2); ?></td>
+                                        <td><?php echo Mage::helper('omise_gateway')->formatPrice($data['omise']['currency'], $value['amount']); ?></td>
                                         <td><?php echo $value['id']; ?></td>
                                         <td><?php echo $value['sent'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
                                         <td><?php echo $value['paid'] ? 'Yes' : '<strong class="error-label">No</strong>'; ?></td>
@@ -89,14 +89,8 @@ $data = $this->getData(); ?>
 
                             <!-- Create transfer form -->
                             <tr class="even pointer">
-                                <?php if ($data['omise']['available'] > 3000): ?>
-                                    <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="Transfer amount (number only, icluding 'satang')"></td>
-                                    <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
-                                <?php elseif ($data['omise']['available'] > 0): ?>
-                                    <td class="a-right" colspan="7">Minimum withdrawal is 30 Baht</td>
-                                <?php else: ?>
-                                    <td class="a-right" colspan="7">&nbsp;</td>
-                                <?php endif; ?>
+                                <td class="a-right" colspan="6"><input class="transfer-amount input-text no-changes" min="0" type="number" name="OmiseTransfer[amount]" placeholder="<?php echo Mage::helper('omise_gateway')->formatPrice($data['omise']['currency'], $data['omise']['available']); ?>"></td>
+                                <td class="a-center last"><button class="button btn-transfer">CREATE TRANSFER</button></td>
                             </tr>
                         </tbody>
                     </table>

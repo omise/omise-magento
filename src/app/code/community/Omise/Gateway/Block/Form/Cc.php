@@ -4,7 +4,12 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('payment/form/omisecc.phtml');
+
+        if ($this->isApplicable()) {
+            $this->setTemplate('payment/form/omisecc.phtml');
+        } else {
+            $this->setTemplate('payment/form/omise-inapplicable-method.phtml');
+        }
     }
 
     /**
@@ -15,6 +20,39 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     protected function _getConfig()
     {
         return Mage::getSingleton('payment/config');
+    }
+
+    /**
+     * Check if the payment method is applicable for the checkout form.
+     *
+     * @return bool
+     */
+    protected function isApplicable()
+    {
+        if (! $this->isStoreCurrencySupported()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isStoreCurrencySupported()
+    {
+        $currencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
+
+        switch ($currencyCode) {
+            case 'THB':
+            case 'JPY':
+            case 'IDR':
+            case 'SGD':
+                return true;
+                break;
+        }
+
+        return false;
     }
 
     /**

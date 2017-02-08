@@ -36,11 +36,11 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
     public function authorize(Varien_Object $payment, $amount)
     {
         Mage::log('Start authorize with OmiseCharge API!');
-        
+
         $omise_token = $payment->getData('additional_information');
         $charge      = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
-            "amount"      => number_format($amount, 2, '', ''),
-            "currency"    => "thb",
+            "amount"      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
+            "currency"    => $payment->getOrder()->getOrderCurrencyCode(),
             "description" => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
             "capture"     => false,
             "card"        => $omise_token['omise_token']
@@ -84,8 +84,8 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
 
             $omise_token = $payment->getData('additional_information');
             $charge      = Mage::getModel('omise_gateway/omiseCharge')->createOmiseCharge(array(
-                "amount"      => number_format($amount, 2, '', ''),
-                "currency"    => "thb",
+                "amount"      => $this->formatAmount($payment->getOrder()->getOrderCurrencyCode(), $amount),
+                "currency"    => $payment->getOrder()->getOrderCurrencyCode(),
                 "description" => 'Charge a card from Magento that order id is ' . $payment->getData('entity_id'),
                 "card"        => $omise_token['omise_token']
             ));
@@ -134,5 +134,28 @@ class Omise_Gateway_Model_PaymentMethod extends Mage_Payment_Model_Method_Abstra
         }
 
         return $result;
+    }
+
+    /**
+     * Format a Magento's amount to be a small-unit that Omise's API requires.
+     * Note, no specific format for JPY currency.
+     *
+     * @param  string          $currency
+     * @param  integer | float $amount
+     *
+     * @return integer
+     */
+    public function formatAmount($currency, $amount)
+    {
+        switch (strtoupper($currency)) {
+            case 'THB':
+            case 'IDR':
+            case 'SGD':
+                // Convert to a small unit
+                $amount = $amount * 100;
+                break;
+        }
+
+        return $amount;
     }
 }
