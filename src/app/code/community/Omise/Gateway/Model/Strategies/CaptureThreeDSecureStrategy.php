@@ -14,7 +14,7 @@ class Omise_Gateway_Model_Strategies_CaptureThreeDSecureStrategy extends Omise_G
             'description' => 'Charge a card from Magento that order id is ' . $info->getData('entity_id'),
             'capture'     => true,
             'card'        => $info->getAdditionalInformation('omise_token'),
-            'return_uri'  => $payment->getThreeDSecureCallbackUri()
+            'return_uri'  => $payment->getThreeDSecureCallbackUri(array('order_id' => $info->getOrder()->getIncrementId()))
         ));
     }
 

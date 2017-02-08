@@ -265,13 +265,18 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
     }
 
     /**
+     * @param  array $params
+     *
      * @return string
      */
-    public function getThreeDSecureCallbackUri()
+    public function getThreeDSecureCallbackUri($params = array())
     {
         return Mage::getUrl(
             'omise/callback_validatethreedsecure',
-            array('_secure' => Mage::app()->getStore()->isCurrentlySecure())
+            array(
+                '_secure' => Mage::app()->getStore()->isCurrentlySecure(),
+                '_query'  => $params
+            )
         );
     }
 }
