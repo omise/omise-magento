@@ -122,6 +122,9 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
             $result = $this->performCapture($payment, $amount);
         }
 
+        $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $result['id']);
+        Mage::log('Assigned charge id ' . $result['id'] . ' to the transaction');
+
         return $this;
     }
 
