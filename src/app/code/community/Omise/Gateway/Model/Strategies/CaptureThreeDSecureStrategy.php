@@ -29,12 +29,29 @@ class Omise_Gateway_Model_Strategies_CaptureThreeDSecureStrategy extends Omise_G
      */
     public function validate($charge)
     {
-        if (! isset($charge['authorize_uri'])) {
-            $this->message = 'Payment process failed, cannot retrieve a 3-D Secure authorize uri. Please contact our support to confirm the payment.';
+        if (! isset($charge['object'])) {
+            $this->message = 'Cannot retrieve a payment result, please contact our support to confirm the payment.';
             return false;
         }
 
-        $this->message = 'dump error.';
+        if ($charge['object'] === 'error') {
+            $this->message = $charge['message'];
+            return false;
+        }
+
+        if ($charge['failure_code'] || $charge['failure_message']) {
+            $this->message = 'Payment process failed, ' . $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')';
+            return false;
+        }
+
+        if ($charge['object'] === 'charge'
+            && $charge['status'] === 'pending'
+            && $charge['authorized'] === false
+            && $charge['captured'] === false) {
+            return true;
+        }
+
+        $this->message = 'Error payment result validation, please contact our support to confirm the payment.';
         return false;
     }
 }
