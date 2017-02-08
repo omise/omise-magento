@@ -4,5 +4,6 @@ class Omise_Gateway_Callback_ValidateThreeDSecureController extends Mage_Core_Co
     public function indexAction()
     {
         // Callback validation.
+        echo "validating!";
     }
 }
