@@ -8,6 +8,8 @@ class Omise_Gateway_Model_OmiseBalance extends Omise_Gateway_Model_Omise
      */
     public function retrieveOmiseBalance()
     {
+        $this->initNecessaryConstant();
+
         try {
             return OmiseBalance::retrieve($this->_public_key, $this->_secret_key);
         } catch (Exception $e) {
