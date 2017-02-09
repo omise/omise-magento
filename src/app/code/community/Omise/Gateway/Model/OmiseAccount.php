@@ -8,6 +8,8 @@ class Omise_Gateway_Model_OmiseAccount extends Omise_Gateway_Model_Omise
      */
     public function retrieveOmiseAccount()
     {
+        $this->initNecessaryConstant();
+
         try {
             return OmiseAccount::retrieve($this->_public_key, $this->_secret_key);
         } catch (Exception $e) {

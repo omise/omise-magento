@@ -8,6 +8,8 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
      */
     public function retrieveOmiseTransfer($id = '')
     {
+        $this->initNecessaryConstant();
+
         try {
             return OmiseTransfer::retrieve('', $this->_public_key, $this->_secret_key);
         } catch (Exception $e) {
@@ -22,6 +24,8 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
      */
     public function createOmiseTransfer($params)
     {
+        $this->initNecessaryConstant();
+
         try {
             // Validate $params
             // If it not contain `amount` key.
@@ -49,6 +53,8 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
      */
     public function deleteOmiseTransfer($id = '')
     {
+        $this->initNecessaryConstant();
+
         try {
             if ($id == '') {
                 throw new Exception("Id was required", 1);

@@ -10,6 +10,8 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
      */
     public function createOmiseCharge($params)
     {
+        $this->initNecessaryConstant();
+
         try {
             return OmiseCharge::create($params, $this->_public_key, $this->_secret_key);
         } catch (Exception $e) {
@@ -26,6 +28,8 @@ class Omise_Gateway_Model_OmiseCharge extends Omise_Gateway_Model_Omise
      */
     public function captureOmiseCharge($id)
     {
+        $this->initNecessaryConstant();
+
         try {
             $charge = OmiseCharge::retrieve($id, $this->_public_key, $this->_secret_key);
             return $charge->capture();
