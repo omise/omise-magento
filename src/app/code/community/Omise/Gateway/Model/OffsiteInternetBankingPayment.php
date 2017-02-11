@@ -22,4 +22,16 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
      * @var bool
      */
     protected $_isGateway = true;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
+     */
+    public function assignData($data)
+    {
+        parent::assignData($data);
+
+        $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
+    }
 }
