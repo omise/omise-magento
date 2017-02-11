@@ -7,7 +7,7 @@ $code = $this->getMethodCode();
 <ul id="payment_form_<?php echo $code; ?>" class="form-list" style="display:none;">
     <!-- SCB -->
     <li class="item">
-        <input id="internet_banking_scb" type="radio" name="offsite" value="internet_banking_scb" />
+        <input id="internet_banking_scb" type="radio" name="payment[offsite]" value="internet_banking_scb" />
         <label for="internet_banking_scb">
             <div class="omise-logo-wrapper scb">
                 <img class="scb" />
@@ -18,7 +18,7 @@ $code = $this->getMethodCode();
 
     <!-- KTB -->
     <li class="item">
-        <input id="internet_banking_ktb" type="radio" name="offsite" value="internet_banking_ktb" />
+        <input id="internet_banking_ktb" type="radio" name="payment[offsite]" value="internet_banking_ktb" />
         <label for="internet_banking_ktb">
             <div class="omise-logo-wrapper ktb">
                 <img class="ktb" />
@@ -29,7 +29,7 @@ $code = $this->getMethodCode();
 
     <!-- BAY -->
     <li class="item">
-        <input id="internet_banking_bay" type="radio" name="offsite" value="internet_banking_bay" />
+        <input id="internet_banking_bay" type="radio" name="payment[offsite]" value="internet_banking_bay" />
         <label for="internet_banking_bay">
             <div class="omise-logo-wrapper bay">
                 <img class="bay" />
@@ -40,7 +40,7 @@ $code = $this->getMethodCode();
 
     <!-- BBL -->
     <li class="item">
-        <input id="internet_banking_bbl" type="radio" name="offsite" value="internet_banking_bbl" />
+        <input id="internet_banking_bbl" type="radio" name="payment[offsite]" value="internet_banking_bbl" />
         <label for="internet_banking_bbl">
             <div class="omise-logo-wrapper bbl">
                 <img class="bbl" />
