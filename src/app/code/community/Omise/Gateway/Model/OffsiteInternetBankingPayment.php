@@ -4,6 +4,11 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
     /**
      * @var string
      */
+    const STRATEGY_OFFSITE_INTERNET_BANKING = 'OffsiteInternetBankingStrategy';
+
+    /**
+     * @var string
+     */
     protected $_code = 'omise_offsite_internet_banking';
 
     /**
@@ -47,6 +52,12 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
     public function capture(Varien_Object $payment, $amount)
     {
         Mage::log('Start processing internet banking payment method with Omise payment gateway.');
+
+        $result = $this->perform(
+            Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_OFFSITE_INTERNET_BANKING),
+            $payment,
+            $amount
+        );
 
         Mage::log('The transaction was created, processing internet banking payment by Omise payment gateway.');
         return $this;
