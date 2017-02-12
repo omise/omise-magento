@@ -6,7 +6,15 @@ class Omise_Gateway_Model_Strategies_OffsiteInternetBankingStrategy extends Omis
      */
     public function perform($payment, $amount)
     {
-        // ...
+        $info = $payment->getPaymentInformation();
+
+        return OmiseCharge::create(array(
+            'amount'      => $payment->formatAmount($info->getOrder()->getOrderCurrencyCode(), $amount),
+            'currency'    => $info->getOrder()->getOrderCurrencyCode(),
+            'description' => 'Charge a card from Magento that order id is ' . $info->getData('entity_id'),
+            'offsite'     => $info->getAdditionalInformation('offsite'),
+            'return_uri'  => 'https://www.omise.co'
+        ));
     }
 
     /**
