@@ -59,6 +59,12 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
             $amount
         );
 
+        $payment->setIsTransactionPending(true);
+
+        $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $result['id']);
+
+        Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($result['authorize_uri']);
+
         Mage::log('The transaction was created, processing internet banking payment by Omise payment gateway.');
         return $this;
     }
@@ -73,6 +79,16 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
         parent::assignData($data);
 
         $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see app/code/core/Mage/Sales/Model/Quote/Payment.php
+     */
+    public function getOrderPlaceRedirectUrl()
+    {
+        return Mage::getSingleton('checkout/session')->getOmiseAuthorizeUri();
     }
 
     /**
