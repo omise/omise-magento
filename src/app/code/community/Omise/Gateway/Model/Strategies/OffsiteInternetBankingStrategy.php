@@ -13,7 +13,7 @@ class Omise_Gateway_Model_Strategies_OffsiteInternetBankingStrategy extends Omis
             'currency'    => $info->getOrder()->getOrderCurrencyCode(),
             'description' => 'Charge a card from Magento that order id is ' . $info->getData('entity_id'),
             'offsite'     => $info->getAdditionalInformation('offsite'),
-            'return_uri'  => 'https://www.omise.co'
+            'return_uri'  => $payment->getCallbackUri(array('order_id' => $info->getOrder()->getIncrementId()))
         ));
     }
 
