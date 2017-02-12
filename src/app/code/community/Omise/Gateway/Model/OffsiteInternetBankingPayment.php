@@ -101,4 +101,20 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
 
         return $amount;
     }
+
+    /**
+     * @param  array $params
+     *
+     * @return string
+     */
+    public function getCallbackUri($params = array())
+    {
+        return Mage::getUrl(
+            'omise/callback_validateoffsiteinternetbanking',
+            array(
+                '_secure' => Mage::app()->getStore()->isCurrentlySecure(),
+                '_query'  => $params
+            )
+        );
+    }
 }
