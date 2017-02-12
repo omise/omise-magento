@@ -82,6 +82,18 @@
         </routers>
     </admin>
 
+    <frontend>
+        <routers>
+            <omise_gateway>
+                <use>standard</use>
+                <args>
+                    <module>Omise_Gateway</module>
+                    <frontName>omise</frontName>
+                </args>
+            </omise_gateway>
+        </routers>
+    </frontend>
+
     <!--
     /**
      * Payment Method configuration for front-end
