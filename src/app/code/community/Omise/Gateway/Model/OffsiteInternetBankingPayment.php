@@ -64,6 +64,18 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
+     */
+    public function assignData($data)
+    {
+        parent::assignData($data);
+
+        $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
+    }
+
+    /**
      * Format a Magento's amount to be a small-unit that Omise's API requires.
      * Note, no specific format for JPY currency.
      *
