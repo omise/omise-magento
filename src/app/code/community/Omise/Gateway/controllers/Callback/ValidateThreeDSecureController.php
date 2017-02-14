@@ -53,6 +53,12 @@ class Omise_Gateway_Callback_ValidateThreeDSecureController extends Mage_Core_Co
         return Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
     }
 
+    /**
+     * @param  \Mage_Sales_Model_Order $order
+     * @param  string                  $message
+     *
+     * @return self
+     */
     protected function considerFail($order, $message)
     {
         $order->getPayment()
@@ -64,6 +70,11 @@ class Omise_Gateway_Callback_ValidateThreeDSecureController extends Mage_Core_Co
         return $this->_redirect('checkout/cart');
     }
 
+    /**
+     * @param  \OmiseCharge $charge
+     *
+     * @return bool
+     */
     protected function validate($charge)
     {
         if (! $charge['authorized']) {
