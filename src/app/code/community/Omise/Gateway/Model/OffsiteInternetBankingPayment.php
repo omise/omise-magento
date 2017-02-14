@@ -30,18 +30,6 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
     protected $_canCapture = true;
 
     /**
-     * {@inheritDoc}
-     *
-     * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
-     */
-    public function assignData($data)
-    {
-        parent::assignData($data);
-
-        $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
-    }
-
-    /**
      * Capture payment method
      *
      * @param  Varien_Object $payment
