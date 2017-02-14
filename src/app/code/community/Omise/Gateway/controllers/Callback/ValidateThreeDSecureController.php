@@ -77,14 +77,6 @@ class Omise_Gateway_Callback_ValidateThreeDSecureController extends Mage_Core_Co
      */
     protected function validate($charge)
     {
-        if (! $charge['authorized']) {
-            return false;
-        }
-        // Auto capture case.
-        if ($charge['capture'] && ! $charge['captured']) {
-            return false;
-        }
-
         // check for auto capture.
         if ($charge['capture'] && $charge['status'] === 'successful' && $charge['authorized'] && $charge['captured']) {
             return true;
