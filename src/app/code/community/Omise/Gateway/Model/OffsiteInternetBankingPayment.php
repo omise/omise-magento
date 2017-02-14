@@ -26,8 +26,9 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
      *
      * @var bool
      */
-    protected $_isGateway  = true;
-    protected $_canCapture = true;
+    protected $_isGateway        = true;
+    protected $_canCapture       = true;
+    protected $_canReviewPayment = true;
 
     /**
      * Capture payment method
@@ -55,6 +56,30 @@ class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Mo
 
         Mage::log('The transaction was created, processing internet banking payment by Omise payment gateway.');
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see app/code/community/Omise/Gateway/Model/PaymentMethod.php
+     */
+    public function acceptPayment(Mage_Payment_Model_Info $payment)
+    {
+        parent::acceptPayment($payment);
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see app/code/community/Omise/Gateway/Model/PaymentMethod.php
+     */
+    public function denyPayment(Mage_Payment_Model_Info $payment)
+    {
+        parent::denyPayment($payment);
+
+        return true;
     }
 
     /**
