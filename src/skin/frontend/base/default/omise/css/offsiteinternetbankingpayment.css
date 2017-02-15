@@ -1,13 +1,13 @@
 #payment_form_omise_offsite_internet_banking {  }
 #payment_form_omise_offsite_internet_banking > li {
     border-bottom: 1px solid #eee;
-    padding: 0 0 8px;
+    padding: 4px 0 12px;
     position: relative;
 }
 
 #payment_form_omise_offsite_internet_banking > li > input {
     position: absolute;
-    top: 14px;
+    top: 18px;
     left: 14px;
 }
 
@@ -22,12 +22,21 @@
     padding: 5px;
     margin: 0 10px;
     border-radius: 2px;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 #payment_form_omise_offsite_internet_banking .omise-logo-wrapper img {
     width: 30px;
     height: 30px;
+}
+
+#payment_form_omise_offsite_internet_banking .omise-banking-text-wrapper {
+    display: inline-block;
+}
+
+#payment_form_omise_offsite_internet_banking .secondary-text {
+    color: #aaa;
+    font-size: 80%;
 }
 
 /** SCB **/
