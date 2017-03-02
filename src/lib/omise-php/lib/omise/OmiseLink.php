@@ -2,18 +2,18 @@
 
 require_once dirname(__FILE__).'/res/OmiseApiResource.php';
 
-class OmiseTransaction extends OmiseApiResource
+class OmiseLink extends OmiseApiResource
 {
-    const ENDPOINT = 'transactions';
+    const ENDPOINT = 'links';
 
     /**
-     * Retrieves a transaction.
+     * Retrieves a link.
      *
      * @param  string $id
      * @param  string $publickey
      * @param  string $secretkey
      *
-     * @return OmiseTransaction
+     * @return OmiseLink
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
@@ -27,11 +27,25 @@ class OmiseTransaction extends OmiseApiResource
      */
     public function reload()
     {
-        if ($this['object'] === 'transaction') {
-            parent::reload(self::getUrl($this['id']));
+        if ($this['object'] === 'link') {
+            parent::g_reload(self::getUrl($this['id']));
         } else {
             parent::g_reload(self::getUrl());
         }
+    }
+
+    /**
+     * Creates a new link.
+     *
+     * @param  array  $params
+     * @param  string $publickey
+     * @param  string $secretkey
+     *
+     * @return OmiseLink
+     */
+    public static function create($params, $publickey = null, $secretkey = null)
+    {
+        return parent::g_create(get_class(), self::getUrl(), $params, $publickey, $secretkey);
     }
 
     /**
