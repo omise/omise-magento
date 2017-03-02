@@ -32,9 +32,10 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
      *
      * @var bool
      */
-    protected $_isGateway     = true;
-    protected $_canAuthorize  = true;
-    protected $_canCapture    = true;
+    protected $_isGateway        = true;
+    protected $_canAuthorize     = true;
+    protected $_canCapture       = true;
+    protected $_canReviewPayment = true;
 
     /**
      * Authorize payment method
@@ -192,6 +193,38 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
 
         Mage::log('The transaction was performed manual capture by Omise payment gateway and successful.');
         return $result;
+    }
+
+    /**
+     * Attempt to accept a payment that us under review
+     *
+     * @param  Mage_Payment_Model_Info $payment
+     *
+     * @return bool
+     *
+     * @throws Mage_Core_Exception
+     */
+    public function acceptPayment(Mage_Payment_Model_Info $payment)
+    {
+        parent::acceptPayment($payment);
+
+        return true;
+    }
+
+    /**
+     * Attempt to deny a payment that us under review
+     *
+     * @param  Mage_Payment_Model_Info $payment
+     *
+     * @return bool
+     *
+     * @throws Mage_Core_Exception
+     */
+    public function denyPayment(Mage_Payment_Model_Info $payment)
+    {
+        parent::denyPayment($payment);
+
+        return true;
     }
 
     /**

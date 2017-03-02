@@ -45,7 +45,7 @@ class Omise_Gateway_Model_Strategies_CaptureThreeDSecureStrategy extends Omise_G
         }
 
         if ($charge['object'] === 'charge'
-            && $charge['status'] === 'pending'
+            && $charge['status'] !== 'failed'
             && $charge['authorize_uri']) {
             return true;
         }
