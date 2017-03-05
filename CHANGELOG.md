@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### v1.8 _(February 23, 2017)_
+### [v1.8 _(March 6, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.8)
 
 #### ✨ Highlights
 
