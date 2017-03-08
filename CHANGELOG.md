@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v1.10 _(March 9, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.10)
+
+#### ✨ Highlights
+
+- Add option to allows merchant config a card type support by themselves. (PR [#59](https://github.com/omise/omise-magento/pull/59))
+
+---
+
 ### [v1.8 _(March 6, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.8)
 
 #### ✨ Highlights
