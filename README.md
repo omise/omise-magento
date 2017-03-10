@@ -28,7 +28,7 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 The steps below shows how to install the module manually.
 This requires a user account with permission to write your Magento file system, execute the command line and [composer](https://getcomposer.org).
 
-1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/master.zip).
+1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v2.0.zip).
 2. On your Magento server, create a new folder `Omise/Payment` under the directory `app/code`.
 3. Copy all files to the directory `app/code/Omise/Payment` that you created in the step 2.
   <p align="center"><a alt="omise-magento-install-manual-01" href='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'></a></p>
