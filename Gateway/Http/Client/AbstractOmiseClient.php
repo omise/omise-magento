@@ -6,7 +6,7 @@ use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Omise\Payment\Model\Ui\OmiseConfigProvider;
+use Omise\Payment\Model\Config;
 
 abstract class AbstractOmiseClient implements ClientInterface
 {
@@ -48,14 +48,9 @@ abstract class AbstractOmiseClient implements ClientInterface
      */
     protected $productMetadata;
 
-    /**
-     * @param \Omise\Payment\Model\Ui\OmiseConfigProvider     $config
-     * @param \Magento\Framework\Module\ModuleListInterface   $moduleList
-     * @param \Magento\Framework\App\ProductMetadataInterface $productMetadata
-     */
     public function __construct(
-        OmiseConfigProvider $config,
-        ModuleListInterface $moduleList,
+        Config                   $config,
+        ModuleListInterface      $moduleList,
         ProductMetadataInterface $productMetadata
     ) {
         $this->publicKey       = $config->getPublicKey();
@@ -99,7 +94,7 @@ abstract class AbstractOmiseClient implements ClientInterface
      */
     protected function getModuleVersion()
     {
-        return $this->moduleList->getOne(OmiseConfigProvider::MODULE_NAME)['setup_version'];
+        return $this->moduleList->getOne(Config::MODULE_NAME)['setup_version'];
     }
 
     /**
