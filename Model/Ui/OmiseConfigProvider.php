@@ -3,7 +3,7 @@ namespace Omise\Payment\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig;
-use Omise\Payment\Model\OmiseConfig;
+use Omise\Payment\Model\Config;
 
 class OmiseConfigProvider implements ConfigProviderInterface
 {
@@ -13,18 +13,18 @@ class OmiseConfigProvider implements ConfigProviderInterface
     protected $ccConfig;
 
     /**
-     * @var \Omise\Payment\Model\OmiseConfig
+     * @var \Omise\Payment\Model\Config
      */
-    protected $omiseConfig;
+    protected $config;
 
     /**
      * @param \Magento\Payment\Model\CcConfig  $ccConfig
-     * @param \Omise\Payment\Model\OmiseConfig $omiseConfig
+     * @param \Omise\Payment\Model\Config      $omiseConfig
      */
-    public function __construct(CcConfig $ccConfig, OmiseConfig $omiseConfig)
+    public function __construct(CcConfig $ccConfig, Config $config)
     {
-        $this->ccConfig    = $ccConfig;
-        $this->omiseConfig = $omiseConfig;
+        $this->ccConfig = $ccConfig;
+        $this->config   = $config;
     }
 
     /**
@@ -37,33 +37,13 @@ class OmiseConfigProvider implements ConfigProviderInterface
         return [
             'payment' => [
                 'ccform' => [
-                    'months' => [$this->omiseConfig::CODE => $this->getCcMonths()],
-                    'years' => [$this->omiseConfig::CODE => $this->getCcYears()],
+                    'months' => [Config::CODE => $this->ccConfig->getCcMonths()],
+                    'years'  => [Config::CODE => $this->ccConfig->getCcYears()],
                 ],
-                $this->omiseConfig::CODE => [
-                    'publicKey' => $this->omiseConfig->getPublicKey(),
+                Config::CODE => [
+                    'publicKey' => $this->config->getPublicKey(),
                 ],
             ]
         ];
-    }
-
-    /**
-     * Retrieve list of months translation
-     *
-     * @return array
-     */
-    protected function getCcMonths()
-    {
-        return $this->ccConfig->getCcMonths();
-    }
-
-    /**
-     * Retrieve array of available years
-     *
-     * @return array
-     */
-    protected function getCcYears()
-    {
-        return $this->ccConfig->getCcYears();
     }
 }

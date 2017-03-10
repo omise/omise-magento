@@ -1,9 +1,10 @@
 <?php
 namespace Omise\Payment\Model;
 
-use Omise\Payment\Helper\OmiseHelper;
+use Magento\Framework\App\Config\ScopeConfigInterface as MagentoScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface as MagentoScopeInterface;
 
-class OmiseConfig
+class Config
 {
     /**
      * @var string
@@ -16,16 +17,26 @@ class OmiseConfig
     const MODULE_NAME = 'Omise_Payment';
 
     /**
-     * @var \Omise\Payment\Helper\OmiseHelper
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    protected $omiseHelper;
+    protected $scopeConfig;
+
+    public function __construct(MagentoScopeConfigInterface $scopeConfig)
+    {
+        $this->scopeConfig = $scopeConfig;
+    }
 
     /**
-     * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
+     * @param  string $field
+     *
+     * @return mixed
      */
-    public function __construct(OmiseHelper $helper)
+    public function getValue($field)
     {
-        $this->omiseHelper = $helper;
+        return $this->scopeConfig->getValue(
+            'payment/' . self::CODE . '/' . $field,
+            MagentoScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
@@ -35,7 +46,7 @@ class OmiseConfig
      */
     public function isSandboxEnabled()
     {
-        if ($this->omiseHelper->getConfig('sandbox_status')) {
+        if ($this->getValue('sandbox_status')) {
             return true;
         }
 
@@ -49,7 +60,7 @@ class OmiseConfig
      */
     public function is3DSecureEnabled()
     {
-        if ($this->omiseHelper->getConfig('3ds')) {
+        if ($this->getValue('3ds')) {
             return true;
         }
 
@@ -77,7 +88,7 @@ class OmiseConfig
      */
     protected function getLivePublicKey()
     {
-        return $this->omiseHelper->getConfig('live_public_key');
+        return $this->getValue('live_public_key');
     }
 
     /**
@@ -87,7 +98,7 @@ class OmiseConfig
      */
     protected function getTestPublicKey()
     {
-        return $this->omiseHelper->getConfig('test_public_key');
+        return $this->getValue('test_public_key');
     }
 
     /**
@@ -111,7 +122,7 @@ class OmiseConfig
      */
     protected function getLiveSecretKey()
     {
-        return $this->omiseHelper->getConfig('live_secret_key');
+        return $this->getValue('live_secret_key');
     }
 
     /**
@@ -121,6 +132,6 @@ class OmiseConfig
      */
     protected function getTestSecretKey()
     {
-        return $this->omiseHelper->getConfig('test_secret_key');
+        return $this->getValue('test_secret_key');
     }
 }
