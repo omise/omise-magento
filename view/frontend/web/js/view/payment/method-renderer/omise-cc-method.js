@@ -36,7 +36,7 @@ define(
              * @return {string}
              */
             getCode: function() {
-                return 'omise';
+                return 'omise_cc';
             },
 
             /**
@@ -59,7 +59,7 @@ define(
              * @return {string}
              */
             getPublicKey: function() {
-                return window.checkoutConfig.payment.omise.publicKey;
+                return window.checkoutConfig.payment.omise_cc.publicKey;
             },
 
             /**

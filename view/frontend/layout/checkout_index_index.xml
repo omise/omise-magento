@@ -21,7 +21,7 @@
                                                                 <item name="payment-omise" xsi:type="array">
                                                                     <item name="component" xsi:type="string">Omise_Payment/js/view/payment/omise</item>
                                                                     <item name="methods" xsi:type="array">
-                                                                        <item name="omise" xsi:type="array">
+                                                                        <item name="omise_cc" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
                                                                     </item>
