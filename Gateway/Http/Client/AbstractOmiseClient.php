@@ -6,7 +6,7 @@ use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Omise\Payment\Model\Config;
+use Omise\Payment\Model\Config\Config;
 
 abstract class AbstractOmiseClient implements ClientInterface
 {
