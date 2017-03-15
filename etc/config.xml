@@ -3,16 +3,20 @@
     <default>
         <payment>
             <omise>
-                <active>0</active>
                 <sandbox_status>0</sandbox_status>
+                <model>OmiseAdapter</model>
+            </omise>
+
+            <omise_cc>
+                <active>0</active>
                 <title>Credit / Debit Card</title>
                 <model>OmiseAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_use_checkout>1</can_use_checkout>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
-                <can_use_checkout>1</can_use_checkout>
-                <is_gateway>1</is_gateway>
                 <payment_action>authorize</payment_action>
-            </omise>
+            </omise_cc>
         </payment>
     </default>
 </config>
