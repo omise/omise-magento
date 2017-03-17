@@ -7,6 +7,17 @@ use Magento\Store\Model\ScopeInterface;
 class OmiseHelper extends AbstractHelper
 {
     /**
+     * @param  string $route
+     * @param  array  $params
+     *
+     * @return string
+     */
+    public function getUrl($route, $params = [])
+    {
+        return parent::_getUrl($route, $params);
+    }
+
+    /**
      * @param  string $fieldId
      *
      * @return string

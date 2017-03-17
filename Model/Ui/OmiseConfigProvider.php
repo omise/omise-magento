@@ -41,7 +41,8 @@ class OmiseConfigProvider implements ConfigProviderInterface
                     'years'  => [Config::CODE => $this->ccConfig->getCcYears()],
                 ],
                 Config::CODE => [
-                    'publicKey' => $this->config->getPublicKey(),
+                    'publicKey'       => $this->config->getPublicKey(),
+                    'process3DSecure' => $this->config->is3DSecureEnabled() ? true : false
                 ],
             ]
         ];

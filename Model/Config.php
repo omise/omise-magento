@@ -134,4 +134,16 @@ class Config
     {
         return $this->getValue('test_secret_key');
     }
+
+    /**
+     * Retrieve Omise config
+     *
+     * @param  string $key
+     *
+     * @return mixed
+     */
+    public function getConfig($key)
+    {
+        return $this->getValue($key);
+    }
 }

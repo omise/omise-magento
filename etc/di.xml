@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Omise\Payment\Api\PaymentMethodManagementInterface" type="Omise\Payment\Model\PaymentMethodManagement" />
+
     <virtualType name="OmiseAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config::CODE</argument>
@@ -53,7 +55,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Authorize</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">Omise\Payment\Gateway\Response\PaymentDetailsHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseAuthorizeCommandResponseValidator</argument>
         </arguments>
     </virtualType>
@@ -63,6 +65,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="3dsecure" xsi:type="string">Omise\Payment\Gateway\Request\ThreeDSecureDataBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -73,7 +76,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\Charge</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">Omise\Payment\Gateway\Response\PaymentDetailsHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
         </arguments>
     </virtualType>
@@ -83,6 +86,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="3dsecure" xsi:type="string">Omise\Payment\Gateway\Request\ThreeDSecureDataBuilder</item>
             </argument>
         </arguments>
     </virtualType>
