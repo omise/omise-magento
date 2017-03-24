@@ -16,6 +16,13 @@ define(
             }
         );
 
+        rendererList.push(
+            {
+                type: 'omise_offsite_internetbanking',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-internetbanking-method'
+            }
+        );
+
         return Component.extend({});
     }
 );
