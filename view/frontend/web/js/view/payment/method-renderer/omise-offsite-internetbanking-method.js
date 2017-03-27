@@ -15,7 +15,7 @@ define(
 
         return Component.extend({
             defaults: {
-                template: 'Omise_Payment/payment/omise-offsite-internetbanking-form'
+                template: 'Omise_Payment/payment/offsite-internetbanking-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
