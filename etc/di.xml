@@ -63,6 +63,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="cccard" xsi:type="string">Omise\Payment\Gateway\Request\PaymentCcTokenBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -83,6 +84,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="cccard" xsi:type="string">Omise\Payment\Gateway\Request\PaymentCcTokenBuilder</item>
             </argument>
         </arguments>
     </virtualType>

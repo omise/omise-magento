@@ -11,11 +11,6 @@ class PaymentDataBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const OMISE_TOKEN = 'omise_card_token';
-
-    /**
-     * @var string
-     */
     const AMOUNT = 'amount';
 
     /**
@@ -44,13 +39,11 @@ class PaymentDataBuilder implements BuilderInterface
     public function build(array $buildSubject)
     {
         $payment = SubjectReader::readPayment($buildSubject);
-        $method  = $payment->getPayment();
         $order   = $payment->getOrder();
 
         return [
             self::AMOUNT      => $this->omiseHelper->omiseAmountFormat($order->getCurrencyCode(), $order->getGrandTotalAmount()),
             self::CURRENCY    => $order->getCurrencyCode(),
-            self::OMISE_TOKEN => $method->getAdditionalInformation(OmiseDataAssignObserver::OMISE_CARD_TOKEN),
             self::ORDER_ID    => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
         ];
     }
