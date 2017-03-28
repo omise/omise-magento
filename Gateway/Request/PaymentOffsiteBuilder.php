@@ -13,6 +13,11 @@ class PaymentOffsiteBuilder implements BuilderInterface
     const OFFSITE = 'offsite';
 
     /**
+     * @var string
+     */
+    const RETURN_URI = 'return_uri';
+
+    /**
      * @param  array $buildSubject
      *
      * @return array
@@ -23,7 +28,8 @@ class PaymentOffsiteBuilder implements BuilderInterface
         $method  = $payment->getPayment();
 
         return [
-            self::OFFSITE => $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE)
+            self::OFFSITE    => $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE),
+            self::RETURN_URI => 'http://127.0.0.1' // TODO: Remove this dump-data
         ];
     }
 }

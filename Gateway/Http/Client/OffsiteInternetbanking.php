@@ -1,9 +1,6 @@
 <?php
 namespace Omise\Payment\Gateway\Http\Client;
 
-use Omise\Payment\Gateway\Request\PaymentDataBuilder;
-use Omise\Payment\Gateway\Request\PaymentOffsiteBuilder;
-
 class OffsiteInternetbanking extends AbstractOmiseClient
 {
     /**
@@ -13,15 +10,6 @@ class OffsiteInternetbanking extends AbstractOmiseClient
      */
     public function request(Array $body)
     {
-        return \OmiseCharge::create(
-            [
-                'amount'      => $body[PaymentDataBuilder::AMOUNT],
-                'currency'    => $body[PaymentDataBuilder::CURRENCY],
-                'description' => $body[PaymentDataBuilder::DESCRIPTION],
-                'offsite'     => $body[PaymentOffsiteBuilder::OFFSITE],
-            ],
-            $this->publicKey,
-            $this->secretKey
-        );
+        return \OmiseCharge::create($body, $this->publicKey, $this->secretKey);
     }
 }
