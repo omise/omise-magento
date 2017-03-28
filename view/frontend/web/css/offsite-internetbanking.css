@@ -28,7 +28,7 @@
 #omise_offsite_internetbankingForm .omise-logo-wrapper img {
     width: 30px;
     height: 30px;
-    display: inline-block;
+    display: block;
 }
 
 #omise_offsite_internetbankingForm .omise-banking-text-wrapper {
