@@ -19,7 +19,7 @@ class Authorize extends AbstractOmiseClient
                 'currency'    => $body[PaymentDataBuilder::CURRENCY],
                 'card'        => $body[PaymentCcTokenBuilder::CARD],
                 'capture'     => false,
-                'description' => $body[PaymentDataBuilder::ORDER_ID],
+                'description' => $body[PaymentDataBuilder::DESCRIPTION],
             ],
             $this->publicKey,
             $this->secretKey

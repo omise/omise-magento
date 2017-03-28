@@ -21,7 +21,7 @@ class PaymentDataBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const ORDER_ID = 'order_id';
+    const DESCRIPTION = 'description';
 
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
@@ -44,7 +44,7 @@ class PaymentDataBuilder implements BuilderInterface
         return [
             self::AMOUNT      => $this->omiseHelper->omiseAmountFormat($order->getCurrencyCode(), $order->getGrandTotalAmount()),
             self::CURRENCY    => $order->getCurrencyCode(),
-            self::ORDER_ID    => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
+            self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
         ];
     }
 }
