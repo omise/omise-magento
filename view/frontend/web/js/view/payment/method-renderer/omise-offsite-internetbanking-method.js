@@ -1,7 +1,7 @@
 define(
     [
         'ko',
-        'Magento_Payment/js/view/payment/cc-form',
+        'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote'
     ],
@@ -30,13 +30,30 @@ define(
             },
 
             /**
+             * Initiate observable fields
+             *
+             * @return this
+             */
+            initObservable: function() {
+                this._super()
+                    .observe([
+                        'omiseOffsite'
+                    ]);
+
+                return this;
+            },
+
+            /**
              * Get a checkout form data
              *
              * @return {Object}
              */
             getData: function() {
                 return {
-                    'method': this.item.method
+                    'method': this.item.method,
+                    'additional_data': {
+                        'offsite': this.omiseOffsite()
+                    }
                 };
             },
 
