@@ -4,7 +4,6 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Observer\OmiseDataAssignObserver;
 
 class PaymentDataBuilder implements BuilderInterface
 {
