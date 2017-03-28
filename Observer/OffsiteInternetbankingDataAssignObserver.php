@@ -5,7 +5,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 
-class OmiseOffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserver
+class OffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserver
 {
     /**
      * @var string
