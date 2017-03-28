@@ -2,4 +2,8 @@
     <event name="payment_method_assign_data_omise_cc">
         <observer name="omise_data_assign" instance="Omise\Payment\Observer\OmiseDataAssignObserver" />
     </event>
+
+    <event name="payment_method_assign_data_omise_offsite_internetbanking">
+        <observer name="omise_data_assign" instance="Omise\Payment\Observer\OmiseOffsiteInternetbankingDataAssignObserver" />
+    </event>
 </config>
