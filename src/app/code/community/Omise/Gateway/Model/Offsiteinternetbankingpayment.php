@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Model_OffsiteInternetBankingPayment extends Omise_Gateway_Model_Payment
+class Omise_Gateway_Model_Offsiteinternetbankingpayment extends Omise_Gateway_Model_Payment
 {
     /**
      * @var string

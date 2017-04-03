@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Block_Form_OffsiteInternetBankingPayment extends Mage_Payment_Block_Form
+class Omise_Gateway_Block_Form_Offsiteinternetbankingpayment extends Mage_Payment_Block_Form
 {
     protected function _construct()
     {
