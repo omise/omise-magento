@@ -23,7 +23,7 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 
 The steps below shows how to install the module manually.
 
-1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v1.10.zip) to your `local machine` (or directly to your server).
+1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v1.11.zip) to your `local machine` (or directly to your server).
     <p align="center"><a alt="omise-magento-install-manual-01" href='https://cloud.githubusercontent.com/assets/2154669/23201743/8ecb09da-f90d-11e6-836f-1fc935f6ea5e.png'><img title="omise-magento-install-manual-01" src='https://cloud.githubusercontent.com/assets/2154669/23201743/8ecb09da-f90d-11e6-836f-1fc935f6ea5e.png' /></a></p>
 2. locate to `/src` directory and copy **all files** into your **Magento Project**, at a root directory.
 3. Your installation is now completed. To check the installation result, open your **Magento admin page**.

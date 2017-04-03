@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### [v1.11 _(April 3, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.11)
+
+#### 🚀 Enhancements
+
+- Upgrade Omise-PHP library to v2.7.1. (PR [#68](https://github.com/omise/omise-magento/pull/68))
+
+#### 👾 Bug Fixes
+
+- Rename files and classes to avoid case-sensitive issue from Magento. (PR [#67](https://github.com/omise/omise-magento/pull/67))
+
+---
+
 ### [v1.10 _(March 9, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.10)
 
 #### ✨ Highlights
