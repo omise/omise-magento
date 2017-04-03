@@ -113,7 +113,7 @@
             <omise_offsite_internet_banking>
                 <active>0</active>
                 <payment_action>authorize_capture</payment_action>
-                <model>omise_gateway/OffsiteInternetBankingPayment</model>
+                <model>omise_gateway/Offsiteinternetbankingpayment</model>
                 <title>Internet Banking</title>
             </omise_offsite_internet_banking>
         </payment>
