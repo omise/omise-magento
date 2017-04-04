@@ -7,8 +7,9 @@
 Our aim is to support as many versions of Magento as we can.  
 
 **Here's the list of versions we tested on:**
-- Magento (CE) 1.9.3.2 on PHP 5.6.28.
-- Magento (CE) 1.9.3.1 on PHP 5.6.28.
+- Magento (CE) 1.9.3.2 on PHP 5.5.9.
+- Magento (CE) 1.9.3.1 on PHP 5.5.9.
+- Magento (CE) 1.9.2.2 on PHP 5.5.9.
 
 To report problems for the version you're using, feel free to submit the issue through [GitHub's issue channel](https://github.com/omise/omise-magento/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
