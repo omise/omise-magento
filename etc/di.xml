@@ -15,6 +15,7 @@
         </arguments>
     </virtualType>
 
+    <!-- Internet Banking :: Value Handler Pool -->
     <virtualType name="OmiseOffsiteInternetbankingValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -34,7 +35,9 @@
             <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Offsite\Internetbanking::CODE</argument>
         </arguments>
     </virtualType>
+    <!-- /Value Handler -->
 
+    <!-- Internet Banking :: Command Pool -->
     <virtualType name="OmiseOffsiteInternetbankingCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -62,6 +65,7 @@
             </argument>
         </arguments>
     </virtualType>
+    <!-- /Command Pool -->
 
     <!-- Credit Card payment solution -->
     <virtualType name="OmiseCcAdapter" type="Magento\Payment\Model\Method\Adapter">
