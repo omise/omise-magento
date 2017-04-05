@@ -19,6 +19,11 @@ class OrderPendingPaymentStateBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
+        $stateObject = $buildSubject['stateObject'];
+        $stateObject->setState(Order::STATE_PENDING_PAYMENT);
+        $stateObject->setStatus(Order::STATE_PENDING_PAYMENT);
+        $stateObject->setIsNotified(false);
+
         return [];
     }
 }
