@@ -38,14 +38,14 @@
     <virtualType name="OmiseOffsiteInternetbankingCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="capture" xsi:type="string">OmiseOffsiteInternetbankingChargeCommand</item>
+                <item name="initialize" xsi:type="string">OmiseOffsiteInternetbankingInitializeCommand</item>
             </argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="OmiseOffsiteInternetbankingChargeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+    <virtualType name="OmiseOffsiteInternetbankingInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteInternetbankingChargeRequest</argument>
+            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteInternetbankingRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\OffsiteInternetbanking</argument>
             <argument name="handler" xsi:type="object">Omise\Payment\Gateway\Response\PaymentDetailsHandler</argument>
@@ -53,11 +53,12 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="OmiseOffsiteInternetbankingChargeRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <virtualType name="OmiseOffsiteInternetbankingRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
                 <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentOffsiteBuilder</item>
+                <item name="order" xsi:type="string">Omise\Payment\Gateway\Request\Offsite\OrderPendingPaymentStateBuilder</item>
             </argument>
         </arguments>
     </virtualType>
