@@ -180,7 +180,8 @@ class Internetbanking extends Action
     {
         $this->invoice($order)->cancel()->save();
 
-        $order->setStatus(Order::STATE_CANCELED);
+        $order->setState(Order::STATE_CANCELED);
+        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CANCELED));
 
         $this->invalid($order, $message);
     }
