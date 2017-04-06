@@ -52,7 +52,7 @@ class Internetbanking extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if (! $order->isPaymentReview()) {
+        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
             $this->invalid($order, 'Invalid order status, cannot validate the payment. Please contact our support if you have any questions.');
 
             return $this->redirect(self::PATH_CART);
@@ -85,8 +85,16 @@ class Internetbanking extends Action
                 throw new Exception('Payment failed, ' . $charge['failure_message'] . ' ( ' . $charge['failure_code'] . ' ). Please contact our support if you have any questions.');
             }
 
-            // TODO: Update order status to success payment.
-            $payment->accept();
+            $invoices = $order->getInvoiceCollection();
+            foreach ($invoices as $invoice) {
+                $invoice->pay()->save(); // TODO : Add transaction.
+            }
+
+            // Update order state and status.
+            $order->setState(Order::STATE_PROCESSING);
+            $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
+            $order->addStatusHistoryComment(__('Paid!')); // TODO : Update comment.
+            $order->save();
 
             return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
