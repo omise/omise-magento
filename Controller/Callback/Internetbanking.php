@@ -48,7 +48,7 @@ class Internetbanking extends Action
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
-            $this->invalid($order, __('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
+            $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
