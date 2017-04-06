@@ -48,32 +48,31 @@ class Internetbanking extends Action
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
-            $this->invalid($order, 'The order session no longer exists, please make an order again or contact our support if you have any questions.');
+            $this->invalid($order, __('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
 
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
-            $this->invalid($order, 'Invalid order status, cannot validate the payment. Please contact our support if you have any questions.');
+            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $payment = $order->getPayment()) {
-            $this->invalid($order, 'Cannot retrieve a payment detail from the request. Please contact our support if you have any questions.');
+            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
 
         if ($payment->getMethod() !== 'omise_offsite_internetbanking') {
-            $this->cancel($order, 'Invalid payment method. Please contact our support if you have any questions.');
-            $this->session->restoreQuote();
+            $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $charge_id = $payment->getAdditionalInformation('charge_id')) {
-            $this->cancel($order, 'Cannot retrieve a charge reference id. Please contact our support if you have any questions.');
+            $this->cancel($order, __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.'));
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
