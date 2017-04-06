@@ -78,6 +78,13 @@ class Internetbanking extends Action
             return $this->redirect(self::PATH_CART);
         }
 
+        if (! $order->hasInvoices()) {
+            $this->cancel($order, __('Cannot create an invoice. Please contact our support to confirm your payment.'));
+            $this->session->restoreQuote();
+
+            return $this->redirect(self::PATH_CART);
+        }
+
         try {
             $charge = \OmiseCharge::retrieve($charge_id, $this->config->getPublicKey(), $this->config->getSecretKey());
 
