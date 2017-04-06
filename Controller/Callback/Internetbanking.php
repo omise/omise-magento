@@ -99,36 +99,17 @@ class Internetbanking extends Action
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-            // OmiseMagento doesn't support for partial-capture.
-            // Thus, STATE_OPEN invoice should always has only one in an order.
-            $invoice = null;
-            foreach ($order->getInvoiceCollection() as $item) {
-                if ($item->getState() == Invoice::STATE_OPEN) {
-                    $invoice = $item;
-                }
-            }
+            $invoice = $this->invoice($order);
+            $invoice->setTransactionId($charge['transaction'])->pay()->save();
 
-            if ($invoice) {
-                $invoice->setTransactionId($charge['transaction'])
-                    ->pay()
-                    ->save();
-
-                // Add transaction.
-                $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
-                    __(
-                        'Amount of %1 has been paid via Omise Internet Banking payment',
-                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                    )
-                );
-            } else {
-                $order->addStatusHistoryComment(
-                    __(
-                        'Amount of %1 has been paid via Omise Internet Banking payment, but cannot retrieve a related invoice. Please confirm the payment.',
-                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                    )
-                );
-            }
+            // Add transaction.
+            $payment->addTransactionCommentsToOrder(
+                $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
+                __(
+                    'Amount of %1 has been paid via Omise Internet Banking payment',
+                    $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                )
+            );
 
             $order->save();
             return $this->redirect(self::PATH_SUCCESS);
