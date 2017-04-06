@@ -89,7 +89,7 @@ class Internetbanking extends Action
             $charge = \OmiseCharge::retrieve($charge_id, $this->config->getPublicKey(), $this->config->getSecretKey());
 
             if (! $this->validate($charge)) {
-                throw new Exception('Payment failed, ' . $charge['failure_message'] . ' ( ' . $charge['failure_code'] . ' ). Please contact our support if you have any questions.');
+                throw new Exception('Payment failed. ' . ucfirst($charge['failure_message']) . ', please contact our support if you have any questions.');
             }
 
             $payment->setTransactionId($charge['transaction']);
