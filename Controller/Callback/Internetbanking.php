@@ -144,7 +144,7 @@ class Internetbanking extends Action
     }
 
     /**
-     * @param  \OmiseCharge
+     * @param  \OmiseCharge $charge
      *
      * @return bool
      */
@@ -163,7 +163,8 @@ class Internetbanking extends Action
     }
 
     /**
-     * @param \Magento\Sales\Model\Order
+     * @param \Magento\Sales\Model\Order $order
+     * @param string                     $message
      */
     protected function cancel(Order $order, $message)
     {
@@ -174,8 +175,8 @@ class Internetbanking extends Action
     }
 
     /**
-     * @param \Magento\Sales\Model\Order
-     * @param string
+     * @param \Magento\Sales\Model\Order $order
+     * @param string                     $message
      */
     protected function invalid(Order $order, $message)
     {
