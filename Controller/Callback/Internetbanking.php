@@ -134,6 +134,16 @@ class Internetbanking extends Action
     }
 
     /**
+     * @param  \Magento\Sales\Model\Order $order
+     *
+     * @return \Magento\Sales\Api\Data\InvoiceInterface
+     */
+    protected function invoice(Order $order)
+    {
+        return $order->getInvoiceCollection()->getLastItem();
+    }
+
+    /**
      * @param  string $path
      *
      * @return \Magento\Framework\App\ResponseInterface
@@ -168,10 +178,11 @@ class Internetbanking extends Action
      */
     protected function cancel(Order $order, $message)
     {
-        $this->invalid($order, $message);
+        $this->invoice($order)->cancel()->save();
 
         $order->setStatus(Order::STATE_CANCELED);
-        $order->save();
+
+        $this->invalid($order, $message);
     }
 
     /**
@@ -181,6 +192,7 @@ class Internetbanking extends Action
     protected function invalid(Order $order, $message)
     {
         $order->addStatusHistoryComment(__($message));
+        $order->save();
 
         $this->messageManager->addErrorMessage(__($message));
     }
