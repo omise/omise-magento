@@ -7,6 +7,8 @@ use Magento\Framework\Exception\SessionException;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Invoice;
+use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Model\Config\Offsite\Internetbanking as Config;
 
 class Internetbanking extends Action
@@ -43,8 +45,7 @@ class Internetbanking extends Action
      */
     public function execute()
     {
-        $resultRedirect = $this->resultRedirectFactory->create();
-        $order          = $this->session->getLastRealOrder();
+        $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
             $this->invalid($order, 'The order session no longer exists, please make an order again or contact our support if you have any questions.');
@@ -85,17 +86,45 @@ class Internetbanking extends Action
                 throw new Exception('Payment failed, ' . $charge['failure_message'] . ' ( ' . $charge['failure_code'] . ' ). Please contact our support if you have any questions.');
             }
 
-            $invoices = $order->getInvoiceCollection();
-            foreach ($invoices as $invoice) {
-                $invoice->pay()->save(); // TODO : Add transaction.
-            }
+            $payment->setTransactionId($charge['transaction']);
+            $payment->setLastTransId($charge['transaction']);
 
             // Update order state and status.
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-            $order->addStatusHistoryComment(__('Paid!')); // TODO : Update comment.
-            $order->save();
 
+            // OmiseMagento doesn't support for partial-capture.
+            // Thus, STATE_OPEN invoice should always has only one in an order.
+            $invoice = null;
+            foreach ($order->getInvoiceCollection() as $item) {
+                if ($item->getState() == Invoice::STATE_OPEN) {
+                    $invoice = $item;
+                }
+            }
+
+            if ($invoice) {
+                $invoice->setTransactionId($charge['transaction'])
+                    ->pay()
+                    ->save();
+
+                // Add transaction.
+                $payment->addTransactionCommentsToOrder(
+                    $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
+                    __(
+                        'Amount of %1 has been paid via Omise Internet Banking payment',
+                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                    )
+                );
+            } else {
+                $order->addStatusHistoryComment(
+                    __(
+                        'Amount of %1 has been paid via Omise Internet Banking payment, but cannot retrieve a related invoice. Please confirm the payment.',
+                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                    )
+                );
+            }
+
+            $order->save();
             return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
