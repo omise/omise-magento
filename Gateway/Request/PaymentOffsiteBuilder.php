@@ -1,6 +1,7 @@
 <?php
 namespace Omise\Payment\Gateway\Request;
 
+use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver;
@@ -18,6 +19,16 @@ class PaymentOffsiteBuilder implements BuilderInterface
     const RETURN_URI = 'return_uri';
 
     /**
+     * @var \Magento\Framework\UrlInterface
+     */
+    protected $url;
+
+    public function __construct(UrlInterface $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
      * @param  array $buildSubject
      *
      * @return array
@@ -29,7 +40,7 @@ class PaymentOffsiteBuilder implements BuilderInterface
 
         return [
             self::OFFSITE    => $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE),
-            self::RETURN_URI => 'http://127.0.0.1' // TODO: Remove this dump-data
+            self::RETURN_URI => $this->url->getUrl('omise/callback/internetbanking', ['_secure' => true])
         ];
     }
 }
