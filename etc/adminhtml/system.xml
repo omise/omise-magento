@@ -3,11 +3,10 @@
     <system>
         <section id="payment">
             <group id="omise" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Omise</label>
-                <field id="active" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Enable/Disable</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Enable Omise Payment Module.</comment>
+                <label>Omise Payment Gateway</label>
+                <field id="basic_settings" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Basic Setting</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
                 </field>
                 <field id="sandbox_status" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sandbox</label>
@@ -30,22 +29,33 @@
                     <label>Secret key for live</label>
                     <comment>The "Live" mode secret key can be found in Omise Dashboard.</comment>
                 </field>
-                <field id="payment_action" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Payment Action</label>
-                    <source_model>Magento\Authorizenet\Model\Source\PaymentAction</source_model>
-                </field>
-                <field id="advance_settings" translate="label" type="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Advance Settings</label>
-                </field>
-                <field id="title" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Title</label>
-                    <comment>This controls the title which the user sees during checkout.</comment>
-                </field>
-                <field id="3ds" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>3-D Secure support</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.).</comment>
-                </field>
+
+                <group id="omise_cc" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Credit Card Solution</label>
+                    <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Omise Credit Card Solution.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_cc/active</config_path>
+                    </field>
+                    <field id="payment_action" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Payment Action</label>
+                        <source_model>Magento\Authorizenet\Model\Source\PaymentAction</source_model>
+                        <config_path>payment/omise_cc/payment_action</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_cc/title</config_path>
+                    </field>
+                    <field id="3ds" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>3-D Secure support</label>
+                        <comment>Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.).</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_cc/3ds</config_path>
+                    </field>
+                </group>
             </group>
         </section>
     </system>

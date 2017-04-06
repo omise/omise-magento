@@ -1,5 +1,5 @@
 <?php
-namespace Omise\Payment\Model;
+namespace Omise\Payment\Model\Config;
 
 use Magento\Framework\App\Config\ScopeConfigInterface as MagentoScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface as MagentoScopeInterface;
@@ -28,10 +28,11 @@ class Config
 
     /**
      * @param  string $field
+     * @param  string $code
      *
      * @return mixed
      */
-    public function getValue($field)
+    public function getValue($field, $code = self::CODE)
     {
         return $this->scopeConfig->getValue(
             'payment/' . self::CODE . '/' . $field,
@@ -47,20 +48,6 @@ class Config
     public function isSandboxEnabled()
     {
         if ($this->getValue('sandbox_status')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if Omise's sandbox mode enable or not
-     *
-     * @return bool
-     */
-    public function is3DSecureEnabled()
-    {
-        if ($this->getValue('3ds')) {
             return true;
         }
 

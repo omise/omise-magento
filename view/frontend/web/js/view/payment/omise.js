@@ -11,7 +11,7 @@ define(
 
         rendererList.push(
             {
-                type: 'omise',
+                type: 'omise_cc',
                 component: 'Omise_Payment/js/view/payment/method-renderer/omise-cc-method'
             }
         );
