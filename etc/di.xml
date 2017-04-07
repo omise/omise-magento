@@ -7,7 +7,7 @@
     <virtualType name="OmiseOffsiteInternetbankingAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Internetbanking::CODE</argument>
-            <argument name="formBlockType" xsi:type="string">Omise\Payment\Block\Form\Offsite\Internetbanking</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteInternetbankingValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
