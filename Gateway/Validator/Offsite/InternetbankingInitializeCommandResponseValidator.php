@@ -3,7 +3,7 @@ namespace Omise\Payment\Gateway\Validator\Offsite;
 
 use Magento\Payment\Gateway\Validator\AbstractValidator;
 
-class InternetbankingChargeCommandResponseValidator extends AbstractValidator
+class InternetbankingInitializeCommandResponseValidator extends AbstractValidator
 {
     /**
      * @var string

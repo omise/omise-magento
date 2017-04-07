@@ -52,7 +52,7 @@
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\OffsiteInternetbanking</argument>
             <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
-            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\InternetbankingChargeCommandResponseValidator</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\InternetbankingInitializeCommandResponseValidator</argument>
         </arguments>
     </virtualType>
 
