@@ -3,7 +3,6 @@ namespace Omise\Payment\Controller\Callback;
 
 use Exception;
 use Magento\Checkout\Model\Session;
-use Magento\Framework\Exception\SessionException;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
