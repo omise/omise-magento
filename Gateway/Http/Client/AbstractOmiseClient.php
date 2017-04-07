@@ -39,6 +39,11 @@ abstract class AbstractOmiseClient implements ClientInterface
     protected $secretKey;
 
     /**
+     * @var Omise\Payment\Model\Config\Config
+     */ 
+    protected $config;
+
+    /**
      * @var \Magento\Framework\Module\ModuleListInterface
      */
     protected $moduleList;
@@ -53,6 +58,7 @@ abstract class AbstractOmiseClient implements ClientInterface
         ModuleListInterface      $moduleList,
         ProductMetadataInterface $productMetadata
     ) {
+        $this->config          = $config;
         $this->publicKey       = $config->getPublicKey();
         $this->secretKey       = $config->getSecretKey();
 
