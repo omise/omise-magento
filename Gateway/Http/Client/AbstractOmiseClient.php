@@ -25,22 +25,8 @@ abstract class AbstractOmiseClient implements ClientInterface
     const PROCESS_STATUS_FAILED = 'failed';
 
     /**
-     * Omise public key
-     *
-     * @var string
-     */
-    protected $publicKey;
-
-    /**
-     * Omise secret key
-     *
-     * @var string
-     */
-    protected $secretKey;
-
-    /**
      * @var Omise\Payment\Model\Config\Config
-     */ 
+     */
     protected $config;
 
     /**
@@ -59,12 +45,25 @@ abstract class AbstractOmiseClient implements ClientInterface
         ProductMetadataInterface $productMetadata
     ) {
         $this->config          = $config;
-        $this->publicKey       = $config->getPublicKey();
-        $this->secretKey       = $config->getSecretKey();
-
         $this->moduleList      = $moduleList;
         $this->productMetadata = $productMetadata;
+    }
 
+    /**
+     * @param  string $public_key
+     * @param  string $secret_key
+     *
+     * @return void
+     */
+    protected function defineApiKeys($public_key = '', $secret_key = '')
+    {
+        if (! defined('OMISE_PUBLIC_KEY')) {
+            define('OMISE_PUBLIC_KEY', $public_key ? $public_key : $this->config->getPublicKey());
+        }
+
+        if (! defined('OMISE_SECRET_KEY')) {
+            define('OMISE_SECRET_KEY', $secret_key ? $secret_key : $this->config->getSecretKey());
+        }
     }
 
     /**
@@ -114,9 +113,10 @@ abstract class AbstractOmiseClient implements ClientInterface
     public function placeRequest(TransferInterface $transferObject)
     {
         $this->defineUserAgent();
+        $this->defineApiKeys();
 
         try {
-            $request  = $this->request($transferObject->getBody());
+            $request  = \OmiseCharge::create($transferObject->getBody());
 
             $response = [
                 'object'  => 'omise',
