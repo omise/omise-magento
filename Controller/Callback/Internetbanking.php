@@ -160,8 +160,8 @@ class Internetbanking extends Action
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
-     * @param string                     $message
+     * @param \Magento\Sales\Model\Order       $order
+     * @param \Magento\Framework\Phrase|string $message
      */
     protected function cancel(Order $order, $message)
     {
@@ -174,14 +174,14 @@ class Internetbanking extends Action
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
-     * @param string                     $message
+     * @param \Magento\Sales\Model\Order       $order
+     * @param \Magento\Framework\Phrase|string $message
      */
     protected function invalid(Order $order, $message)
     {
-        $order->addStatusHistoryComment(__($message));
+        $order->addStatusHistoryComment($message);
         $order->save();
 
-        $this->messageManager->addErrorMessage(__($message));
+        $this->messageManager->addErrorMessage($message);
     }
 }
