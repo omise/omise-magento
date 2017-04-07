@@ -29,7 +29,7 @@ class OmiseAuthorizeCommandResponseValidator extends AbstractValidator
          * We have to throw the CommandException by ourself here.
          *
          * For the parameter of $validationSubject['response'],
-         * please see: Omise\Payment\Gateway\Http\Client\AbstractOmiseClient.
+         * please see: Omise\Payment\Gateway\Http\Client\Payment.
          */
 
         if (! $this->isClientRequestedSuccess($validationSubject)) {

@@ -167,5 +167,5 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="OmiseCharge" type="Omise\Payment\Gateway\Http\Client\AbstractOmiseClient"></virtualType>
+    <virtualType name="OmiseCharge" type="Omise\Payment\Gateway\Http\Client\Payment"></virtualType>
 </config>

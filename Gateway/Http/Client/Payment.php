@@ -8,7 +8,7 @@ use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Omise\Payment\Model\Config\Config;
 
-abstract class AbstractOmiseClient implements ClientInterface
+class Payment implements ClientInterface
 {
     /**
      * Client request status represented to successful request step.
