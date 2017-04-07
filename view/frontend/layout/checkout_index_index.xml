@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <head>
+        <css src="Omise_Payment::css/offsite-internetbanking.css" />
         <script src="https://cdn.omise.co/omise.js.gz" src_type="url" />
     </head>
     <body>
@@ -22,6 +23,9 @@
                                                                     <item name="component" xsi:type="string">Omise_Payment/js/view/payment/omise</item>
                                                                     <item name="methods" xsi:type="array">
                                                                         <item name="omise_cc" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                        <item name="omise_offsite_internetbanking" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
                                                                     </item>

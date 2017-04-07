@@ -1,5 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Omise\Payment\Api\Data\PaymentInterface" type="Omise\Payment\Model\Data\Payment" />
+    <preference for="Omise\Payment\Api\PaymentInformationInterface" type="Omise\Payment\Model\PaymentInformation" />
+
+    <!-- Internet Banking payment solution -->
+    <virtualType name="OmiseOffsiteInternetbankingAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Internetbanking::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteInternetbankingValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseOffsiteInternetbankingCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Internet Banking :: Value Handler Pool -->
+    <virtualType name="OmiseOffsiteInternetbankingValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseOffsiteInternetbankingConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteInternetbankingConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseOffsiteInternetbankingConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteInternetbankingConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Offsite\Internetbanking::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
+    <!-- Internet Banking :: Command Pool -->
+    <virtualType name="OmiseOffsiteInternetbankingCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">OmiseOffsiteInternetbankingInitializeCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteInternetbankingInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteInternetbankingRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\OffsiteInternetbanking</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\InternetbankingInitializeCommandResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteInternetbankingRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentOffsiteBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
+                <item name="pendingPayment" xsi:type="string">Omise\Payment\Gateway\Response\PendingPaymentHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- /Command Pool -->
+
+    <!-- Credit Card payment solution -->
     <virtualType name="OmiseCcAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Cc::CODE</argument>
