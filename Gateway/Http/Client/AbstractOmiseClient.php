@@ -65,7 +65,6 @@ abstract class AbstractOmiseClient implements ClientInterface
         $this->moduleList      = $moduleList;
         $this->productMetadata = $productMetadata;
 
-        $this->defineUserAgent();
     }
 
     /**
@@ -76,10 +75,14 @@ abstract class AbstractOmiseClient implements ClientInterface
     protected function defineUserAgent()
     {
         if (! defined('OMISE_USER_AGENT_SUFFIX')) {
-            $userAgent = 'OmiseMagento/' . $this->getModuleVersion();
-            $userAgent .= ' Magento/' . $this->getMagentoVersion();
-
-            define('OMISE_USER_AGENT_SUFFIX', $userAgent);
+            define(
+                'OMISE_USER_AGENT_SUFFIX',
+                sprintf(
+                    'OmiseMagento/%s Magento/%s',
+                    $this->getModuleVersion(),
+                    $this->getMagentoVersion()
+                )
+            );
         }
     }
 
@@ -110,6 +113,8 @@ abstract class AbstractOmiseClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
+        $this->defineUserAgent();
+
         try {
             $request  = $this->request($transferObject->getBody());
 
