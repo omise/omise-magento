@@ -138,7 +138,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseAuthorizeCommandResponseValidator</argument>
         </arguments>
     </virtualType>
@@ -161,7 +161,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
         </arguments>
     </virtualType>
