@@ -8,5 +8,5 @@ class ResponseInvalid extends Invalid
     /**
      * @var string
      */
-    protected $message = 'Transaction has been declined, please contact our support if you have any questions';
+    protected $message = 'Couldn\'t retrieve charge transaction. Please contact administrator.';
 }
