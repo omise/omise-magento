@@ -22,6 +22,6 @@ class Invalid
 
     public function getMessage()
     {
-        return new Phase($this->message);
+        return new Phrase($this->message);
     }
 }
