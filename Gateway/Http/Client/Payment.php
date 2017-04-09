@@ -8,7 +8,7 @@ use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Omise\Payment\Model\Config\Config;
 
-abstract class AbstractOmiseClient implements ClientInterface
+class Payment implements ClientInterface
 {
     /**
      * Client request status represented to successful request step.
@@ -25,18 +25,9 @@ abstract class AbstractOmiseClient implements ClientInterface
     const PROCESS_STATUS_FAILED = 'failed';
 
     /**
-     * Omise public key
-     *
-     * @var string
+     * @var Omise\Payment\Model\Config\Config
      */
-    protected $publicKey;
-
-    /**
-     * Omise secret key
-     *
-     * @var string
-     */
-    protected $secretKey;
+    protected $config;
 
     /**
      * @var \Magento\Framework\Module\ModuleListInterface
@@ -53,13 +44,26 @@ abstract class AbstractOmiseClient implements ClientInterface
         ModuleListInterface      $moduleList,
         ProductMetadataInterface $productMetadata
     ) {
-        $this->publicKey       = $config->getPublicKey();
-        $this->secretKey       = $config->getSecretKey();
-
+        $this->config          = $config;
         $this->moduleList      = $moduleList;
         $this->productMetadata = $productMetadata;
+    }
 
-        $this->defineUserAgent();
+    /**
+     * @param  string $public_key
+     * @param  string $secret_key
+     *
+     * @return void
+     */
+    protected function defineApiKeys($public_key = '', $secret_key = '')
+    {
+        if (! defined('OMISE_PUBLIC_KEY')) {
+            define('OMISE_PUBLIC_KEY', $public_key ? $public_key : $this->config->getPublicKey());
+        }
+
+        if (! defined('OMISE_SECRET_KEY')) {
+            define('OMISE_SECRET_KEY', $secret_key ? $secret_key : $this->config->getSecretKey());
+        }
     }
 
     /**
@@ -70,10 +74,14 @@ abstract class AbstractOmiseClient implements ClientInterface
     protected function defineUserAgent()
     {
         if (! defined('OMISE_USER_AGENT_SUFFIX')) {
-            $userAgent = 'OmiseMagento/' . $this->getModuleVersion();
-            $userAgent .= ' Magento/' . $this->getMagentoVersion();
-
-            define('OMISE_USER_AGENT_SUFFIX', $userAgent);
+            define(
+                'OMISE_USER_AGENT_SUFFIX',
+                sprintf(
+                    'OmiseMagento/%s Magento/%s',
+                    $this->getModuleVersion(),
+                    $this->getMagentoVersion()
+                )
+            );
         }
     }
 
@@ -104,8 +112,11 @@ abstract class AbstractOmiseClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
+        $this->defineUserAgent();
+        $this->defineApiKeys();
+
         try {
-            $request  = $this->request($transferObject->getBody());
+            $request  = \OmiseCharge::create($transferObject->getBody());
 
             $response = [
                 'object'  => 'omise',
