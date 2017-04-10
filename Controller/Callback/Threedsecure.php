@@ -7,8 +7,8 @@ use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Model\Config\Cc as Config;
-use Omise\Payment\Gateway\Validator\OmiseAuthorizeCommandResponseValidator;
-use Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator;
+use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
+use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 
 class Threedsecure extends Action
 {
@@ -150,10 +150,10 @@ class Threedsecure extends Action
     protected function validate($charge)
     {
         if ($charge['capture']) {
-            return (new OmiseCaptureCommandResponseValidator)->validateResponse($charge);
+            return (new CaptureResultValidator)->validate($charge);
         }
 
-        return (new OmiseAuthorizeCommandResponseValidator)->validateResponse($charge);
+        return (new AuthorizeResultValidator)->validate($charge);
     }
 
     /**
