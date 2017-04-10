@@ -20,6 +20,12 @@ class CreditCardStrategyCommand implements CommandInterface
     const ACTION_AUTHORIZE_CAPTURETHREEDSECURE = self::ACTION_AUTHORIZE_CAPTURE . '_3ds';
 
     /**
+     * @var string
+     */
+    const COMMAND_AUTHORIZE_THREEDSECURE        = 'authorize_3ds';
+    const COMMAND_AUTHORIZE_CAPTURETHREEDSECURE = 'capture_3ds';
+
+    /**
      * @var \Magento\Payment\Gateway\Command\CommandPoolInterface
      */
     private $commandPool;
@@ -63,11 +69,11 @@ class CreditCardStrategyCommand implements CommandInterface
                 break;
 
             case self::ACTION_AUTHORIZE_THREEDSECURE:
-                throw new CommandException(__('TODO : Rewrite error message'));
+                $this->commandPool->get(self::COMMAND_AUTHORIZE_THREEDSECURE)->execute($commandSubject);
                 break;
 
             case self::ACTION_AUTHORIZE_CAPTURETHREEDSECURE:
-                throw new CommandException(__('TODO : Rewrite error message'));
+                $this->commandPool->get(self::COMMAND_AUTHORIZE_CAPTURETHREEDSECURE)->execute($commandSubject);
                 break;
 
             default:
