@@ -37,7 +37,8 @@ class CcConfigProvider implements ConfigProviderInterface
                     'years'  => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcYears()],
                 ],
                 OmiseCcConfig::CODE => [
-                    'publicKey' => $this->omiseCcConfig->getPublicKey(),
+                    'publicKey'      => $this->omiseCcConfig->getPublicKey(),
+                    'offsitePayment' => $this->omiseCcConfig->is3DSecureEnabled()
                 ],
             ]
         ];

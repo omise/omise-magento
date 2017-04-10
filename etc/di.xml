@@ -51,7 +51,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseOffsiteInternetbankingRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
-            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
+            <argument name="handler" xsi:type="object">OmiseOffsiteResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\InternetbankingInitializeCommandResponseValidator</argument>
         </arguments>
     </virtualType>
@@ -66,6 +66,24 @@
     </virtualType>
 
     <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
+                <item name="pendingPayment" xsi:type="string">Omise\Payment\Gateway\Response\PendingPaymentHandler</item>
+                <item name="pendingInvoice" xsi:type="string">Omise\Payment\Gateway\Response\PendingInvoiceHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteAuthorizeResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
@@ -93,7 +111,9 @@
             <argument name="commands" xsi:type="array">
                 <item name="initialize" xsi:type="string">OmiseCreditCardInitializeCommand</item>
                 <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item>
+                <item name="authorize_3ds" xsi:type="string">OmiseAuthorizeThreeDSecureCommand</item>
                 <item name="capture" xsi:type="string">OmiseCaptureCommand</item>
+                <item name="capture_3ds" xsi:type="string">OmiseCaptureThreeDSecureCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -101,6 +121,50 @@
     <virtualType name="OmiseCreditCardInitializeCommand" type="Omise\Payment\Gateway\Command\CreditCardStrategyCommand">
         <arguments>
             <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Credit Card :: Authorize with 3-D Secure payment -->
+    <virtualType name="OmiseAuthorizeThreeDSecureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeThreeDSecureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="handler" xsi:type="object">OmiseOffsiteAuthorizeResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAuthorizeThreeDSecureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="cccard" xsi:type="string">Omise\Payment\Gateway\Request\PaymentCcTokenBuilder</item>
+                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeBuilder</item>
+                <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\PaymentThreeDSecureBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Credit Card :: Authorize and Capture with 3-D Secure payment -->
+    <virtualType name="OmiseCaptureThreeDSecureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseCaptureThreeDSecureRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="handler" xsi:type="object">OmiseOffsiteResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseCaptureThreeDSecureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="cccard" xsi:type="string">Omise\Payment\Gateway\Request\PaymentCcTokenBuilder</item>
+                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeCaptureBuilder</item>
+                <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\PaymentThreeDSecureBuilder</item>
+            </argument>
         </arguments>
     </virtualType>
     <!-- /Command Pool -->
@@ -138,7 +202,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseAuthorizeCommandResponseValidator</argument>
         </arguments>
     </virtualType>
@@ -160,7 +224,7 @@
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
-            <argument name="handler" xsi:type="object">Magento\Payment\Gateway\Response\HandlerChain</argument>
+            <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
         </arguments>
     </virtualType>
