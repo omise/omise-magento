@@ -3,7 +3,6 @@ namespace Omise\Payment\Gateway\Request;
 
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Model\Config\Cc as Config;
 
 class PaymentThreeDSecureBuilder implements BuilderInterface
 {
@@ -17,15 +16,9 @@ class PaymentThreeDSecureBuilder implements BuilderInterface
      */
     protected $url;
 
-    /**
-     * @var \Omise\Payment\Model\Config\Cc
-     */
-    protected $config;
-
-    public function __construct(UrlInterface $url, Config $config)
+    public function __construct(UrlInterface $url)
     {
-        $this->url    = $url;
-        $this->config = $config;
+        $this->url = $url;
     }
 
     /**
@@ -35,12 +28,8 @@ class PaymentThreeDSecureBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
-        if ($this->config->is3DSecureEnabled()) {
-            return [
-                self::RETURN_URI => $this->url->getUrl('omise/callback/threedsecure', ['_secure' => true])
-            ];
-        }
-
-        return [];
+        return [
+            self::RETURN_URI => $this->url->getUrl('omise/callback/threedsecure', ['_secure' => true])
+        ];
     }
 }
