@@ -2,22 +2,28 @@ define(
     [
         'ko',
         'Magento_Payment/js/view/payment/cc-form',
+        'mage/storage',
         'mage/translate',
         'jquery',
         'Magento_Payment/js/model/credit-card-validation/validator',
+        'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote'
+        'Magento_Checkout/js/model/quote',
+        'Magento_Checkout/js/model/url-builder'
     ],
     function (
         ko,
         Component,
+        storage,
         $t,
         $,
         validator,
+        errorProcessor,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote
+        quote,
+        urlBuilder
     ) {
         'use strict';
 
@@ -91,6 +97,19 @@ define(
             },
 
             /**
+             * Is 3-D Secure config enabled
+             *
+             * @return {boolean}
+             */
+            isThreeDSecureEnabled: function() {
+                if (window.checkoutConfig.payment.omise_cc.offsitePayment) {
+                    return true;
+                }
+
+                return false;
+            },
+
+            /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */
@@ -136,10 +155,35 @@ define(
                                     self.stopPerformingPlaceOrderAction();
                                 }
                             ).done(
-                                function() {
-                                    self.afterPlaceOrder();
+                                function(response) {
+                                    if (self.isThreeDSecureEnabled()) {
+                                        var serviceUrl = urlBuilder.createUrl(
+                                            '/orders/:order_id/omise-offsite',
+                                            {
+                                                order_id: response
+                                            }
+                                        );
 
-                                    if (self.redirectAfterPlaceOrder) {
+                                        storage.get(serviceUrl, false)
+                                            .fail(
+                                                function (response) {
+                                                    errorProcessor.process(response, self.messageContainer);
+                                                    fullScreenLoader.stopLoader();
+                                                    self.isPlaceOrderActionAllowed(true);
+                                                }
+                                            )
+                                            .done(
+                                                function (response) {
+                                                    if (response) {
+                                                        $.mage.redirect(response.authorize_uri);
+                                                    } else {
+                                                        errorProcessor.process(response, self.messageContainer);
+                                                        fullScreenLoader.stopLoader();
+                                                        self.isPlaceOrderActionAllowed(true);
+                                                    }
+                                                }
+                                            );
+                                    } else if (self.redirectAfterPlaceOrder) {
                                         redirectOnSuccessAction.execute();
                                     }
                                 }
