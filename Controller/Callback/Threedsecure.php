@@ -110,7 +110,12 @@ class Threedsecure extends Action
             } else {
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_AUTH),
-                    $payment->prependMessage(__('Authorized amount of %1.', $order->getTotalDue()))
+                    $payment->prependMessage(
+                        __(
+                            'Authorized amount of %1.',
+                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                        )
+                    )
                 );
             }
 
