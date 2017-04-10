@@ -7,7 +7,6 @@ use Omise\Payment\Gateway\Validator\Message\OmiseObjectInvalid;
 
 class OmiseCaptureCommandResponseValidator extends CommandResponseValidator
 {
-
     /**
      * @param  mixed
      *
@@ -25,16 +24,6 @@ class OmiseCaptureCommandResponseValidator extends CommandResponseValidator
 
         $captured = $data['captured'] ? $data['captured'] : $data['paid'];
 
-        // For 3-D Secure payment.
-        if ($data['status'] === 'pending'
-            && $data['authorized'] == false
-            && $captured == false
-            && $data['authorize_uri']
-        ) {
-            return true;
-        }
-
-        // For normal charge.
         if ($data['status'] === 'successful'
             && $data['authorized'] == true
             && $captured == true

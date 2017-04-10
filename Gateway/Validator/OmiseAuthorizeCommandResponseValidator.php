@@ -22,15 +22,6 @@ class OmiseAuthorizeCommandResponseValidator extends CommandResponseValidator
             return new Invalid('Payment failed. ' . ucfirst($data['failure_message']) . ', please contact our support if you have any questions.');
         }
 
-        // For 3-D Secure payment.
-        if ($data['status'] === 'pending'
-            && $data['authorized'] == false
-            && $captured == false
-            && $data['authorize_uri']
-        ) {
-            return true;
-        }
-
         if ($data['status'] === 'pending'
             && $data['authorized'] == true
         ) {
