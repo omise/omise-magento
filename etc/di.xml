@@ -87,14 +87,23 @@
         </arguments>
     </virtualType>
 
+    <!-- Credit Card :: Command Pool -->
     <virtualType name="OmiseCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">OmiseCreditCardInitializeCommand</item>
                 <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item>
                 <item name="capture" xsi:type="string">OmiseCaptureCommand</item>
             </argument>
         </arguments>
     </virtualType>
+
+    <virtualType name="OmiseCreditCardInitializeCommand" type="Omise\Payment\Gateway\Command\CreditCardStrategyCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Command Pool -->
 
     <virtualType name="OmiseValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
