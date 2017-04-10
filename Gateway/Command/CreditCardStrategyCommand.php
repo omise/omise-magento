@@ -81,11 +81,13 @@ class CreditCardStrategyCommand implements CommandInterface
                 break;
         }
 
-        $this->updateOrderState(
-            $commandSubject,
-            ($order->getState() ? $order->getState() : Order::STATE_PROCESSING),
-            ($order->getStatus() ? $order->getStatus() : $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING))            
-        );
+        if (! $this->config->is3DSecureEnabled()) {
+            $this->updateOrderState(
+                $commandSubject,
+                ($order->getState() ? $order->getState() : Order::STATE_PROCESSING),
+                ($order->getStatus() ? $order->getStatus() : $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING))
+            );
+        }
     }
 
     /**
