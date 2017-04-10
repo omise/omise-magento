@@ -1,11 +1,13 @@
 <?php
 namespace Omise\Payment\Controller\Callback;
 
+use Exception;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
+use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
 use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
