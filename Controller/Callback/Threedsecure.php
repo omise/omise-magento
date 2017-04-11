@@ -152,7 +152,7 @@ class Threedsecure extends Action
     /**
      * @param  \OmiseCharge $charge
      *
-     * @return bool
+     * @return bool|Omise\Payment\Gateway\Validator\Message\Invalid
      */
     protected function validate($charge)
     {
