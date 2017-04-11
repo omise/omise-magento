@@ -47,7 +47,7 @@ class CommandResponseValidator extends AbstractValidator
      *
      * @return mixed
      */
-    public function validateResponse($data)
+    protected function validateResponse($data)
     {
         return true;
     }

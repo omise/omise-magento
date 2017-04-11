@@ -12,7 +12,7 @@ class ThreeDSecureCommandResponseValidator extends CommandResponseValidator
      *
      * @return mixed
      */
-    public function validateResponse($data)
+    protected function validateResponse($data)
     {
         if (! isset($data['object']) || $data['object'] !== 'charge') {
             return new OmiseObjectInvalid();
