@@ -11,21 +11,12 @@ class PendingInvoiceHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
-        /** @var bool **/
-        $captured = $response['data']['captured'] ? $response['data']['captured'] : $response['data']['paid'];
+        /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
+        $payment = SubjectReader::readPayment($handlingSubject);
 
-        if ($response['data']['status'] === 'pending'
-            && $response['data']['authorized'] == false
-            && $captured == false
-            && $response['data']['authorize_uri']
-        ) {
-            /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
-            $payment = SubjectReader::readPayment($handlingSubject);
+        $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
+        $invoice->register();
 
-            $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
-            $invoice->register();
-
-            $payment->getPayment()->getOrder()->addRelatedObject($invoice);
-        }
+        $payment->getPayment()->getOrder()->addRelatedObject($invoice);
     }
 }

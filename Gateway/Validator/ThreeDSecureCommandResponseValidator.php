@@ -4,6 +4,8 @@ namespace Omise\Payment\Gateway\Validator;
 use Omise\Payment\Gateway\Validator\CommandResponseValidator;
 use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Gateway\Validator\Message\OmiseObjectInvalid;
+use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
+use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 
 class ThreeDSecureCommandResponseValidator extends CommandResponseValidator
 {
@@ -24,12 +26,22 @@ class ThreeDSecureCommandResponseValidator extends CommandResponseValidator
 
         $captured = $data['captured'] ? $data['captured'] : $data['paid'];
 
-        // For 3-D Secure payment.
         if ($data['status'] === 'pending'
             && $data['authorized'] == false
             && $captured == false
             && $data['authorize_uri']
         ) {
+            return true;
+        }
+
+        // Try validate for none 3-D Secure account case before mark as invalid
+        if ($data['capture']) {
+            $result = (new CaptureResultValidator)->validate($data);
+        } else {
+            $result = (new AuthorizeResultValidator)->validate($data);
+        }
+
+        if ($result === true) {
             return true;
         }
 
