@@ -118,7 +118,6 @@ class Internetbanking extends Action
             return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
-            $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
         }
