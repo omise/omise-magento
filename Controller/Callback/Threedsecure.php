@@ -123,7 +123,6 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
-            $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
         }
@@ -152,7 +151,7 @@ class Threedsecure extends Action
     /**
      * @param  \OmiseCharge $charge
      *
-     * @return bool
+     * @return bool|Omise\Payment\Gateway\Validator\Message\Invalid
      */
     protected function validate($charge)
     {
@@ -182,7 +181,9 @@ class Threedsecure extends Action
     protected function cancel(Order $order, $message)
     {
         if ($order->hasInvoices()) {
-            $this->invoice($order)->cancel()->save();
+            $invoice = $this->invoice($order);
+            $invoice->cancel();
+            $order->addRelatedObject($invoice);
         }
 
         $order->registerCancellation($message)->save();
