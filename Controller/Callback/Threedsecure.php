@@ -185,9 +185,7 @@ class Threedsecure extends Action
             $this->invoice($order)->cancel()->save();
         }
 
-        $order->setState(Order::STATE_CANCELED);
-        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CANCELED));
-
-        $this->invalid($order, $message);
+        $order->registerCancellation($message)->save();
+        $this->messageManager->addErrorMessage($message);
     }
 }
