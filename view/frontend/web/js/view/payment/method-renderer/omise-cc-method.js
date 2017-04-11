@@ -151,8 +151,10 @@ define(
                         self.omiseCardToken(response.id);
                         self.getPlaceOrderDeferredObject()
                             .fail(
-                                function() {
-                                    self.stopPerformingPlaceOrderAction();
+                                function(response) {
+                                    errorProcessor.process(response, self.messageContainer);
+                                    fullScreenLoader.stopLoader();
+                                    self.isPlaceOrderActionAllowed(true);
                                 }
                             ).done(
                                 function(response) {
