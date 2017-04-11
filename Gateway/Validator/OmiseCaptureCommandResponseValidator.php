@@ -12,7 +12,7 @@ class OmiseCaptureCommandResponseValidator extends CommandResponseValidator
      *
      * @return mixed
      */
-    protected function validateResponse($data)
+    public function validateResponse($data)
     {
         if (! isset($data['object']) || $data['object'] !== 'charge') {
             return new OmiseObjectInvalid();
