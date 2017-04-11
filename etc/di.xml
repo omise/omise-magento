@@ -241,4 +241,10 @@
     </virtualType>
 
     <virtualType name="OmiseCharge" type="Omise\Payment\Gateway\Http\Client\Payment"></virtualType>
+
+    <virtualType name="OmiseAdapter" type="OmiseCcAdapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Config::CODE</argument>
+        </arguments>
+    </virtualType>
 </config>

@@ -4,7 +4,7 @@
         <payment>
             <omise>
                 <sandbox_status>0</sandbox_status>
-                <model>OmiseCcAdapter</model>
+                <model>OmiseAdapter</model>
             </omise>
 
             <omise_cc>
