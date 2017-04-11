@@ -28,14 +28,10 @@ class OmiseHelper extends AbstractHelper
     {
         switch (strtoupper($currency)) {
             case 'THB':
-                // Convert to satang unit
+            case 'IDR':
+            case 'SGD':
+                // Convert to a small unit
                 $amount = $amount * 100;
-                break;
-
-            case 'JPY':
-                break;
-
-            default:
                 break;
         }
 
