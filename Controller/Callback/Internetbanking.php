@@ -8,7 +8,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment\Transaction;
+use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Config\Offsite\Internetbanking as Config;
+use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 
 class Internetbanking extends Action
 {
@@ -87,8 +89,10 @@ class Internetbanking extends Action
         try {
             $charge = \OmiseCharge::retrieve($charge_id, $this->config->getPublicKey(), $this->config->getSecretKey());
 
-            if (! $this->validate($charge)) {
-                throw new Exception('Payment failed. ' . ucfirst($charge['failure_message']) . ', please contact our support if you have any questions.');
+            $result = $this->validate($charge);
+
+            if ($result instanceof Invalid) {
+                throw new Exception($result->getMessage());
             }
 
             $payment->setTransactionId($charge['transaction']);
@@ -143,34 +147,11 @@ class Internetbanking extends Action
     /**
      * @param  \OmiseCharge $charge
      *
-     * @return bool
+     * @return bool|Omise\Payment\Gateway\Validator\Message\Invalid
      */
     protected function validate($charge)
     {
-        $captured = $charge['captured'] ? $charge['captured'] : $charge['paid'];
-
-        if ($charge['status'] === 'successful'
-            && $charge['authorized'] == true
-            && $captured == true
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order       $order
-     * @param \Magento\Framework\Phrase|string $message
-     */
-    protected function cancel(Order $order, $message)
-    {
-        $this->invoice($order)->cancel()->save();
-
-        $order->setState(Order::STATE_CANCELED);
-        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CANCELED));
-
-        $this->invalid($order, $message);
+        return (new CaptureResultValidator)->validate($charge);
     }
 
     /**
@@ -182,6 +163,18 @@ class Internetbanking extends Action
         $order->addStatusHistoryComment($message);
         $order->save();
 
+        $this->messageManager->addErrorMessage($message);
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order       $order
+     * @param \Magento\Framework\Phrase|string $message
+     */
+    protected function cancel(Order $order, $message)
+    {
+        $this->invoice($order)->cancel()->save();
+
+        $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
     }
 }
