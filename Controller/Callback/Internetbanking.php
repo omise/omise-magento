@@ -163,6 +163,18 @@ class Internetbanking extends Action
      * @param \Magento\Sales\Model\Order       $order
      * @param \Magento\Framework\Phrase|string $message
      */
+    protected function invalid(Order $order, $message)
+    {
+        $order->addStatusHistoryComment($message);
+        $order->save();
+
+        $this->messageManager->addErrorMessage($message);
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order       $order
+     * @param \Magento\Framework\Phrase|string $message
+     */
     protected function cancel(Order $order, $message)
     {
         $this->invoice($order)->cancel()->save();
@@ -171,17 +183,5 @@ class Internetbanking extends Action
         $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CANCELED));
 
         $this->invalid($order, $message);
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order       $order
-     * @param \Magento\Framework\Phrase|string $message
-     */
-    protected function invalid(Order $order, $message)
-    {
-        $order->addStatusHistoryComment($message);
-        $order->save();
-
-        $this->messageManager->addErrorMessage($message);
     }
 }
