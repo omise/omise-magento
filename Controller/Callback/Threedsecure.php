@@ -182,7 +182,9 @@ class Threedsecure extends Action
     protected function cancel(Order $order, $message)
     {
         if ($order->hasInvoices()) {
-            $this->invoice($order)->cancel()->save();
+            $invoice = $this->invoice($order);
+            $invoice->cancel();
+            $order->addRelatedObject($invoice);
         }
 
         $order->registerCancellation($message)->save();
