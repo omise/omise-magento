@@ -1,10 +1,10 @@
 <?php
 namespace Omise\Payment\Gateway\Response;
 
+use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
-use Magento\Sales\Model\Order;
 
-class PendingPaymentHandler implements HandlerInterface
+class PendingInvoiceHandler implements HandlerInterface
 {
     /**
      * @inheritdoc
@@ -19,10 +19,13 @@ class PendingPaymentHandler implements HandlerInterface
             && $captured == false
             && $response['data']['authorize_uri']
         ) {
-            $stateObject = $handlingSubject['stateObject'];
-            $stateObject->setState(Order::STATE_PENDING_PAYMENT);
-            $stateObject->setStatus(Order::STATE_PENDING_PAYMENT);
-            $stateObject->setIsNotified(false);
+            /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
+            $payment = SubjectReader::readPayment($handlingSubject);
+
+            $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
+            $invoice->register();
+
+            $payment->getPayment()->getOrder()->addRelatedObject($invoice);
         }
     }
 }
