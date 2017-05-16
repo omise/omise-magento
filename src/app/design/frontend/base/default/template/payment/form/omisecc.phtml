@@ -163,20 +163,18 @@
         </div>
     </li>
 
+    <li id="<?php echo $_code; ?>_cc_type_cvv_div">
+        <label for="<?php echo $_code; ?>_cc_cid" class="required">
+            <em>*</em><?php echo $this->__('Card Verification Number'); ?>
+        </label>
+        <div class="input-box">
+            <div class="v-fix">
+                <input id="<?php echo $_code; ?>_cc_cid" type="password" name="payment[cc_cid]" title="<?php echo $this->__('Card Verification Number'); ?>" autocomplete="off" value="" class="input-text cvv required-entry validate-cc-cvn" />
+            </div>
+            <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?'); ?></a>
+        </div>
+    </li>
+
     <!-- Security Code -->
     <?php echo $this->getChildHtml(); ?>
-
-    <?php if($this->hasVerification()): ?>
-        <li id="<?php echo $_code; ?>_cc_type_cvv_div">
-            <label for="<?php echo $_code; ?>_cc_cid" class="required">
-                <em>*</em><?php echo $this->__('Card Verification Number'); ?>
-            </label>
-            <div class="input-box">
-                <div class="v-fix">
-                    <input id="<?php echo $_code; ?>_cc_cid" type="password" name="payment[cc_cid]" title="<?php echo $this->__('Card Verification Number'); ?>" autocomplete="off" value="" class="input-text cvv required-entry validate-cc-cvn" />
-                </div>
-                <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?'); ?></a>
-            </div>
-        </li>
-    <?php endif; ?>
 </ul>
