@@ -142,13 +142,6 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      */
     public function hasVerification()
     {
-        if ($this->getMethod()) {
-            $configData = $this->getMethod()->getConfigData('useccv');
-            if (is_null($configData)) {
-                return true;
-            }
-            return (bool) $configData;
-        }
         return true;
     }
 
