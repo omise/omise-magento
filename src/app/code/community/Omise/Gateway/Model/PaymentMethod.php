@@ -319,4 +319,12 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
             )
         );
     }
+
+    /**
+     * @return bool
+     */
+    public function isOscSupportEnabled()
+    {
+        return Mage::getStoreConfig('payment/omise_gateway/osc_support') ? true : false;
+    }
 }
