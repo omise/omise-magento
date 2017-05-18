@@ -125,6 +125,12 @@
         head.appendChild(script);
     };
 
+    function createOmiseToken() {
+        Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+
+        // Omise.createToken();
+    }
+
     if ('<?php echo $this->isOscSupportEnabled(); ?>') {
         function observeForm(event) {
             event.preventDefault();
@@ -138,7 +144,11 @@
             if (! processing) {
                 processing = true;
 
-                // Send card object to Omise server to create a token.
+                if (typeof Omise === 'undefined') {
+                    getScript('https://cdn.omise.co/omise.min.js.gz', createOmiseToken);
+                } else {
+                    createOmiseToken();
+                }
             }
         }
 
