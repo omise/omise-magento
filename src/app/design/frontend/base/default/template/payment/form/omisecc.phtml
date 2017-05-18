@@ -89,6 +89,19 @@
 </ul>
 
 <script type="text/javascript">
+    var cardObject, processing;
+
+    cardObject = {
+        name             : document.getElementById('omise_gateway_cc_name'),
+        number           : document.getElementById('omise_gateway_cc_number'),
+        expiration_month : document.getElementById('omise_gateway_expiration'),
+        expiration_year  : document.getElementById('omise_gateway_expiration_yr'),
+        security_code    : document.getElementById('omise_gateway_cc_cid')
+    }
+
+    processing = false;
+
+
     function getScript(url, success) {
         var script     = document.createElement("script");
             script.src = url;
@@ -113,7 +126,27 @@
     };
 
     if ('<?php echo $this->isOscSupportEnabled(); ?>') {
-        // ..
+        function observeForm(event) {
+            event.preventDefault();
+
+            for (key in cardObject) {
+                if (cardObject[key].value == '') {
+                    return false;
+                }
+            }
+
+            if (! processing) {
+                processing = true;
+
+                // Send card object to Omise server to create a token.
+            }
+        }
+
+        cardObject.name.addEventListener('blur', observeForm);
+        cardObject.number.addEventListener('blur', observeForm);
+        cardObject.expiration_month.addEventListener('blur', observeForm);
+        cardObject.expiration_year.addEventListener('blur', observeForm);
+        cardObject.security_code.addEventListener('blur', observeForm);
     }
     else {
         // Hook Payment.save function by wrapping Omise logic on top of the 'Payment.prototype.save'
