@@ -89,8 +89,9 @@
 </ul>
 
 <script type="text/javascript">
-    var cardObject, card, processing;
+    var cardObject, tokenField, card, processing;
 
+    tokenField = document.getElementById('omise_gateway_token');
     cardObject = {
         name             : document.getElementById('omise_gateway_cc_name'),
         number           : document.getElementById('omise_gateway_cc_number'),
@@ -130,6 +131,7 @@
 
         Omise.createToken("card", card, function(statusCode, response) {
             if (statusCode == 200) {
+                tokenField.value = response.id;
                 console.log('success ==========');
                 console.log(response);
             }
