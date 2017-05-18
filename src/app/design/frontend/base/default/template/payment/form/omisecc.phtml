@@ -89,7 +89,7 @@
 </ul>
 
 <script type="text/javascript">
-    var cardObject, processing;
+    var cardObject, card, processing;
 
     cardObject = {
         name             : document.getElementById('omise_gateway_cc_name'),
@@ -98,7 +98,7 @@
         expiration_year  : document.getElementById('omise_gateway_expiration_yr'),
         security_code    : document.getElementById('omise_gateway_cc_cid')
     }
-
+    card       = {};
     processing = false;
 
 
@@ -128,7 +128,18 @@
     function createOmiseToken() {
         Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
-        // Omise.createToken();
+        Omise.createToken("card", card, function(statusCode, response) {
+            if (statusCode == 200) {
+                console.log('success ==========');
+                console.log(response);
+            }
+            else {
+                console.log('failed ==========');
+                console.log(response);
+            }
+
+            processing = false;
+        });
     }
 
     if ('<?php echo $this->isOscSupportEnabled(); ?>') {
@@ -139,6 +150,8 @@
                 if (cardObject[key].value == '') {
                     return false;
                 }
+
+                card[key] = cardObject[key].value;
             }
 
             if (! processing) {
