@@ -89,8 +89,9 @@
 </ul>
 
 <script type="text/javascript">
-    var cardObject, tokenField, card, processing, buttons, inMemoryButton;
+    var cardObject, tokenField, card, processing, buttons, inMemoryButton, messageBox;
 
+    messageBox = document.getElementById('omise-validation-advice');
     tokenField = document.getElementById('omise_gateway_token');
     cardObject = {
         name             : document.getElementById('omise_gateway_cc_name'),
@@ -137,7 +138,7 @@
                 tokenField.value = response.id;
             }
             else {
-                // TODO : Show error on a target form.
+                messageBox.innerHTML = response.message;
             }
 
             for (i = 0; i < inMemoryButton.length; ++i) {
@@ -163,9 +164,10 @@
             if (! processing) {
                 var i;
 
-                processing     = true;
-                buttons        = document.getElementsByTagName('button');
-                inMemoryButton = [];
+                processing           = true;
+                buttons              = document.getElementsByTagName('button');
+                inMemoryButton       = [];
+                messageBox.innerHTML = '';
 
                 for (i = 0; i < buttons.length; ++i) {
                     if (! buttons[i].disabled) {
