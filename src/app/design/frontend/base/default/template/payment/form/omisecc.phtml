@@ -89,7 +89,7 @@
 </ul>
 
 <script type="text/javascript">
-    var cardObject, tokenField, card, processing;
+    var cardObject, tokenField, card, processing, buttons, inMemoryButton;
 
     tokenField = document.getElementById('omise_gateway_token');
     cardObject = {
@@ -101,7 +101,6 @@
     }
     card       = {};
     processing = false;
-
 
     function getScript(url, success) {
         var script     = document.createElement("script");
@@ -130,14 +129,17 @@
         Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
         Omise.createToken("card", card, function(statusCode, response) {
+            var i;
+
             if (statusCode == 200) {
                 tokenField.value = response.id;
-                console.log('success ==========');
-                console.log(response);
             }
             else {
-                console.log('failed ==========');
-                console.log(response);
+                // TODO : Show error on a target form.
+            }
+
+            for (i = 0; i < inMemoryButton.length; ++i) {
+                inMemoryButton[i].disabled = false;
             }
 
             processing = false;
@@ -157,7 +159,18 @@
             }
 
             if (! processing) {
-                processing = true;
+                var i;
+
+                processing     = true;
+                buttons        = document.getElementsByTagName('button');
+                inMemoryButton = [];
+
+                for (i = 0; i < buttons.length; ++i) {
+                    if (! buttons[i].disabled) {
+                        buttons[i].disabled = true;
+                        inMemoryButton.push(buttons[i]);
+                    }
+                }
 
                 if (typeof Omise === 'undefined') {
                     getScript('https://cdn.omise.co/omise.min.js.gz', createOmiseToken);
