@@ -1,15 +1,23 @@
 <?php
 class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 {
-    protected function _construct()
+    /**
+     * Preparing global layout
+     * You can redefine this method in child classes for changing layout
+     *
+     * @return Mage_Core_Block_Abstract
+     *
+     * @see    Mage_Core_Block_Abstract
+     */
+    protected function _prepareLayout()
     {
-        parent::_construct();
-
         if ($this->isApplicable()) {
             $this->setTemplate('payment/form/omisecc.phtml');
         } else {
             $this->setTemplate('payment/form/omise-inapplicable-method.phtml');
         }
+
+        return $this;
     }
 
     /**
