@@ -89,7 +89,7 @@
 </ul>
 
 <script type="text/javascript">
-    var cardObject, tokenField, card, processing, buttons, inMemoryButton, messageBox;
+    var cardObject, tokenField, card, processing, buttons, inMemoryButton, messageBox, dirty;
 
     messageBox = document.getElementById('omise-validation-advice');
     tokenField = document.getElementById('omise_gateway_token');
@@ -102,6 +102,7 @@
     }
     card       = {};
     processing = false;
+    dirty      = true;
 
     function getScript(url, success) {
         var script, head, done;
@@ -146,6 +147,7 @@
             }
 
             processing = false;
+            dirty      = false;
         });
     }
 
@@ -158,10 +160,14 @@
                     return false;
                 }
 
+                if (card[key] && card[key] != cardObject[key].value) {
+                    dirty = true;
+                }
+
                 card[key] = cardObject[key].value;
             }
 
-            if (! processing) {
+            if (! processing && dirty) {
                 var i;
 
                 processing           = true;
