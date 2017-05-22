@@ -1,15 +1,23 @@
 <?php
 class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
 {
-    protected function _construct()
+    /**
+     * Preparing global layout
+     * You can redefine this method in child classes for changing layout
+     *
+     * @return Mage_Core_Block_Abstract
+     *
+     * @see    Mage_Core_Block_Abstract
+     */
+    protected function _prepareLayout()
     {
-        parent::_construct();
-
         if ($this->isApplicable()) {
             $this->setTemplate('payment/form/omisecc.phtml');
         } else {
             $this->setTemplate('payment/form/omise-inapplicable-method.phtml');
         }
+
+        return $this;
     }
 
     /**
@@ -64,14 +72,13 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     {
         // Create a new model instance and query data from 'omise_gateway' table.
         $config = Mage::getModel('omise_gateway/config')->load(1);
-        $data   = array(
-            'public_key' => $config->public_key,
-            'secret_key' => $config->secret_key
-        );
 
         if ($config->test_mode) {
             $data['public_key'] = $config->public_key_test;
             $data['secret_key'] = $config->secret_key_test;
+        } else {
+            $data['public_key'] = $config->public_key;
+            $data['secret_key'] = $config->secret_key;
         }
 
         if ($omise_key == '') {
@@ -142,47 +149,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      */
     public function hasVerification()
     {
-        if ($this->getMethod()) {
-            $configData = $this->getMethod()->getConfigData('useccv');
-            if (is_null($configData)) {
-                return true;
-            }
-            return (bool) $configData;
-        }
         return true;
-    }
-
-    /**
-     * Whether switch/solo card type available
-     *
-     * @return boolean
-     */
-    public function hasSsCardType()
-    {
-        $availableTypes  = explode(',', $this->getMethod()->getConfigData('cctypes'));
-        $ssPresentations = array_intersect(array('SS', 'SM', 'SO'), $availableTypes);
-        if ($availableTypes && count($ssPresentations) > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * solo/ switch card start year
-     *
-     * @return array
-     */
-    public function getSsStartYears()
-    {
-        $years = array();
-        $first = date("Y");
-
-        for ($index = 5; $index >= 0; $index--) {
-            $year = $first - $index;
-            $years[$year] = $year;
-        }
-        $years = array(0 => $this->__('Year')) + $years;
-        return $years;
     }
 
     /**
