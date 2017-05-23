@@ -216,7 +216,8 @@
 
             for (key in cardObject) {
                 if (card[key] && card[key] != cardObject[key].value) {
-                    dirty = true;
+                    dirty            = true;
+                    tokenField.value = '';
                 }
 
                 if (cardObject[key].value == '') {
@@ -233,7 +234,6 @@
                 buttons              = document.getElementsByTagName('button');
                 inMemoryButton       = [];
                 messageBox.innerHTML = '';
-                tokenField.value     = '';
 
                 for (i = 0; i < buttons.length; ++i) {
                     if (! buttons[i].disabled) {
