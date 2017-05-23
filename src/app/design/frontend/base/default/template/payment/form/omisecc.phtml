@@ -91,7 +91,7 @@
 <script type="text/javascript">
     var method, messageBox, tokenField, cardObject, card, processing, dirty,
         buttons, inMemoryButton, getScript, createOmiseToken, successCallback,
-        failCallback, alwaysCallback;
+        failCallback, alwaysCallback, disableFields, enableFields;
 
     method     = document.getElementById('p_method_omise_gateway');
     messageBox = document.getElementById('omise-validation-advice');
@@ -186,6 +186,28 @@
         return true;
     }
 
+    /**
+     * @param  {Object} fields
+     *
+     * @return {void}
+     */
+    disableFields = function(fields) {
+        for (field in fields) {
+            fields[field].disabled = true;
+        }
+    }
+
+    /**
+     * @param  {Object} fields
+     *
+     * @return {void}
+     */
+    enableFields = function(fields) {
+        for (field in fields) {
+            fields[field].disabled = false;
+        }
+    }
+
     if ('<?php echo $this->isOscSupportEnabled(); ?>') {
         var observeForm;
 
@@ -204,6 +226,7 @@
 
             processing = false;
             dirty      = false;
+            enableFields(cardObject);
         }
 
         /**
@@ -234,6 +257,8 @@
                 buttons              = document.getElementsByTagName('button');
                 inMemoryButton       = [];
                 messageBox.innerHTML = '';
+
+                disableFields(cardObject);
 
                 for (i = 0; i < buttons.length; ++i) {
                     if (! buttons[i].disabled) {
@@ -291,6 +316,7 @@
              * @return {mix}
              */
             alwaysCallback = function(statusCode, response) {
+                enableFields(cardObject);
                 checkout.setLoadWaiting(false);
             }
 
@@ -298,6 +324,7 @@
 
             if (validator.validate()) {
                 checkout.setLoadWaiting('payment');
+                disableFields(cardObject);
 
                 for (key in cardObject) {
                     card[key] = cardObject[key].value;
