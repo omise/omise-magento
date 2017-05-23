@@ -89,7 +89,8 @@
 </ul>
 
 <script type="text/javascript">
-    var cardObject, tokenField, card, processing, buttons, inMemoryButton, messageBox, dirty;
+    var messageBox, tokenField, cardObject, card, processing, dirty, buttons,
+        inMemoryButton, getScript, createOmiseToken, successCallback;
 
     messageBox = document.getElementById('omise-validation-advice');
     tokenField = document.getElementById('omise_gateway_token');
@@ -104,7 +105,13 @@
     processing = false;
     dirty      = true;
 
-    function getScript(url, success) {
+    /**
+     * @param  {string}   url
+     * @param  {Function} success
+     *
+     * @return {void}
+     */
+    getScript = function(url, success) {
         var script, head, done;
 
         script     = document.createElement("script");
@@ -129,12 +136,13 @@
         head.appendChild(script);
     };
 
-    function createOmiseToken() {
+    /**
+     * @return {void}
+     */
+    createOmiseToken = function() {
         Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
 
         Omise.createToken("card", card, function(statusCode, response) {
-            var i;
-
             if (statusCode == 200) {
                 tokenField.value = response.id;
             }
@@ -142,17 +150,46 @@
                 messageBox.innerHTML = response.message;
             }
 
+            successCallback(statusCode, response);
+        });
+    }
+
+    /**
+     * @param  {number} statusCode
+     * @param  {Object} response
+     *
+     * @return {mix}
+     */
+    successCallback = function(statusCode, response) {
+        return true;
+    }
+
+    if ('<?php echo $this->isOscSupportEnabled(); ?>') {
+        var observeForm;
+
+        /**
+         * @param  {number} statusCode
+         * @param  {Object} response
+         *
+         * @return {mix}
+         */
+        successCallback = function(statusCode, response) {
+            var i;
+
             for (i = 0; i < inMemoryButton.length; ++i) {
                 inMemoryButton[i].disabled = false;
             }
 
             processing = false;
             dirty      = false;
-        });
-    }
+        }
 
-    if ('<?php echo $this->isOscSupportEnabled(); ?>') {
-        function observeForm(event) {
+        /**
+         * @param  {Object} event
+         *
+         * @return {mix}
+         */
+        observeForm = function(event) {
             event.preventDefault();
 
             for (key in cardObject) {
