@@ -90,7 +90,8 @@
 
 <script type="text/javascript">
     var method, messageBox, tokenField, cardObject, card, processing, dirty,
-        buttons, inMemoryButton, getScript, createOmiseToken, successCallback;
+        buttons, inMemoryButton, getScript, createOmiseToken, successCallback,
+        failCallback, alwaysCallback;
 
     method     = document.getElementById('p_method_omise_gateway');
     messageBox = document.getElementById('omise-validation-advice');
@@ -145,13 +146,13 @@
 
         Omise.createToken("card", card, function(statusCode, response) {
             if (statusCode == 200) {
-                tokenField.value = response.id;
+                successCallback(statusCode, response);
             }
             else {
-                messageBox.innerHTML = response.message;
+                failCallback(statusCode, response);
             }
 
-            successCallback(statusCode, response);
+            alwaysCallback(statusCode, response);
         });
     }
 
@@ -162,6 +163,26 @@
      * @return {mix}
      */
     successCallback = function(statusCode, response) {
+        tokenField.value = response.id;
+    }
+
+    /**
+     * @param  {number} statusCode
+     * @param  {Object} response
+     *
+     * @return {mix}
+     */
+    failCallback = function(statusCode, response) {
+        messageBox.innerHTML = response.message;
+    }
+
+    /**
+     * @param  {number} statusCode
+     * @param  {Object} response
+     *
+     * @return {mix}
+     */
+    alwaysCallback = function(statusCode, response) {
         return true;
     }
 
@@ -174,7 +195,7 @@
          *
          * @return {mix}
          */
-        successCallback = function(statusCode, response) {
+        alwaysCallback = function(statusCode, response) {
             var i;
 
             for (i = 0; i < inMemoryButton.length; ++i) {
@@ -194,12 +215,12 @@
             event.preventDefault();
 
             for (key in cardObject) {
-                if (cardObject[key].value == '') {
-                    return false;
-                }
-
                 if (card[key] && card[key] != cardObject[key].value) {
                     dirty = true;
+                }
+
+                if (cardObject[key].value == '') {
+                    return false;
                 }
 
                 card[key] = cardObject[key].value;
@@ -223,7 +244,8 @@
 
                 if (typeof Omise === 'undefined') {
                     getScript('https://cdn.omise.co/omise.min.js.gz', createOmiseToken);
-                } else {
+                }
+                else {
                     createOmiseToken();
                 }
             }
@@ -238,65 +260,55 @@
     else {
         // Hook Payment.save function by wrapping Omise logic on top of the 'Payment.prototype.save'
         Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
+            var validator;
+
             if (! method.checked) {
                 return superMethod();
             }
 
-            var validator = new Validation("co-payment-form");
+            /**
+             * @param  {number} statusCode
+             * @param  {Object} response
+             *
+             * @return {mix}
+             */
+            successCallback = function(statusCode, response) {
+                if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                    messageBox.innerHTML = 'This card cannot authorize, please contact our support.';
+                }
+                else {
+                    tokenField.value = response.id;
+                    checkout.setLoadWaiting(false);
+
+                    return superMethod();
+                };
+            }
+
+            /**
+             * @param  {number} statusCode
+             * @param  {Object} response
+             *
+             * @return {mix}
+             */
+            alwaysCallback = function(statusCode, response) {
+                checkout.setLoadWaiting(false);
+            }
+
+            validator = new Validation('co-payment-form');
 
             if (validator.validate()) {
                 checkout.setLoadWaiting('payment');
 
-                getScript("https://cdn.omise.co/omise.min.js.gz", function() {
-                    // Set Omise key
-                    Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+                for (key in cardObject) {
+                    card[key] = cardObject[key].value;
+                }
 
-                    var formInput             = {
-                            "name"             : document.getElementById("omise_gateway_cc_name"),
-                            "number"           : document.getElementById("omise_gateway_cc_number"),
-                            "expiration_month" : document.getElementById("omise_gateway_expiration"),
-                            "expiration_year"  : document.getElementById("omise_gateway_expiration_yr"),
-                            "security_code"    : document.getElementById("omise_gateway_cc_cid"),
-                            "omise_token"      : document.getElementById("omise_gateway_token")
-                        },
-                        omiseValidationAdvice = document.getElementById("omise-validation-advice");
-
-                    var card = {
-                        "name"             : formInput.name.value,
-                        "number"           : formInput.number.value,
-                        "expiration_month" : formInput.expiration_month.value,
-                        "expiration_year"  : formInput.expiration_year.value,
-                        "security_code"    : formInput.security_code.value
-                    };
-
-                    /**
-                     * Send a request to create a token then trigger the callback function once
-                     * a response is received from Omise.
-                     *
-                     * Note that the response could be an error and this needs to be handled within
-                     * the callback.
-                     */
-                    Omise.createToken("card", card, function(statusCode, response) {
-                        if (response.object == "error") {
-                            omiseValidationAdvice.innerHTML = response.message;
-                            checkout.setLoadWaiting(false);
-                        } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                            omiseValidationAdvice.innerHTML = 'This card cannot authorize, please contact our support.';
-                            checkout.setLoadWaiting(false);
-                        } else {
-                            formInput.omise_token.value         = response.id;
-
-                            formInput.name.disabled             = true;
-                            formInput.number.disabled           = true;
-                            formInput.expiration_month.disabled = true;
-                            formInput.expiration_year.disabled  = true;
-                            formInput.security_code.disabled    = true;
-
-                            checkout.setLoadWaiting(false);
-                            return superMethod();
-                        };
-                    });
-                });
+                if (typeof Omise === 'undefined') {
+                    getScript('https://cdn.omise.co/omise.min.js.gz', createOmiseToken);
+                }
+                else {
+                    createOmiseToken();
+                }
             }
         });
     }
