@@ -89,9 +89,10 @@
 </ul>
 
 <script type="text/javascript">
-    var messageBox, tokenField, cardObject, card, processing, dirty, buttons,
-        inMemoryButton, getScript, createOmiseToken, successCallback;
+    var method, messageBox, tokenField, cardObject, card, processing, dirty,
+        buttons, inMemoryButton, getScript, createOmiseToken, successCallback;
 
+    method     = document.getElementById('p_method_omise_gateway');
     messageBox = document.getElementById('omise-validation-advice');
     tokenField = document.getElementById('omise_gateway_token');
     cardObject = {
@@ -100,7 +101,7 @@
         expiration_month : document.getElementById('omise_gateway_expiration'),
         expiration_year  : document.getElementById('omise_gateway_expiration_yr'),
         security_code    : document.getElementById('omise_gateway_cc_cid')
-    }
+    };
     card       = {};
     processing = false;
     dirty      = true;
@@ -211,6 +212,7 @@
                 buttons              = document.getElementsByTagName('button');
                 inMemoryButton       = [];
                 messageBox.innerHTML = '';
+                tokenField.value     = '';
 
                 for (i = 0; i < buttons.length; ++i) {
                     if (! buttons[i].disabled) {
@@ -236,9 +238,7 @@
     else {
         // Hook Payment.save function by wrapping Omise logic on top of the 'Payment.prototype.save'
         Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
-            var omisePayment = document.getElementById("p_method_omise_gateway");
-
-            if (! omisePayment.checked) {
+            if (! method.checked) {
                 return superMethod();
             }
 
