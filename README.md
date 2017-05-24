@@ -1,4 +1,4 @@
-<p align="center"><a href='https://www.omise.co'><img src='https://cloud.githubusercontent.com/assets/2154669/26388730/437207e4-4080-11e7-9955-2cd36bb3120f.png' height='60'></a></p>
+<p align="center"><a href='https://www.omise.co'><img src='https://cloud.githubusercontent.com/assets/2154669/26388730/437207e4-4080-11e7-9955-2cd36bb3120f.png' height='160'></a></p>
 
 **Omise Magento** is the official payment extension which provides support for Omise payment gateway for store builders working on the Magento platform.
 
@@ -51,7 +51,7 @@ In order to enable **Omise Payment Gateway** in the checkout page, you have to e
 1. At the admin top bar menu. Click `Omise > Module Setting`. You will be redirected to the Magento's payment method configuration page.
 2. At the bottommost of the page, you will see `Omise Payment Gateway` section with 2 payment methods, Credit Card and [Internet Banking](https://www.omise.co/offsite-payment).  
     To enable the Omise Payment Gateway, choose one (or both) and then, set the option `Enabled` to `Yes` to activate the payment method and save the config. 
-    <p align="center"><a alt="omise-magento-enable-module-01" href='https://cloud.githubusercontent.com/assets/2154669/23231357/0dbb1822-f97a-11e6-851f-3a6f456cfbd6.png'><img title="omise-magento-enable-module-04" src='https://cloud.githubusercontent.com/assets/2154669/23231357/0dbb1822-f97a-11e6-851f-3a6f456cfbd6.png' /></a></p>
+    <p align="center"><a alt="omise-magento-enable-module-01" href='https://cloud.githubusercontent.com/assets/2154669/26388922/50f6cdcc-4081-11e7-8ee8-f525e5d3a1ad.png'><img title="omise-magento-enable-module-01" src='https://cloud.githubusercontent.com/assets/2154669/26388922/50f6cdcc-4081-11e7-8ee8-f525e5d3a1ad.png' /></a></p>
 
 In some business models you may need to capture the charge at a later time.  
 For example, when you can capture the charge only when you have the product in stock or before shipping. In that case, during checkout Omise will only authorize and hold the charge.  
