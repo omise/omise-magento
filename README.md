@@ -7,9 +7,8 @@
 Our aim is to support as many versions of Magento as we can.  
 
 **Here's the list of versions we tested on:**
-- Magento (CE) 1.9.3.2 on PHP 5.5.9.
-- Magento (CE) 1.9.3.1 on PHP 5.5.9.
-- Magento (CE) 1.9.2.2 on PHP 5.5.9.
+- Magento (CE) 1.9.3.2 on PHP 5.6.30.
+- Magento (CE) 1.9.2.2 on PHP 5.6.30.
 
 To report problems for the version you're using, feel free to submit the issue through [GitHub's issue channel](https://github.com/omise/omise-magento/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
@@ -24,7 +23,7 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 
 The steps below shows how to install the module manually.
 
-1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v1.11.zip) to your `local machine` (or directly to your server).
+1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v1.12.zip) to your `local machine` (or directly to your server).
     <p align="center"><a alt="omise-magento-install-manual-01" href='https://cloud.githubusercontent.com/assets/2154669/23201743/8ecb09da-f90d-11e6-836f-1fc935f6ea5e.png'><img title="omise-magento-install-manual-01" src='https://cloud.githubusercontent.com/assets/2154669/23201743/8ecb09da-f90d-11e6-836f-1fc935f6ea5e.png' /></a></p>
 2. locate to `/src` directory and copy **all files** into your **Magento Project**, at a root directory.
 3. Your installation is now completed. To check the installation result, open your **Magento admin page**.
@@ -62,109 +61,6 @@ For example, when you can capture the charge only when you have the product in s
 The 2 available options for **Payment Action** are `Authorize only` or `Authorize and Capture`.
 
 And, other option is **New order status**, which can be set to `Pending` or `Processing` status. Your order status after checkout process will be set depends on the option here.
-
----
-
-### Using omise-magento with One Page Checkout (OPC) extension
-
-By default, the checkout process of Magento has many steps and it have been displayed step by step. This default checkout process can be adjusted by the merchant.
-
-One of the adjustment is the merchant will find and install an extension to reduce the checkout steps or change the display of checkout process to be in one page.
-
-There are so many third-party extensions that delivered this feature. But most of those extensions are not compatible with omise-magento. Because omise-magento has a secure step at the client side (the JavaScript at the web browser of the payer) to create a token to be the representative of the card information of the payer. That token is used to be the representative between merchant server and Omise API for process the payment.
-
-Most of extensions have no any procedure to trigger this step of omise-magento. So the merchant who use the OPC need to modify their extension.
-
-#### Prerequisites
-
-1. omise-magento must be succesfully installed on your Magento server.
-2. Your selected OPC extension must be successfully installed on your Magento server.
-3. You need to have privilege to access and modify your files on the server.
-4. You need to have the technical knowledge about JavaScript and PHP, if not please contact your technical staff.
-
-#### Disclaimer about the example of third-party extension
-- The reason that we use the IWD One Page Checkout free version because we found it available for download, use and modify.
-- Please contact the third-party about their product or service information.
-- To download the IWD One Page Checkout extension, please go to this [link](https://www.iwdagency.com/extensions/one-step-page-checkout.html).
-
-**Note:** With the invalid modification, it may adversely affect to the normal process. So, please do the backup before the modification.
-
-The steps below are an example of modifying the OPC extension, IWD One Page Checkout free version, to work with omise-magento.
-
-1. Add a HTML element, hidden, to be the referece within the checkout page and across the extension
-
-    - Open file app/design/frontend/base/default/template/payment/form/omisecc.phtml from the root path and then add an HTML element
-
-    ```HTML
-    <input type="hidden" id="omise-public-key" value="<?php echo $this->getOmiseKeys('public_key'); ?>" />
-    ```
-
-2. Insert the steps of create Omise token to the checkout process of the OPC extionsion
-
-    - Open file skin/frontend/base/default/js/iwd/opc/checkout.js from the root path
-    - Locate to the condition of save payment after validation has success
-
-    ```PHP
-    if (paymentMethodForm.validate()) {
-        IWD.OPC.savePayment();
-    } else {
-        // ...
-    }
-    ```
-
-    - Insert the steps of create Omise token as the example below
-
-    ```PHP
-    if (paymentMethodForm.validate()) {
-        
-        // Begin of the modification
-        // Check a condition to create the Omise token only the payment method is omise_gateway
-        if (payment.currentMethod == "omise_gateway") {
-        
-            // Use an external script, omise.js, by using the Omise utility function
-            getScript("https://cdn.omise.co/omise.min.js.gz", function() {
-                // Set the public key
-                Omise.setPublicKey(document.getElementById("omise-public-key").value);
-
-                // Create the card information for submit to create Omise token
-                var card = {
-                    "name"             : document.getElementById("omise_gateway_cc_name").value,
-                    "number"           : document.getElementById("omise_gateway_cc_number").value,
-                    "expiration_month" : document.getElementById("omise_gateway_expiration").value,
-                    "expiration_year"  : document.getElementById("omise_gateway_expiration_yr").value,
-                    "security_code"    : document.getElementById("omise_gateway_cc_cid").value
-                };
-
-                // Create Omise token
-                Omise.createToken("card", card, function(statusCode, response) {
-                    if (statusCode == 200) {
-                        // Handle the success case
-
-                        // Set the token value from the response to the HTML element, omise_gateway_token, for submit the checkout process
-                        document.getElementById("omise_gateway_token").value = response.id;
-
-                        // Perform the checkout process of the extension normally
-                        IWD.OPC.savePayment();
-                    } else {
-                        // Handle the error case
-
-                        // For an example, display the popup with the error message
-                        alert(response.message);
-                    }
-                });
-            });
-        } else {
-            // Remain the same process of the extension before modification
-            IWD.OPC.savePayment();
-        }
-        // End of the modification
-
-    } else {
-        // ...
-    }
-    ```
-
-Make sure to store the modified files to your server. The checkout process with omise-magento should be work successfully.
 
 ## Contributing
 
