@@ -105,7 +105,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
     public function defineUserAgent()
     {
         if (! defined('OMISE_USER_AGENT_SUFFIX')) {
-            define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.11 Magento/' . Mage::getVersion());
+            define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento/1.12 Magento/' . Mage::getVersion());
         }
     }
 
