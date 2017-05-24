@@ -217,6 +217,21 @@
          *
          * @return {mix}
          */
+        successCallback = function(statusCode, response) {
+            if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                messageBox.innerHTML = 'This card cannot be authorized, security code is invalid.';
+            }
+            else {
+                tokenField.value = response.id;
+            }
+        }
+
+        /**
+         * @param  {number} statusCode
+         * @param  {Object} response
+         *
+         * @return {mix}
+         */
         alwaysCallback = function(statusCode, response) {
             var i;
 
@@ -299,14 +314,14 @@
              */
             successCallback = function(statusCode, response) {
                 if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                    messageBox.innerHTML = 'This card cannot authorize, please contact our support.';
+                    messageBox.innerHTML = 'This card cannot be authorized, security code is invalid.';
                 }
                 else {
                     tokenField.value = response.id;
                     checkout.setLoadWaiting(false);
 
                     return superMethod();
-                };
+                }
             }
 
             /**
