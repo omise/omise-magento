@@ -1,94 +1,3 @@
-<script type="text/javascript">
-    function getScript(url, success) {
-        var script     = document.createElement("script");
-            script.src = url;
-
-        var head = document.getElementsByTagName("head")[0],
-            done = false;
-
-        // Attach handlers for all browsers
-        script.onload = script.onreadystatechange = function() {
-            if (! done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
-                done = true;
-
-                // callback function provided as param
-                success();
-
-                script.onload = script.onreadystatechange = null;
-                head.removeChild(script);
-            };
-        };
-
-        head.appendChild(script);
-    };
-
-    // Hook Payment.save function by wrapping Omise logic on top of the 'Payment.prototype.save'
-    Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
-        var omisePayment = document.getElementById("p_method_omise_gateway");
-
-        if (! omisePayment.checked) {
-            return superMethod();
-        }
-
-        var validator = new Validation("co-payment-form");
-
-        if (validator.validate()) {
-            checkout.setLoadWaiting('payment');
-
-            getScript("https://cdn.omise.co/omise.min.js.gz", function() {
-                // Set Omise key
-                Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
-
-                var formInput             = {
-                        "name"             : document.getElementById("omise_gateway_cc_name"),
-                        "number"           : document.getElementById("omise_gateway_cc_number"),
-                        "expiration_month" : document.getElementById("omise_gateway_expiration"),
-                        "expiration_year"  : document.getElementById("omise_gateway_expiration_yr"),
-                        "security_code"    : document.getElementById("omise_gateway_cc_cid"),
-                        "omise_token"      : document.getElementById("omise_gateway_token")
-                    },
-                    omiseValidationAdvice = document.getElementById("omise-validation-advice");
-
-                var card = {
-                    "name"             : formInput.name.value,
-                    "number"           : formInput.number.value,
-                    "expiration_month" : formInput.expiration_month.value,
-                    "expiration_year"  : formInput.expiration_year.value,
-                    "security_code"    : formInput.security_code.value
-                };
-
-                /**
-                 * Send a request to create a token then trigger the callback function once
-                 * a response is received from Omise.
-                 *
-                 * Note that the response could be an error and this needs to be handled within
-                 * the callback.
-                 */
-                Omise.createToken("card", card, function(statusCode, response) {
-                    if (response.object == "error") {
-                        omiseValidationAdvice.innerHTML = response.message;
-                        checkout.setLoadWaiting(false);
-                    } else if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                        omiseValidationAdvice.innerHTML = 'This card cannot authorize, please contact our support.';
-                        checkout.setLoadWaiting(false);
-                    } else {
-                        formInput.omise_token.value         = response.id;
-
-                        formInput.name.disabled             = true;
-                        formInput.number.disabled           = true;
-                        formInput.expiration_month.disabled = true;
-                        formInput.expiration_year.disabled  = true;
-                        formInput.security_code.disabled    = true;
-
-                        checkout.setLoadWaiting(false);
-                        return superMethod();
-                    };
-                });
-            });
-        }
-    });
-</script>
-
 <?php $_code = $this->getMethodCode(); ?>
 
 <ul id="payment_form_<?php echo $_code; ?>" class="form-list" style="display:none;">
@@ -124,7 +33,7 @@
             <em>*</em><?php echo $this->__('Credit Card Holder Name'); ?>
         </label>
         <div class="input-box">
-            <input id="<?php echo $_code; ?>_cc_name" type="text" name="payment[cc_name]" title="<?php echo $this->__('Credit Card Holder Name'); ?>" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')); ?>" class="input-text required-entry" />
+            <input id="<?php echo $_code; ?>_cc_name" type="text" title="<?php echo $this->__('Credit Card Holder Name'); ?>" value="<?php echo $this->escapeHtml($this->getInfoData('cc_owner')); ?>" class="input-text required-entry" />
         </div>
     </li>
 
@@ -134,7 +43,7 @@
             <em>*</em><?php echo $this->__('Credit Card Number'); ?>
         </label>
         <div class="input-box">
-            <input id="<?php echo $_code; ?>_cc_number" type="text" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number'); ?>" autocomplete="off" value="" class="input-text validate-cc-number validate-cc-type" />
+            <input id="<?php echo $_code; ?>_cc_number" type="text" title="<?php echo $this->__('Credit Card Number'); ?>" autocomplete="off" value="" class="input-text validate-cc-number validate-cc-type" />
         </div>
     </li>
 
@@ -145,7 +54,7 @@
         </label>
         <div class="input-box">
             <div class="v-fix">
-                <select id="<?php echo $_code; ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
+                <select id="<?php echo $_code; ?>_expiration" class="month validate-cc-exp required-entry">
                     <?php $_ccExpMonth = $this->getInfoData('cc_exp_month'); ?>
                     <?php foreach ($this->getCcMonths() as $k=>$v): ?>
                         <option value="<?php echo $k ? $k : ''; ?>"<?php if($k == $_ccExpMonth): ?> selected="selected"<?php endif; ?>><?php echo $v; ?></option>
@@ -154,7 +63,7 @@
             </div>
             <div class="v-fix">
                 <?php $_ccExpYear = $this->getInfoData('cc_exp_year'); ?>
-                <select id="<?php echo $_code; ?>_expiration_yr" name="payment[cc_exp_year]" class="year required-entry">
+                <select id="<?php echo $_code; ?>_expiration_yr" class="year required-entry">
                     <?php foreach ($this->getCcYears() as $k=>$v): ?>
                         <option value="<?php echo $k ? $k : ''; ?>"<?php if($k == $_ccExpYear): ?> selected="selected"<?php endif; ?>><?php echo $v; ?></option>
                     <?php endforeach; ?>
@@ -169,7 +78,7 @@
         </label>
         <div class="input-box">
             <div class="v-fix">
-                <input id="<?php echo $_code; ?>_cc_cid" type="password" name="payment[cc_cid]" title="<?php echo $this->__('Card Verification Number'); ?>" autocomplete="off" value="" class="input-text cvv required-entry validate-cc-cvn" />
+                <input id="<?php echo $_code; ?>_cc_cid" type="password" title="<?php echo $this->__('Card Verification Number'); ?>" autocomplete="off" value="" class="input-text cvv required-entry validate-cc-cvn" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?'); ?></a>
         </div>
@@ -178,3 +87,271 @@
     <!-- Security Code -->
     <?php echo $this->getChildHtml(); ?>
 </ul>
+
+<script type="text/javascript">
+    var method, messageBox, tokenField, cardObject, card, processing, dirty,
+        buttons, inMemoryButton, getScript, createOmiseToken, successCallback,
+        failCallback, alwaysCallback, disableFields, enableFields;
+
+    method     = document.getElementById('p_method_omise_gateway');
+    messageBox = document.getElementById('omise-validation-advice');
+    tokenField = document.getElementById('omise_gateway_token');
+    cardObject = {
+        name             : document.getElementById('omise_gateway_cc_name'),
+        number           : document.getElementById('omise_gateway_cc_number'),
+        expiration_month : document.getElementById('omise_gateway_expiration'),
+        expiration_year  : document.getElementById('omise_gateway_expiration_yr'),
+        security_code    : document.getElementById('omise_gateway_cc_cid')
+    };
+    card       = {};
+    processing = false;
+    dirty      = true;
+
+    /**
+     * @param  {string}   url
+     * @param  {Function} success
+     *
+     * @return {void}
+     */
+    getScript = function(url, success) {
+        var script, head, done;
+
+        script     = document.createElement("script");
+        script.src = url;
+
+        head = document.getElementsByTagName("head")[0];
+        done = false;
+
+        // Attach handlers for all browsers
+        script.onload = script.onreadystatechange = function() {
+            if (! done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+                done = true;
+
+                // callback function provided as param
+                success();
+
+                script.onload = script.onreadystatechange = null;
+                head.removeChild(script);
+            };
+        };
+
+        head.appendChild(script);
+    };
+
+    /**
+     * @return {void}
+     */
+    createOmiseToken = function() {
+        Omise.setPublicKey("<?php echo $this->getOmiseKeys('public_key'); ?>");
+
+        Omise.createToken("card", card, function(statusCode, response) {
+            if (statusCode == 200) {
+                successCallback(statusCode, response);
+            }
+            else {
+                failCallback(statusCode, response);
+            }
+
+            alwaysCallback(statusCode, response);
+        });
+    }
+
+    /**
+     * @param  {number} statusCode
+     * @param  {Object} response
+     *
+     * @return {mix}
+     */
+    successCallback = function(statusCode, response) {
+        tokenField.value = response.id;
+    }
+
+    /**
+     * @param  {number} statusCode
+     * @param  {Object} response
+     *
+     * @return {mix}
+     */
+    failCallback = function(statusCode, response) {
+        messageBox.innerHTML = response.message;
+    }
+
+    /**
+     * @param  {number} statusCode
+     * @param  {Object} response
+     *
+     * @return {mix}
+     */
+    alwaysCallback = function(statusCode, response) {
+        return true;
+    }
+
+    /**
+     * @param  {Object} fields
+     *
+     * @return {void}
+     */
+    disableFields = function(fields) {
+        for (field in fields) {
+            fields[field].disabled = true;
+        }
+    }
+
+    /**
+     * @param  {Object} fields
+     *
+     * @return {void}
+     */
+    enableFields = function(fields) {
+        for (field in fields) {
+            fields[field].disabled = false;
+        }
+    }
+
+    if ('<?php echo $this->isOscSupportEnabled(); ?>') {
+        var observeForm;
+
+        /**
+         * @param  {number} statusCode
+         * @param  {Object} response
+         *
+         * @return {mix}
+         */
+        successCallback = function(statusCode, response) {
+            if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                messageBox.innerHTML = 'This card cannot be authorized, security code is invalid.';
+            }
+            else {
+                tokenField.value = response.id;
+            }
+        }
+
+        /**
+         * @param  {number} statusCode
+         * @param  {Object} response
+         *
+         * @return {mix}
+         */
+        alwaysCallback = function(statusCode, response) {
+            var i;
+
+            for (i = 0; i < inMemoryButton.length; ++i) {
+                inMemoryButton[i].disabled = false;
+            }
+
+            processing = false;
+            dirty      = false;
+            enableFields(cardObject);
+        }
+
+        /**
+         * @param  {Object} event
+         *
+         * @return {mix}
+         */
+        observeForm = function(event) {
+            event.preventDefault();
+
+            for (key in cardObject) {
+                if (card[key] && card[key] != cardObject[key].value) {
+                    dirty            = true;
+                    tokenField.value = '';
+                }
+
+                if (cardObject[key].value == '') {
+                    return false;
+                }
+
+                card[key] = cardObject[key].value;
+            }
+
+            if (! processing && dirty) {
+                var i;
+
+                processing           = true;
+                buttons              = document.getElementsByTagName('button');
+                inMemoryButton       = [];
+                messageBox.innerHTML = '';
+
+                disableFields(cardObject);
+
+                for (i = 0; i < buttons.length; ++i) {
+                    if (! buttons[i].disabled) {
+                        buttons[i].disabled = true;
+                        inMemoryButton.push(buttons[i]);
+                    }
+                }
+
+                if (typeof Omise === 'undefined') {
+                    getScript('https://cdn.omise.co/omise.min.js.gz', createOmiseToken);
+                }
+                else {
+                    createOmiseToken();
+                }
+            }
+        }
+
+        cardObject.name.addEventListener('blur', observeForm);
+        cardObject.number.addEventListener('blur', observeForm);
+        cardObject.expiration_month.addEventListener('blur', observeForm);
+        cardObject.expiration_year.addEventListener('blur', observeForm);
+        cardObject.security_code.addEventListener('blur', observeForm);
+    }
+    else {
+        // Hook Payment.save function by wrapping Omise logic on top of the 'Payment.prototype.save'
+        Payment.prototype.save = Payment.prototype.save.wrap(function(superMethod) {
+            var validator;
+
+            if (! method.checked) {
+                return superMethod();
+            }
+
+            /**
+             * @param  {number} statusCode
+             * @param  {Object} response
+             *
+             * @return {mix}
+             */
+            successCallback = function(statusCode, response) {
+                if (typeof response.card != 'undefined' && !response.card.security_code_check) {
+                    messageBox.innerHTML = 'This card cannot be authorized, security code is invalid.';
+                }
+                else {
+                    tokenField.value = response.id;
+                    checkout.setLoadWaiting(false);
+
+                    return superMethod();
+                }
+            }
+
+            /**
+             * @param  {number} statusCode
+             * @param  {Object} response
+             *
+             * @return {mix}
+             */
+            alwaysCallback = function(statusCode, response) {
+                enableFields(cardObject);
+                checkout.setLoadWaiting(false);
+            }
+
+            validator = new Validation('co-payment-form');
+
+            if (validator.validate()) {
+                checkout.setLoadWaiting('payment');
+                disableFields(cardObject);
+
+                for (key in cardObject) {
+                    card[key] = cardObject[key].value;
+                }
+
+                if (typeof Omise === 'undefined') {
+                    getScript('https://cdn.omise.co/omise.min.js.gz', createOmiseToken);
+                }
+                else {
+                    createOmiseToken();
+                }
+            }
+        });
+    }
+</script>

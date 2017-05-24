@@ -64,6 +64,16 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     }
 
     /**
+     * Whether the One Step Checkout Support option is enabled
+     *
+     * @return bool
+     */
+    public function isOscSupportEnabled()
+    {
+        return Mage::getModel('omise_gateway/paymentMethod')->isOscSupportEnabled();
+    }
+
+    /**
      * Retrieve Omise keys from database
      *
      * @return string|array
