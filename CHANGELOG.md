@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### [v1.12 _(May 24, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.12)
+
+#### ✨ Highlights
+
+- Provides a solution for One Step Checkout extensions. (PR [#86](https://github.com/omise/omise-magento/pull/86))
+
+#### 🚀 Enhancements
+
+- Refactor and clean up code in Block/Form/Cc.php class and payment/form/omisecc.phtml form (PR [#85](https://github.com/omise/omise-magento/pull/85))
+
+---
+
 ### [v1.11 _(April 3, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.11)
 
 #### 🚀 Enhancements
