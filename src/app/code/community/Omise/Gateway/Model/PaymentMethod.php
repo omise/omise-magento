@@ -119,8 +119,6 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
 
         Mage::log('Start refund with Omise Payment Gateway.');
 
-        // TODO - Find out if we need to do anything different based on the details of the charge?
-        // (payment method etc.)
         $result = $this->performRefund($payment, $amount);
 
         Mage::log('Assigned refund with id ' . $result['id'] . ' to the transaction');

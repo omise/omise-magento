@@ -7,12 +7,11 @@ class Omise_Gateway_Model_Strategies_RefundStrategy extends Omise_Gateway_Model_
     public function perform($payment, $amount) {
 
         $info = $payment->getPaymentInformation();
+        $currencyCode = $info->getOrder()->getOrderCurrencyCode();
         $chargeId = $info->getAdditionalInformation('omise_charge_id');
         $charge = OmiseCharge::retrieve($chargeId);
 
-        // TODO - find out if this is an appropriate way of converting the amount to subunits
-        // (i.e. Is there a function to do this?)
-        $subunitAmount = $amount * 100;
+        $subunitAmount = $payment->getAmountInSubunits($amount, $currencyCode);
 
         return $charge->refunds()->create(array('amount' => $subunitAmount));
 
