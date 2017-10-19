@@ -11,7 +11,7 @@ class Omise_Gateway_Model_Strategies_OffsiteInternetBankingStrategy extends Omis
         return OmiseCharge::create(array(
             'amount'      => $payment->formatAmount($info->getOrder()->getOrderCurrencyCode(), $amount),
             'currency'    => $info->getOrder()->getOrderCurrencyCode(),
-            'description' => 'Charge a card from Magento that order id is ' . $info->getData('entity_id'),
+            'description' => 'Charge a card from Magento that order id is ' . $info->getOrder()->getIncrementId(),
             'offsite'     => $info->getAdditionalInformation('offsite'),
             'return_uri'  => $payment->getCallbackUri(array('order_id' => $info->getOrder()->getIncrementId()))
         ));
