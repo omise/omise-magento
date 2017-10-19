@@ -11,6 +11,7 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
     const STRATEGY_AUTHORIZE_CAPTURE                = 'CaptureStrategy';
     const STRATEGY_AUTHORIZE_CAPTURE_THREE_D_SECURE = 'CaptureThreeDSecureStrategy';
     const STRATEGY_MANUAL_CAPTURE                   = 'ManualCaptureStrategy';
+    const STRATEGY_REFUND                           = 'RefundStrategy';
 
     /**
      * @var string
@@ -36,6 +37,7 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
     protected $_canAuthorize     = true;
     protected $_canCapture       = true;
     protected $_canReviewPayment = true;
+    protected $_canRefund        = true;
 
     /**
      * Authorize payment method
@@ -106,6 +108,44 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
     }
 
     /**
+     * Refund a payment
+     *
+     * @param  Varien_Object $payment
+     * @param  float         $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    public function refund(Varien_Object $payment, $amount) {
+
+        Mage::log('Start refund with Omise Payment Gateway.');
+
+        $result = $this->performRefund($payment, $amount);
+
+        Mage::log('Assigned refund with id ' . $result['id'] . ' to the transaction');
+
+        return $this;
+    }
+
+    /**
+     * Perform refund action
+     *
+     * @param  Varien_Object $payment
+     * @param  float         $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    protected function performRefund(Varien_Object $payment, $amount) {
+        $result = $this->perform(
+            Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_REFUND),
+            $payment,
+            $amount
+        );
+
+        Mage::log('The transaction was refunded by Omise payment gateway.');
+        return $result;
+    }
+
+    /**
      * Capture payment method
      *
      * @param  Varien_Object $payment
@@ -126,6 +166,13 @@ class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
         }
 
         $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $result['id']);
+
+        // Also assign the omise_charge_id as the payment id (required if online refunds are to work)
+        $payment->setTransactionId($result['id']);
+        $payment->setParentTransactionId($payment->getTransactionId());
+        $transaction = $payment->addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH, null, true, "");
+        $transaction->setIsClosed(true);
+
         Mage::log('Assigned charge id ' . $result['id'] . ' to the transaction');
 
         return $this;
