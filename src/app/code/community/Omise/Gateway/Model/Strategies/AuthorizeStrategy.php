@@ -11,7 +11,7 @@ class Omise_Gateway_Model_Strategies_AuthorizeStrategy extends Omise_Gateway_Mod
         return OmiseCharge::create(array(
             'amount'      => $payment->formatAmount($info->getOrder()->getOrderCurrencyCode(), $amount),
             'currency'    => $info->getOrder()->getOrderCurrencyCode(),
-            'description' => 'Charge a card from Magento that order id is ' . $info->getData('entity_id'),
+            'description' => 'Charge a card from Magento that order id is ' . $info->getOrder()->getIncrementId(),
             'capture'     => false,
             'card'        => $info->getAdditionalInformation('omise_token')
         ));
