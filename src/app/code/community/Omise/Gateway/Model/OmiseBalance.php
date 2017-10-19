@@ -11,7 +11,7 @@ class Omise_Gateway_Model_OmiseBalance extends Omise_Gateway_Model_Omise
         $this->initNecessaryConstant();
 
         try {
-            return OmiseBalance::retrieve($this->_public_key, $this->_secret_key);
+            return OmiseBalance::retrieve($this->getPublicKey(), $this->getSecretKey());
         } catch (Exception $e) {
             return array('error' => $e->getMessage());
         }

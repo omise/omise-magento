@@ -2,20 +2,6 @@
 class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
 {
     /**
-     * @deprecated use $this->getPublicKey(); instead.
-     *
-     * @var string  Omise public key
-     */
-    protected $_public_key;
-
-    /**
-     * @deprecated use $this->getSecretKey(); instead.
-     *
-     * @var string  Omise secret key
-     */
-    protected $_secret_key;
-
-    /**
      * @var \Omise_Gateway_Model_Config
      */
     protected $config;
@@ -32,10 +18,6 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
 
         // Retrieve Omise's keys from table.
         $this->config = Mage::getModel('omise_gateway/config')->load(1);
-
-        // @deprecated use $this->getPublicKey() and $this->getSecretKey() instead.
-        $this->_public_key = $this->getPublicKey();
-        $this->_secret_key = $this->getSecretKey();
     }
 
     /**
