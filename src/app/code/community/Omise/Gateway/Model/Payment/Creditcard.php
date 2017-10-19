@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Model_PaymentMethod extends Omise_Gateway_Model_Payment
+class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
 {
     /**
      * Payment strategies

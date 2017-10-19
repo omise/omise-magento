@@ -70,7 +70,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      */
     public function isOscSupportEnabled()
     {
-        return Mage::getModel('omise_gateway/paymentMethod')->isOscSupportEnabled();
+        return Mage::getModel('omise_gateway/payment_creditcard')->isOscSupportEnabled();
     }
 
     /**

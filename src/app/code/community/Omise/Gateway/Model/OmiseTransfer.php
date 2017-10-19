@@ -11,7 +11,7 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
         $this->initNecessaryConstant();
 
         try {
-            return OmiseTransfer::retrieve('', $this->_public_key, $this->_secret_key);
+            return OmiseTransfer::retrieve('', $this->getPublicKey(), $this->getSecretKey());
         } catch (Exception $e) {
             return array('error' => $e->getMessage());
         }
@@ -40,7 +40,7 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
             // Remove `.`
             $params['amount'] = str_replace('.', '', $params['amount']);
 
-            return OmiseTransfer::create($params, $this->_public_key, $this->_secret_key);
+            return OmiseTransfer::create($params, $this->getPublicKey(), $this->getSecretKey());
         } catch (Exception $e) {
             return array('error' => $e->getMessage());
         }
@@ -60,7 +60,7 @@ class Omise_Gateway_Model_OmiseTransfer extends Omise_Gateway_Model_Omise
                 throw new Exception("Id was required", 1);
             }
 
-            $object = OmiseTransfer::retrieve($id, $this->_public_key, $this->_secret_key);
+            $object = OmiseTransfer::retrieve($id, $this->getPublicKey(), $this->getSecretKey());
 
             return $object->destroy();
         } catch (Exception $e) {
