@@ -9,7 +9,7 @@ class Omise_Gateway_Model_Strategies_AuthorizeStrategy extends Omise_Gateway_Mod
         $info = $payment->getPaymentInformation();
 
         return OmiseCharge::create(array(
-            'amount'      => $payment->formatAmount($info->getOrder()->getOrderCurrencyCode(), $amount),
+            'amount'      => $payment->getAmountInSubunits($amount, $info->getOrder()->getOrderCurrencyCode()),
             'currency'    => $info->getOrder()->getOrderCurrencyCode(),
             'description' => 'Charge a card from Magento that order id is ' . $info->getOrder()->getIncrementId(),
             'capture'     => false,

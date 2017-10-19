@@ -17,6 +17,16 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     protected $payment_information;
 
     /**
+     * @var array
+     */
+    private $currency_subunits = array(
+        'JPY' => 1,
+        'THB' => 100,
+        'SGD' => 100,
+        'IDR' => 100
+    );
+
+    /**
      * Load necessary file and setup Omise keys
      *
      * @return void
@@ -33,6 +43,35 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     public function getPaymentInformation()
     {
         return $this->payment_information;
+    }
+
+    /**
+     * @param  string $currency
+     *
+     * @return bool
+     */
+    protected function isCurrencySupport($currency)
+    {
+        if (isset($this->currency_subunits[strtoupper($currency)])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  integer $amount
+     * @param  string  $currency
+     *
+     * @return integer
+     */
+    public function getAmountInSubunits($amount, $currency)
+    {
+        if ($this->isCurrencySupport($currency)) {
+            return $this->currency_subunits[$currency] * $amount;
+        }
+
+        return $amount;
     }
 
     /**

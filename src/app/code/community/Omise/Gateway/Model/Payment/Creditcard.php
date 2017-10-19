@@ -274,29 +274,6 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     }
 
     /**
-     * Format a Magento's amount to be a small-unit that Omise's API requires.
-     * Note, no specific format for JPY currency.
-     *
-     * @param  string          $currency
-     * @param  integer | float $amount
-     *
-     * @return integer
-     */
-    public function formatAmount($currency, $amount)
-    {
-        switch (strtoupper($currency)) {
-            case 'THB':
-            case 'IDR':
-            case 'SGD':
-                // Convert to a small unit
-                $amount = $amount * 100;
-                break;
-        }
-
-        return $amount;
-    }
-
-    /**
      * @return bool
      */
     public function isThreeDSecureNeeded()
