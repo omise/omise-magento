@@ -105,7 +105,7 @@
                 <active>1</active>
                 <order_status>1</order_status>
                 <payment_action>authorize</payment_action>
-                <model>omise_gateway/paymentMethod</model>
+                <model>omise_gateway/payment_creditcard</model>
                 <cctypes>VI,MC</cctypes>
                 <title>Credit Card (Powered by Omise)</title>
                 <osc_support>0</osc_support>
@@ -114,7 +114,7 @@
             <omise_offsite_internet_banking>
                 <active>0</active>
                 <payment_action>authorize_capture</payment_action>
-                <model>omise_gateway/Offsiteinternetbankingpayment</model>
+                <model>omise_gateway/payment_offsiteinternetbanking</model>
                 <title>Internet Banking</title>
             </omise_offsite_internet_banking>
         </payment>

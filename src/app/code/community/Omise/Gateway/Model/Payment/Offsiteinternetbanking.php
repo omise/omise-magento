@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Model_Offsiteinternetbankingpayment extends Omise_Gateway_Model_Payment
+class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment
 {
     /**
      * @var string
@@ -61,7 +61,7 @@ class Omise_Gateway_Model_Offsiteinternetbankingpayment extends Omise_Gateway_Mo
     /**
      * {@inheritDoc}
      *
-     * @see app/code/community/Omise/Gateway/Model/PaymentMethod.php
+     * @see app/code/community/Omise/Gateway/Model/Payment/Creditcard.php
      */
     public function acceptPayment(Mage_Payment_Model_Info $payment)
     {
@@ -73,7 +73,7 @@ class Omise_Gateway_Model_Offsiteinternetbankingpayment extends Omise_Gateway_Mo
     /**
      * {@inheritDoc}
      *
-     * @see app/code/community/Omise/Gateway/Model/PaymentMethod.php
+     * @see app/code/community/Omise/Gateway/Model/Payment/Creditcard.php
      */
     public function denyPayment(Mage_Payment_Model_Info $payment)
     {
