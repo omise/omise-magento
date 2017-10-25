@@ -1,11 +1,8 @@
 <?php
-class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Mage_Core_Controller_Front_Action
+class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Omise_Gateway_Controllers_Callback_Base
 {
     public function indexAction()
     {
-        $omise = Mage::getModel('omise_gateway/omise');
-        $omise->initNecessaryConstant();
-
         // Callback validation.
         $order = $this->getOrder();
 
@@ -22,7 +19,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Ma
             $charge    = OmiseCharge::retrieve($charge_id);
 
             if (! $this->validate($charge)) {
-                return $this->considerFail(
+                return $this->markOrderAsFailed(
                     $order,
                     $this->__('The payment was invalid, ' . $charge['failure_message'] . ' (' . $charge['failure_code'] . ').')
                 );
@@ -32,42 +29,11 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Ma
             $order->save();
             return $this->_redirect('checkout/onepage/success');
         } catch (Exception $e) {
-            return $this->considerFail(
+            return $this->markOrderAsFailed(
                 $order,
                 $this->__($e->getMessage())
             );
         }
-    }
-
-    /**
-     * @return \Mage_Sales_Model_Order
-     */
-    protected function getOrder()
-    {
-        $order_increment_id = $this->getRequest()->getParam('order_id');
-
-        if ($order_increment_id) {
-            return Mage::getModel('sales/order')->loadByIncrementId($order_increment_id);
-        }
-
-        return Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
-    }
-
-    /**
-     * @param  \Mage_Sales_Model_Order $order
-     * @param  string                  $message
-     *
-     * @return self
-     */
-    protected function considerFail($order, $message)
-    {
-        $order->getPayment()
-            ->setPreparedMessage($message)
-            ->deny();
-        $order->save();
-
-        Mage::getSingleton('core/session')->addError($message);
-        return $this->_redirect('checkout/cart');
     }
 
     /**
