@@ -10,44 +10,33 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
             Mage::getSingleton('core/session')->addError(
                 $this->__('Internet banking validation was invalid, cannot retrieve your payment information. Please contact our support to confirm the payment.')
             );
+
             $this->_redirect('checkout/cart');
             return;
         }
 
-        try {
-            $charge_id = $payment->getMethodInstance()->getInfoInstance()->getAdditionalInformation('omise_charge_id');
-            $charge    = OmiseCharge::retrieve($charge_id);
+        $charge = Mage::getModel('omise_gateway/api_charge')->find(
+            $payment->getMethodInstance()->getInfoInstance()->getAdditionalInformation('omise_charge_id')
+        );
 
-            if (! $this->validate($charge)) {
-                return $this->markOrderAsFailed(
-                    $order,
-                    $this->__('The payment was invalid, ' . $charge['failure_message'] . ' (' . $charge['failure_code'] . ').')
-                );
-            }
+        if ($charge instanceof Omise_Gateway_Model_Api_Error) {
+            Mage::getSingleton('core/session')->addError($charge->getMessage());
 
+            return $this->_redirect('checkout/cart');
+        }
+
+        // TODO: Sometimes Internet Banking will return status 'pending' instead of 'successful'
+        //       So, we are going to need to have this condition here, to keep order as 'pending review'.
+        if ($charge->isSuccessful()) {
             $payment->accept();
             $order->save();
+
             return $this->_redirect('checkout/onepage/success');
-        } catch (Exception $e) {
-            return $this->markOrderAsFailed(
-                $order,
-                $this->__($e->getMessage())
-            );
-        }
-    }
-
-    /**
-     * @param  \OmiseCharge $charge
-     *
-     * @return bool
-     */
-    protected function validate($charge)
-    {
-        // check for auto capture.
-        if ($charge['status'] === 'successful' && $charge['authorized'] && $charge['captured']) {
-            return true;
         }
 
-        return false;
+        return $this->markOrderAsFailed(
+            $order,
+            $this->__('The payment was invalid, ' . $charge->failure_message . ' (' . $charge->failure_code . ').')
+        );
     }
 }

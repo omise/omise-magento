@@ -71,8 +71,11 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
         $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
 
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
-            $message = isset($charge['message']) ? $charge['message'] : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.';
-            Mage::throwException(Mage::helper('payment')->__($message));
+            Mage::throwException(
+                Mage::helper('payment')->__(
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                )
+            );
         }
 
         if ($charge->isFailed()) {
