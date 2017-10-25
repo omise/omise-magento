@@ -27,6 +27,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     public function __construct()
     {
         $this->omise = Mage::getModel('omise_gateway/omise');
+        $this->omise->initNecessaryConstant();
     }
 
     /**
@@ -66,8 +67,6 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     protected function process($payment, $params = array())
     {
-        $this->omise->initNecessaryConstant();
-
         $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
 
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {

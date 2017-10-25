@@ -104,12 +104,24 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
      */
     public function capture_manual(Varien_Object $payment, $charge_id)
     {
-        $charge = $this->retrieveCharge($charge_id);
+        $charge = Mage::getModel('omise_gateway/api_charge')->find($charge_id);
+
+        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
+            Mage::throwException(
+                Mage::helper('payment')->__(
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                )
+            );
+        }
+
         $charge->capture();
 
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
-            $message = isset($charge['message']) ? $charge['message'] : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.';
-            Mage::throwException(Mage::helper('payment')->__($message));
+            Mage::throwException(
+                Mage::helper('payment')->__(
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                )
+            );
         }
 
         if ($charge->isFailed()) {

@@ -71,6 +71,26 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     }
 
     /**
+     * @return Omise_Gateway_Model_Api_Charge|array
+     */
+    public function capture()
+    {
+        try {
+            $this->refresh($this->object->capture());
+        } catch (Exception $e) {
+            return Mage::getModel(
+                'omise_gateway/api_error',
+                array(
+                    'code'    => 'failed_capture',
+                    'message' => $e->getMessage(),
+                )
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isAuthorized()
