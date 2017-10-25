@@ -24,24 +24,24 @@
  *
  * @see      https://www.omise.co/charges-api
  */
-class Omise_Gateway_Model_Api_Charge
+class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
 {
-    protected $object;
-
     /**
      * @param  string $id
      *
-     * @return Omise_Gateway_Model_Api_Charge|array
+     * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
      */
     public function find($id)
     {
         try {
-            $this->object = OmiseCharge::retrieve($id);
+            $this->refresh(OmiseCharge::retrieve($id));
         } catch (Exception $e) {
-            return array(
-                'object'  => 'error',
-                'code'    => 'not_found',
-                'message' => $e->getMessage(),
+            return Mage::getModel(
+                'omise_gateway/api_error',
+                array(
+                    'code'    => 'not_found',
+                    'message' => $e->getMessage(),
+                )
             );
         }
 
@@ -56,12 +56,14 @@ class Omise_Gateway_Model_Api_Charge
     public function create($params)
     {
         try {
-            $this->object = OmiseCharge::create($params);
+            $this->refresh(OmiseCharge::create($params));
         } catch (Exception $e) {
-            return array(
-                'object'  => 'error',
-                'code'    => 'bad_request',
-                'message' => $e->getMessage(),
+            return Mage::getModel(
+                'omise_gateway/api_error',
+                array(
+                    'code'    => 'bad_request',
+                    'message' => $e->getMessage(),
+                )
             );
         }
 
