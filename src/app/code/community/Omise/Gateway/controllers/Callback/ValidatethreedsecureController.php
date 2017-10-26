@@ -24,7 +24,7 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
             return $this->_redirect('checkout/cart');
         }
 
-        if ($charge->isAwaitForCapture() || $charge->isSuccessful()) {
+        if ($charge->isAwaitCapture() || $charge->isSuccessful()) {
             $payment->accept();
             $order->save();
 

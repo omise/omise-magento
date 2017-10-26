@@ -49,7 +49,7 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
             )
         );
 
-        if ($charge->isAwaitForPayment()) {
+        if ($charge->isAwaitPayment()) {
             return $this;
         }
 

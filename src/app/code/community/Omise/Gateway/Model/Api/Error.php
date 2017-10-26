@@ -7,10 +7,10 @@ class Omise_Gateway_Model_Api_Error extends Omise_Gateway_Model_Api_Object
     protected $code    = '';
     protected $message = '';
 
-    public function __construct($data)
+    public function __construct($error = array())
     {
-        $this->setCode((isset($data['code']) ? $data['code'] : 'unexpected_error'));
-        $this->setMessage((isset($data['message']) ? $data['message'] : 'There is an unexpected error happened, please contact our support for further investigation.'));
+        $this->setCode((isset($error['code']) ? $error['code'] : 'unexpected_error'));
+        $this->setMessage((isset($error['message']) ? $error['message'] : 'There is an unexpected error happened, please contact our support for further investigation.'));
     }
 
     /**

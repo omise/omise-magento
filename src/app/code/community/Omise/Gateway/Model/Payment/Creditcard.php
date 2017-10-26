@@ -51,7 +51,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             )
         );
 
-        if ($charge->isAwaitForPayment() || $charge->isAwaitForCapture()) {
+        if ($charge->isAwaitPayment() || $charge->isAwaitCapture()) {
             return $this;
         }
 
@@ -87,7 +87,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             )
         );
 
-        if ($charge->isAwaitForPayment() || $charge->isSuccessful()) {
+        if ($charge->isAwaitPayment() || $charge->isSuccessful()) {
             return $this;
         }
 

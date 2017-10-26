@@ -51,7 +51,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     /**
      * @param  array $params
      *
-     * @return Omise_Gateway_Model_Api_Charge|array
+     * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
      */
     public function create($params)
     {
@@ -71,7 +71,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     }
 
     /**
-     * @return Omise_Gateway_Model_Api_Charge|array
+     * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
      */
     public function capture()
     {
@@ -127,7 +127,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     /**
      * @return bool
      */
-    public function isAwaitForCapture()
+    public function isAwaitCapture()
     {
         return $this->status === 'pending' && $this->isAuthorized() && $this->isUnpaid();
     }
@@ -135,7 +135,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     /**
      * @return bool
      */
-    public function isAwaitForPayment()
+    public function isAwaitPayment()
     {
         return $this->status === 'pending' && $this->isUnauthorized() && $this->isUnpaid();
     }
@@ -154,15 +154,6 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     public function isFailed()
     {
         return $this->status === 'failed';
-    }
-
-    public function __get($key)
-    {
-        if (isset($this->object[$key])) {
-            return $this->object[$key];
-        }
-
-        throw new Exception("Error Processing Request", 1);
     }
 }
 

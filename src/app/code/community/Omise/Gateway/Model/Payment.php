@@ -64,8 +64,10 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      * @param  array         $params
      *
      * @return Omise_Gateway_Model_Api_Charge
+     *
+     * @throws Mage_Core_Exception
      */
-    protected function process($payment, $params = array())
+    protected function process(Varien_Object $payment, $params = array())
     {
         $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
 
@@ -81,7 +83,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
             Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
         }
 
-        if ($charge->isAwaitForPayment()) {
+        if ($charge->isAwaitPayment()) {
             $this->setRedirectFlow($payment, $charge);
         }
 
@@ -97,7 +99,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      * @param Varien_Object                  $payment
      * @param Omise_Gateway_Model_Api_Charge $charge
      */
-    public function setRedirectFlow(Varien_Object $payment, Omise_Gateway_Model_Api_Charge $charge)
+    protected function setRedirectFlow(Varien_Object $payment, Omise_Gateway_Model_Api_Charge $charge)
     {
         $payment->setIsTransactionPending(true);
 
