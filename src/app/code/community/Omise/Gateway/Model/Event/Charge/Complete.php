@@ -40,7 +40,25 @@ class Omise_Gateway_Model_Event_Charge_Complete
      */
     public function handle($event)
     {
-        echo "COMPLETE";
+        $charge = $event->data;
+        if ($charge->object !== 'charge' || ! isset($charge->metadata['order_id'])) {
+            return;
+        }
+
+        $order = Mage::getModel('omise_gateway/order')->getOrder($charge->metadata['order_id']);
+        if (! $order->getId()) {
+            return;
+        }
+
+        if ($order->isPaymentReview() && ($charge->isSuccessful() || $charge->isAwaitCapture())) {
+            $order->getPayment()->accept();
+            return $order->save();
+        }
+
+        if ($order->isPaymentReview() && $charge->isFailed()) {
+            $order->getPayment()->deny();
+            return $order->save();
+        }
 
         return;
     }
