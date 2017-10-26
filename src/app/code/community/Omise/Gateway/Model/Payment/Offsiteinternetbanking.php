@@ -4,11 +4,6 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     /**
      * @var string
      */
-    const STRATEGY_OFFSITE_INTERNET_BANKING = 'OffsiteInternetBankingStrategy';
-
-    /**
-     * @var string
-     */
     protected $_code = 'omise_offsite_internet_banking';
 
     /**
@@ -36,26 +31,29 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
      * @param  Varien_Object $payment
      * @param  float         $amount
      *
-     * @return Mage_Payment_Model_Abstract
+     * @return self
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        Mage::log('Start processing internet banking payment method with Omise payment gateway.');
+        Mage::log('Omise: processing internet banking payment.');
 
-        $result = $this->perform(
-            Mage::getModel('omise_gateway/Strategies_' . self::STRATEGY_OFFSITE_INTERNET_BANKING),
+        $order  = $payment->getOrder();
+        $charge = $this->process(
             $payment,
-            $amount
+            array(
+                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
+                'currency'    => $order->getOrderCurrencyCode(),
+                'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
+                'offsite'     => $payment->getAdditionalInformation('offsite'),
+                'return_uri'  => $this->getCallbackUri()
+            )
         );
 
-        $payment->setIsTransactionPending(true);
+        if ($charge->isAwaitPayment()) {
+            return $this;
+        }
 
-        $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $result['id']);
-
-        Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($result['authorize_uri']);
-
-        Mage::log('The transaction was created, processing internet banking payment by Omise payment gateway.');
-        return $this;
+        $this->suspectToBeFailed($payment);
     }
 
     /**
@@ -102,29 +100,6 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     public function getOrderPlaceRedirectUrl()
     {
         return Mage::getSingleton('checkout/session')->getOmiseAuthorizeUri();
-    }
-
-    /**
-     * Format a Magento's amount to be a small-unit that Omise's API requires.
-     * Note, no specific format for JPY currency.
-     *
-     * @param  string          $currency
-     * @param  integer | float $amount
-     *
-     * @return integer
-     */
-    public function formatAmount($currency, $amount)
-    {
-        switch (strtoupper($currency)) {
-            case 'THB':
-            case 'IDR':
-            case 'SGD':
-                // Convert to a small unit
-                $amount = $amount * 100;
-                break;
-        }
-
-        return $amount;
     }
 
     /**

@@ -2,19 +2,22 @@
 abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abstract
 {
     /**
-     * @var \Omise_Gateway_Model_Config
-     */
-    protected $config;
-
-    /**
      * @var \Omise_Gateway_Model_Omise
      */
     protected $omise;
 
     /**
-     * @var \Mage_Sales_Model_Order_Payment
+     * @var array
      */
-    protected $payment_information;
+    private $currency_subunits = array(
+        'JPY' => 1,
+        'THB' => 100,
+        'SGD' => 100,
+        'IDR' => 100,
+        'USD' => 100,
+        'EUR' => 100,
+        'GBP' => 100
+    );
 
     /**
      * Load necessary file and setup Omise keys
@@ -23,46 +26,98 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     public function __construct()
     {
-        $this->config = Mage::getModel('omise_gateway/config')->load(1);
-        $this->omise  = Mage::getModel('omise_gateway/omise');
+        $this->omise = Mage::getModel('omise_gateway/omise');
+        $this->omise->initNecessaryConstant();
     }
 
     /**
-     * @return \Mage_Sales_Model_Order_Payment
-     */
-    public function getPaymentInformation()
-    {
-        return $this->payment_information;
-    }
-
-    /**
-     * @param  \Omise_Gateway_Model_Strategies_StrategyInterface $strategy
-     * @param  \Mage_Sales_Model_Order_Payment                   $payment
-     * @param  int|float                                         $amount
+     * @param  string $currency
      *
-     * @return Mage_Payment_Model_Abstract
+     * @return bool
      */
-    public function perform(
-        Omise_Gateway_Model_Strategies_StrategyInterface $strategy,
-        Mage_Sales_Model_Order_Payment $payment,
-        $amount
-    ) {
-        $this->omise->defineApiKeys();
-        $this->omise->defineApiVersion();
-        $this->omise->defineUserAgent();
-
-        $this->payment_information = $payment;
-
-        try {
-            $result = $strategy->perform($this, $amount);
-        } catch (Exception $e) {
-            Mage::throwException(Mage::helper('payment')->__($e->getMessage()));
+    protected function isCurrencySupport($currency)
+    {
+        if (isset($this->currency_subunits[strtoupper($currency)])) {
+            return true;
         }
 
-        if (! $strategy->validate($result)) {
-            Mage::throwException(Mage::helper('payment')->__($strategy->getMessage()));
-        }    
+        return false;
+    }
 
-        return $result;
+    /**
+     * @param  int    $amount
+     * @param  string $currency
+     *
+     * @return int
+     */
+    public function getAmountInSubunits($amount, $currency)
+    {
+        if ($this->isCurrencySupport($currency)) {
+            return $this->currency_subunits[$currency] * $amount;
+        }
+
+        return $amount;
+    }
+
+    /**
+     * @param  Varien_Object $payment
+     * @param  array         $params
+     *
+     * @return Omise_Gateway_Model_Api_Charge
+     *
+     * @throws Mage_Core_Exception
+     */
+    protected function process(Varien_Object $payment, $params = array())
+    {
+        $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
+
+        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
+            Mage::throwException(
+                Mage::helper('payment')->__(
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                )
+            );
+        }
+
+        if ($charge->isFailed()) {
+            Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
+        }
+
+        if ($charge->isAwaitPayment()) {
+            $this->setRedirectFlow($payment, $charge);
+        }
+
+        $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $charge->id);
+
+        return $charge;
+    }
+
+    /**
+     * Execute this method when buyer makes a payment with those
+     * 'redirect' payments (3-D Secure, InternetBanking, Alipay).
+     *
+     * @param Varien_Object                  $payment
+     * @param Omise_Gateway_Model_Api_Charge $charge
+     */
+    protected function setRedirectFlow(Varien_Object $payment, Omise_Gateway_Model_Api_Charge $charge)
+    {
+        $payment->setIsTransactionPending(true);
+
+        Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri($charge->authorize_uri);
+    }
+
+    /**
+     * Execute this method whenever a charge result doesn't match with any conditions.
+     * So you can throw out an error message to warn buyers that there might be something wrong on a transaction
+     * and ask them to contact merchant back.
+     *
+     * @param  Varien_Object $payment
+     *
+     * @throws Mage_Core_Exception
+     */
+    protected function suspectToBeFailed(Varien_Object $payment)
+    {
+        $message = 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team using your order reference number (' . $payment->getOrder()->getIncrementId() . ') to confirm your payment.';
+        Mage::throwException(Mage::helper('payment')->__($message));
     }
 }
