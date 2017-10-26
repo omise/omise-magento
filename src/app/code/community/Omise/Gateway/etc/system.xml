@@ -11,10 +11,21 @@
                     <show_in_store>0</show_in_store>
                     <frontend_class>complex</frontend_class>
                     <fields>
+                        <webhook translate="label,comment">
+                            <label>Webhook endpoint</label>
+                            <comment><![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>
+                            <sort_order>680</sort_order>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>omise_gateway/adminhtml_system_config_form_field_webhook</frontend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </webhook>
+
                         <omise_gateway type="group">
                             <label>Credit Card</label>
                             <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
-                            <sort_order>680</sort_order>
+                            <sort_order>690</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -104,7 +115,7 @@
                         <omise_offsite_internet_banking type="group">
                             <label>Internet Banking</label>
                             <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
-                            <sort_order>690</sort_order>
+                            <sort_order>700</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
