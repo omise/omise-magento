@@ -81,7 +81,10 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
                 'currency'    => $order->getOrderCurrencyCode(),
                 'description' => 'Processing payment with Internet Banking. Magento order ID: ' . $order->getIncrementId(),
                 'offsite'     => $payment->getAdditionalInformation('offsite'),
-                'return_uri'  => $this->getCallbackUri()
+                'return_uri'  => $this->getCallbackUri(),
+                'metadata'    => array(
+                    'order_id' => $order->getIncrementId()
+                )
             )
         );
     }
