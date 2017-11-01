@@ -27,12 +27,12 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 The steps below shows how to install the module manually.
 This requires a user account with permission to write your Magento file system, execute the command line and [composer](https://getcomposer.org).
 
-1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v2.1.zip).
+1. Download and extract the zip file from [Omise-Magento](https://github.com/omise/omise-magento/archive/v2.2.zip).
 2. On your Magento server, create a new folder `Omise/Payment` under the directory `app/code`.
 3. Copy all files to the directory `app/code/Omise/Payment` that you created in the step 2.
     <p align="center"><a alt="omise-magento-install-manual-01" href='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21450750/247ec3b6-c92c-11e6-92d5-3c036568f20b.png'></a></p>
 4. Log in to your Magento server by using Terminal program, then change the current directory to your Magento root directory.
-5. Execute command `composer require omise/omise-php:2.7.1` to install Omise-PHP library.
+5. Execute command `composer require omise/omise-php:2.8.0` to install Omise-PHP library.
 6. Execute `php bin/magento module:enable Omise_Payment --clear-static-content` to register `Omise_Payment` plugin to the Magento module system.
     <img width="1074" alt="024" src="https://cloud.githubusercontent.com/assets/2154669/24037678/30c1f070-0b31-11e7-878b-b5a052f9a8ea.png">
 7. Then, execute the command, `php bin/magento setup:upgrade` to upgrade your Magento system (to install Omise-Magento plugin).
