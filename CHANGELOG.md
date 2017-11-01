@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v2.2 _(Nov 02, 2017)_](https://github.com/omise/omise-magento/releases/tag/v2.2)
+
+#### 🚀 Enhancements
+
+-  Force plugin to use a specific API version (2015-11-17) when make a request to Omise API (PR [#94](https://github.com/omise/omise-magento/pull/94))
+
+---
+
 ### [v2.1 _(April 12, 2017)_](https://github.com/omise/omise-magento/releases/tag/v2.1)
 
 #### ✨ Highlights
