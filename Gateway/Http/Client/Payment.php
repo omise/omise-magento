@@ -67,6 +67,18 @@ class Payment implements ClientInterface
     }
 
     /**
+     * @param  string $version
+     *
+     * @return void
+     */
+    public function defineApiVersion($version = '2015-11-17')
+    {
+        if (! defined('OMISE_API_VERSION')) {
+            define('OMISE_API_VERSION', $version);
+        }
+    }
+
+    /**
      * Define configuration constant for Omise PHP library
      *
      * @return void
@@ -113,6 +125,7 @@ class Payment implements ClientInterface
     public function placeRequest(TransferInterface $transferObject)
     {
         $this->defineUserAgent();
+        $this->defineApiVersion();
         $this->defineApiKeys();
 
         try {
