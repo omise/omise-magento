@@ -79,6 +79,8 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
             );
         }
 
+        $payment->setTransactionId($charge->id);
+
         if ($charge->isFailed()) {
             Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
         }
