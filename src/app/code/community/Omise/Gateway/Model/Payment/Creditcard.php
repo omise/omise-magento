@@ -52,6 +52,8 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         );
 
         if ($charge->isAwaitPayment() || $charge->isAwaitCapture()) {
+            $payment->setIsTransactionClosed(false);
+
             return $this;
         }
 
