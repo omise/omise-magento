@@ -27,6 +27,40 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     protected $_canReviewPayment = true;
 
     /**
+     * flag if we need to run payment initialize while order place
+     *
+     * @return bool
+     */
+    public function isInitializeNeeded()
+    {
+        if ($this->isThreeDSecureNeeded()) {
+            return true;
+        }
+
+        return parent::isInitializeNeeded();
+    }
+
+    /**
+     * Instantiate state and set it to state object
+     *
+     * @param string        $payment_action
+     * @param Varien_Object $state_object
+     */
+    public function initialize($payment_action, $state_object)
+    {
+        $payment = $this->getInfoInstance();
+        $order   = $payment->getOrder();
+
+        if (! $order->canInvoice()) {
+            Mage::throwException(Mage::helper('payment')->__('Cannot create invoice'));
+        }
+
+        $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+        $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+        $state_object->setIsNotified(false);
+    }
+
+    /**
      * Authorize payment
      *
      * @param  Varien_Object $payment
