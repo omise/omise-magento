@@ -51,13 +51,81 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         $payment = $this->getInfoInstance();
         $order   = $payment->getOrder();
 
-        if (! $order->canInvoice()) {
-            Mage::throwException(Mage::helper('payment')->__('Cannot create invoice'));
+
+        switch ($payment_action) {
+            case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE:
+                $charge = $this->processPayment($payment, $order->getBaseTotalDue());
+
+                $payment->setIsTransactionClosed(false)
+                        ->setIsTransactionPending(true)
+                        ->addTransaction(
+                            Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+                            null,
+                            false,
+                            Mage::helper('omise_gateway')->__('Authorizing an amount %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($order->getBaseTotalDue()))
+                        );
+                break;
+
+            case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE:
+                $invoice = $order->prepareInvoice()->register();
+
+                $charge = $this->processPayment($payment, $invoice->getBaseGrandTotal());
+
+                $payment->setCreatedInvoice($invoice)
+                        ->setIsTransactionClosed(false)
+                        ->setIsTransactionPending(true)
+                        ->addTransaction(
+                            Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+                            $invoice,
+                            false,
+                            Mage::helper('omise_gateway')->__('Capturing an amount %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                        );
+
+                $order->addRelatedObject($invoice);
+                break;
+
+            default:
+                $state_object->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
+                $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW));
+                $state_object->setIsNotified(false);
+
+                return;
+
+                break;
         }
 
-        $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
-        $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
-        $state_object->setIsNotified(false);
+        if ($charge->isAwaitPayment()) {
+            $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+            $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+            $state_object->setIsNotified(false);
+
+            return;
+        }
+
+        $this->suspectToBeFailed($payment);
+    }
+
+    /**
+     * @param  Varien_Object $payment
+     * @param  float         $amount
+     *
+     * @return Omise_Gateway_Model_Api_Charge
+     */
+    public function processPayment(Varien_Object $payment, $amount)
+    {
+        $order = $payment->getOrder();
+
+        return $this->process(
+            $payment,
+            array(
+                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
+                'currency'    => $order->getOrderCurrencyCode(),
+                'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
+                'capture'     => $this->isAutoCapture() ? true : false,
+                'card'        => $payment->getAdditionalInformation('omise_token'),
+                'return_uri'  => $this->getThreeDSecureCallbackUri()
+            )
+        );
     }
 
     /**
@@ -279,5 +347,13 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     public function isOscSupportEnabled()
     {
         return Mage::getStoreConfig('payment/omise_gateway/osc_support') ? true : false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoCapture()
+    {
+        return $this->getConfigData('payment_action') === Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE;
     }
 }
