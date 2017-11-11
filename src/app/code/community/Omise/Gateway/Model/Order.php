@@ -53,7 +53,11 @@ class Omise_Gateway_Model_Order extends Mage_Sales_Model_Order
 
         $payment     = $this->getPayment();
         $transaction = $payment->getTransaction($payment->getLastTransId());
-        $transaction->closeCapture();
+        if ($transaction->getTxnType() === Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) {
+            $transaction->closeCapture();
+        } else {
+            $transaction->close();
+        }
 
         $this
             ->addRelatedObject($transaction)
@@ -75,7 +79,11 @@ class Omise_Gateway_Model_Order extends Mage_Sales_Model_Order
 
         $payment     = $this->getPayment();
         $transaction = $payment->getTransaction($payment->getLastTransId());
-        $transaction->closeCapture();
+        if ($transaction->getTxnType() === Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) {
+            $transaction->closeCapture();
+        } else {
+            $transaction->close();
+        }
 
         $this
             ->registerCancellation($message, false)
