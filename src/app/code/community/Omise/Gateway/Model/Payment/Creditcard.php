@@ -51,7 +51,6 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         $payment = $this->getInfoInstance();
         $order   = $payment->getOrder();
 
-
         switch ($payment_action) {
             case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE:
                 $charge = $this->processPayment($payment, $order->getBaseTotalDue());
