@@ -93,7 +93,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 break;
         }
 
-        if ($charge->isAwaitPayment()) {
+        if ($charge->isAwaitPayment() || $charge->isAwaitCapture() || $charge->isSuccessful()) {
             $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
             $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
             $state_object->setIsNotified(false);
