@@ -29,7 +29,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
             $order->markAsAwaitPayment(
                 $payment->getLastTransId(),
                 Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
-                Mage::helper('omise_gateway')->__('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or up-to an hour. Please click "Accept" or "Denied" the payment manually once the result has been updated (you can check at Omise Dashboard).')
+                Mage::helper('omise_gateway')->__('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been updated (you can check at Omise Dashboard).')
             );
 
             return $this->_redirect('checkout/onepage/success');
