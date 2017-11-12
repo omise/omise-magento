@@ -21,63 +21,69 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
      *
      * @var bool
      */
-    protected $_isGateway        = true;
-    protected $_canCapture       = true;
-    protected $_canReviewPayment = true;
+    protected $_isGateway          = true;
+    protected $_canReviewPayment   = true;
+    protected $_isInitializeNeeded = true;
 
     /**
-     * Capture payment method
+     * Instantiate state and set it to state object
      *
-     * @param  Varien_Object $payment
-     * @param  float         $amount
-     *
-     * @return self
+     * @param string        $payment_action
+     * @param Varien_Object $state_object
      */
-    public function capture(Varien_Object $payment, $amount)
+    public function initialize($payment_action, $state_object)
     {
-        Mage::log('Omise: processing internet banking payment.');
+        $payment = $this->getInfoInstance();
+        $order   = $payment->getOrder();
 
-        $order  = $payment->getOrder();
-        $charge = $this->process(
-            $payment,
-            array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
-                'currency'    => $order->getOrderCurrencyCode(),
-                'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
-                'offsite'     => $payment->getAdditionalInformation('offsite'),
-                'return_uri'  => $this->getCallbackUri()
-            )
-        );
+        $invoice = $order->prepareInvoice();
+        $invoice->setIsPaid(false)->register();
+
+        $charge = $this->process($payment, $invoice->getBaseGrandTotal());
+
+        $payment->setCreatedInvoice($invoice)
+                ->setIsTransactionClosed(false)
+                ->setIsTransactionPending(true)
+                ->addTransaction(
+                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER,
+                    $invoice,
+                    false,
+                    Mage::helper('omise_gateway')->__('Processing amount %s via Omise Internet Banking payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                );
+
+        $order->addRelatedObject($invoice);
 
         if ($charge->isAwaitPayment()) {
-            return $this;
+            $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+            $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+            $state_object->setIsNotified(false);
+
+            return;
         }
 
         $this->suspectToBeFailed($payment);
     }
 
     /**
-     * {@inheritDoc}
+     * @param  Varien_Object $payment
+     * @param  float         $amount
      *
-     * @see app/code/community/Omise/Gateway/Model/Payment/Creditcard.php
+     * @return Omise_Gateway_Model_Api_Charge
      */
-    public function acceptPayment(Mage_Payment_Model_Info $payment)
+    public function process(Varien_Object $payment, $amount)
     {
-        parent::acceptPayment($payment);
+        $order = $payment->getOrder();
 
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see app/code/community/Omise/Gateway/Model/Payment/Creditcard.php
-     */
-    public function denyPayment(Mage_Payment_Model_Info $payment)
-    {
-        parent::denyPayment($payment);
-
-        return true;
+        return parent::process(
+            $payment,
+            array(
+                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
+                'currency'    => $order->getOrderCurrencyCode(),
+                'description' => 'Processing payment with Internet Banking. Magento order ID: ' . $order->getIncrementId(),
+                'offsite'     => $payment->getAdditionalInformation('offsite'),
+                'return_uri'  => $this->getCallbackUri()
+            )
+        );
     }
 
     /**
