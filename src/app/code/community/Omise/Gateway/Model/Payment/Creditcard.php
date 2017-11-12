@@ -122,7 +122,10 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
                 'capture'     => $this->isAutoCapture() ? true : false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
-                'return_uri'  => $this->getThreeDSecureCallbackUri()
+                'return_uri'  => $this->getThreeDSecureCallbackUri(),
+                'metadata'    => array(
+                    'order_id' => $order->getIncrementId()
+                )
             )
         );
     }
@@ -148,7 +151,10 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
                 'capture'     => false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
-                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null)
+                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null),
+                'metadata'    => array(
+                    'order_id' => $order->getIncrementId()
+                )
             )
         );
 
@@ -186,7 +192,10 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
                 'capture'     => true,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
-                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null)
+                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null),
+                'metadata'    => array(
+                    'order_id' => $order->getIncrementId()
+                )
             )
         );
 
