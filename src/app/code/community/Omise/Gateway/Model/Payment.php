@@ -95,6 +95,55 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     }
 
     /**
+     * Attempt to accept a payment that us under review
+     *
+     * @param  Mage_Payment_Model_Info $payment
+     *
+     * @return bool
+     *
+     * @throws Mage_Core_Exception
+     */
+    public function acceptPayment(Mage_Payment_Model_Info $payment)
+    {
+        parent::acceptPayment($payment);
+
+        $this->closeTransaction($payment);
+
+        return true;
+    }
+
+    /**
+     * Attempt to deny a payment that us under review
+     *
+     * @param  Mage_Payment_Model_Info $payment
+     *
+     * @return bool
+     *
+     * @throws Mage_Core_Exception
+     */
+    public function denyPayment(Mage_Payment_Model_Info $payment)
+    {
+        parent::denyPayment($payment);
+
+        $this->closeTransaction($payment);
+
+        return true;
+    }
+
+    /**
+     * @param Varien_Object $payment
+     */
+    protected function closeTransaction(Varien_Object $payment)
+    {
+        $transaction = $payment->getTransaction($payment->getLastTransId());
+        if ($transaction->getTxnType() === Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) {
+            $transaction->closeCapture();
+        } else {
+            $transaction->close();
+        }
+    }
+
+    /**
      * Execute this method when buyer makes a payment with those
      * 'redirect' payments (3-D Secure, InternetBanking, Alipay).
      *

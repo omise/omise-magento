@@ -239,38 +239,6 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     }
 
     /**
-     * Attempt to accept a payment that us under review
-     *
-     * @param  Mage_Payment_Model_Info $payment
-     *
-     * @return bool
-     *
-     * @throws Mage_Core_Exception
-     */
-    public function acceptPayment(Mage_Payment_Model_Info $payment)
-    {
-        parent::acceptPayment($payment);
-
-        return true;
-    }
-
-    /**
-     * Attempt to deny a payment that us under review
-     *
-     * @param  Mage_Payment_Model_Info $payment
-     *
-     * @return bool
-     *
-     * @throws Mage_Core_Exception
-     */
-    public function denyPayment(Mage_Payment_Model_Info $payment)
-    {
-        parent::denyPayment($payment);
-
-        return true;
-    }
-
-    /**
      * Assign data to info model instance
      *
      * @param   mixed $data

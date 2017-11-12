@@ -89,30 +89,6 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     /**
      * {@inheritDoc}
      *
-     * @see app/code/community/Omise/Gateway/Model/Payment/Creditcard.php
-     */
-    public function acceptPayment(Mage_Payment_Model_Info $payment)
-    {
-        parent::acceptPayment($payment);
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see app/code/community/Omise/Gateway/Model/Payment/Creditcard.php
-     */
-    public function denyPayment(Mage_Payment_Model_Info $payment)
-    {
-        parent::denyPayment($payment);
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
      */
     public function assignData($data)
