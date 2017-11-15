@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gateway_Controllers_Callback_Base
+class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gateway_Controller_Base
 {
     public function indexAction()
     {

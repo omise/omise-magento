@@ -1,5 +1,5 @@
 <?php
-abstract class Omise_Gateway_Controllers_Callback_Base extends Mage_Core_Controller_Front_Action
+abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_Action
 {
     protected function _construct()
     {
