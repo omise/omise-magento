@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### [v1.13 _(Nov 17, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.13)
+
+#### ✨ Highlights
+
+- Support Alipay payment (PR [#98](https://github.com/omise/omise-magento/pull/98))
+- Correct order state/status and payment flow behavior (PR [#97](https://github.com/omise/omise-magento/pull/97))
+- Introduce WebHooks feature (PR [#93](https://github.com/omise/omise-magento/pull/93))
+
+#### 🚀 Enhancements
+
+- Proper set Magento payment object's transaction id after create a new charge / capture an authorized charge (PR [#96](https://github.com/omise/omise-magento/pull/96))
+- Refactoring payment processor classes (PR [#92](https://github.com/omise/omise-magento/pull/92), [#100](https://github.com/omise/omise-magento/pull/100))
+- Clean code (to remove unused close, add PHPDocBlock, etc) (PR [#91](https://github.com/omise/omise-magento/pull/91))
+- Use 'order increment id' as a reference in charge description instead of 'id' (PR [#90](https://github.com/omise/omise-magento/pull/90))
+
+---
+
 ### [v1.12 _(May 24, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.12)
 
 #### ✨ Highlights
