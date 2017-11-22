@@ -89,7 +89,7 @@ class Payment implements ClientInterface
             define(
                 'OMISE_USER_AGENT_SUFFIX',
                 sprintf(
-                    'OmiseMagento/%s Magento/%s',
+                    'OmiseMagento/%s-dev Magento/%s',
                     $this->getModuleVersion(),
                     $this->getMagentoVersion()
                 )
