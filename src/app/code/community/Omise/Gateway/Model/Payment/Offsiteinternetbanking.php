@@ -26,6 +26,19 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     protected $_isInitializeNeeded = true;
 
     /**
+     * Check method for processing with base currency
+     * Note that Internet Banking can only be used with Omise Thailand account and 'THB' currency
+     *
+     * @param  string $currencyCode
+     *
+     * @return boolean
+     */
+    public function canUseForCurrency($currencyCode)
+    {
+        return (strtoupper($currencyCode) === 'THB' && strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode()) === 'THB');
+    }
+
+    /**
      * Instantiate state and set it to state object
      *
      * @param string        $payment_action
