@@ -90,8 +90,8 @@ class Omise_Gateway_Model_Payment_Offsitealipay extends Omise_Gateway_Model_Paym
         return parent::process(
             $payment,
             array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
-                'currency'    => $order->getOrderCurrencyCode(),
+                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
+                'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Processing payment with Alipay. Magento order ID: ' . $order->getIncrementId(),
                 'offsite'     => 'alipay',
                 'return_uri'  => $this->getCallbackUri(),
