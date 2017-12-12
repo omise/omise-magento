@@ -49,18 +49,10 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      */
     protected function isStoreCurrencySupported()
     {
-        $currencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-
-        switch ($currencyCode) {
-            case 'THB':
-            case 'JPY':
-            case 'IDR':
-            case 'SGD':
-                return true;
-                break;
-        }
-
-        return false;
+        return in_array(
+            Mage::app()->getStore()->getBaseCurrencyCode(),
+            array('JPY', 'THB', 'SGD', 'IDR', 'USD', 'EUR', 'GBP')
+        );
     }
 
     /**
