@@ -6,7 +6,10 @@ use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
+
 use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Api\Charge as ApiCharge;
+
 
 class Payment implements ClientInterface
 {
@@ -39,14 +42,21 @@ class Payment implements ClientInterface
      */
     protected $productMetadata;
 
+    /**
+     * @var \Omise\Payment\Model\Api\Charge
+     */
+    protected $apiCharge;
+
     public function __construct(
         Config                   $config,
         ModuleListInterface      $moduleList,
-        ProductMetadataInterface $productMetadata
+        ProductMetadataInterface $productMetadata,
+        ApiCharge                $apiCharge
     ) {
         $this->config          = $config;
         $this->moduleList      = $moduleList;
         $this->productMetadata = $productMetadata;
+        $this->apiCharge       = $apiCharge;
     }
 
     /**
@@ -128,24 +138,22 @@ class Payment implements ClientInterface
         $this->defineApiVersion();
         $this->defineApiKeys();
 
-        try {
-            $request  = \OmiseCharge::create($transferObject->getBody());
+        $charge = $this->apiCharge->create($transferObject->getBody());
 
-            $response = [
-                'object'  => 'omise',
-                'status'  => self::PROCESS_STATUS_SUCCESSFUL,
-                'data'    => $request,
-                'message' => null,
-            ];
-        } catch (Exception $e) {
-            $response = [
+        if ($charge instanceof \Omise\Payment\Model\Api\Error) {
+            return [
                 'object'  => 'omise',
                 'status'  => self::PROCESS_STATUS_FAILED,
                 'data'    => null,
-                'message' => $e->getMessage(),
+                'message' => $charge->getMessage()
             ];
         }
 
-        return $response;
+        return [
+            'object'  => 'omise',
+            'status'  => self::PROCESS_STATUS_SUCCESSFUL,
+            'data'    => $charge->getObject(),
+            'message' => null
+        ];
     }
 }
