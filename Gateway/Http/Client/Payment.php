@@ -2,12 +2,11 @@
 namespace Omise\Payment\Gateway\Http\Client;
 
 use Exception;
-use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\Module\ModuleListInterface;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
 use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 
 
@@ -28,19 +27,9 @@ class Payment implements ClientInterface
     const PROCESS_STATUS_FAILED = 'failed';
 
     /**
-     * @var Omise\Payment\Model\Config\Config
+     * @var Omise\Payment\Model\Omise
      */
-    protected $config;
-
-    /**
-     * @var \Magento\Framework\Module\ModuleListInterface
-     */
-    protected $moduleList;
-
-    /**
-     * @var \Magento\Framework\App\ProductMetadataInterface
-     */
-    protected $productMetadata;
+    protected $omise;
 
     /**
      * @var \Omise\Payment\Model\Api\Charge
@@ -48,83 +37,11 @@ class Payment implements ClientInterface
     protected $apiCharge;
 
     public function __construct(
-        Config                   $config,
-        ModuleListInterface      $moduleList,
-        ProductMetadataInterface $productMetadata,
-        ApiCharge                $apiCharge
+        ApiCharge $apiCharge,
+        Omise     $omise
     ) {
-        $this->config          = $config;
-        $this->moduleList      = $moduleList;
-        $this->productMetadata = $productMetadata;
-        $this->apiCharge       = $apiCharge;
-    }
-
-    /**
-     * @param  string $public_key
-     * @param  string $secret_key
-     *
-     * @return void
-     */
-    protected function defineApiKeys($public_key = '', $secret_key = '')
-    {
-        if (! defined('OMISE_PUBLIC_KEY')) {
-            define('OMISE_PUBLIC_KEY', $public_key ? $public_key : $this->config->getPublicKey());
-        }
-
-        if (! defined('OMISE_SECRET_KEY')) {
-            define('OMISE_SECRET_KEY', $secret_key ? $secret_key : $this->config->getSecretKey());
-        }
-    }
-
-    /**
-     * @param  string $version
-     *
-     * @return void
-     */
-    public function defineApiVersion($version = '2015-11-17')
-    {
-        if (! defined('OMISE_API_VERSION')) {
-            define('OMISE_API_VERSION', $version);
-        }
-    }
-
-    /**
-     * Define configuration constant for Omise PHP library
-     *
-     * @return void
-     */
-    protected function defineUserAgent()
-    {
-        if (! defined('OMISE_USER_AGENT_SUFFIX')) {
-            define(
-                'OMISE_USER_AGENT_SUFFIX',
-                sprintf(
-                    'OmiseMagento/%s-dev Magento/%s',
-                    $this->getModuleVersion(),
-                    $this->getMagentoVersion()
-                )
-            );
-        }
-    }
-
-    /**
-     * Retrieve Magento's current version
-     *
-     * @return string
-     */
-    protected function getMagentoVersion()
-    {
-        return $this->productMetadata->getVersion();
-    }
-
-    /**
-     * Retrieve Omise module's current version
-     *
-     * @return string
-     */
-    protected function getModuleVersion()
-    {
-        return $this->moduleList->getOne(Config::MODULE_NAME)['setup_version'];
+        $this->omise     = $omise;
+        $this->apiCharge = $apiCharge;
     }
 
     /**
@@ -134,9 +51,9 @@ class Payment implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        $this->defineUserAgent();
-        $this->defineApiVersion();
-        $this->defineApiKeys();
+        $this->omise->defineUserAgent();
+        $this->omise->defineApiVersion();
+        $this->omise->defineApiKeys();
 
         $charge = $this->apiCharge->create($transferObject->getBody());
 
