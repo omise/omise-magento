@@ -1,14 +1,13 @@
 <?php
+
 namespace Omise\Payment\Gateway\Http\Client;
 
 use Exception;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
-
 
 class Payment implements ClientInterface
 {
@@ -47,7 +46,7 @@ class Payment implements ClientInterface
     /**
      * @param  \Magento\Payment\Gateway\Http\TransferInterface $transferObject
      *
-     * @return array
+     * @return \Omise\Payment\Model\Api\Charge|\Omise\Payment\Model\Api\Error
      */
     public function placeRequest(TransferInterface $transferObject)
     {

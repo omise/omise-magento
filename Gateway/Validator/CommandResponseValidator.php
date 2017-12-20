@@ -1,4 +1,5 @@
 <?php
+
 namespace Omise\Payment\Gateway\Validator;
 
 use Magento\Payment\Gateway\Validator\AbstractValidator;

@@ -12,7 +12,7 @@ class Object
     protected $object;
 
     /**
-     * @param  mixed $object
+     * @param  mixed $object  of \Omise\Payment\Model\Api\Object.
      *
      * @return self
      */
@@ -32,15 +32,9 @@ class Object
     }
 
     /**
-     * @deprecated  This will be used for temporary while refactoring code.
-     */
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    /**
      * @param  string $key
+     *
+     * @return mixed
      *
      * @throws Exception
      */

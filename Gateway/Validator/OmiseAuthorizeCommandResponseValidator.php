@@ -18,10 +18,6 @@ class OmiseAuthorizeCommandResponseValidator extends CommandResponseValidator
             return new ErrorInvalid('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
         }
 
-        if ($charge->isAwaitCapture()) {
-            return true;
-        }
-
-        return new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions');
+        return $charge->isAwaitCapture() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
     }
 }

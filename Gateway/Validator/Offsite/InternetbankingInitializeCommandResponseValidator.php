@@ -18,10 +18,6 @@ class InternetbankingInitializeCommandResponseValidator extends CommandResponseV
             return new ErrorInvalid('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
         }
 
-        if ($charge->isAwaitPayment()) {
-            return true;
-        }
-
-        return (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
+        return $charge->isAwaitPayment() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
     }
 }
