@@ -55,22 +55,6 @@ class Payment implements ClientInterface
         $this->omise->defineApiVersion();
         $this->omise->defineApiKeys();
 
-        $charge = $this->apiCharge->create($transferObject->getBody());
-
-        if ($charge instanceof \Omise\Payment\Model\Api\Error) {
-            return [
-                'object'  => 'omise',
-                'status'  => self::PROCESS_STATUS_FAILED,
-                'data'    => null,
-                'message' => $charge->getMessage()
-            ];
-        }
-
-        return [
-            'object'  => 'omise',
-            'status'  => self::PROCESS_STATUS_SUCCESSFUL,
-            'data'    => $charge->getObject(),
-            'message' => null
-        ];
+        return $this->apiCharge->create($transferObject->getBody());
     }
 }
