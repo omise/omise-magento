@@ -18,7 +18,7 @@ class CommandResponseValidator extends AbstractValidator
      */
     public function validate(array $validationSubject)
     {
-        $charge = $validationSubject['response'];
+        $charge = $validationSubject['response']['charge'];
 
         if (! $charge instanceof \Omise\Payment\Model\Api\Object) {
             return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage() ]);

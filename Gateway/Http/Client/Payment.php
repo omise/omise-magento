@@ -54,6 +54,6 @@ class Payment implements ClientInterface
         $this->omise->defineApiVersion();
         $this->omise->defineApiKeys();
 
-        return $this->apiCharge->create($transferObject->getBody());
+        return ['charge' => $this->apiCharge->create($transferObject->getBody())];
     }
 }

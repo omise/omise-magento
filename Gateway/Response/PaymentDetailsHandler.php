@@ -14,7 +14,7 @@ class PaymentDetailsHandler implements HandlerInterface
         $payment = SubjectReader::readPayment($handlingSubject);
         $payment = $payment->getPayment();
 
-        $payment->setAdditionalInformation('charge_id', $response['data']['id']);
-        $payment->setAdditionalInformation('charge_authorize_uri', $response['data']['authorize_uri']);
+        $payment->setAdditionalInformation('charge_id', $response['charge']->id);
+        $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
     }
 }
