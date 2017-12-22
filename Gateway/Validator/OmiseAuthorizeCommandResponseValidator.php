@@ -2,32 +2,22 @@
 namespace Omise\Payment\Gateway\Validator;
 
 use Omise\Payment\Gateway\Validator\CommandResponseValidator;
-use Omise\Payment\Gateway\Validator\Message\Invalid;
-use Omise\Payment\Gateway\Validator\Message\OmiseObjectInvalid;
+use Omise\Payment\Gateway\Validator\Message\Invalid as ErrorInvalid;
+use Omise\Payment\Model\Api\Charge;
 
 class OmiseAuthorizeCommandResponseValidator extends CommandResponseValidator
 {
     /**
-     * @param  mixed
+     * @param  \Omise\Payment\Model\Api\Charge $charge
      *
-     * @return mixed
+     * @return true|\Omise\Payment\Gateway\Validator\Message\*
      */
-    protected function validateResponse($data)
+    protected function validateResponse(Charge $charge)
     {
-        if (! isset($data['object']) || $data['object'] !== 'charge') {
-            return new OmiseObjectInvalid();
+        if ($charge->isFailed()) {
+            return new ErrorInvalid('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
         }
 
-        if ($data['status'] === 'failed') {
-            return new Invalid('Payment failed. ' . ucfirst($data['failure_message']) . ', please contact our support if you have any questions.');
-        }
-
-        if ($data['status'] === 'pending'
-            && $data['authorized'] == true
-        ) {
-            return true;
-        }
-
-        return new Invalid('Payment failed, invalid payment status, please contact our support if you have any questions');
+        return $charge->isAwaitCapture() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
     }
 }

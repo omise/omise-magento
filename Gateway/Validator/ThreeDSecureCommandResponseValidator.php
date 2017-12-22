@@ -2,49 +2,31 @@
 namespace Omise\Payment\Gateway\Validator;
 
 use Omise\Payment\Gateway\Validator\CommandResponseValidator;
-use Omise\Payment\Gateway\Validator\Message\Invalid;
-use Omise\Payment\Gateway\Validator\Message\OmiseObjectInvalid;
-use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
-use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
+use Omise\Payment\Gateway\Validator\Message\Invalid as ErrorInvalid;
+use Omise\Payment\Model\Api\Charge;
 
 class ThreeDSecureCommandResponseValidator extends CommandResponseValidator
 {
     /**
-     * @param  mixed
+     * @param  \Omise\Payment\Model\Api\Charge $charge
      *
-     * @return mixed
+     * @return true|\Omise\Payment\Gateway\Validator\Message\*
      */
-    protected function validateResponse($data)
+    protected function validateResponse(Charge $charge)
     {
-        if (! isset($data['object']) || $data['object'] !== 'charge') {
-            return new OmiseObjectInvalid();
+        if ($charge->isFailed()) {
+            return new ErrorInvalid('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
         }
 
-        if ($data['status'] === 'failed') {
-            return new Invalid('Payment failed. ' . ucfirst($data['failure_message']) . ', please contact our support if you have any questions.');
-        }
-
-        $captured = $data['captured'] ? $data['captured'] : $data['paid'];
-
-        if ($data['status'] === 'pending'
-            && $data['authorized'] == false
-            && $captured == false
-            && $data['authorize_uri']
-        ) {
+        if ($charge->isAwaitPayment()) {
             return true;
         }
 
         // Try validate for none 3-D Secure account case before mark as invalid
-        if ($data['capture']) {
-            $result = (new CaptureResultValidator)->validate($data);
-        } else {
-            $result = (new AuthorizeResultValidator)->validate($data);
+        if ($charge->capture) {
+            return $charge->isSuccessful() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
         }
 
-        if ($result === true) {
-            return true;
-        }
-
-        return new Invalid('Payment failed, invalid payment status, please contact our support if you have any questions');
+        return $charge->isAwaitCapture() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
     }
 }
