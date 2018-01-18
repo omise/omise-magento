@@ -4,36 +4,21 @@ namespace Omise\Payment\Controller\Callback;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Event;
-use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Api\Error as ApiError;
 
 class Webhook extends Action
 {
     /**
-     * @var Omise\Payment\Model\Omise
-     */
-    protected $omise;
-
-    /**
-     * @var \Omise\Payment\Model\Api\Event
+     * @var \Omise\Payment\Model\Event
      */
     protected $event;
 
-    public function __construct(
-        Context  $context,
-        Omise    $omise,
-        ApiEvent $event
-    ) {
-        $this->omise = $omise;
+    public function __construct(Context $context, Event $event)
+    {
         $this->event = $event;
 
         parent::__construct($context);
-
-        $this->omise->defineUserAgent();
-        $this->omise->defineApiVersion();
-        $this->omise->defineApiKeys();
     }
 
     /**
@@ -60,6 +45,6 @@ class Webhook extends Action
             return;
         }
 
-        $result = (new Event)->handle($event);
+        $result = $this->event->handle($event);
     }
 }
