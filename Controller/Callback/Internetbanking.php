@@ -9,8 +9,8 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Gateway\Validator\Message\Invalid;
-use Omise\Payment\Model\Config\Offsite\Internetbanking as Config;
-use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
+use Omise\Payment\Model\Omise;
+use Omise\Payment\Model\Api\Charge;
 
 class Internetbanking extends Action
 {
@@ -26,19 +26,30 @@ class Internetbanking extends Action
     protected $session;
 
     /**
-     * @var \Omise\Payment\Model\Config\Offsite\Internetbanking
+     * @var \Omise\Payment\Model\Omise
      */
-    protected $config;
+    protected $omise;
+
+    /**
+     * @var \Omise\Payment\Model\Api\Charge
+     */
+    protected $charge;
 
     public function __construct(
         Context $context,
         Session $session,
-        Config  $config
+        Omise   $omise,
+        Charge  $charge
     ) {
         parent::__construct($context);
 
         $this->session = $session;
-        $this->config  = $config;
+        $this->omise   = $omise;
+        $this->charge  = $charge;
+
+        $this->omise->defineUserAgent();
+        $this->omise->defineApiVersion();
+        $this->omise->defineApiKeys();
     }
 
     /**
@@ -87,34 +98,60 @@ class Internetbanking extends Action
         }
 
         try {
-            $charge = \OmiseCharge::retrieve($charge_id, $this->config->getPublicKey(), $this->config->getSecretKey());
+            $charge = $this->charge->find($charge_id);
 
-            $result = $this->validate($charge);
-
-            if ($result instanceof Invalid) {
-                throw new Exception($result->getMessage());
+            if (! $charge instanceof \Omise\Payment\Model\Api\Object) {
+                throw new Exception('Couldn\'t retrieve charge transaction. Please contact administrator.');
             }
 
-            $payment->setTransactionId($charge['transaction']);
-            $payment->setLastTransId($charge['transaction']);
+            if ($charge instanceof \Omise\Payment\Model\Api\Error) {
+                throw new Exception($charge->getMessage());
+            }
+
+            if ($charge->isFailed()) {
+                throw new Exception('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
+            }
+
+            $payment->setTransactionId($charge->id);
+            $payment->setLastTransId($charge->id);
+
+            if ($charge->isSuccessful()) {
+                // Update order state and status.
+                $order->setState(Order::STATE_PROCESSING);
+                $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
+
+                $invoice = $this->invoice($order);
+                $invoice->setTransactionId($charge->id)->pay()->save();
+
+                // Add transaction.
+                $payment->addTransactionCommentsToOrder(
+                    $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
+                    __(
+                        'Amount of %1 has been paid via Omise Internet Banking payment',
+                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                    )
+                );
+
+                $order->save();
+                return $this->redirect(self::PATH_SUCCESS);
+            }
 
             // Update order state and status.
-            $order->setState(Order::STATE_PROCESSING);
-            $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-
-            $invoice = $this->invoice($order);
-            $invoice->setTransactionId($charge['transaction'])->pay()->save();
+            $order->setState(Order::STATE_PAYMENT_REVIEW);
+            $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PAYMENT_REVIEW));
 
             // Add transaction.
+            $transaction = $payment->addTransaction(Transaction::TYPE_PAYMENT);
+            $transaction->setIsClosed(false);
             $payment->addTransactionCommentsToOrder(
-                $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
-                __(
-                    'Amount of %1 has been paid via Omise Internet Banking payment',
-                    $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                )
+                $transaction,
+                __('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been updated (you can check at Omise Dashboard).')
             );
 
             $order->save();
+
+            // TODO: Should redirect users to a page that tell users that
+            //       their payment is in review instead of success page.
             return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
@@ -141,16 +178,6 @@ class Internetbanking extends Action
     protected function redirect($path)
     {
         return $this->_redirect($path, ['_secure' => true]);
-    }
-
-    /**
-     * @param  \OmiseCharge $charge
-     *
-     * @return bool|Omise\Payment\Gateway\Validator\Message\Invalid
-     */
-    protected function validate($charge)
-    {
-        return (new CaptureResultValidator)->validate($charge);
     }
 
     /**
