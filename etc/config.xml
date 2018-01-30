@@ -27,6 +27,7 @@
                 <can_initialize>1</can_initialize>
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_internetbanking>
         </payment>
