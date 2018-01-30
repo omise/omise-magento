@@ -12,8 +12,8 @@ class Error extends Object
 
     public function __construct($error = array())
     {
-        isset($error['code']) ? $this->setCode($error['code']);
-        isset($error['message']) ? $this->setMessage($error['message']);
+        isset($error['code']) ? $this->setCode($error['code']) : '';
+        isset($error['message']) ? $this->setMessage($error['message']) : '';
     }
 
     /**
