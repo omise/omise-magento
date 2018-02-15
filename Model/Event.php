@@ -35,23 +35,21 @@ class Event
     }
 
     /**
-     * @param  string $id
-     *
-     * @return \Omise\Payment\Model\Api\Event|\Omise\Payment\Model\Api\Error
-     */
-    public function find($id)
-    {
-        return $this->apiEvent->find($id);
-    }
-
-    /**
-     * @param  \Omise\Payment\Model\Api\Event $event
+     * @param  Object $payload
      *
      * @return mixed
      */
-    public function handle(ApiEvent $event)
+    public function handle($payload)
     {
+        $event = $this->apiEvent->find($payload->id);
+
+        if (! $event instanceof ApiEvent) {
+            // TODO: Handle in case can't retrieve an event object from '$payload->id'.
+            return;
+        }
+
         if (! isset($this->events[$event->key])) {
+            // TODO: Handle in case can't retrieve an event object from '$payload->id'.
             return;
         }
 
