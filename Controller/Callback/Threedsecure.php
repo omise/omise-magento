@@ -54,12 +54,6 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
-            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our support if you have any questions.'));
-
-            return $this->redirect(self::PATH_CART);
-        }
-
         if (! $payment = $order->getPayment()) {
             $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our support if you have any questions.'));
 
@@ -77,6 +71,15 @@ class Threedsecure extends Action
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
+        }
+
+        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
+            if ($order->isCanceled()) {
+                $this->messageManager->addErrorMessage(__('This order has been canceled. Please contact our support if you have any questions.'));
+                return $this->redirect(self::PATH_CART);
+            }
+
+            return $this->redirect(self::PATH_SUCCESS);
         }
 
         try {

@@ -88,6 +88,16 @@ class Charge extends Object
     }
 
     /**
+     * @param  string $field
+     *
+     * @return mixed
+     */
+    public function getMetadata($field)
+    {
+        return (! is_null($this->metadata) && isset($this->metadata[$field])) ? $this->metadata[$field] : null;
+    }
+
+    /**
      * @return bool
      */
     public function isAuthorized()

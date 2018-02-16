@@ -29,27 +29,32 @@
                     <label>Secret key for live</label>
                     <comment>The "Live" mode secret key can be found in Omise Dashboard.</comment>
                 </field>
+                <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Webhook endpoint</label>
+                    <comment><![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook</frontend_model>
+                </field>
 
-                <group id="omise_cc" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="omise_cc" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Credit Card Solution</label>
                     <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="active" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Enable/Disable</label>
                         <comment>Enable Omise Credit Card Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc/active</config_path>
                     </field>
-                    <field id="payment_action" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <field id="payment_action" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                         <label>Payment Action</label>
                         <source_model>Magento\Authorizenet\Model\Source\PaymentAction</source_model>
                         <config_path>payment/omise_cc/payment_action</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="title" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_cc/title</config_path>
                     </field>
-                    <field id="3ds" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="3ds" translate="label comment" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>3-D Secure support</label>
                         <comment>Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.).</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -57,16 +62,16 @@
                     </field>
                 </group>
 
-                <group id="omise_offsite_internetbanking" translate="label" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Internet Banking Solution</label>
                     <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Enable/Disable</label>
                         <comment>Enable Omise Internet Banking Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_internetbanking/active</config_path>
                     </field>
-                    <field id="title" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="title" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_internetbanking/title</config_path>
