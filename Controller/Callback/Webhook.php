@@ -13,6 +13,10 @@ class Webhook extends Action
      */
     protected $event;
 
+    /**
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Omise\Payment\Model\Event            $event
+     */
     public function __construct(Context $context, Event $event)
     {
         $this->event = $event;

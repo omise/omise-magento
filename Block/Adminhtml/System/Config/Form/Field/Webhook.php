@@ -2,7 +2,12 @@
 
 namespace Omise\Payment\Block\Adminhtml\System\Config\Form\Field;
 
-class Webhook extends \Magento\Config\Block\System\Config\Form\Field
+use Magento\Backend\Block\Template\Context;
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Url;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+
+class Webhook extends Field
 {
     /**
      * @var \Magento\Framework\Url
@@ -15,15 +20,20 @@ class Webhook extends \Magento\Config\Block\System\Config\Form\Field
      * @param array                                   $data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Url $urlHelper,
-        array $data = []
+        Context $context,
+        Url     $urlHelper,
+        array   $data = []
     ) {
         $this->urlHelper = $urlHelper;
         parent::__construct($context, $data);
     }
 
-    protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    /**
+     * @param  \Magento\Framework\Data\Form\Element\AbstractElement $element
+     *
+     * @return string
+     */
+    protected function _getElementHtml(AbstractElement $element)
     {
         return $this->urlHelper->getRouteUrl('omise/callback/webhook', ['_secure' => true]);
     }

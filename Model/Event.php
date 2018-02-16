@@ -21,6 +21,11 @@ class Event
      */
     protected $apiEvent;
 
+    /**
+     * @param \Omise\Payment\Model\Omise     $omise
+     * @param \Omise\Payment\Model\Order     $order
+     * @param \Omise\Payment\Model\Api\Event $apiEvent
+     */
     public function __construct(
         Omise    $omise,
         Order    $order,

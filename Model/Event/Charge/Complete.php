@@ -117,7 +117,6 @@ class Complete
 
                 $order->save();
             }
-
         }
 
         return;

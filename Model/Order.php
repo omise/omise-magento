@@ -11,6 +11,9 @@ class Order
      */
     protected $order;
 
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
     public function __construct(MagentoOrder $order)
     {
         $this->order = $order;
@@ -19,7 +22,7 @@ class Order
     /**
      * @param  string $id
      *
-     * @return self
+     * @return \Magento\Sales\Model\Order
      */
     public function loadByIncrementId($id)
     {
