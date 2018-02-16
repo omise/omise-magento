@@ -69,11 +69,22 @@ class Complete
         }
 
         if ($order->isPaymentReview() || $order->getState() === Order::STATE_PENDING_PAYMENT) {
-            // Update order state and status.
-            $order->setState(MagentoOrder::STATE_PROCESSING);
-            $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
+            if ($charge->isFailed()) {
+                if ($order->hasInvoices()) {
+                    $invoice = $order->getInvoiceCollection()->getLastItem();
+                    $invoice->cancel();
+                    $order->addRelatedObject($invoice);
+                }
+
+                $order->registerCancellation(__('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.'))
+                      ->save();
+            }
 
             if ($charge->isSuccessful()) {
+                // Update order state and status.
+                $order->setState(MagentoOrder::STATE_PROCESSING);
+                $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
+
                 $invoice = $order->getInvoiceCollection()->getLastItem();
                 $invoice->setTransactionId($charge->id)->pay()->save();
 
@@ -85,9 +96,15 @@ class Complete
                         $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                     )
                 );
+
+                $order->save();
             }
 
             if ($charge->isAwaitCapture()) {
+                // Update order state and status.
+                $order->setState(MagentoOrder::STATE_PROCESSING);
+                $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
+
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_AUTH),
                     $payment->prependMessage(
@@ -97,9 +114,10 @@ class Complete
                         )
                     )
                 );
+
+                $order->save();
             }
 
-            $order->save();
         }
 
         return;
