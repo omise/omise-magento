@@ -68,7 +68,7 @@ class Complete
             return;
         }
 
-        if ($order->isPaymentReview()) {
+        if ($order->isPaymentReview() || $order->getState() === Order::STATE_PENDING_PAYMENT) {
             // Update order state and status.
             $order->setState(MagentoOrder::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
