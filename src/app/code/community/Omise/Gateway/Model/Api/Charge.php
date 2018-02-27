@@ -91,6 +91,34 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     }
 
     /**
+     * @return Omise_Gateway_Model_Api_Refundlist|Omise_Gateway_Model_Api_Error
+     */
+    public function refunds()
+    {
+        return Mage::getModel('omise_gateway/api_refundlist', $this->object->refunds());
+    }
+
+    /**
+     * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
+     */
+    public function reverse()
+    {
+        try {
+            $this->refresh($this->object->reverse());
+        } catch (Exception $e) {
+            return Mage::getModel(
+                'omise_gateway/api_error',
+                array(
+                    'code'    => 'failed_reverse',
+                    'message' => $e->getMessage(),
+                )
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isAuthorized()
