@@ -39,6 +39,17 @@
             </omise_gateway_resource>
         </models>
 
+        <events>
+            <sales_model_service_quote_submit_failure>
+                <observers>
+                    <omise_handle_sales_model_service_quote_submit_failure>
+                        <class>omise_gateway/observer</class>
+                        <method>handleQuoteSubmitFailure</method>
+                    </omise_handle_sales_model_service_quote_submit_failure>
+                </observers>
+            </sales_model_service_quote_submit_failure>
+        </events>
+
         <resources>
             <omise_gateway_setup>
                 <setup>
