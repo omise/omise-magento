@@ -10,15 +10,17 @@
  * @property string $charge
  * @property string $transaction
  * @property hash   $metadata
+ *
+ * @see      https://www.omise.co/refunds-api
  */
 class Omise_Gateway_Model_Api_Refund extends Omise_Gateway_Model_Api_Object
 {
     /**
      * @param \OmiseApiResource $resource
      */
-    public function __construct($resource)
+    public function __construct($resource = null)
     {
-        if ($resource['object'] !== 'refund') {
+        if ($resource && $resource['object'] !== 'refund') {
             // TODO: Handle error case.
             throw new Exception("Error Processing Request", 1);
         }

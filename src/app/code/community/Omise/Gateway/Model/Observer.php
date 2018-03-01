@@ -7,6 +7,9 @@ class Omise_Gateway_Model_Observer
         $omise->initNecessaryConstant();
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     */
     public function handleQuoteSubmitFailure($observer)
     {
         $order   = $observer->getEvent()->getOrder();
@@ -19,26 +22,20 @@ class Omise_Gateway_Model_Observer
                 break;
 
             case $payment->getMethodInstance() instanceof Omise_Gateway_Model_Payment_Creditcard:
-                $charge = $this->retrieveCharge(
+                if (! $payment->getMethodInstance()->getInfoInstance()->getAdditionalInformation('omise_charge_id')) {
+                    return;
+                }
+
+                $charge = Mage::getModel('omise_gateway/api_charge')->find(
                     $payment->getMethodInstance()->getInfoInstance()->getAdditionalInformation('omise_charge_id')
                 );
 
                 if ($charge->isAwaitCapture()) {
                     $charge->reverse();
                 } else if ($charge->isSuccessful()) {
-                    $charge->refunds()->create(array('amount' => $charge->amount));
+                    $charge->void(array('amount' => $charge->amount));
                 }
                 break;
         }
-    }
-
-    /**
-     * @param  string $id
-     *
-     * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
-     */
-    private function retrieveCharge($id)
-    {
-        return Mage::getModel('omise_gateway/api_charge')->find($id);
     }
 }

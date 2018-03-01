@@ -91,11 +91,33 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     }
 
     /**
-     * @return Omise_Gateway_Model_Api_Refundlist|Omise_Gateway_Model_Api_Error
+     * @param  array $params
+     *
+     * @return Omise_Gateway_Model_Api_Refund|Omise_Gateway_Model_Api_Error
      */
-    public function refunds()
+    public function refund($params)
     {
-        return Mage::getModel('omise_gateway/api_refundlist', $this->object->refunds());
+        try {
+            return Mage::getModel('omise_gateway/api_refund', $this->object->refunds()->create($params));
+        } catch (Exception $e) {
+            return Mage::getModel(
+                'omise_gateway/api_error',
+                array(
+                    'code'    => 'bad_request',
+                    'message' => $e->getMessage(),
+                )
+            );
+        }
+    }
+
+    /**
+     * @param  array $params
+     *
+     * @return Omise_Gateway_Model_Api_Refund|Omise_Gateway_Model_Api_Error
+     */
+    public function void($params)
+    {
+        return $this->refund(array_merge($params, array('void' => true)));
     }
 
     /**
