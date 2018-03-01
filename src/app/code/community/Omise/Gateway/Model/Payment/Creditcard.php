@@ -24,7 +24,9 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     protected $_isGateway        = true;
     protected $_canAuthorize     = true;
     protected $_canCapture       = true;
+    protected $_canRefund        = true;
     protected $_canReviewPayment = true;
+
 
     /**
      * flag if we need to run payment initialize while order place
@@ -245,6 +247,42 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         }
 
         $this->suspectToBeFailed($payment);
+    }
+
+    /**
+     * Refund a payment
+     *
+     * @param  Varien_Object $payment
+     * @param  float         $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (! $payment->getAdditionalInformation('omise_charge_id')) {
+            Mage::throwException(Mage::helper('omise_gateway')->__('Cannot find a charge transaction id.'));
+        }
+
+        $charge = Mage::getModel('omise_gateway/api_charge')->find(
+            $payment->getAdditionalInformation('omise_charge_id')
+        );
+
+        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
+            Mage::throwException(
+                Mage::helper('omise_gateway')->__(
+                    (($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'The charge transaction was not found')
+                    . '. Please contact support@omise.co if you have any questions.'
+                )
+            );
+        }
+
+        $refund = $charge->refund(array('amount' => $this->getAmountInSubunits($amount, $payment->getOrder()->getOrderCurrencyCode())));
+
+        if ($refund instanceof Omise_Gateway_Model_Api_Error) {
+            Mage::throwException(Mage::helper('omise_gateway')->__($refund->getMessage()));
+        }
+
+        return $this;
     }
 
     /**
