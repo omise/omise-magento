@@ -276,7 +276,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             );
         }
 
-        $refund = $charge->refund(array('amount' => $this->getAmountInSubunits($amount, $payment->getOrder()->getOrderCurrencyCode())));
+        $refund = $charge->refund(array('amount' => $this->getAmountInSubunits($amount, $payment->getOrder()->getBaseCurrencyCode())));
 
         if ($refund instanceof Omise_Gateway_Model_Api_Error) {
             Mage::throwException(Mage::helper('omise_gateway')->__($refund->getMessage()));
