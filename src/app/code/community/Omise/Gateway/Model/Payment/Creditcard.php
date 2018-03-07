@@ -119,8 +119,8 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         return $this->process(
             $payment,
             array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
-                'currency'    => $order->getOrderCurrencyCode(),
+                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
+                'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
                 'capture'     => $this->isAutoCapture() ? true : false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
@@ -148,8 +148,8 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         $charge = $this->process(
             $payment,
             array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
-                'currency'    => $order->getOrderCurrencyCode(),
+                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
+                'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
                 'capture'     => false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
@@ -189,8 +189,8 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         $charge = $this->process(
             $payment,
             array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
-                'currency'    => $order->getOrderCurrencyCode(),
+                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
+                'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
                 'capture'     => true,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
@@ -276,7 +276,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             );
         }
 
-        $refund = $charge->refund(array('amount' => $this->getAmountInSubunits($amount, $payment->getOrder()->getOrderCurrencyCode())));
+        $refund = $charge->refund(array('amount' => $this->getAmountInSubunits($amount, $payment->getOrder()->getBaseCurrencyCode())));
 
         if ($refund instanceof Omise_Gateway_Model_Api_Error) {
             Mage::throwException(Mage::helper('omise_gateway')->__($refund->getMessage()));

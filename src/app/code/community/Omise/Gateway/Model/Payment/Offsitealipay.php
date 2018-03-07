@@ -26,6 +26,19 @@ class Omise_Gateway_Model_Payment_Offsitealipay extends Omise_Gateway_Model_Paym
     protected $_isInitializeNeeded = true;
 
     /**
+     * Check method for processing with base currency
+     * Note that Alipay can only be used with Omise Thailand account and 'THB' currency
+     *
+     * @param  string $currencyCode
+     *
+     * @return boolean
+     */
+    public function canUseForCurrency($currencyCode)
+    {
+        return (strtoupper($currencyCode) === 'THB' && strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode()) === 'THB');
+    }
+
+    /**
      * Instantiate state and set it to state object
      *
      * @param string        $payment_action
@@ -77,8 +90,8 @@ class Omise_Gateway_Model_Payment_Offsitealipay extends Omise_Gateway_Model_Paym
         return parent::process(
             $payment,
             array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getOrderCurrencyCode()),
-                'currency'    => $order->getOrderCurrencyCode(),
+                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
+                'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Processing payment with Alipay. Magento order ID: ' . $order->getIncrementId(),
                 'offsite'     => 'alipay',
                 'return_uri'  => $this->getCallbackUri(),
