@@ -13,7 +13,6 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
         'JPY' => 1,
         'THB' => 100,
         'SGD' => 100,
-        'IDR' => 100,
         'USD' => 100,
         'EUR' => 100,
         'GBP' => 100
