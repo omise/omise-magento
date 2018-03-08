@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### [v1.14 _(Mar 5, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.14)
+
+#### ✨ Highlights
+
+- Add credit card refund capability (PR [#109](https://github.com/omise/omise-magento/pull/109))
+- Add multi-currency support (PR [#102](https://github.com/omise/omise-magento/pull/102))
+
+#### 🚀 Enhancements
+
+- Handle "sales_model_service_quote_submit_failure" event (PR [#108](https://github.com/omise/omise-magento/pull/108))
+
 ### [v1.13 _(Nov 17, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.13)
 
 #### ✨ Highlights
