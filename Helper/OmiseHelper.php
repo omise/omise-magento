@@ -30,6 +30,7 @@ class OmiseHelper extends AbstractHelper
             case 'THB':
             case 'IDR':
             case 'SGD':
+            case 'USD':  
                 // Convert to a small unit
                 $amount = $amount * 100;
                 break;
