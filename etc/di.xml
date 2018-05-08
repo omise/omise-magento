@@ -13,6 +13,15 @@
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseOffsiteInternetbankingCommandPool</argument>
         </arguments>
+    </virtualType>    <virtualType name="OmiseOffsiteAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Alipay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteAlipayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseOffsiteInternetbankingCommandPool</argument>
+        </arguments>
     </virtualType>
 
     <!-- Internet Banking :: Value Handler Pool -->
