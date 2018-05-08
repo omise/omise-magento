@@ -75,7 +75,14 @@
     </virtualType>
 
 <!--  Alipay -->
-
+    <!-- Internet Banking :: Value Handler Pool -->
+    <virtualType name="OmiseOffsiteAlipayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseOffsiteAlipayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
     <virtualType name="OmiseOffsiteAlipayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">OmiseOffsiteAlipayConfig</argument>
