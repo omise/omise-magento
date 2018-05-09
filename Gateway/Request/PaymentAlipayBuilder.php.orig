@@ -39,8 +39,8 @@ class PaymentAlipayBuilder implements BuilderInterface
         $method  = $payment->getPayment();
 
         return [
-            self::OFFSITE    => 'alipay',
-            self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', ['_secure' => true])
+            self::OFFSITE    => $method->getAdditionalInformation(OffsiteAlipayDataAssignObserver::OFFSITE),
+            self::RETURN_URI => $this->url->getUrl('omise/callback/alipay', ['_secure' => true])
         ];
     }
 }

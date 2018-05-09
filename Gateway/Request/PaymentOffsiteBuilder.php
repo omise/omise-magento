@@ -40,7 +40,7 @@ class PaymentOffsiteBuilder implements BuilderInterface
 
         return [
             self::OFFSITE    => $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE),
-            self::RETURN_URI => $this->url->getUrl('omise/callback/internetbanking', ['_secure' => true])
+            self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', ['_secure' => true])
         ];
     }
 }

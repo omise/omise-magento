@@ -20,7 +20,7 @@
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteAlipayValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
-            <argument name="commandPool" xsi:type="object">OmiseOffsiteAlipayCommandPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseOffsiteInternetbankingCommandPool</argument>
         </arguments>
     </virtualType>
 
@@ -119,7 +119,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAlipayBuilder</item>
+                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentOffsiteBuilder</item>
             </argument>
         </arguments>
     </virtualType>
