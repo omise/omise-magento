@@ -4,7 +4,6 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Observer\OffsiteAlipayDataAssignObserver;
 
 class PaymentAlipayBuilder implements BuilderInterface
 {
