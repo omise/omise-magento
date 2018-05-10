@@ -85,6 +85,7 @@
             </argument>
         </arguments>
     </virtualType>
+    
     <virtualType name="OmiseOffsiteAlipayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">OmiseOffsiteAlipayConfig</argument>
