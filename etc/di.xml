@@ -60,13 +60,13 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\InternetbankingPaymentOffsiteBuilder</item>
+                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentInternetbankingOffsiteBuilder</item>
             </argument>
         </arguments>
     </virtualType>
 
-<!--  Alipay payment solution-->
-   <virtualType name="OmiseOffsiteAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
+    <!--  Alipay payment solution-->
+    <virtualType name="OmiseOffsiteAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Alipay::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>

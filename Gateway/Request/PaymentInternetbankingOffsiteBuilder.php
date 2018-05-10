@@ -6,7 +6,7 @@ use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver;
 
-class InternetbankingPaymentOffsiteBuilder implements BuilderInterface
+class PaymentInternetbankingOffsiteBuilder implements BuilderInterface
 {
     /**
      * @var string
