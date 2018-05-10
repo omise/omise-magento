@@ -40,20 +40,6 @@ define(
             },
 
             /**
-             * Initiate observable fields
-             *
-             * @return this
-             */
-            initObservable: function() {
-                this._super()
-                    .observe([
-                        'omiseOffsite'
-                    ]);
-
-                return this;
-            },
-
-            /**
              * Is method available to display
              *
              * @return {boolean}
