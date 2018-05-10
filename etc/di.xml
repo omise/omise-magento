@@ -13,7 +13,7 @@
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseOffsiteInternetbankingCommandPool</argument>
         </arguments>
-    </virtualType>    
+    </virtualType>
 
     <!-- Internet Banking :: Value Handler Pool -->
     <virtualType name="OmiseOffsiteInternetbankingValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
