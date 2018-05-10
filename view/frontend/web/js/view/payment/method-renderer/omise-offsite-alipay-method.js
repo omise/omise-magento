@@ -54,20 +54,6 @@ define(
             },
 
             /**
-             * Get a checkout form data
-             *
-             * @return {Object}
-             */
-            getData: function() {
-                return {
-                    'method': this.item.method,
-                    'additional_data': {
-                        'offsite': this.omiseOffsite()
-                    }
-                };
-            },
-
-            /**
              * Is method available to display
              *
              * @return {boolean}

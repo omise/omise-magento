@@ -13,16 +13,7 @@
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseOffsiteInternetbankingCommandPool</argument>
         </arguments>
-    </virtualType>    <virtualType name="OmiseOffsiteAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
-        <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Alipay::CODE</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
-            <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteAlipayValueHandlerPool</argument>
-            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
-            <argument name="commandPool" xsi:type="object">OmiseOffsiteAlipayCommandPool</argument>
-        </arguments>
-    </virtualType>
+    </virtualType>    
 
     <!-- Internet Banking :: Value Handler Pool -->
     <virtualType name="OmiseOffsiteInternetbankingValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
@@ -69,13 +60,24 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentOffsiteBuilder</item>
+                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\InternetbankingPaymentOffsiteBuilder</item>
             </argument>
         </arguments>
     </virtualType>
 
-<!--  Alipay -->
-    <!-- Internet Banking :: Value Handler Pool -->
+<!--  Alipay payment solution-->
+   <virtualType name="OmiseOffsiteAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Alipay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteAlipayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseOffsiteAlipayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Alipay :: Value Handler Pool -->
     <virtualType name="OmiseOffsiteAlipayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -96,7 +98,7 @@
     </virtualType>
     <!-- /Value Handler -->
 
-    <!-- Internet Banking :: Command Pool -->
+    <!-- Alipay :: Command Pool -->
     <virtualType name="OmiseOffsiteAlipayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -123,8 +125,6 @@
             </argument>
         </arguments>
     </virtualType>
-
-
 
     <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
