@@ -1,7 +1,7 @@
 {
     "name": "omise/omise-magento",
     "description": "Accept payments on your Magento 2 website with Omise",
-    "keywords": ["omise", "payment", "debitcard", "creditcard", "magento"],
+    "keywords": ["omise", "payment", "debitcard", "creditcard", "internetbanking", "magento"],
     "homepage": "https://github.com/omise/omise-magento",
     "authors": [
         {
@@ -9,7 +9,7 @@
           "email": "support@omise.co"
         }
     ],
-    "version": "2.4.0-dev",
+    "version": "2.3.0-dev",
     "minimum-stability": "stable",
     "type": "magento2-module",
     "license": "MIT",
