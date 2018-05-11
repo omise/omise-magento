@@ -49,7 +49,7 @@ class PaymentOffsiteBuilder implements BuilderInterface
         ];
 
         $payment = SubjectReader::readPayment($buildSubject);
-        $method = $payment->getPayment();
+        $method  = $payment->getPayment();
         
         switch ($method->getMethod()) {
             case Alipay::CODE:
