@@ -6,13 +6,13 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment\Transaction;
-use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge;
+use Omise\Payment\Model\Config\Offsite\Internetbanking;
+use Omise\Payment\Model\Config\Offsite\Alipay;
 
-class Internetbanking extends Action
+class Offsite extends Action
 {
     /**
      * @var string
@@ -77,7 +77,7 @@ class Internetbanking extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($payment->getMethod() !== 'omise_offsite_internetbanking') {
+        if (! in_array($payment->getMethod(), array(Alipay::CODE, Internetbanking::CODE))) {
             $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);

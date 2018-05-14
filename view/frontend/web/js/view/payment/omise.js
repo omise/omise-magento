@@ -23,6 +23,13 @@ define(
             }
         );
 
+        rendererList.push(
+            {
+                type: 'omise_offsite_alipay',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-alipay-method'
+            }
+        );
+        
         return Component.extend({});
     }
 );

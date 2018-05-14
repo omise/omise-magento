@@ -65,6 +65,68 @@
         </arguments>
     </virtualType>
 
+    <!--  Alipay payment solution-->
+    <virtualType name="OmiseOffsiteAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Offsite\Alipay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseOffsiteAlipayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseOffsiteAlipayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Alipay :: Value Handler Pool -->
+    <virtualType name="OmiseOffsiteAlipayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseOffsiteAlipayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    
+    <virtualType name="OmiseOffsiteAlipayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseOffsiteAlipayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteAlipayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Offsite\Alipay::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
+    <!-- Alipay :: Command Pool -->
+    <virtualType name="OmiseOffsiteAlipayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">OmiseOffsiteAlipayInitializeCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteAlipayInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteAlipayRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="handler" xsi:type="object">OmiseOffsiteResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\AlipayInitializeCommandResponseValidator</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseOffsiteAlipayRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentOffsiteBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
