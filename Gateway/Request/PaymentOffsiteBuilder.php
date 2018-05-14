@@ -12,19 +12,16 @@ class PaymentOffsiteBuilder implements BuilderInterface
 {
 
     /**
-     *
      * @var string
      */
     const OFFSITE = 'offsite';
 
     /**
-     *
      * @var string
      */
     const RETURN_URI = 'return_uri';
 
     /**
-     *
      * @var \Magento\Framework\UrlInterface
      */
     protected $url;
@@ -35,7 +32,6 @@ class PaymentOffsiteBuilder implements BuilderInterface
     }
 
     /**
-     *
      * @param array $buildSubject
      *
      * @return array

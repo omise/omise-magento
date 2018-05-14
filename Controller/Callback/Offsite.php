@@ -76,7 +76,7 @@ class Offsite extends Action
 
             return $this->redirect(self::PATH_CART);
         }
-        
+
         if (! in_array($payment->getMethod(), array(Alipay::CODE, Internetbanking::CODE))) {
             $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
 
