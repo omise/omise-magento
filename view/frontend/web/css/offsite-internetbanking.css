@@ -1,3 +1,7 @@
+.omise-banking-fee-warn {
+    padding:1rem 0;
+}
+
 #omise_offsite_internetbankingForm {  }
 #omise_offsite_internetbankingForm li.items {
     border-bottom: 1px solid #eee;
@@ -33,6 +37,7 @@
 
 #omise_offsite_internetbankingForm .omise-banking-text-wrapper {
     display: inline-block;
+    line-height: 38px;
 }
 
 #omise_offsite_internetbankingForm .secondary-text {
