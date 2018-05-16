@@ -1,5 +1,5 @@
 .omise-banking-fee-warn {
-    padding:1rem 0;
+    padding: 1rem 0;
 }
 
 #omise_offsite_internetbankingForm {  }
@@ -38,11 +38,6 @@
 #omise_offsite_internetbankingForm .omise-banking-text-wrapper {
     display: inline-block;
     line-height: 38px;
-}
-
-#omise_offsite_internetbankingForm .secondary-text {
-    color: #aaa;
-    font-size: 80%;
 }
 
 /** SCB **/
