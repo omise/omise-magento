@@ -24,17 +24,13 @@ Submit your requirement as an issue to [https://github.com/omise/omise-magento/i
 
 #### Via Composer
 
-Installing the extension is done via [composer](https://getcomposer.org/). Firstly, add the following line to the main `composer.json` file in the Magento folder:
+Installing the extension is done via [composer](https://getcomposer.org/). Simply run the following command in the Magento root folder:
 
 <pre>
-...
-"require": {
-  ...<b>,</b>
-  <b>"omise/omise-magento": "@stable"</b>
-},
-...
+composer require "omise/omise-magento:@stable"
 </pre>
-Once this is done, simply run `composer update`, and the module should be automatically installed along with its dependencies. If you are installing the module to an existing (not new) Magento installation, you will probably need to run the following commands after running composer:
+
+Once this is done, run the following commands:
 
 <pre>
 php bin/magento module:enable Omise_Payment --clear-static-content
