@@ -7,6 +7,7 @@ use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Model\Config\Offsite\Alipay;
 use Omise\Payment\Model\Config\Offsite\Internetbanking;
 use Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver;
+use Omise\Payment\Observer\OffsiteAlipayDataAssignObserver;
 
 class PaymentOffsiteBuilder implements BuilderInterface
 {
@@ -15,7 +16,7 @@ class PaymentOffsiteBuilder implements BuilderInterface
      * @var string
      */
     const OFFSITE = 'offsite';
-
+    const SOURCE = 'source';
     /**
      * @var string
      */
@@ -49,10 +50,10 @@ class PaymentOffsiteBuilder implements BuilderInterface
         
         switch ($method->getMethod()) {
             case Alipay::CODE:
-                $paymentInfo[self::OFFSITE] = 'alipay';
+                $paymentInfo[self::SOURCE] = $method->getAdditionalInformation(OffsiteAlipayDataAssignObserver::SOURCE);
                 break;
             case Internetbanking::CODE:
-                $paymentInfo[self::OFFSITE] = $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE);
+                $paymentInfo[self::SOURCE] = $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::SOURCE);
                 break;
             default:
                 break;

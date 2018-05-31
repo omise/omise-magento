@@ -10,13 +10,13 @@ class OffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserve
     /**
      * @var string
      */
-    const OFFSITE = 'offsite';
+    const SOURCE = 'omise_source_token';
 
     /**
      * @var array
      */
     protected $additionalInformationList = [
-        self::OFFSITE
+        self::SOURCE
     ];
 
     /**
@@ -28,13 +28,13 @@ class OffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserve
 
         $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
 
-        if (! is_array($additionalData)) {
+        if (!is_array($additionalData)) {
             return;
         }
 
         $paymentInfo = $this->readPaymentModelArgument($observer);
 
-        $paymentInfo->setOffsite($additionalData[self::OFFSITE]);
+        $paymentInfo->setOffsite($additionalData[self::SOURCE]);
 
         foreach ($this->additionalInformationList as $additionalInformationKey) {
             if (isset($additionalData[$additionalInformationKey])) {
