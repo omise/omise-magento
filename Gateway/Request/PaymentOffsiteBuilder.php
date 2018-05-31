@@ -4,8 +4,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Observer\OmiseDataAssignObserver;
-
+use Omise\Payment\Observer\OmiseOffsiteDataAssignObserver;
 
 class PaymentOffsiteBuilder implements BuilderInterface
 {
@@ -13,7 +12,6 @@ class PaymentOffsiteBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const OFFSITE = 'offsite';
     const SOURCE = 'source';
     /**
      * @var string
@@ -44,7 +42,7 @@ class PaymentOffsiteBuilder implements BuilderInterface
             self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
                 '_secure' => true
             ]),
-            self::SOURCE => $method->getAdditionalInformation(OmiseDataAssignObserver::SOURCE),
+            self::SOURCE => $method->getAdditionalInformation(OmiseOffsiteDataAssignObserver::SOURCE),
         ];
         
         return $paymentInfo;

@@ -28,7 +28,7 @@ class OmiseOffsiteDataAssignObserver extends AbstractDataAssignObserver
 
         $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
 
-        if (!is_array($additionalData)) {
+        if (! is_array($additionalData)) {
             return;
         }
 
