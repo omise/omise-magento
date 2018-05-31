@@ -4,10 +4,8 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Model\Config\Offsite\Alipay;
-use Omise\Payment\Model\Config\Offsite\Internetbanking;
-use Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver;
-use Omise\Payment\Observer\OffsiteAlipayDataAssignObserver;
+use Omise\Payment\Observer\OmiseDataAssignObserver;
+
 
 class PaymentOffsiteBuilder implements BuilderInterface
 {
@@ -39,26 +37,16 @@ class PaymentOffsiteBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
-        $paymentInfo = [
-            self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
-                '_secure' => true
-            ])
-        ];
-
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
         
-        switch ($method->getMethod()) {
-            case Alipay::CODE:
-                $paymentInfo[self::SOURCE] = $method->getAdditionalInformation(OffsiteAlipayDataAssignObserver::SOURCE);
-                break;
-            case Internetbanking::CODE:
-                $paymentInfo[self::SOURCE] = $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::SOURCE);
-                break;
-            default:
-                break;
-        }
-
+        $paymentInfo = [
+            self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
+                '_secure' => true
+            ]),
+            self::SOURCE => $method->getAdditionalInformation(OmiseDataAssignObserver::SOURCE),
+        ];
+        
         return $paymentInfo;
     }
 }

@@ -4,10 +4,10 @@
     </event>
 
     <event name="payment_method_assign_data_omise_offsite_internetbanking">
-        <observer name="omise_data_assign" instance="Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver" />
+        <observer name="omise_data_assign" instance="Omise\Payment\Observer\OmiseOffsiteDataAssignObserver" />
     </event>
 
     <event name="payment_method_assign_data_omise_offsite_alipay">
-        <observer name="omise_data_assign" instance="Omise\Payment\Observer\OffsiteAlipayDataAssignObserver" />
+        <observer name="omise_data_assign" instance="Omise\Payment\Observer\OmiseOffsiteDataAssignObserver" />
     </event>
 </config>
