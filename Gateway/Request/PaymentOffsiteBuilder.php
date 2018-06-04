@@ -38,13 +38,11 @@ class PaymentOffsiteBuilder implements BuilderInterface
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
         
-        $paymentInfo = [
+        return [
             self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
                 '_secure' => true
             ]),
             self::SOURCE => $method->getAdditionalInformation(OmiseOffsiteDataAssignObserver::SOURCE),
         ];
-        
-        return $paymentInfo;
     }
 }
