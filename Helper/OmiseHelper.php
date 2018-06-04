@@ -27,9 +27,12 @@ class OmiseHelper extends AbstractHelper
     public function omiseAmountFormat($currency, $amount)
     {
         switch (strtoupper($currency)) {
-            case 'THB':
+            case 'EUR':                 
+            case 'GBP': 
             case 'IDR':
             case 'SGD':
+            case 'THB':
+            case 'USD':  
                 // Convert to a small unit
                 $amount = $amount * 100;
                 break;
