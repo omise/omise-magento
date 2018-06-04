@@ -10,7 +10,7 @@ class OmiseOffsiteDataAssignObserver extends AbstractDataAssignObserver
     /**
      * @var string
      */
-    const SOURCE = 'omise_source_token';
+    const SOURCE = 'omise_source';
 
     /**
      * @var array

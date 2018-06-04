@@ -29,12 +29,12 @@
             data-bind="attr: { id: getCode() + 'Form' }">
             <input 
                 type="hidden"
-                name="payment[omise_source_token]"
+                name="payment[omise_source]"
                 data-bind="attr: {
                 'id': getCode() + 'SourceToken',
                 'data-container': getCode() + '-source-token',
                 },
-                value: omiseSourceToken"/>
+                value: omiseSource"/>
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
                 <ul class="form-list">
                     <!-- SCB -->

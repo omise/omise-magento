@@ -74,7 +74,7 @@ define(
             initObservable: function () {
                 this._super()
                     .observe([
-                        'omiseSourceToken',
+                        'omiseSource',
                         'omiseOffsite'
                     ]);
 
@@ -90,7 +90,7 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'omise_source_token': this.omiseSourceToken(),
+                        'omise_source': this.omiseSource(),
                         'offsite': this.omiseOffsite()
                     }
                 };
@@ -120,7 +120,7 @@ define(
 
                 Omise.setPublicKey(this.getPublicKey());
                 Omise.createSource(this.omiseOffsite(), { amount: this.getOrderAmount(), currency: this.getOrderCurrency(), }, function (statusCode, response) {
-                    self.omiseSourceToken(response.id);
+                    self.omiseSource(response.id);
 
                     self.getPlaceOrderDeferredObject()
                         .fail(
