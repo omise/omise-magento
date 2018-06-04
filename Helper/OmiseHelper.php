@@ -29,7 +29,6 @@ class OmiseHelper extends AbstractHelper
         switch (strtoupper($currency)) {
             case 'EUR':                 
             case 'GBP': 
-            case 'IDR':
             case 'SGD':
             case 'THB':
             case 'USD':  
