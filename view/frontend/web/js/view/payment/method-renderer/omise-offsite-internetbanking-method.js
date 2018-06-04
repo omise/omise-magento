@@ -54,7 +54,7 @@ define(
              * @return {string}
              */
             getOrderAmount: function () {
-                return window.checkoutConfig.quoteData.grand_total * 100;
+                return window.checkoutConfig.quoteData.grand_total * (this.getOrderCurrency().toLowerCase()==='jpy' ? 1 : 100);
             },
 
             /**
