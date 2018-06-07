@@ -110,6 +110,13 @@ define(
             },
 
             /**
+             * @return {boolean}
+             */
+            isCustomerLoggedIn: function() {
+                return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn;
+            },
+
+            /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */

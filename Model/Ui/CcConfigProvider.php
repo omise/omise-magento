@@ -2,11 +2,17 @@
 namespace Omise\Payment\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
+use Magento\Customer\Model\Session as MagentoCustomerSession;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 
 class CcConfigProvider implements ConfigProviderInterface
 {
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $magentoCustomerSession;
+
     /**
      * @var \Magento\Payment\Model\CcConfig
      */
@@ -17,10 +23,11 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     protected $omiseCcConfig;
 
-    public function __construct(MagentoCcConfig $magentoCcConfig, OmiseCcConfig $omiseCcConfig)
+    public function __construct(MagentoCustomerSession $magentoCustomerSession, MagentoCcConfig $magentoCcConfig, OmiseCcConfig $omiseCcConfig)
     {
-        $this->magentoCcConfig = $magentoCcConfig;
-        $this->omiseCcConfig   = $omiseCcConfig;
+        $this->magentoCustomerSession = $magentoCustomerSession;
+        $this->magentoCcConfig        = $magentoCcConfig;
+        $this->omiseCcConfig          = $omiseCcConfig;
     }
 
     /**
@@ -37,8 +44,9 @@ class CcConfigProvider implements ConfigProviderInterface
                     'years'  => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcYears()],
                 ],
                 OmiseCcConfig::CODE => [
-                    'publicKey'      => $this->omiseCcConfig->getPublicKey(),
-                    'offsitePayment' => $this->omiseCcConfig->is3DSecureEnabled()
+                    'publicKey'          => $this->omiseCcConfig->getPublicKey(),
+                    'offsitePayment'     => $this->omiseCcConfig->is3DSecureEnabled(),
+                    'isCustomerLoggedIn' => $this->magentoCustomerSession->getCustomerId() ? true : false
                 ],
             ]
         ];

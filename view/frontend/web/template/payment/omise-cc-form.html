@@ -127,6 +127,17 @@
                                value: omiseCardSecurityCode"/>
                     </div>
                 </div>
+
+                <!-- ko if: isCustomerLoggedIn() -->
+                    <div class="field">
+                        <input  type="checkbox"
+                                data-bind="attr: {
+                                id: getCode() + 'SaveCard',
+                                },
+                                value: 1"/>
+                        <label data-bind="attr: {for: getCode() + 'SaveCard'}"><!-- ko i18n: 'Remember this card' --><!-- /ko --></label>
+                    </div>
+                <!-- /ko -->
             </fieldset>
         </form>
         <div class="checkout-agreements-block">
