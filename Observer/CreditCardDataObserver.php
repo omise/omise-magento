@@ -11,13 +11,16 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     /**
      * @var string
      */
-    const TOKEN = 'omise_card_token';
+    const TOKEN         = 'omise_card_token';
+    const REMEMBER_CARD = 'omise_save_card';
+
 
     /**
      * @var array
      */
     protected $additionalInformationList = [
-        self::TOKEN
+        self::TOKEN,
+        self::REMEMBER_CARD
     ];
 
     /**

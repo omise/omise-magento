@@ -54,7 +54,8 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'omise_card_token': this.omiseCardToken()
+                        'omise_card_token': this.omiseCardToken(),
+                        'omise_save_card': this.omiseSaveCard()
                     }
                 };
             },
@@ -81,7 +82,8 @@ define(
                         'omiseCardExpirationMonth',
                         'omiseCardExpirationYear',
                         'omiseCardSecurityCode',
-                        'omiseCardToken'
+                        'omiseCardToken',
+                        'omiseSaveCard'
                     ]);
 
                 return this;
