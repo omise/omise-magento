@@ -5,6 +5,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Payment\Model\InfoInterface;
+use Omise\Payment\Model\Customer;
 
 class CreditCardDataObserver extends AbstractDataAssignObserver
 {
@@ -22,6 +23,16 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
         self::TOKEN,
         self::REMEMBER_CARD
     ];
+
+    /**
+     * @var Omise\Payment\Model\Customer
+     */
+    protected $customer;
+
+    public function __construct(Customer $customer)
+    {
+        $this->customer = $customer;
+    }
 
     /**
      * Handle 'payment_method_assign_data_omise_cc' event.
@@ -42,6 +53,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
             return;
         }
 
+        $this->saveCustomerCardIfNeeded($this->readPaymentModelArgument($observer), $additionalData);
         $this->setPaymentAdditionalInformation($this->readPaymentModelArgument($observer), $additionalData);
     }
 
@@ -60,6 +72,19 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
                     $additionalData[$additionalInformationKey]
                 );
             }
+        }
+    }
+
+    /**
+     * @param  \Magento\Payment\Model\InfoInterface $paymentInfo
+     * @param  array                                $additionalData
+     *
+     * @return void
+     */
+    protected function saveCustomerCardIfNeeded(InfoInterface $paymentInfo, array $additionalData)
+    {
+        if (isset($additionalData[self::REMEMBER_CARD])) {
+            $customer = $this->customer->create();
         }
     }
 }
