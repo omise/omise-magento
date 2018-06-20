@@ -58,9 +58,8 @@ The table below is the settings for the module and the description for each sett
 | Secret key for test | Your TEST secret key can be found in your Dashboard.                                                                    |
 | Public key for live | Your LIVE public key can be found in your Dashboard.                                                                    |
 | Secret key for live | Your LIVE secret key can be found in your Dashboard.                                                                    |
-| Webhook for endpoint | Read-only url to enable post order payment notifications. See [webhooks](https://www.omise.co/api-webhooks)                                            |
-| Payment Action      | Set `Authorize Only` to only authorize a payment or `Authorize and Capture` to automatically capture after authorising. |
-| Title               | Title of Omise Payment gateway shown at checkout.                                                                       |
+| Webhook for endpoint | Read-only url to enable post order payment notifications. See [Webhooks](https://www.omise.co/api-webhooks) article.      |
+
 
 - To enable `sandbox` mode, select the setting for `Sandbox` to `Yes`.
 
@@ -74,7 +73,7 @@ If the setting for `Sandbox` is set to `Yes`, the keys for TEST will be used. If
 | ---------- | ---------------------------------- |                                                                            
 | Enable/Disable | Enables or disables 'Credit Card Payment method' | 
 | Payment Action | Set `Authorize Only` to only authorize a payment or `Authorize and Capture` to automatically capture payment after authorising. |
-| Title | Title displayed during checkout |
+| Title | Payment Title displayed during checkout |
 | 3-D Secure Support | Enable or disable support for additional Credit Card payment authorization |
 
 **Internet Banking Solution**
@@ -84,7 +83,7 @@ Available options
 | Setting             | Description   |
 | --------- | --------------------------- |                                                                            
 | Enable/Disable | Enables or disables 'Internet Banking Payment method'|
-| Title | Title displayed during checkout |
+| Title | Payment Title displayed during checkout |
 
 
 **Alipay Payment Solution**
@@ -93,7 +92,7 @@ Available options
 | Setting             | Description  |
 | ------------ | --------------------------------- |                                                                            
 | Enable/Disable | Enables or disables 'Alipay Payment method'|
-| Title | Title displayed during checkout |
+| Title |Payment Title displayed during checkout |
 
 ## Contributing
 
