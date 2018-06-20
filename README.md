@@ -1,4 +1,4 @@
-<p align="center"><a href='https://www.omise.co'><img src='https://assets.omise.co/assets/omise-logo-ed530feda8c7bf8b0c990d5e4cf8080a0f23d406fa4049a523ae715252d0dc54.svg' height='60'></a></p>
+<p align="center"><a href='https://www.omise.co'><img src='https://user-images.githubusercontent.com/10651523/41644923-b79aaf74-7499-11e8-9c7e-85186421c841.png' height='60'></a></p>
 
 **Omise Magento** is the official payment extension which provides support for Omise payment gateway for store builders working on the Magento platform.
 
@@ -7,7 +7,7 @@
 Our aim is to support as many versions of Magento as we can.  
 
 **Here's the list of versions we tested on:**
-- Magento (CE) 2.1.5, tested on PHP 7.0.16.
+- Magento (CE) 2.2.4, tested on PHP 7.0.29.
 
 To report problems for the version you're using, feel free to submit the issue through [GitHub's issue channel](https://github.com/omise/omise-magento/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
@@ -47,27 +47,53 @@ After installing, you can configure the module by:
 
 Settings is displayed under the `Omise` section.
 
-<p align="center"><a alt="omise-magento-install-manual-04" href='https://cloud.githubusercontent.com/assets/2154669/21477670/9918e2b4-cb76-11e6-8b8d-74ec746b7812.png'><img src='https://cloud.githubusercontent.com/assets/2154669/21477670/9918e2b4-cb76-11e6-8b8d-74ec746b7812.png'></a></p>
+<p align="center"><a alt="omise-magento-install-manual-04" href='https://user-images.githubusercontent.com/10651523/41642971-22ffd042-7494-11e8-8245-2fd5bbd3ae17.png'><img src='https://user-images.githubusercontent.com/10651523/41642971-22ffd042-7494-11e8-8245-2fd5bbd3ae17.png'></a></p>
 
 The table below is the settings for the module and the description for each setting.
 
 | Setting             | Description                                                                                                             |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Enable/Disable      | Enables or disables 'Omise Payment Module'                                                                              |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |                                                                            
 | Sandbox             | If selected, all transactions will be performed in TEST mode and TEST keys will be used                                 |
 | Public key for test | Your TEST public key can be found in your Dashboard.                                                                    |
 | Secret key for test | Your TEST secret key can be found in your Dashboard.                                                                    |
 | Public key for live | Your LIVE public key can be found in your Dashboard.                                                                    |
 | Secret key for live | Your LIVE secret key can be found in your Dashboard.                                                                    |
+| Webhook for endpoint | Read-only url to enable post order payment notifications. See [webhooks](https://www.omise.co/api-webhooks)                                            |
 | Payment Action      | Set `Authorize Only` to only authorize a payment or `Authorize and Capture` to automatically capture after authorising. |
 | Title               | Title of Omise Payment gateway shown at checkout.                                                                       |
 
-- To enable the module, select the setting for `Enable/Disable` to `Yes`.
 - To enable `sandbox` mode, select the setting for `Sandbox` to `Yes`.
 
 **Note:**
 
 If the setting for `Sandbox` is set to `Yes`, the keys for TEST will be used. If the setting for `Sandbox` is set to `No`, the keys for LIVE will be used.
+
+**Credit Card Solution**
+
+| Setting             | Description     |
+| ---------- | ---------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'Credit Card Payment method' | 
+| Payment Action | Set `Authorize Only` to only authorize a payment or `Authorize and Capture` to automatically capture payment after authorising. |
+| Title | Title displayed during checkout |
+| 3-D Secure Support | Enable or disable support for additional Credit Card payment authorization |
+
+**Internet Banking Solution**
+
+Available options
+
+| Setting             | Description   |
+| --------- | --------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'Internet Banking Payment method'|
+| Title | Title displayed during checkout |
+
+
+**Alipay Payment Solution**
+Available options
+
+| Setting             | Description  |
+| ------------ | --------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'Alipay Payment method'|
+| Title | Title displayed during checkout |
 
 ## Contributing
 
