@@ -1,5 +1,26 @@
 # CHANGELOG
 
+### [v2.3 _(Jun 20, 2018)_](https://github.com/omise/omise-magento/releases/tag/v2.3)
+
+#### ✨ Highlights
+
+- Introducing support of Alipay payments (PR [#113](https://github.com/omise/omise-magento/pull/113))
+- Support for Multistore Magento 2 configuration (PR [#117](https://github.com/omise/omise-magento/pull/117))
+- Simplify plugin installation process by using composer (PR [#112](https://github.com/omise/omise-magento/pull/112))
+- Introduce Webhook feature  (PR [#107](https://github.com/omise/omise-magento/pull/107))
+
+#### 🚀 Enhancements
+
+- Removed IDR currency support (PR [#122](https://github.com/omise/omise-magento/pull/122))
+- Updates config to apply Magento docs recommendations (PR [#120](https://github.com/omise/omise-magento/pull/120))
+- Removes link/dependency with Authorize.net module (PR [#118](https://github.com/omise/omise-magento/pull/118))
+- Removes specific fee warnings for Internet Banking + improve i18n (PR [#114](https://github.com/omise/omise-magento/pull/114))
+- Introduce API Object model structure and refactoring code (PR [#103](https://github.com/omise/omise-magento/pull/103))
+
+### 👾 Bug Fixes
+- Internet Banking: Proper set the order status if the returned charge status is set to 'pending' ([PR #105](https://github.com/omise/omise-magento/pull/105)).
+- Removed unused files ([PR #106](https://github.com/omise/omise-magento/pull/106))
+
 ### [v2.2 _(Nov 02, 2017)_](https://github.com/omise/omise-magento/releases/tag/v2.2)
 
 #### 🚀 Enhancements
