@@ -10,7 +10,8 @@ class CreditCardBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const CARD = 'card';
+    const CARD     = 'card';
+    const CUSTOMER = 'customer';
 
     /**
      * @param  array $buildSubject
@@ -22,8 +23,10 @@ class CreditCardBuilder implements BuilderInterface
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
 
-        return [
-            self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN)
-        ];
+        if ($method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER)) {
+            return [ self::CUSTOMER => $method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER) ];
+        }
+
+        return [ self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN) ];
     }
 }

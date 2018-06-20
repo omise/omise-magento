@@ -14,6 +14,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
      */
     const TOKEN         = 'omise_card_token';
     const REMEMBER_CARD = 'omise_save_card';
+    const CUSTOMER      = 'customer';
 
 
     /**
@@ -84,7 +85,12 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     protected function saveCustomerCardIfNeeded(InfoInterface $paymentInfo, array $additionalData)
     {
         if (isset($additionalData[self::REMEMBER_CARD])) {
-            $customer = $this->customer->create();
+            $customer = $this->customer->createOmiseCustomer($additionalData[self::TOKEN]);
+
+            $paymentInfo->setAdditionalInformation(
+                self::CUSTOMER,
+                $customer->id
+            );
         }
     }
 }

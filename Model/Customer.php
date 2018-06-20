@@ -42,11 +42,12 @@ class Customer
         $this->omise->defineApiKeys();
     }
 
-    public function create()
+    public function createOmiseCustomer($cardToken)
     {
         return $this->omiseCustomer->create([
             'email'       => $this->customer->getEmail(),
-            'description' => trim($this->customer->getFirstname() . ' ' . $this->customer->getLastname())
+            'description' => trim($this->customer->getFirstname() . ' ' . $this->customer->getLastname()),
+            'card'        => $cardToken
         ]);
     }
 }
