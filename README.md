@@ -69,6 +69,8 @@ If the setting for `Sandbox` is set to `Yes`, the keys for TEST will be used. If
 
 **Credit Card Solution**
 
+Available options
+
 | Setting             | Description     |
 | ---------- | ---------------------------------- |                                                                            
 | Enable/Disable | Enables or disables 'Credit Card Payment method' | 
@@ -87,6 +89,7 @@ Available options
 
 
 **Alipay Payment Solution**
+
 Available options
 
 | Setting             | Description  |
