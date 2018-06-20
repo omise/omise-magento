@@ -67,9 +67,8 @@ The table below is the settings for the module and the description for each sett
 
 If the setting for `Sandbox` is set to `Yes`, the keys for TEST will be used. If the setting for `Sandbox` is set to `No`, the keys for LIVE will be used.
 
-**Credit Card Solution**
-
-Available options
+**Credit Card Solution**  
+Available options:
 
 | Setting             | Description     |
 | ---------- | ---------------------------------- |                                                                            
@@ -78,9 +77,8 @@ Available options
 | Title | Payment Title displayed during checkout |
 | 3-D Secure Support | Enable or disable support for additional Credit Card payment authorization |
 
-**Internet Banking Solution**
-
-Available options
+**Internet Banking Solution**  
+Available options:
 
 | Setting             | Description   |
 | --------- | --------------------------- |                                                                            
@@ -88,9 +86,8 @@ Available options
 | Title | Payment Title displayed during checkout |
 
 
-**Alipay Payment Solution**
-
-Available options
+**Alipay Payment Solution**  
+Available options:
 
 | Setting             | Description  |
 | ------------ | --------------------------------- |                                                                            
