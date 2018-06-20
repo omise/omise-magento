@@ -1,4 +1,4 @@
-<p align="center"><a href='https://cloud.githubusercontent.com/assets/2154669/26388730/437207e4-4080-11e7-9955-2cd36bb3120f.png' height='60'></a></p>
+<p align="center"><a href='https://www.omise.co'><img src='https://cloud.githubusercontent.com/assets/2154669/26388730/437207e4-4080-11e7-9955-2cd36bb3120f.png' height='160'></a></p>
 
 **Omise Magento** is the official payment extension which provides support for Omise payment gateway for store builders working on the Magento platform.
 
