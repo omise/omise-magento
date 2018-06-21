@@ -8,6 +8,11 @@ use Omise\Payment\Model\Omise;
 class Customer
 {
     /**
+     * @var \Magento\Customer\Model\ResourceModel\Customer
+     */
+    protected $magentoCustomerResource;
+
+    /**
      * @var \Magento\Customer\Model\Session
      */
     protected $magentoCustomerSession;
@@ -28,14 +33,16 @@ class Customer
     protected $omise;
 
     public function __construct(
+        \Magento\Customer\Model\ResourceModel\Customer $magentoCustomerResource,
         MagentoCustomerSession $magentoCustomerSession,
         Omise                  $omise,
         OmiseCustomer          $omiseCustomer
     ) {
-        $this->magentoCustomerSession = $magentoCustomerSession;
-        $this->customer               = $this->magentoCustomerSession->getCustomer();
-        $this->omise                  = $omise;
-        $this->omiseCustomer          = $omiseCustomer;
+        $this->magentoCustomerResource = $magentoCustomerResource;
+        $this->magentoCustomerSession  = $magentoCustomerSession;
+        $this->customer                = $this->magentoCustomerSession->getCustomer();
+        $this->omise                   = $omise;
+        $this->omiseCustomer           = $omiseCustomer;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -44,10 +51,15 @@ class Customer
 
     public function createOmiseCustomer($cardToken)
     {
-        return $this->omiseCustomer->create([
+        $omiseCustomer = $this->omiseCustomer->create([
             'email'       => $this->customer->getEmail(),
             'description' => trim($this->customer->getFirstname() . ' ' . $this->customer->getLastname()),
             'card'        => $cardToken
         ]);
+
+        $this->customer->setData('omise_customer_id', $omiseCustomer->id);
+        $this->magentoCustomerResource->saveAttribute($this->customer, 'omise_customer_id');
+
+        return $omiseCustomer;
     }
 }
