@@ -34,7 +34,27 @@
                    'data-container': getCode() + '-cc-token',
                    },
                    value: omiseCardToken"/>
-            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}">
+
+            <!-- ko if: isCustomerHasCard() -->
+                <h4><!-- ko text: 'Select a card you want to proceed' --><!-- /ko --></h4>
+                <ul style="padding-left: 1.3em;">
+                    <!-- ko foreach: getCustomerCards() -->
+                        <li style="list-style: none; margin-bottom: 2rem;">
+                            <!-- ko ifnot: $index -->
+                                <input type="radio" /> <label><!-- ko text: label --><!-- /ko --></label>
+                            <!-- /ko -->
+                            <!-- ko if: $index -->
+                                <input type="radio" /> <label><!-- ko text: label --><!-- /ko --></label>
+                            <!-- /ko -->
+                        </li>
+                    <!-- /ko -->
+                    <li style="list-style: none;">
+                        <input type="radio" name="payment[omise_card_id]" /> <label><!-- ko i18n: 'Use a new card'--><!-- /ko --></label>
+                    </li>
+                </ul>
+            <!-- /ko -->
+
+            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !isCustomerHasCard()">
                 <div class="field number required">
                     <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
                         <span><!-- ko i18n: 'Card number'--><!-- /ko --></span>

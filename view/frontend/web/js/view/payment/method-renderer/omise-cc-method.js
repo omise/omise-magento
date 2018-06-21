@@ -119,6 +119,20 @@ define(
             },
 
             /**
+             * @return {boolean}
+             */
+            isCustomerHasCard: function() {
+                return this.getCustomerCards().length > 0;
+            },
+
+            /**
+             * @return {array}
+             */
+            getCustomerCards: function() {
+                return window.checkoutConfig.payment.omise_cc.cards;
+            },
+
+            /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */

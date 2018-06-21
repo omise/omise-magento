@@ -8,6 +8,25 @@ use OmiseCustomer;
 class Customer extends Object
 {
     /**
+     * @param  string $id
+     *
+     * @return Omise\Payment\Model\Api\Error|self
+     */
+    public function find($id)
+    {
+        try {
+            $this->refresh(OmiseCustomer::retrieve($id));
+        } catch (Exception $e) {
+            return new Error([
+                'code'    => 'not_found',
+                'message' => $e->getMessage()
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param  array $params
      *
      * @return Omise\Payment\Model\Api\Error|self
@@ -24,5 +43,13 @@ class Customer extends Object
         }
 
         return $this;
+    }
+
+    /**
+     * TODO: Need to refactor a bit
+     */
+    public function cards()
+    {
+        return $this->object->cards();
     }
 }

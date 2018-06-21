@@ -23,11 +23,21 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     protected $omiseCcConfig;
 
-    public function __construct(MagentoCustomerSession $magentoCustomerSession, MagentoCcConfig $magentoCcConfig, OmiseCcConfig $omiseCcConfig)
+    /**
+     * @var Omise\Payment\Model\Customer
+     */
+    protected $customer;
+
+    public function __construct(
+        MagentoCustomerSession        $magentoCustomerSession,
+        MagentoCcConfig               $magentoCcConfig,
+        OmiseCcConfig                 $omiseCcConfig,
+        \Omise\Payment\Model\Customer $customer)
     {
         $this->magentoCustomerSession = $magentoCustomerSession;
         $this->magentoCcConfig        = $magentoCcConfig;
         $this->omiseCcConfig          = $omiseCcConfig;
+        $this->customer               = $customer;
     }
 
     /**
@@ -46,9 +56,29 @@ class CcConfigProvider implements ConfigProviderInterface
                 OmiseCcConfig::CODE => [
                     'publicKey'          => $this->omiseCcConfig->getPublicKey(),
                     'offsitePayment'     => $this->omiseCcConfig->is3DSecureEnabled(),
-                    'isCustomerLoggedIn' => $this->magentoCustomerSession->getCustomerId() ? true : false
+                    'isCustomerLoggedIn' => $this->magentoCustomerSession->getCustomerId() ? true : false,
+                    'cards'              => $this->getCards(),
                 ],
             ]
         ];
+    }
+
+    /**
+     * @return  array
+     */
+    public function getCards()
+    {
+        $cards = $this->customer->cards();
+        $data = [];
+
+        foreach($cards['data'] as $card) {
+            $label = $card['brand'] . ' **** ' . $card['last_digits'];
+            $data[] = [
+                'value' => $card['id'],
+                'label' => $label
+            ];
+        }
+
+        return $data;
     }
 }
