@@ -69,6 +69,11 @@ class CcConfigProvider implements ConfigProviderInterface
     public function getCards()
     {
         $cards = $this->customer->cards();
+
+        if (! $cards) {
+            return [];
+        }
+
         $data = [];
 
         foreach($cards['data'] as $card) {
