@@ -63,6 +63,14 @@ class Customer
         return $omiseCustomer;
     }
 
+    /**
+     * @return string
+     */
+    public function id()
+    {
+        return $this->customer->getData('omise_customer_id');
+    }
+
     public function cards()
     {
         $customer = $this->omiseCustomer->find($this->customer->getData('omise_customer_id'));
