@@ -14,7 +14,12 @@ class PaymentOffsiteBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const OFFSITE = 'offsite';
+    const SOURCE = 'source';
+
+    /**
+     * @var string
+     */
+    const SOURCE_TYPE = 'type';
 
     /**
      * @var string
@@ -49,12 +54,14 @@ class PaymentOffsiteBuilder implements BuilderInterface
         
         switch ($method->getMethod()) {
             case Alipay::CODE:
-                $paymentInfo[self::OFFSITE] = 'alipay';
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'alipay'
+                ];
                 break;
             case Internetbanking::CODE:
-                $paymentInfo[self::OFFSITE] = $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE);
-                break;
-            default:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE)
+                ];
                 break;
         }
 

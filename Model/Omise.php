@@ -55,7 +55,7 @@ class Omise
      *
      * @return void
      */
-    public function defineApiVersion($version = '2015-11-17')
+    public function defineApiVersion($version = '2017-11-02')
     {
         if (! defined('OMISE_API_VERSION')) {
             define('OMISE_API_VERSION', $version);
