@@ -5,18 +5,18 @@ use Magento\Framework\Event\Observer;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 
-class OffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserver
+class OmiseOffsiteDataAssignObserver extends AbstractDataAssignObserver
 {
     /**
      * @var string
      */
-    const OFFSITE = 'offsite';
+    const SOURCE = 'omise_source';
 
     /**
      * @var array
      */
     protected $additionalInformationList = [
-        self::OFFSITE
+        self::SOURCE
     ];
 
     /**
@@ -34,7 +34,7 @@ class OffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserve
 
         $paymentInfo = $this->readPaymentModelArgument($observer);
 
-        $paymentInfo->setOffsite($additionalData[self::OFFSITE]);
+        $paymentInfo->setOffsite($additionalData[self::SOURCE]);
 
         foreach ($this->additionalInformationList as $additionalInformationKey) {
             if (isset($additionalData[$additionalInformationKey])) {

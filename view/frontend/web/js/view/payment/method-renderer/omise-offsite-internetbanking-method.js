@@ -35,8 +35,35 @@ define(
              *
              * @return {string}
              */
-            getCode: function() {
+            getCode: function () {
                 return 'omise_offsite_internetbanking';
+            },
+
+            /**
+             * Get Omise public key
+             *
+             * @return {string}
+             */
+            getPublicKey: function () {
+                return window.checkoutConfig.payment.omise_cc.publicKey;
+            },
+
+            /**
+             * Get order total amount
+             *
+             * @return {string}
+             */
+            getOrderAmount: function () {
+                return window.checkoutConfig.quoteData.grand_total * (this.getOrderCurrency().toLowerCase()==='jpy' ? 1 : 100);
+            },
+
+            /**
+             * Get order currency
+             *
+             * @return {string}
+             */
+            getOrderCurrency: function () {
+                return window.checkoutConfig.quoteData.quote_currency_code;
             },
 
             /**
@@ -44,9 +71,10 @@ define(
              *
              * @return this
              */
-            initObservable: function() {
+            initObservable: function () {
                 this._super()
                     .observe([
+                        'omiseSource',
                         'omiseOffsite'
                     ]);
 
@@ -58,10 +86,11 @@ define(
              *
              * @return {Object}
              */
-            getData: function() {
+            getData: function () {
                 return {
                     'method': this.item.method,
                     'additional_data': {
+                        'omise_source': this.omiseSource(),
                         'offsite': this.omiseOffsite()
                     }
                 };
@@ -72,7 +101,7 @@ define(
              *
              * @return {boolean}
              */
-            isActive: function() {
+            isActive: function () {
                 return true;
             },
 
@@ -82,54 +111,58 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function(data, event) {
+            placeOrder: function (data, event) {
                 var self = this;
 
                 if (event) {
                     event.preventDefault();
                 }
 
-                self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function(response) {
-                            var self = this;
+                Omise.setPublicKey(this.getPublicKey());
+                Omise.createSource(this.omiseOffsite(), { amount: this.getOrderAmount(), currency: this.getOrderCurrency(), }, function (statusCode, response) {
+                    self.omiseSource(response.id);
 
-                            var serviceUrl = urlBuilder.createUrl(
-                                '/orders/:order_id/omise-offsite',
-                                {
-                                    order_id: response
-                                }
-                            );
+                    self.getPlaceOrderDeferredObject()
+                        .fail(
+                            function (response) {
+                                errorProcessor.process(response, self.messageContainer);
+                                fullScreenLoader.stopLoader();
+                                self.isPlaceOrderActionAllowed(true);
+                            }
+                        ).done(
+                            function (response) {
+                                var self = this;
 
-                            storage.get(serviceUrl, false)
-                                .fail(
-                                    function (response) {
-                                        errorProcessor.process(response, self.messageContainer);
-                                        fullScreenLoader.stopLoader();
-                                        self.isPlaceOrderActionAllowed(true);
+                                var serviceUrl = urlBuilder.createUrl(
+                                    '/orders/:order_id/omise-offsite',
+                                    {
+                                        order_id: response
                                     }
-                                )
-                                .done(
-                                    function (response) {
-                                        if (response) {
-                                            $.mage.redirect(response.authorize_uri);
-                                        } else {
+                                );
+
+                                storage.get(serviceUrl, false)
+                                    .fail(
+                                        function (response) {
                                             errorProcessor.process(response, self.messageContainer);
                                             fullScreenLoader.stopLoader();
                                             self.isPlaceOrderActionAllowed(true);
                                         }
-                                    }
-                                );
-                        }
-                    );
-
-                return true;
+                                    )
+                                    .done(
+                                        function (response) {
+                                            if (response) {
+                                                $.mage.redirect(response.authorize_uri);
+                                            } else {
+                                                errorProcessor.process(response, self.messageContainer);
+                                                fullScreenLoader.stopLoader();
+                                                self.isPlaceOrderActionAllowed(true);
+                                            }
+                                        }
+                                    );
+                            }
+                        );
+                    return true;
+                });
             }
         });
     }
