@@ -1,6 +1,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="payment_method_assign_data_omise_cc">
-        <observer name="omise_data_assign" instance="Omise\Payment\Observer\OmiseDataAssignObserver" />
+        <observer name="omise_data_assign" instance="Omise\Payment\Observer\CreditCardDataObserver" />
     </event>
 
     <event name="payment_method_assign_data_omise_offsite_internetbanking">

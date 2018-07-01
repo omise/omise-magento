@@ -5,18 +5,18 @@ use Magento\Framework\Event\Observer;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 
-class OmiseDataAssignObserver extends AbstractDataAssignObserver
+class CreditCardDataObserver extends AbstractDataAssignObserver
 {
     /**
      * @var string
      */
-    const OMISE_CARD_TOKEN = 'omise_card_token';
+    const TOKEN = 'omise_card_token';
 
     /**
      * @var array
      */
     protected $additionalInformationList = [
-        self::OMISE_CARD_TOKEN
+        self::TOKEN
     ];
 
     /**
