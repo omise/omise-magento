@@ -4,6 +4,7 @@ namespace Omise\Payment\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
+use Magento\Payment\Model\InfoInterface;
 
 class CreditCardDataObserver extends AbstractDataAssignObserver
 {
@@ -20,20 +21,35 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     ];
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * Handle 'payment_method_assign_data_omise_cc' event.
+     *
+     * @param  \Magento\Framework\Event\Observer $observer
+     *
+     * @return void
+     *
+     * @see    etc/events.xml
+     * @see    Magento\Payment\Model\Method\AbstractMethod::assignData()
      */
     public function execute(Observer $observer)
     {
-        $dataObject = $this->readDataArgument($observer);
-
+        $dataObject     = $this->readDataArgument($observer);
         $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
 
-        if (!is_array($additionalData)) {
+        if (! is_array($additionalData)) {
             return;
         }
 
-        $paymentInfo = $this->readPaymentModelArgument($observer);
+        $this->setPaymentAdditionalInformation($this->readPaymentModelArgument($observer), $additionalData);
+    }
 
+    /**
+     * @param  \Magento\Payment\Model\InfoInterface $paymentInfo
+     * @param  array                                $additionalData
+     *
+     * @return void
+     */
+    protected function setPaymentAdditionalInformation(InfoInterface $paymentInfo, array $additionalData)
+    {
         foreach ($this->additionalInformationList as $additionalInformationKey) {
             if (isset($additionalData[$additionalInformationKey])) {
                 $paymentInfo->setAdditionalInformation(
