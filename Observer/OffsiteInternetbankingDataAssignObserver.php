@@ -34,8 +34,6 @@ class OffsiteInternetbankingDataAssignObserver extends AbstractDataAssignObserve
 
         $paymentInfo = $this->readPaymentModelArgument($observer);
 
-        $paymentInfo->setOffsite($additionalData[self::OFFSITE]);
-
         foreach ($this->additionalInformationList as $additionalInformationKey) {
             if (isset($additionalData[$additionalInformationKey])) {
                 $paymentInfo->setAdditionalInformation(

@@ -34,8 +34,6 @@ class OmiseDataAssignObserver extends AbstractDataAssignObserver
 
         $paymentInfo = $this->readPaymentModelArgument($observer);
 
-        $paymentInfo->setOmiseCardToken($additionalData[self::OMISE_CARD_TOKEN]);
-
         foreach ($this->additionalInformationList as $additionalInformationKey) {
             if (isset($additionalData[$additionalInformationKey])) {
                 $paymentInfo->setAdditionalInformation(
