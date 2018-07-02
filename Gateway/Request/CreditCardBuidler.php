@@ -5,7 +5,7 @@ use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Observer\CreditCardDataObserver;
 
-class PaymentCcTokenBuilder implements BuilderInterface
+class CreditCardBuilder implements BuilderInterface
 {
     /**
      * @var string
