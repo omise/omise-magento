@@ -49,12 +49,21 @@ define(
             },
 
             /**
+             * Get store currency
+             *
+             * @return {string}
+             */
+            getStoreCurrency: function () {
+                return window.checkoutConfig.quoteData.store_currency_code;
+            },
+
+            /**
              * Is method available to display
              *
              * @return {boolean}
              */
             isActive: function () {
-                return this.getOrderCurrency().toLowerCase() === 'thb';
+                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';;
             },
 
             /**

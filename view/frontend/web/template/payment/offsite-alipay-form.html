@@ -12,10 +12,14 @@
                enable: isActive()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
-            <span 
-                data-bind="i18n: '(option available only for orders in Thai baht)',
-                visible: !isActive()"></span>
         </label>
+        <div data-bind="visible: !isActive()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <div data-bind="i18n: 'Option available only for orders in THB'"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
