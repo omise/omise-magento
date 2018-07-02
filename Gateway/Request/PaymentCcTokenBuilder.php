@@ -3,7 +3,7 @@ namespace Omise\Payment\Gateway\Request;
 
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Observer\OmiseDataAssignObserver;
+use Omise\Payment\Observer\CreditCardDataObserver;
 
 class PaymentCcTokenBuilder implements BuilderInterface
 {
@@ -23,7 +23,7 @@ class PaymentCcTokenBuilder implements BuilderInterface
         $method  = $payment->getPayment();
 
         return [
-            self::CARD => $method->getAdditionalInformation(OmiseDataAssignObserver::OMISE_CARD_TOKEN)
+            self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN)
         ];
     }
 }
