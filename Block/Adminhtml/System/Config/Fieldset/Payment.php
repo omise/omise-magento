@@ -7,24 +7,6 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\Fieldset;
 class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
 {
     /**
-     * @param \Magento\Backend\Block\Context $context
-     * @param \Magento\Backend\Model\Auth\Session $authSession
-     * @param \Magento\Framework\View\Helper\Js $jsHelper
-     * @param \Magento\Config\Model\Config $backendConfig
-     * @param array $data
-     */
-    public function __construct(
-        \Magento\Backend\Block\Context $context,
-        \Magento\Backend\Model\Auth\Session $authSession,
-        \Magento\Framework\View\Helper\Js $jsHelper,
-        \Magento\Config\Model\Config $backendConfig,
-        array $data = []
-    ) {
-        $this->_backendConfig = $backendConfig;
-        parent::__construct($context, $authSession, $jsHelper, $data);
-    }
-
-    /**
      * Add custom css class
      *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
@@ -45,28 +27,25 @@ class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
     {
         $htmlId = $element->getHtmlId();
 
-        return  '<div class="config-heading">' .
-                    '<div class="button-container">' .
-                    '<button type="button" class="button action-configure" id="' .
-                    $htmlId .
-                    '-head" onclick="omiseButtonToggle.call(this, \'' .
-                    $htmlId .
-                    "', '" .
-                $this->getUrl(
-                    'adminhtml/*/state'
-                ) . '\'); return false;"><span class="state-closed">' . __(
-                    'Configure'
-                ) . '</span><span class="state-opened">' . __(
-                    'Close'
-                ) . '</span></button>' .
-                    '</div>' .
-                    '<div class="heading"><strong>' .
-                $element->getLegend() . '</strong>' .
-                    '<span class="heading-intro">' . __(
-                    'Accept credit/debit cards and Alipay and Internet Banking Payments in your Magento store'
-                ) . '<br/></span>' .
-                    '<div class="config-alt"></div>' .
-                    '</div></div>';
+        return
+            '<div class="config-heading">
+                <div class="button-container">
+                    <button type="button"
+                            class="button action-configure"
+                            id="' . $htmlId . '-head"
+                            onclick="omiseButtonToggle.call(this, \'' . $htmlId . "', '" . $this->getUrl('adminhtml/*/state') . '\'); return false;">
+                        <span class="state-closed">' . __('Configure') . '</span>
+                        <span class="state-opened">' . __('Close') . '</span>
+                    </button>
+                </div>
+                <div class="heading">
+                    <strong>' . $element->getLegend() . '</strong>
+                    <span class="heading-intro">' .
+                        __('Accept credit/debit cards and Alipay and Internet Banking Payments in your Magento store') . '<br/>
+                    </span>
+                    <div class="config-alt"></div>
+                </div>
+            </div>';
     }
 
     /**
