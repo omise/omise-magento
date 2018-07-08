@@ -163,12 +163,12 @@
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
-            <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseCreditCardCommandPool</argument>
         </arguments>
     </virtualType>
 
     <!-- Credit Card :: Command Pool -->
-    <virtualType name="OmiseCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+    <virtualType name="OmiseCreditCardCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="initialize" xsi:type="string">OmiseCreditCardInitializeCommand</item>
@@ -182,7 +182,7 @@
 
     <virtualType name="OmiseCreditCardInitializeCommand" type="Omise\Payment\Gateway\Command\CreditCardStrategyCommand">
         <arguments>
-            <argument name="commandPool" xsi:type="object">OmiseCommandPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseCreditCardCommandPool</argument>
         </arguments>
     </virtualType>
 
