@@ -201,7 +201,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuidler</item>
+                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
                 <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeBuilder</item>
                 <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\PaymentThreeDSecureBuilder</item>
             </argument>
@@ -223,7 +223,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuidler</item>
+                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
                 <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeCaptureBuilder</item>
                 <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\PaymentThreeDSecureBuilder</item>
             </argument>
@@ -274,7 +274,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuidler</item>
+                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
                 <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeBuilder</item>
             </argument>
         </arguments>
@@ -296,7 +296,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuidler</item>
+                <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
                 <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeCaptureBuilder</item>
             </argument>
         </arguments>
