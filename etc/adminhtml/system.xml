@@ -82,7 +82,7 @@
                     <comment>Enables customers to pay using Alipay method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Alipay Peyment Solution.</comment>
+                        <comment>Enable Alipay Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_alipay/active</config_path>
                     </field>
