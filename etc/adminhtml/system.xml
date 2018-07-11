@@ -2,8 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
-            <group id="omise" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="omise" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Omise Payment Gateway</label>
+                <fieldset_css>omise-section</fieldset_css>
+                <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
+                <attribute type="displayIn">recommended_solutions</attribute>
                 <field id="basic_settings" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Basic Setting</label>
                     <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
