@@ -48,20 +48,11 @@
 
     <virtualType name="OmiseOffsiteInternetbankingInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteInternetbankingRequest</argument>
+            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
             <argument name="handler" xsi:type="object">OmiseOffsiteResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\InternetbankingInitializeCommandResponseValidator</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseOffsiteInternetbankingRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
-        <arguments>
-            <argument name="builders" xsi:type="array">
-                <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentOffsiteBuilder</item>
-            </argument>
         </arguments>
     </virtualType>
 
@@ -110,15 +101,17 @@
 
     <virtualType name="OmiseOffsiteAlipayInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
-            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteAlipayRequest</argument>
+            <argument name="requestBuilder" xsi:type="object">OmiseOffsiteRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCharge</argument>
             <argument name="handler" xsi:type="object">OmiseOffsiteResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\Offsite\AlipayInitializeCommandResponseValidator</argument>
         </arguments>
     </virtualType>
+    <!-- /Command Pool -->
 
-    <virtualType name="OmiseOffsiteAlipayRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+    <!-- Offsite Request -->
+    <virtualType name="OmiseOffsiteRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
@@ -126,16 +119,10 @@
             </argument>
         </arguments>
     </virtualType>
+    <!-- /Offsite Request -->
 
-    <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
-        <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseOffsiteResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <!-- Offsite Response Handlers -->
+     <virtualType name="OmiseOffsiteResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
@@ -153,7 +140,17 @@
             </argument>
         </arguments>
     </virtualType>
-    <!-- /Command Pool -->
+    <!-- /Offsite Response Handlers-->
+
+    <!-- Response Handler -->
+    <virtualType name="OmiseResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- /Response Handler-->
 
     <!-- Credit Card payment solution -->
     <virtualType name="OmiseCcAdapter" type="Magento\Payment\Model\Method\Adapter">
@@ -185,6 +182,7 @@
             <argument name="commandPool" xsi:type="object">OmiseCreditCardCommandPool</argument>
         </arguments>
     </virtualType>
+    <!-- /Credit Card :: Command Pool -->
 
     <!-- Credit Card :: Authorize with 3-D Secure payment -->
     <virtualType name="OmiseAuthorizeThreeDSecureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
@@ -207,6 +205,7 @@
             </argument>
         </arguments>
     </virtualType>
+    <!-- /Credit Card :: Authorize with 3-D Secure payment -->
 
     <!-- Credit Card :: Authorize and Capture with 3-D Secure payment -->
     <virtualType name="OmiseCaptureThreeDSecureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
