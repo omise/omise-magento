@@ -16,5 +16,10 @@ class PaymentDetailsHandler implements HandlerInterface
 
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
+        $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
+        
+        if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
+            $payment->setAdditionalInformation('barcode', $response['charge']->source['references']['barcode']);
+        }
     }
 }

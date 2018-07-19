@@ -5,6 +5,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Model\Config\Offsite\Alipay;
+use Omise\Payment\Model\Config\Offsite\Tesco;
 use Omise\Payment\Model\Config\Offsite\Internetbanking;
 use Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver;
 
@@ -56,6 +57,11 @@ class PaymentOffsiteBuilder implements BuilderInterface
             case Alipay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'alipay'
+                ];
+                break;
+            case Tesco::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'bill_payment_tesco_lotus'
                 ];
                 break;
             case Internetbanking::CODE:

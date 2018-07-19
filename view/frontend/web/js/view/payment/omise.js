@@ -30,6 +30,13 @@ define(
             }
         );
         
+        rendererList.push(
+            {
+                type: 'omise_offsite_tesco',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-tesco-method'
+            }
+        );
+
         return Component.extend({});
     }
 );
