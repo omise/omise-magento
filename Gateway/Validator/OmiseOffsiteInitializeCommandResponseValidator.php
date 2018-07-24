@@ -1,11 +1,11 @@
 <?php
-namespace Omise\Payment\Gateway\Validator\Offsite;
+namespace Omise\Payment\Gateway\Validator;
 
 use Omise\Payment\Gateway\Validator\CommandResponseValidator;
 use Omise\Payment\Gateway\Validator\Message\Invalid as ErrorInvalid;
 use Omise\Payment\Model\Api\Charge;
 
-class AlipayInitializeCommandResponseValidator extends CommandResponseValidator
+class OmiseOffsiteInitializeCommandResponseValidator extends CommandResponseValidator
 {
     /**
      * @param  \Omise\Payment\Model\Api\Charge $charge
