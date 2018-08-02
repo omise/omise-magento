@@ -23,7 +23,7 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     }
 
     /**
-     * Return tesco lotus payment infromation
+     * Return HTML code with tesco lotus payment infromation
      *
      * @return string
      */
@@ -39,12 +39,13 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
         if (!$tescoCodeImageUrl) {
             return '';
         }
+
         $this->addData(
             [
                 'tesco_code_url' => $tescoCodeImageUrl,
             ]
         );
-        return parent::_toHtml();
 
+        return parent::_toHtml();
     }
 }
