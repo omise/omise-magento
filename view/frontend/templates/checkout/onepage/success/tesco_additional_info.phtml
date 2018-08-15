@@ -1,3 +1,4 @@
 
-<p> <?= $block->escapeHtml(__('To finish payment print code below. You can make payment in any Tesco Lotus Store. Code is valid in next 24 hours only. After that time your order will be cancelled.')); ?></p>
+<p> <?= __('To finish payment print code below. You can make payment in any Tesco Lotus Store. Code is valid in next <b>24 hours only</b>. After that time your order will be cancelled.'); ?></p>
+<p style="margin:.5rem 0"><?= $block->escapeHtml(__('Amount to pay'))?>: <b><?= $block->getOrderAmount();?></b></p>
 <p><img src="<?= $block->escapeUrl($block->getTescoCodeUrl()) ?>" /></p>
