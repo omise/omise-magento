@@ -2,17 +2,12 @@
 namespace Omise\Payment\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Customer\Model\Session as MagentoCustomerSession;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
+use Omise\Payment\Model\Customer;
 
 class CcConfigProvider implements ConfigProviderInterface
 {
-    /**
-     * @var \Magento\Customer\Model\Session
-     */
-    protected $magentoCustomerSession;
-
     /**
      * @var \Magento\Payment\Model\CcConfig
      */
@@ -29,15 +24,13 @@ class CcConfigProvider implements ConfigProviderInterface
     protected $customer;
 
     public function __construct(
-        MagentoCustomerSession        $magentoCustomerSession,
-        MagentoCcConfig               $magentoCcConfig,
-        OmiseCcConfig                 $omiseCcConfig,
-        \Omise\Payment\Model\Customer $customer)
-    {
-        $this->magentoCustomerSession = $magentoCustomerSession;
-        $this->magentoCcConfig        = $magentoCcConfig;
-        $this->omiseCcConfig          = $omiseCcConfig;
-        $this->customer               = $customer;
+        MagentoCcConfig $magentoCcConfig,
+        OmiseCcConfig   $omiseCcConfig,
+        Customer        $customer
+    ) {
+        $this->magentoCcConfig = $magentoCcConfig;
+        $this->omiseCcConfig   = $omiseCcConfig;
+        $this->customer        = $customer;
     }
 
     /**
@@ -56,7 +49,7 @@ class CcConfigProvider implements ConfigProviderInterface
                 OmiseCcConfig::CODE => [
                     'publicKey'          => $this->omiseCcConfig->getPublicKey(),
                     'offsitePayment'     => $this->omiseCcConfig->is3DSecureEnabled(),
-                    'isCustomerLoggedIn' => $this->magentoCustomerSession->getCustomerId() ? true : false,
+                    'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                 ],
             ]
@@ -68,6 +61,10 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     public function getCards()
     {
+        if (! $this->customer->getMagentoCustomerId() || ! $this->customer->getId()) {
+            return [];
+        }
+
         $cards = $this->customer->cards(array('order' => 'reverse_chronological'));
 
         if (! $cards) {

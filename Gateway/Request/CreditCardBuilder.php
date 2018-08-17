@@ -22,17 +22,12 @@ class CreditCardBuilder implements BuilderInterface
     {
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
-        $card    = $method->getAdditionalInformation(CreditCardDataObserver::CARD);
 
         if ($method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER)) {
-            if ($card) {
-                return [
-                    self::CARD     => $card,
-                    self::CUSTOMER => $method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER)
-                ];
-            }
-
-            return [ self::CUSTOMER => $method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER) ];
+            return [
+                self::CUSTOMER => $method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER),
+                self::CARD     => $method->getAdditionalInformation(CreditCardDataObserver::CARD)
+            ];
         }
 
         return [ self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN) ];

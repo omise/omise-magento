@@ -17,7 +17,6 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     const REMEMBER_CARD = 'omise_save_card';
     const CUSTOMER      = 'customer';
 
-
     /**
      * @var array
      */
@@ -57,9 +56,41 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
             return;
         }
 
-        $this->useExistingCardIfNeeded($additionalData);
-        $this->saveCustomerCardIfNeeded($additionalData);
+        $this->maybeUseExistingCard($additionalData);
+        $this->maybeSaveCustomerCard($additionalData);
         $this->setPaymentAdditionalInformation($this->readPaymentModelArgument($observer), $additionalData);
+    }
+
+    /**
+     * Deciding whether the 'omise_card' is presented or not.
+     *
+     * @param  array &$additionalData
+     *
+     * @return void
+     */
+    protected function maybeUseExistingCard(array &$additionalData)
+    {
+        if (isset($additionalData[self::CARD]) && $additionalData[self::CARD] != '') {
+            $additionalData[self::CUSTOMER] = $this->customer->getId();
+        }
+    }
+
+    /**
+     * Deciding whether the card-token needed to be saved or not.
+     *
+     * @param  array &$additionalData
+     *
+     * @return void
+     */
+    protected function maybeSaveCustomerCard(array &$additionalData)
+    {
+        if (isset($additionalData[self::REMEMBER_CARD])) {
+            $customer = $this->customer->addCard($additionalData[self::TOKEN]);
+            $card     = $customer->getLatestCard();
+
+            $additionalData[self::CUSTOMER] = $customer->getId();
+            $additionalData[self::CARD]     = $card['id'];
+        }
     }
 
     /**
@@ -77,34 +108,6 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
                     $additionalData[$additionalInformationKey]
                 );
             }
-        }
-    }
-
-    /**
-     * @param  array &$additionalData
-     *
-     * @return void
-     */
-    protected function useExistingCardIfNeeded(array &$additionalData)
-    {
-        if (isset($additionalData[self::CARD]) && $additionalData[self::CARD] != '') {
-            $additionalData[self::CUSTOMER] = $this->customer->getOmiseCustomerId();
-        }
-    }
-
-    /**
-     * @param  array &$additionalData
-     *
-     * @return void
-     */
-    protected function saveCustomerCardIfNeeded(array &$additionalData)
-    {
-        if (isset($additionalData[self::REMEMBER_CARD])) {
-            $customer = $this->customer->attachCard($additionalData[self::TOKEN]);
-            $cards    = $customer->cards(array('order' => 'reverse_chronological'));
-
-            $additionalData[self::CUSTOMER] = $customer->id;
-            $additionalData[self::CARD]     = $cards['data'][0]['id'];
         }
     }
 }
