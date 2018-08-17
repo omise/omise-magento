@@ -81,10 +81,10 @@ class Customer
         return $this->customer->getData('omise_customer_id');
     }
 
-    public function cards()
+    public function cards($options = array())
     {
         $customer = $this->omiseCustomer->find($this->customer->getData('omise_customer_id'));
 
-        return $customer->cards();
+        return $customer->cards($options);
     }
 }

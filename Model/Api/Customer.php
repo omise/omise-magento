@@ -68,8 +68,8 @@ class Customer extends Object
     /**
      * TODO: Need to refactor a bit
      */
-    public function cards()
+    public function cards($options = array())
     {
-        return $this->object->cards();
+        return $this->object->cards($options);
     }
 }

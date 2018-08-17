@@ -68,7 +68,7 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     public function getCards()
     {
-        $cards = $this->customer->cards();
+        $cards = $this->customer->cards(array('order' => 'reverse_chronological'));
 
         if (! $cards) {
             return [];
