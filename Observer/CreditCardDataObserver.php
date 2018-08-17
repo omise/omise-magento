@@ -24,7 +24,8 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     protected $additionalInformationList = [
         self::TOKEN,
         self::CARD,
-        self::REMEMBER_CARD
+        self::REMEMBER_CARD,
+        self::CUSTOMER
     ];
 
     /**
@@ -56,6 +57,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
             return;
         }
 
+        $this->useExistingCardIfNeeded($additionalData);
         $this->saveCustomerCardIfNeeded($additionalData);
         $this->setPaymentAdditionalInformation($this->readPaymentModelArgument($observer), $additionalData);
     }
@@ -75,6 +77,18 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
                     $additionalData[$additionalInformationKey]
                 );
             }
+        }
+    }
+
+    /**
+     * @param  array &$additionalData
+     *
+     * @return void
+     */
+    protected function useExistingCardIfNeeded(array &$additionalData)
+    {
+        if (isset($additionalData[self::CARD]) && $additionalData[self::CARD] != '') {
+            $additionalData[self::CUSTOMER] = $this->customer->getOmiseCustomerId();
         }
     }
 
