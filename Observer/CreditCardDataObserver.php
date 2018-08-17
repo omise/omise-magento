@@ -56,7 +56,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
             return;
         }
 
-        $this->saveCustomerCardIfNeeded($this->readPaymentModelArgument($observer), $additionalData);
+        $this->saveCustomerCardIfNeeded($additionalData);
         $this->setPaymentAdditionalInformation($this->readPaymentModelArgument($observer), $additionalData);
     }
 
@@ -79,20 +79,18 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     }
 
     /**
-     * @param  \Magento\Payment\Model\InfoInterface $paymentInfo
-     * @param  array                                $additionalData
+     * @param  array &$additionalData
      *
      * @return void
      */
-    protected function saveCustomerCardIfNeeded(InfoInterface $paymentInfo, array $additionalData)
+    protected function saveCustomerCardIfNeeded(array &$additionalData)
     {
         if (isset($additionalData[self::REMEMBER_CARD])) {
             $customer = $this->customer->attachCard($additionalData[self::TOKEN]);
+            $cards    = $customer->cards(array('order' => 'reverse_chronological'));
 
-            $paymentInfo->setAdditionalInformation(
-                self::CUSTOMER,
-                $customer->id
-            );
+            $additionalData[self::CUSTOMER] = $customer->id;
+            $additionalData[self::CARD]     = $cards['data'][0]['id'];
         }
     }
 }
