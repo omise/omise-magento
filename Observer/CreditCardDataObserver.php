@@ -87,7 +87,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     protected function saveCustomerCardIfNeeded(InfoInterface $paymentInfo, array $additionalData)
     {
         if (isset($additionalData[self::REMEMBER_CARD])) {
-            $customer = $this->customer->createOmiseCustomer($additionalData[self::TOKEN]);
+            $customer = $this->customer->attachCard($additionalData[self::TOKEN]);
 
             $paymentInfo->setAdditionalInformation(
                 self::CUSTOMER,

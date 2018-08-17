@@ -45,6 +45,26 @@ class Customer extends Object
         return $this;
     }
 
+     /**
+     * @param  array $params
+     *
+     * @return \Omise\Payment\Model|\Api\Error|self
+     */
+    public function update($params)
+    {
+        try {
+            $this->object->update($params);
+            $this->refresh($this->object);
+        } catch (Exception $e) {
+            return new Error([
+                'code'    => 'bad_request',
+                'message' => $e->getMessage()
+            ]);
+        }
+
+        return $this;
+    }
+
     /**
      * TODO: Need to refactor a bit
      */

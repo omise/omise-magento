@@ -49,24 +49,34 @@ class Customer
         $this->omise->defineApiKeys();
     }
 
-    public function createOmiseCustomer($cardToken)
+    public function createOmiseCustomer()
     {
-        $omiseCustomer = $this->omiseCustomer->create([
+        $customer = $this->omiseCustomer->create([
             'email'       => $this->customer->getEmail(),
-            'description' => trim($this->customer->getFirstname() . ' ' . $this->customer->getLastname()),
-            'card'        => $cardToken
+            'description' => trim($this->customer->getFirstname() . ' ' . $this->customer->getLastname())
         ]);
 
-        $this->customer->setData('omise_customer_id', $omiseCustomer->id);
+        $this->customer->setData('omise_customer_id', $customer->id);
         $this->magentoCustomerResource->saveAttribute($this->customer, 'omise_customer_id');
 
-        return $omiseCustomer;
+        return $customer;
+    }
+
+    public function attachCard($cardToken)
+    {
+        if (! $this->getOmiseCustomerId()) {
+            $customer = $this->createOmiseCustomer();
+        } else {
+            $customer = $this->omiseCustomer->find($this->getOmiseCustomerId());
+        }
+
+        return $customer->update(array('card' => $cardToken));
     }
 
     /**
      * @return string
      */
-    public function id()
+    public function getOmiseCustomerId()
     {
         return $this->customer->getData('omise_customer_id');
     }
