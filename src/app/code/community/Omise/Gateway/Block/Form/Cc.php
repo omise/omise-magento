@@ -12,9 +12,9 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
     protected function _prepareLayout()
     {
         if ($this->isApplicable()) {
-            $this->setTemplate('payment/form/omisecc.phtml');
+            $this->setTemplate('payment/form/omise/omisecc.phtml');
         } else {
-            $this->setTemplate('payment/form/omise-inapplicable-method.phtml');
+            $this->setTemplate('payment/form/omise/omise-inapplicable-method.phtml');
         }
 
         return $this;
