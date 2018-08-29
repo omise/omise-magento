@@ -219,7 +219,7 @@
          */
         successCallback = function(statusCode, response) {
             if (typeof response.card != 'undefined' && !response.card.security_code_check) {
-                messageBox.innerHTML = 'This card cannot be authorized, security code is invalid.';
+                messageBox.innerHTML = 'This card cannot be authorized, the security code is invalid.';
             }
             else {
                 tokenField.value = response.id;

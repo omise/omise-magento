@@ -13,7 +13,7 @@
                     <fields>
                         <webhook translate="label,comment">
                             <label>Webhook endpoint</label>
-                            <comment><![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>
+                            <comment><![CDATA[To enable the <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above URL to setup an endpoint at the <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>
                             <sort_order>680</sort_order>
                             <frontend_type>label</frontend_type>
                             <frontend_model>omise_gateway/adminhtml_system_config_form_field_webhook</frontend_model>
@@ -24,7 +24,7 @@
 
                         <omise_gateway type="group">
                             <label>Credit Card</label>
-                            <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
+                            <comment>Powerful payment features that allow you to easily and securely accept credit/debit card payments on your store.</comment>
                             <sort_order>690</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -42,7 +42,7 @@
                                 </active>
 
                                 <payment_action translate="label">
-                                    <label>Payment Action</label>
+                                    <label>Payment action</label>
                                     <frontend_type>select</frontend_type>
                                     <source_model>omise_gateway/config_var_paymentaction</source_model>
                                     <sort_order>2</sort_order>
@@ -52,7 +52,7 @@
                                 </payment_action>
 
                                 <advance_settings translate="label">
-                                    <label>Advance Settings</label>
+                                    <label>Advanced Settings</label>
                                     <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                                     <sort_order>3</sort_order>
                                     <show_in_default>1</show_in_default>
@@ -101,7 +101,7 @@
                                 </osc_header>
 
                                 <osc_support translate="label">
-                                    <label>One Step Checkout Support</label>
+                                    <label>One step checkout support</label>
                                     <frontend_type>select</frontend_type>
                                     <source_model>adminhtml/system_config_source_yesno</source_model>
                                     <sort_order>8</sort_order>
@@ -114,7 +114,7 @@
 
                         <omise_offsite_internet_banking type="group">
                             <label>Internet Banking</label>
-                            <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
+                            <comment>Enables bank customers to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
                             <sort_order>700</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -135,7 +135,7 @@
 
                         <omise_offsite_alipay type="group">
                             <label>Alipay</label>
-                            <comment>Accepting payments through Alipay, one of China's most popular online payment method gives you access to over 450 million registered Chinese consumers (only available in Thailand).</comment>
+                            <comment>Accepting payments through Alipay - one of China's most popular online payment methods - gives you access to over 450 million registered Chinese consumers (only available in Thailand).</comment>
                             <sort_order>710</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

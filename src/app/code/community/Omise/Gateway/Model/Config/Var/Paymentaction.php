@@ -15,7 +15,7 @@ class Omise_Gateway_Model_Config_Var_Paymentaction
             ),
             array(
                 'value' => Mage_Payment_Model_Method_Cc::ACTION_AUTHORIZE_CAPTURE,
-                'label' => Mage::helper('omise_gateway')->__('Authorize and Capture')
+                'label' => Mage::helper('omise_gateway')->__('Authorize and capture')
             )
         );
     }

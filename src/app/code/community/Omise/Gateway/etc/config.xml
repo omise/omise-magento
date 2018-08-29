@@ -118,7 +118,7 @@
                 <payment_action>authorize</payment_action>
                 <model>omise_gateway/payment_creditcard</model>
                 <cctypes>VI,MC</cctypes>
-                <title>Credit Card (Powered by Omise)</title>
+                <title>Credit card (Powered by Omise)</title>
                 <osc_support>0</osc_support>
             </omise_gateway>
 
@@ -126,7 +126,7 @@
                 <active>0</active>
                 <payment_action>authorize_capture</payment_action>
                 <model>omise_gateway/payment_offsiteinternetbanking</model>
-                <title>Internet Banking</title>
+                <title>Internet banking</title>
             </omise_offsite_internet_banking>
 
             <omise_offsite_alipay>

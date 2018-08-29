@@ -63,7 +63,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                             Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
                             null,
                             false,
-                            Mage::helper('omise_gateway')->__('Authorizing an amount %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($order->getBaseTotalDue()))
+                            Mage::helper('omise_gateway')->__('Authorizing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($order->getBaseTotalDue()))
                         );
                 break;
 
@@ -79,7 +79,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                             Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
                             $invoice,
                             false,
-                            Mage::helper('omise_gateway')->__('Capturing an amount %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                            Mage::helper('omise_gateway')->__('Capturing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
                         );
 
                 $order->addRelatedObject($invoice);
@@ -121,7 +121,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'    => $order->getBaseCurrencyCode(),
-                'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
+                'description' => 'Charge a card from Magento with the order id: ' . $order->getIncrementId(),
                 'capture'     => $this->isAutoCapture() ? true : false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
                 'return_uri'  => $this->getThreeDSecureCallbackUri(),
@@ -150,7 +150,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'    => $order->getBaseCurrencyCode(),
-                'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
+                'description' => 'Charge a card from Magento with the order id: ' . $order->getIncrementId(),
                 'capture'     => false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
                 'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null),
@@ -191,7 +191,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'    => $order->getBaseCurrencyCode(),
-                'description' => 'Charge a card from Magento that order id is ' . $order->getIncrementId(),
+                'description' => 'Charge a card from Magento with the order id: ' . $order->getIncrementId(),
                 'capture'     => true,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
                 'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null),
@@ -223,7 +223,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
             Mage::throwException(
                 Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
                 )
             );
         }
@@ -233,7 +233,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
             Mage::throwException(
                 Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
                 )
             );
         }
@@ -300,14 +300,14 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
 
         if (is_array($data)) {
             if (! isset($data['omise_token'])) {
-                Mage::throwException(Mage::helper('payment')->__('Cannot retrieve your credit card information. Please make sure that you put a proper card information or contact our support team if you have any questions.'));
+                Mage::throwException(Mage::helper('payment')->__('Cannot retrieve your credit card information. Please make sure that you entered your card information correctly, or contact our support team if you have any questions.'));
             }
 
             Mage::log('Data that assign is Array');
             $this->getInfoInstance()->setAdditionalInformation('omise_token', $data['omise_token']);
         } elseif ($data instanceof Varien_Object) {
             if (! $data->getData('omise_token')) {
-                Mage::throwException(Mage::helper('payment')->__('Cannot retrieve your credit card information. Please make sure that you put a proper card information or contact our support team if you have any questions.'));
+                Mage::throwException(Mage::helper('payment')->__('Cannot retrieve your credit card information. Please make sure that you entered your card information correctly, or contact our support team if you have any questions.'));
             }
 
             Mage::log('Data that assign is Object');

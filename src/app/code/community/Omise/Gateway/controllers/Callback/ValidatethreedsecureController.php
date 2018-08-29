@@ -8,7 +8,7 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
 
         if (! $payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
-                $this->__('3-D Secure validation was invalid, cannot retrieve your payment information. Please contact our support to confirm the payment.')
+                $this->__('3-D Secure validation failed, we cannot retrieve your payment information. Please contact our support team to confirm the payment.')
             );
 
             $this->_redirect('checkout/cart');

@@ -73,7 +73,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
             Mage::throwException(
                 Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team to confirm your payment before resubmit.'
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
                 )
             );
         }
@@ -167,7 +167,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     protected function suspectToBeFailed(Varien_Object $payment)
     {
-        $message = 'Payment failed. Note that your payment and order might (or might not) already has been processed. Please contact our support team using your order reference number (' . $payment->getOrder()->getIncrementId() . ') to confirm your payment.';
+        $message = 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team using your order reference number (' . $payment->getOrder()->getIncrementId() . ') to confirm your payment.';
         Mage::throwException(Mage::helper('payment')->__($message));
     }
 }
