@@ -1,6 +1,5 @@
 <?php
 $code = $this->getMethodCode();
-$feeMessage = $this->__('The bank may charge a small fee for the transaction.');
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('omise/css/offsiteinternetbankingpayment.css'); ?>" />
@@ -15,7 +14,6 @@ $feeMessage = $this->__('The bank may charge a small fee for the transaction.');
             </div>
             <div class="omise-banking-text-wrapper">
                 <span class="title">Siam Commercial Bank</span><br/>
-                <!-- <span class="rate secondary-text">Fee: 15 THB (same zone), 30 THB (out zone)</span> -->
             </div>
         </label>
     </li>
@@ -29,7 +27,6 @@ $feeMessage = $this->__('The bank may charge a small fee for the transaction.');
             </div>
             <div class="omise-banking-text-wrapper">
                 <span class="title">Krungthai Bank</span><br/>
-                <!-- <span class="rate secondary-text">Fee: 15 THB (same zone), 15 THB (out zone)</span> -->
             </div>
         </label>
     </li>
@@ -43,7 +40,6 @@ $feeMessage = $this->__('The bank may charge a small fee for the transaction.');
             </div>
             <div class="omise-banking-text-wrapper">
                 <span class="title">Krungsri Bank</span><br/>
-                <!-- <span class="rate secondary-text">Fee: 15 THB (same zone), 15 THB (out zone)</span> -->
             </div>
         </label>
     </li>
@@ -57,11 +53,10 @@ $feeMessage = $this->__('The bank may charge a small fee for the transaction.');
             </div>
             <div class="omise-banking-text-wrapper">
                 <span class="title">Bangkok Bank</span><br/>
-                <!-- <span class="rate secondary-text">Fee: 10 THB (same zone), 20 THB (out zone)</span> -->
             </div>
         </label>
     </li>
     <li>
-        <span class="rate secondary-text"><?php echo($feeMessage); ?></span>
+        <span class="rate secondary-text"><?=$this->__('The bank may charge a small fee for the transaction.');?></span>
     </li>
 </ul>
