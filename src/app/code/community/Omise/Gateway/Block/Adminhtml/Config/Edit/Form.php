@@ -24,12 +24,12 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
             $fieldset,
             array(
                 'public_key_test' => array(
-                    'label'    => $this->__('Public Key for Test'),
+                    'label'    => $this->__('Public key for Test'),
                     'input'    => 'password',
                     'required' => false
                 ),
                 'secret_key_test' => array(
-                    'label'    => $this->__('Secret Key for Test'),
+                    'label'    => $this->__('Secret key for Test'),
                     'input'    => 'password',
                     'required' => false
                 ),
@@ -48,12 +48,12 @@ class Omise_Gateway_Block_Adminhtml_Config_Edit_Form extends Mage_Adminhtml_Bloc
             $fieldset,
             array(
                 'public_key' => array(
-                    'label'    => $this->__('Public Key'),
+                    'label'    => $this->__('Public key'),
                     'input'    => 'password',
                     'required' => true
                 ),
                 'secret_key' => array(
-                    'label'    => $this->__('Secret Key'),
+                    'label'    => $this->__('Secret key'),
                     'input'    => 'password',
                     'required' => true
                 )
