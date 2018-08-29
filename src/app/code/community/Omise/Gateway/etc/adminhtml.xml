@@ -22,13 +22,13 @@
                 </dashboard>
         
                 <config translate="title">
-                    <title>Keys Setting</title>
+                    <title>Key Settings</title>
                     <sort_order>2</sort_order>
                     <action>adminhtml/omise/config</action>
                 </config>
 
                 <moduleconfig translate="title">
-                    <title>Module Setting</title>
+                    <title>Module Settings</title>
                     <sort_order>3</sort_order>
                     <action>adminhtml/system_config/edit/section/payment</action>
                 </moduleconfig>

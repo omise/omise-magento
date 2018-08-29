@@ -8,7 +8,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
 
         if (! $payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
-                $this->__('Internet banking validation was invalid, cannot retrieve your payment information. Please contact our support to confirm the payment.')
+                $this->__('Internet banking validation failed, we cannot retrieve your payment information. Please contact our support team to confirm the payment.')
             );
 
             $this->_redirect('checkout/cart');
@@ -29,7 +29,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
             $order->markAsAwaitPayment(
                 $payment->getLastTransId(),
                 Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
-                Mage::helper('omise_gateway')->__('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been updated (you can check at Omise Dashboard).')
+                Mage::helper('omise_gateway')->__('The payment is in progress.<br/>Due to the bank\'s processing, this might take a few seconds or up-to an hour. Please click "Accept" or "Deny" to complete the payment manually once the result has been updated (you can check at Omise Dashboard).')
             );
 
             return $this->_redirect('checkout/onepage/success');
@@ -41,7 +41,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
             $order->markAsPaid(
                 $payment->getLastTransId(),
                 Mage_Sales_Model_Order::STATE_PROCESSING,
-                Mage::helper('omise_gateway')->__('An amount %s has been paid online.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                Mage::helper('omise_gateway')->__('An amount of %s has been paid online.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );
 
             return $this->_redirect('checkout/onepage/success');

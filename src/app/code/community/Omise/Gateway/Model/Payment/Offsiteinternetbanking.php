@@ -61,7 +61,7 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
                     Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER,
                     $invoice,
                     false,
-                    Mage::helper('omise_gateway')->__('Processing amount %s via Omise Internet Banking payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                    Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise Internet Banking payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
                 );
 
         $order->addRelatedObject($invoice);
