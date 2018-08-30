@@ -28,6 +28,7 @@
 #payment_form_omise_offsite_internet_banking .omise-logo-wrapper img {
     width: 30px;
     height: 30px;
+    display: inline-block;
 }
 
 #payment_form_omise_offsite_internet_banking .omise-banking-text-wrapper {
