@@ -37,11 +37,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      */
     protected function isApplicable()
     {
-        if (! $this->isStoreCurrencySupported()) {
-            return false;
-        }
-
-        return true;
+        return $this->isStoreCurrencySupported();
     }
 
     /**
