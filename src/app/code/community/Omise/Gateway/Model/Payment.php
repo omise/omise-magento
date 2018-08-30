@@ -66,7 +66,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      *
      * @throws Mage_Core_Exception
      */
-    protected function process(Varien_Object $payment, $params = array())
+    protected function process(Varien_Object $payment, $params)
     {
         $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
 

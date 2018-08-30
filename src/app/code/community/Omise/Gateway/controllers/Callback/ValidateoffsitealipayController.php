@@ -31,7 +31,7 @@ class Omise_Gateway_Callback_ValidateoffsitealipayController extends Omise_Gatew
                 Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
                 Mage::helper('omise_gateway')->__('The payment is in progress.<br/>Due to the way Alipay works, this might take a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the payment manually once the result has been updated (you can check at Omise Dashboard).')
             );
-
+            Mage::getSingleton('checkout/session')->addNotice(Mage::helper('omise_gateway')->__('Please note - the payment process is still ongoing. Once it is complete, you will receive the order confirmation.'));
             return $this->_redirect('checkout/onepage/success');
         }
 
