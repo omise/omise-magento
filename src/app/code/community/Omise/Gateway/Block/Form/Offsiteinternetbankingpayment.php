@@ -1,27 +1,19 @@
 <?php
 class Omise_Gateway_Block_Form_Offsiteinternetbankingpayment extends Mage_Payment_Block_Form
 {
-    /**
-     * Note:
-     * Here is an internal constructor (different from real __construct() one).
-     * (It's recommened by Magento to override this method instead of __construct()).
-     *
-     * @see Magento: Mage/Core/Block/Abstract
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-        $this->setTemplate('payment/form/omise/omiseoffsiteinternetbankingpayment.phtml');
-    }
 
     /**
-     * Retrieve payment configuration object
+     * Preparing global layout
+     * You can redefine this method in child classes for changing layout
      *
-     * @return Mage_Payment_Model_Config
+     * @return Mage_Core_Block_Abstract
+     *
+     * @see    Mage_Core_Block_Abstract
      */
-    protected function _getConfig()
+    protected function _prepareLayout()
     {
-        return Mage::getSingleton('payment/config');
+        $this->setTemplate('payment/form/omise/omiseoffsiteinternetbankingpayment.phtml');
+        return $this;
     }
 
     /**
