@@ -112,6 +112,7 @@
     -->
     <default>
         <payment>
+
             <omise_gateway>
                 <active>1</active>
                 <order_status>1</order_status>
@@ -135,6 +136,14 @@
                 <model>omise_gateway/payment_offsitealipay</model>
                 <title>Alipay</title>
             </omise_offsite_alipay>
+
+            <omise_offsite_instalment>
+                <active>0</active>
+                <payment_action>authorize_capture</payment_action>
+                <model>omise_gateway/payment_offsiteinstalment</model>
+                <title>Instalment payment</title>
+            </omise_offsite_instalment>
+
         </payment>
     </default>
 </config>
