@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/obj/OmiseObject.php';
 require_once dirname(__FILE__).'/../exception/OmiseExceptions.php';
 
-define('OMISE_PHP_LIB_VERSION', '2.7.1');
+define('OMISE_PHP_LIB_VERSION', '2.9.1');
 define('OMISE_API_URL', 'https://api.omise.co/');
 define('OMISE_VAULT_URL', 'https://vault.omise.co/');
 
@@ -292,8 +292,11 @@ class OmiseApiResource extends OmiseObject
         }
 
         // Also merge POST parameters with the option.
-        if (count($params) > 0) {
-            $options += array(CURLOPT_POSTFIELDS => http_build_query($params));
+        if (is_array($params) && count($params) > 0) {
+            $http_query = http_build_query($params);
+            $http_query = preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', $http_query);
+
+            $options += array(CURLOPT_POSTFIELDS => $http_query);
         }
 
         return $options;

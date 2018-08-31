@@ -21,6 +21,20 @@ class OmiseRecipient extends OmiseApiResource
     }
 
     /**
+     * Search for recipients.
+     *
+     * @param  string $query
+     * @param  string $publickey
+     * @param  string $secretkey
+     *
+     * @return OmiseSearch
+     */
+    public static function search($query = '', $publickey = null, $secretkey = null)
+    {
+        return OmiseSearch::scope('recipient', $publickey, $secretkey)->query($query);
+    }
+
+    /**
      * Creates a new recipient.
      *
      * @param  array  $params
@@ -75,6 +89,24 @@ class OmiseRecipient extends OmiseApiResource
             parent::g_reload(self::getUrl($this['id']));
         } else {
             parent::g_reload(self::getUrl());
+        }
+    }
+
+    /**
+     * Gets a list of transfer schedules that belongs to a given recipient.
+     *
+     * @param  array|string $options
+     *
+     * @return OmiseScheduleList
+     */
+    public function schedules($options = array())
+    {
+        if ($this['object'] === 'recipient') {
+            if (is_array($options)) {
+                $options = '?' . http_build_query($options);
+            }
+
+            return parent::g_retrieve('OmiseScheduleList', self::getUrl($this['id'] . '/schedules' . $options), $this->_publickey, $this->_secretkey);
         }
     }
 
