@@ -84,7 +84,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
      */
     protected function maybeSaveCustomerCard(array &$additionalData)
     {
-        if (isset($additionalData[self::REMEMBER_CARD])) {
+        if (isset($additionalData[self::REMEMBER_CARD]) && $additionalData[self::REMEMBER_CARD]) {
             $customer = $this->customer->addCard($additionalData[self::TOKEN]);
             $card     = $customer->getLatestCard();
 
