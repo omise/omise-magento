@@ -1,0 +1,144 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {
+               'id': getCode()
+               },
+               value: getCode(),
+               checked: isChecked,
+               click: selectPaymentMethod,
+               visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <span data-bind="text: getTitle()"></span>
+        </label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="omise-banking-fee-warn" data-bind="i18n: 'Choose your installment conditions'"></div>
+        <form class="form"
+              data-bind="attr: {
+              id: getCode() + 'Form',
+              }">
+
+            <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
+                <ul class="form-list">
+                    <!-- SCB -->
+                    <li class="items">
+                        <input
+                            type="radio"
+                            name="offsite"
+                            value="internet_banking_scb"
+                            data-bind="
+                            attr: {
+                                id: getCode() + '_scb'
+                            },
+                            checked: omiseOffsite"
+                        />
+                        <label for="omise_offsite_internetbanking_scb">
+                            <div class="omise-logo-wrapper scb">
+                                <img class="scb" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Siam Commercial Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+
+                    <!-- KTB -->
+                    <li class="items">
+                        <input
+                            type="radio"
+                            name="offsite"
+                            value="internet_banking_ktb"
+                            data-bind="
+                            attr: {
+                                id: getCode() + '_ktb'
+                            },
+                            checked: omiseOffsite"
+                        />
+                        <label for="omise_offsite_internetbanking_ktb">
+                            <div class="omise-logo-wrapper ktb">
+                                <img class="ktb" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Krungthai Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+
+                    <!-- BAY -->
+                    <li class="items">
+                        <input
+                            type="radio"
+                            name="offsite"
+                            value="internet_banking_bay"
+                            data-bind="
+                            attr: {
+                                id: getCode() + '_bay'
+                            },
+                            checked: omiseOffsite"
+                        />
+                        <label for="omise_offsite_internetbanking_bay">
+                            <div class="omise-logo-wrapper bay">
+                                <img class="bay" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Krungsri Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+
+                    <!-- BBL -->
+                    <li class="items">
+                        <input
+                            type="radio"
+                            name="offsite"
+                            value="internet_banking_bbl"
+                            data-bind="
+                            attr: {
+                                id: getCode() + '_bbl'
+                            },
+                            checked: omiseOffsite"
+                        />
+                        <label for="omise_offsite_internetbanking_bbl">
+                            <div class="omise-logo-wrapper bbl">
+                                <img class="bbl" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Bangkok Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        disabled="disabled"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

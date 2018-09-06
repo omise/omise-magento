@@ -29,6 +29,14 @@ define(
                 component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-alipay-method'
             }
         );
+
+        rendererList.push(
+            {
+                type: 'omise_offsite_installment',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-installment-method'
+            }
+        );
+
         
         return Component.extend({});
     }
