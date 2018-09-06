@@ -4,11 +4,11 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Model\Config\Offsite\Alipay;
-use Omise\Payment\Model\Config\Offsite\Internetbanking;
-use Omise\Payment\Observer\OffsiteInternetbankingDataAssignObserver;
+use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 
-class PaymentOffsiteBuilder implements BuilderInterface
+class PaymentAPMBuilder implements BuilderInterface
 {
 
     /**
@@ -60,7 +60,7 @@ class PaymentOffsiteBuilder implements BuilderInterface
                 break;
             case Internetbanking::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => $method->getAdditionalInformation(OffsiteInternetbankingDataAssignObserver::OFFSITE)
+                    self::SOURCE_TYPE => $method->getAdditionalInformation(InternetbankingDataAssignObserver::OFFSITE)
                 ];
                 break;
         }
