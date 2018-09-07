@@ -9,8 +9,8 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge;
-use Omise\Payment\Model\Config\Offsite\Internetbanking;
-use Omise\Payment\Model\Config\Offsite\Alipay;
+use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Alipay;
 
 class Offsite extends Action
 {
