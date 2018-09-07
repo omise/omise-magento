@@ -4,7 +4,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
-class PaymentThreeDSecureBuilder implements BuilderInterface
+class CreditCardThreeDSecureBuilder implements BuilderInterface
 {
     /**
      * @var string

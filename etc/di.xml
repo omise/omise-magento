@@ -96,7 +96,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAPMBuilder</item>
+                <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\APMBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -181,8 +181,8 @@
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
                 <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
-                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeBuilder</item>
-                <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\PaymentThreeDSecureBuilder</item>
+                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardAuthorizeBuilder</item>
+                <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardThreeDSecureBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -204,8 +204,8 @@
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
                 <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
-                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeCaptureBuilder</item>
-                <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\PaymentThreeDSecureBuilder</item>
+                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardAuthorizeCaptureBuilder</item>
+                <item name="threedsecure" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardThreeDSecureBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -257,7 +257,7 @@
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
                 <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
-                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeBuilder</item>
+                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardAuthorizeBuilder</item>
             </argument>
         </arguments>
     </virtualType>
@@ -279,7 +279,7 @@
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
                 <item name="creditcard" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardBuilder</item>
-                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\PaymentAuthorizeCaptureBuilder</item>
+                <item name="capture" xsi:type="string">Omise\Payment\Gateway\Request\CreditCardAuthorizeCaptureBuilder</item>
             </argument>
         </arguments>
     </virtualType>

@@ -8,7 +8,7 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 
-class PaymentAPMBuilder implements BuilderInterface
+class APMBuilder implements BuilderInterface
 {
 
     /**
