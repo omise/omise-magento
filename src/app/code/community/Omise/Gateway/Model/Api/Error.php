@@ -4,29 +4,29 @@ class Omise_Gateway_Model_Api_Error extends Omise_Gateway_Model_Api_Object
     /**
      * @var string
      */
-    protected $code    = '';
-    protected $message = '';
+    protected $_code    = '';
+    protected $_message = '';
 
     public function __construct($error = array())
     {
-        $this->setCode((isset($error['code']) ? $error['code'] : 'unexpected_error'));
-        $this->setMessage((isset($error['message']) ? $error['message'] : 'An unexpected error occurred, please contact our support team for further investigation.'));
+        $this->_setCode((isset($error['code']) ? $error['code'] : 'unexpected_error'));
+        $this->_setMessage((isset($error['message']) ? $error['message'] : 'An unexpected error occurred, please contact our support team for further investigation.'));
     }
 
     /**
      * @param string $code
      */
-    protected function setCode($code)
+    protected function _setCode($code)
     {
-        $this->code = $code;
+        $this->_code = $code;
     }
 
     /**
      * @param string $message
      */
-    protected function setMessage($message)
+    protected function _setMessage($message)
     {
-        $this->message = $message;
+        $this->_message = $message;
     }
 
     /**
@@ -34,7 +34,7 @@ class Omise_Gateway_Model_Api_Error extends Omise_Gateway_Model_Api_Object
      */
     public function getCode()
     {
-        return $this->code;
+        return $this->_code;
     }
 
     /**
@@ -42,6 +42,6 @@ class Omise_Gateway_Model_Api_Error extends Omise_Gateway_Model_Api_Object
      */
     public function getMessage()
     {
-        return $this->message;
+        return $this->_message;
     }
 }

@@ -4,7 +4,7 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
     public function indexAction()
     {
         // Callback validation.
-        $order = $this->getOrder();
+        $order = $this->_getOrder();
 
         if (! $payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(

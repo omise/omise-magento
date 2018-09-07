@@ -4,7 +4,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     /**
      * @var \Omise_Gateway_Model_Omise
      */
-    protected $omise;
+    protected $_omise;
 
     /**
      * @var array
@@ -25,8 +25,8 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     public function __construct()
     {
-        $this->omise = Mage::getModel('omise_gateway/omise');
-        $this->omise->initNecessaryConstant();
+        $this->_omise = Mage::getModel('omise_gateway/omise');
+        $this->_omise->initNecessaryConstant();
     }
 
     /**
@@ -34,7 +34,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      *
      * @return bool
      */
-    protected function isCurrencySupport($currency)
+    protected function _isCurrencySupport($currency)
     {
         if (isset($this->currency_subunits[strtoupper($currency)])) {
             return true;
@@ -51,7 +51,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     public function getAmountInSubunits($amount, $currency)
     {
-        if ($this->isCurrencySupport($currency)) {
+        if ($this->_isCurrencySupport($currency)) {
             return $this->currency_subunits[$currency] * $amount;
         }
 
@@ -66,7 +66,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      *
      * @throws Mage_Core_Exception
      */
-    protected function process(Varien_Object $payment, $params)
+    protected function _process(Varien_Object $payment, $params)
     {
         $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
 
@@ -85,7 +85,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
         }
 
         if ($charge->isAwaitPayment()) {
-            $this->setRedirectFlow($payment, $charge);
+            $this->_setRedirectFlow($payment, $charge);
         }
 
         $this->getInfoInstance()->setAdditionalInformation('omise_charge_id', $charge->id);
@@ -106,7 +106,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     {
         parent::acceptPayment($payment);
 
-        $this->closeTransaction($payment);
+        $this->_closeTransaction($payment);
 
         return true;
     }
@@ -124,7 +124,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     {
         parent::denyPayment($payment);
 
-        $this->closeTransaction($payment);
+        $this->_closeTransaction($payment);
 
         return true;
     }
@@ -132,7 +132,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     /**
      * @param Varien_Object $payment
      */
-    protected function closeTransaction(Varien_Object $payment)
+    protected function _closeTransaction(Varien_Object $payment)
     {
         $transaction = $payment->getTransaction($payment->getLastTransId());
         if ($transaction->getTxnType() === Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) {
@@ -149,7 +149,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      * @param Varien_Object                  $payment
      * @param Omise_Gateway_Model_Api_Charge $charge
      */
-    protected function setRedirectFlow(Varien_Object $payment, Omise_Gateway_Model_Api_Charge $charge)
+    protected function _setRedirectFlow(Varien_Object $payment, Omise_Gateway_Model_Api_Charge $charge)
     {
         $payment->setIsTransactionPending(true);
 
@@ -165,7 +165,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      *
      * @throws Mage_Core_Exception
      */
-    protected function suspectToBeFailed(Varien_Object $payment)
+    protected function _suspectToBeFailed(Varien_Object $payment)
     {
         $message = 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team using your order reference number (' . $payment->getOrder()->getIncrementId() . ') to confirm your payment.';
         Mage::throwException(Mage::helper('payment')->__($message));

@@ -20,9 +20,9 @@ class Omise_Gateway_Model_Api_Event extends Omise_Gateway_Model_Api_Object
     {
         try {
             $event         = OmiseEvent::retrieve($id);
-            $event['data'] = $this->transformDataToObject($event['data']);
+            $event['data'] = $this->_transformDataToObject($event['data']);
 
-            $this->refresh($event);
+            $this->_refresh($event);
         } catch (Exception $e) {
             return Mage::getModel(
                 'omise_gateway/api_error',
@@ -41,7 +41,7 @@ class Omise_Gateway_Model_Api_Event extends Omise_Gateway_Model_Api_Object
      *
      * @return Omise_Gateway_Model_Api_Object|json-object
      */
-    protected function transformDataToObject($data)
+    protected function _transformDataToObject($data)
     {
         switch ($data['object']) {
             case 'charge':
