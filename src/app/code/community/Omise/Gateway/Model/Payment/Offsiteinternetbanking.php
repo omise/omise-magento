@@ -52,7 +52,7 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
         $invoice = $order->prepareInvoice();
         $invoice->setIsPaid(false)->register();
 
-        $charge = $this->_process($payment, $invoice->getBaseGrandTotal());
+        $charge = $this->process($payment, $invoice->getBaseGrandTotal());
 
         $payment->setCreatedInvoice($invoice)
                 ->setIsTransactionClosed(false)
@@ -87,7 +87,7 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     {
         $order = $payment->getOrder();
 
-        return parent::process(
+        return parent::_process(
             $payment,
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
