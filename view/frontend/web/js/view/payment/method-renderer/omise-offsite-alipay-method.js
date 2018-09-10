@@ -35,8 +35,26 @@ define(
              *
              * @return {string}
              */
-            getCode: function() {
+            getCode: function () {
                 return 'omise_offsite_alipay';
+            },
+
+            /**
+             * Get order currency
+             *
+             * @return {string}
+             */
+            getOrderCurrency: function () {
+                return window.checkoutConfig.quoteData.quote_currency_code;
+            },
+
+            /**
+             * Get store currency
+             *
+             * @return {string}
+             */
+            getStoreCurrency: function () {
+                return window.checkoutConfig.quoteData.store_currency_code;
             },
 
             /**
@@ -44,8 +62,8 @@ define(
              *
              * @return {boolean}
              */
-            isActive: function() {
-                return true;
+            isActive: function () {
+                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';;
             },
 
             /**
@@ -54,7 +72,7 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function(data, event) {
+            placeOrder: function (data, event) {
                 var self = this;
 
                 if (event) {
@@ -63,13 +81,13 @@ define(
 
                 self.getPlaceOrderDeferredObject()
                     .fail(
-                        function(response) {
+                        function (response) {
                             errorProcessor.process(response, self.messageContainer);
                             fullScreenLoader.stopLoader();
                             self.isPlaceOrderActionAllowed(true);
                         }
                     ).done(
-                        function(response) {
+                        function (response) {
                             var self = this;
 
                             var serviceUrl = urlBuilder.createUrl(

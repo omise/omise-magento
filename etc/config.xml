@@ -22,7 +22,7 @@
             <omise_offsite_internetbanking>
                 <active>0</active>
                 <title>Internet Banking</title>
-                <model>OmiseOffsiteInternetbankingAdapter</model>
+                <model>OmiseInternetbankingAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
                 <can_use_checkout>1</can_use_checkout>
@@ -34,7 +34,7 @@
             <omise_offsite_alipay>
                 <active>0</active>
                 <title>Alipay</title>
-                <model>OmiseOffsiteAlipayAdapter</model>
+                <model>OmiseAlipayAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
                 <can_use_checkout>1</can_use_checkout>
@@ -46,7 +46,7 @@
             <omise_offsite_tesco>
                 <active>0</active>
                 <title>Tesco Bill Payment</title>
-                <model>OmiseOffsiteTescoAdapter</model>
+                <model>OmiseTescoAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
                 <can_use_checkout>1</can_use_checkout>

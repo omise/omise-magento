@@ -68,7 +68,7 @@ class Complete
             return;
         }
 
-        if ($order->isPaymentReview() || $order->getState() === Order::STATE_PENDING_PAYMENT) {
+        if ($order->isPaymentReview() || $order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
             if ($charge->isFailed()) {
                 if ($order->hasInvoices()) {
                     $invoice = $order->getInvoiceCollection()->getLastItem();

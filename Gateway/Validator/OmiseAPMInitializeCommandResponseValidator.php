@@ -5,7 +5,7 @@ use Omise\Payment\Gateway\Validator\CommandResponseValidator;
 use Omise\Payment\Gateway\Validator\Message\Invalid as ErrorInvalid;
 use Omise\Payment\Model\Api\Charge;
 
-class OmiseOffsiteInitializeCommandResponseValidator extends CommandResponseValidator
+class OmiseAPMInitializeCommandResponseValidator extends CommandResponseValidator
 {
     /**
      * @param  \Omise\Payment\Model\Api\Charge $charge
