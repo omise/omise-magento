@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
+
+#### 🚀 Enhancements
+
+- Upgrade Omise-PHP library to v2.9.1. (PR [#147](https://github.com/omise/omise-magento/pull/147))
+- Improved handling of 'in progress' payments, giving the user a message to say what is happening (PR [#142](https://github.com/omise/omise-magento/pull/142))
+- Updated internet banking fee message to account for changing bank fees (PR [#144](https://github.com/omise/omise-magento/pull/144))
+- Improved English grammar across the plugin (PR [#143](https://github.com/omise/omise-magento/pull/143))
+- Applied consistent naming conventions in code for `protected` and `private` class members (PR [#151](https://github.com/omise/omise-magento/pull/151))
+
+#### 👾 Bug Fixes
+
+- Fixed a CSS issue that was causing internet banking bank logos to not appear with some themes (PR [#144](https://github.com/omise/omise-magento/pull/144))
+- Fixed an edge case issue where payments were sometimes recorded against an invoice multiple times (PR [#150](https://github.com/omise/omise-magento/pull/150))
+
+---
+
 ### [v1.14 _(Mar 5, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.14)
 
 #### ✨ Highlights
@@ -10,6 +27,8 @@
 #### 🚀 Enhancements
 
 - Handle "sales_model_service_quote_submit_failure" event (PR [#108](https://github.com/omise/omise-magento/pull/108))
+
+---
 
 ### [v1.13 _(Nov 17, 2017)_](https://github.com/omise/omise-magento/releases/tag/v1.13)
 
