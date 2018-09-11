@@ -11,7 +11,7 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      */
     protected function _prepareLayout()
     {
-        if ($this->isApplicable()) {
+        if ($this->_isApplicable()) {
             $this->setTemplate('payment/form/omise/omisecc.phtml');
         } else {
             $this->setTemplate('payment/form/omise/omise-inapplicable-method.phtml');
@@ -35,15 +35,15 @@ class Omise_Gateway_Block_Form_Cc extends Mage_Payment_Block_Form
      *
      * @return bool
      */
-    protected function isApplicable()
+    protected function _isApplicable()
     {
-        return $this->isStoreCurrencySupported();
+        return $this->_isStoreCurrencySupported();
     }
 
     /**
      * @return bool
      */
-    protected function isStoreCurrencySupported()
+    protected function _isStoreCurrencySupported()
     {
         return in_array(
             Mage::app()->getStore()->getBaseCurrencyCode(),

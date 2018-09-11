@@ -25,7 +25,7 @@ class Omise_Gateway_Model_Api_Refund extends Omise_Gateway_Model_Api_Object
             throw new Exception("Error Processing Request", 1);
         }
 
-        $this->refresh($resource);
+        $this->_refresh($resource);
     }
 }
 

@@ -4,7 +4,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
     /**
      * @var \Omise_Gateway_Model_Config
      */
-    protected $config;
+    protected $_config;
 
     /**
      * Load necessary file and setup Omise keys
@@ -21,7 +21,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
         require_once(Mage::getBaseDir('lib') . '/omise-php/lib/Omise.php');
 
         // Retrieve Omise's keys from table.
-        $this->config = Mage::getModel('omise_gateway/config')->load(1);
+        $this->_config = Mage::getModel('omise_gateway/config')->load(1);
     }
 
     /**
@@ -29,7 +29,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
      */
     public function isTestMode()
     {
-        return $this->config->test_mode;
+        return $this->_config->test_mode;
     }
 
     /**
@@ -38,10 +38,10 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
     public function getPublicKey()
     {
         if ($this->isTestMode()) {
-            return $this->config->public_key_test;
+            return $this->_config->public_key_test;
         }
 
-        return $this->config->public_key;
+        return $this->_config->public_key;
     }
 
     /**
@@ -50,10 +50,10 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
     public function getSecretKey()
     {
         if ($this->isTestMode()) {
-            return $this->config->secret_key_test;
+            return $this->_config->secret_key_test;
         }
 
-        return $this->config->secret_key;
+        return $this->_config->secret_key;
     }
 
     /**

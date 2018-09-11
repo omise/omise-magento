@@ -4,7 +4,7 @@ class Omise_Gateway_Model_Event
     /**
      * @var array  of event classes that we can handle.
      */
-    protected $events = array();
+    protected $_events = array();
 
     public function __construct() {
         $events = array(
@@ -13,7 +13,7 @@ class Omise_Gateway_Model_Event
 
         foreach ($events as $event) {
             $clazz = Mage::getModel('omise_gateway/event_' . $event);
-            $this->events[$clazz->event] = $clazz;
+            $this->_events[$clazz->event] = $clazz;
         }
     }
 
@@ -23,10 +23,10 @@ class Omise_Gateway_Model_Event
      * @return mixed
      */
     public function handle($event) {
-        if (! isset($this->events[$event->key])) {
+        if (! isset($this->_events[$event->key])) {
             return;
         }
 
-        return $this->events[$event->key]->handle($event);
+        return $this->_events[$event->key]->handle($event);
     }
 }

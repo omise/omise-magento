@@ -74,7 +74,7 @@ class Omise_Gateway_Model_Payment_Offsitealipay extends Omise_Gateway_Model_Paym
             return;
         }
 
-        $this->suspectToBeFailed($payment);
+        $this->_suspectToBeFailed($payment);
     }
 
     /**
@@ -87,7 +87,7 @@ class Omise_Gateway_Model_Payment_Offsitealipay extends Omise_Gateway_Model_Paym
     {
         $order = $payment->getOrder();
 
-        return parent::process(
+        return parent::_process(
             $payment,
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),

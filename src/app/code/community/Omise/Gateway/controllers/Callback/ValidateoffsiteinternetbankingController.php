@@ -4,7 +4,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
     public function indexAction()
     {
         // Callback validation.
-        $order = $this->getOrder();
+        $order = $this->_getOrder();
 
         if (! $payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
