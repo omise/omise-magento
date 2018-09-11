@@ -39,6 +39,14 @@ class Omise_Gateway_Model_Order extends Mage_Sales_Model_Order
 
     /**
      * @param string $transaction_id
+     */
+    public function isInvoicePaid($transaction_id)
+    {
+        return $this->getInvoice($transaction_id)->getState() == Mage_Sales_Model_Order_Invoice::STATE_PAID;
+    }
+
+    /**
+     * @param string $transaction_id
      * @param string $state
      * @param string $message
      */

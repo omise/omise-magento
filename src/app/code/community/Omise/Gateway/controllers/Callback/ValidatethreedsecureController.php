@@ -37,9 +37,11 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
 
         if ($charge->isSuccessful()) {
             $invoice = $order->getInvoice($payment->getLastTransId());
+            $transId = $payment->getLastTransId();
 
-            $order->markAsPaid(
-                $payment->getLastTransId(),
+            // Make sure to avoid marking invoice paid more than once
+            if (!$order->isInvoicePaid($transId)) $order->markAsPaid(
+                $transId,
                 Mage_Sales_Model_Order::STATE_PROCESSING,
                 Mage::helper('omise_gateway')->__('Captured amount of %s online.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );
