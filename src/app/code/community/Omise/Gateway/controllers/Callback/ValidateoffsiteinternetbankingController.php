@@ -4,7 +4,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
     public function indexAction()
     {
         // Callback validation.
-        $order = $this->getOrder();
+        $order = $this->_getOrder();
 
         if (! $payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
@@ -37,9 +37,11 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
 
         if ($charge->isSuccessful()) {
             $invoice = $order->getInvoice($payment->getLastTransId());
+            $transId = $payment->getLastTransId();
 
-            $order->markAsPaid(
-                $payment->getLastTransId(),
+            // Make sure to avoid marking invoice paid more than once
+            if (!$order->isInvoicePaid($transId)) $order->markAsPaid(
+                $transId,
                 Mage_Sales_Model_Order::STATE_PROCESSING,
                 Mage::helper('omise_gateway')->__('An amount of %s has been paid online.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );

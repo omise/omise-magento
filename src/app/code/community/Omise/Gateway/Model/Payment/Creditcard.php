@@ -103,7 +103,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             return;
         }
 
-        $this->suspectToBeFailed($payment);
+        $this->_suspectToBeFailed($payment);
     }
 
     /**
@@ -116,7 +116,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     {
         $order = $payment->getOrder();
 
-        return $this->process(
+        return $this->_process(
             $payment,
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
@@ -145,7 +145,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         Mage::log('Omise: authorizing payment.');
 
         $order  = $payment->getOrder();
-        $charge = $this->process(
+        $charge = $this->_process(
             $payment,
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
@@ -166,7 +166,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             return $this;
         }
 
-        $this->suspectToBeFailed($payment);
+        $this->_suspectToBeFailed($payment);
     }
 
     /**
@@ -186,7 +186,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         }
 
         $order  = $payment->getOrder();
-        $charge = $this->process(
+        $charge = $this->_process(
             $payment,
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
@@ -205,7 +205,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             return $this;
         }
 
-        $this->suspectToBeFailed($payment);
+        $this->_suspectToBeFailed($payment);
     }
 
     /**
@@ -246,7 +246,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
             return $this;
         }
 
-        $this->suspectToBeFailed($payment);
+        $this->_suspectToBeFailed($payment);
     }
 
     /**

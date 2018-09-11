@@ -4,23 +4,23 @@ class Omise_Gateway_Model_Api_Object
     /**
      * @var mixed
      */
-    protected $object;
+    protected $_object;
 
     /**
      * @param  mixed $object
      *
      * @return self
      */
-    protected function refresh($object = null)
+    protected function _refresh($object = null)
     {
-        if (is_null($this->object) && is_null($object)) {
+        if (is_null($this->_object) && is_null($object)) {
             return $this;
         }
 
         if (! is_null($object)) {
-            $this->object = $object;
-        } elseif (method_exists($this->object, 'refresh')) {
-            $this->object->refresh();
+            $this->_object = $object;
+        } elseif (method_exists($this->_object, 'refresh')) {
+            $this->_object->refresh();
         }
 
         return $this;
@@ -33,8 +33,8 @@ class Omise_Gateway_Model_Api_Object
      */
     public function __get($key)
     {
-        if (isset($this->object[$key])) {
-            return $this->object[$key];
+        if (isset($this->_object[$key])) {
+            return $this->_object[$key];
         }
 
         throw new Exception("Error Processing Request", 1);

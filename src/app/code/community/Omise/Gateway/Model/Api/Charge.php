@@ -34,7 +34,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     public function find($id)
     {
         try {
-            $this->refresh(OmiseCharge::retrieve($id));
+            $this->_refresh(OmiseCharge::retrieve($id));
         } catch (Exception $e) {
             return Mage::getModel(
                 'omise_gateway/api_error',
@@ -56,7 +56,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     public function create($params)
     {
         try {
-            $this->refresh(OmiseCharge::create($params));
+            $this->_refresh(OmiseCharge::create($params));
         } catch (Exception $e) {
             return Mage::getModel(
                 'omise_gateway/api_error',
@@ -76,7 +76,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     public function capture()
     {
         try {
-            $this->refresh($this->object->capture());
+            $this->_refresh($this->_object->capture());
         } catch (Exception $e) {
             return Mage::getModel(
                 'omise_gateway/api_error',
@@ -98,7 +98,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     public function refund($params)
     {
         try {
-            return Mage::getModel('omise_gateway/api_refund', $this->object->refunds()->create($params));
+            return Mage::getModel('omise_gateway/api_refund', $this->_object->refunds()->create($params));
         } catch (Exception $e) {
             return Mage::getModel(
                 'omise_gateway/api_error',
@@ -126,7 +126,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
     public function reverse()
     {
         try {
-            $this->refresh($this->object->reverse());
+            $this->_refresh($this->_object->reverse());
         } catch (Exception $e) {
             return Mage::getModel(
                 'omise_gateway/api_error',

@@ -10,7 +10,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     /**
      * @return \Omise_Gateway_Model_Order
      */
-    protected function getOrder()
+    protected function _getOrder()
     {
         $id = $this->getRequest()->getParam('order_id') ? $this->getRequest()->getParam('order_id') : null;
 
