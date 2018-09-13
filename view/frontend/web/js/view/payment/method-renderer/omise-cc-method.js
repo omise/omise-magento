@@ -124,7 +124,7 @@ define(
              * @return {boolean}
              */
             isCustomerHasCard: function() {
-                return this.getCustomerCards().length > 0;
+                return this.getCustomerCards().length;
             },
 
             /**
@@ -246,8 +246,9 @@ define(
                     return false;
                 }
 
-                if ( this.omiseCard() ) {
-                    this.processOrderWithCard(this.omiseCard());
+                var card = this.omiseCard();
+                if ( card ) {
+                    this.processOrderWithCard(card);
                     return true;
                 }
 
