@@ -97,7 +97,7 @@
                 </group>
                 <group id="omise_offsite_tesco" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Tesco Solution</label>
-                    <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
+                    <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
                         <comment>Enable Omise Tesco Solution.</comment>
