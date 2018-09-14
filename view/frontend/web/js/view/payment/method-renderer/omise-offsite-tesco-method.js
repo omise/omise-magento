@@ -77,6 +77,16 @@ define(
             },
 
             /**
+             * Handle payment error
+             *
+             */
+            handlePaymentError: function(response) {
+                errorProcessor.process(response, self.messageContainer);
+                fullScreenLoader.stopLoader();
+                self.isPlaceOrderActionAllowed(true);
+            },
+
+            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
@@ -92,9 +102,7 @@ define(
                 self.getPlaceOrderDeferredObject()
                     .fail(
                         function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
+                            self.handlePaymentError(response);
                         }
                     ).done(
                         function(response) {
@@ -110,9 +118,7 @@ define(
                             storage.get(serviceUrl, false)
                                 .fail(
                                     function (response) {
-                                        errorProcessor.process(response, self.messageContainer);
-                                        fullScreenLoader.stopLoader();
-                                        self.isPlaceOrderActionAllowed(true);
+                                        self.handlePaymentError(response);
                                     }
                                 )
                                 .done(
@@ -120,9 +126,7 @@ define(
                                         if (response) {
                                             redirectOnSuccessAction.execute();
                                         } else {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
+                                            self.handlePaymentError(response);
                                         }
                                     }
                                 );
