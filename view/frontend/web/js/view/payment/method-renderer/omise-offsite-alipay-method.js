@@ -5,7 +5,6 @@ define(
         'mage/storage',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
-        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
         'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor'
@@ -16,7 +15,6 @@ define(
         storage,
         Component,
         fullScreenLoader,
-        redirectOnSuccessAction,
         quote,
         urlBuilder,
         errorProcessor
@@ -70,10 +68,13 @@ define(
              * Handle payment error
              */
             handlePaymentError: function(response = null) {
-                errorProcessor.process(response, self.messageContainer);
+                if (response) {
+                    errorProcessor.process(response, self.messageContainer);
+                }
+                
                 fullScreenLoader.stopLoader();
                 self.isPlaceOrderActionAllowed(true);
-            },            
+            },
 
             /**
              * Hook the placeOrder function.
@@ -89,11 +90,8 @@ define(
                 }
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function (response) {
-                            self.handlePaymentError(response);
-                        }
-                    ).done(
+                    .fail(self.handlePaymentError)
+                    .done(
                         function (response) {
                             var self = this;
 
@@ -105,11 +103,7 @@ define(
                             );
 
                             storage.get(serviceUrl, false)
-                                .fail(
-                                    function (response) {
-                                        self.handlePaymentError(response);
-                                    }
-                                )
+                                .fail(self.handlePaymentError)
                                 .done(
                                     function (response) {
                                         if (response) {

@@ -77,6 +77,18 @@ define(
             },
 
             /**
+             * Handle payment error
+             */
+            handlePaymentError: function(response = null) {
+                if (response) {
+                    errorProcessor.process(response, self.messageContainer);
+                }
+
+                fullScreenLoader.stopLoader();
+                self.isPlaceOrderActionAllowed(true);
+            },
+
+            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
@@ -90,13 +102,8 @@ define(
                 }
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
+                    .fail(self.handlePaymentError(response))
+                    .done(
                         function(response) {
                             var self = this;
 
@@ -108,21 +115,13 @@ define(
                             );
 
                             storage.get(serviceUrl, false)
-                                .fail(
-                                    function (response) {
-                                        errorProcessor.process(response, self.messageContainer);
-                                        fullScreenLoader.stopLoader();
-                                        self.isPlaceOrderActionAllowed(true);
-                                    }
-                                )
+                                .fail(self.handlePaymentError)
                                 .done(
                                     function (response) {
                                         if (response) {
                                             $.mage.redirect(response.authorize_uri);
                                         } else {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
+                                            self.handlePaymentError();
                                         }
                                     }
                                 );

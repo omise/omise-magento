@@ -54,7 +54,9 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'omise_card_token': this.omiseCardToken()
+                        'omise_card_token': this.omiseCardToken(),
+                        'omise_card': this.omiseCard(),
+                        'omise_save_card': this.omiseSaveCard()
                     }
                 };
             },
@@ -81,7 +83,9 @@ define(
                         'omiseCardExpirationMonth',
                         'omiseCardExpirationYear',
                         'omiseCardSecurityCode',
-                        'omiseCardToken'
+                        'omiseCardToken',
+                        'omiseCard',
+                        'omiseSaveCard'
                     ]);
 
                 return this;
@@ -110,6 +114,35 @@ define(
             },
 
             /**
+             * @return {boolean}
+             */
+            isCustomerLoggedIn: function() {
+                return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn;
+            },
+
+            /**
+             * @return {boolean}
+             */
+            isCustomerHasCard: function() {
+                return this.getCustomerCards().length;
+            },
+
+            /**
+             * @return {array}
+             */
+            getCustomerCards: function() {
+                return window.checkoutConfig.payment.omise_cc.cards;
+            },
+
+            /**
+             * @return {bool}
+             */
+            chargeWithNewCard: function(element){
+                $('#payment_form_omise_cc').css({display: 'block'});
+                return true;
+            },
+
+            /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */
@@ -125,6 +158,14 @@ define(
             stopPerformingPlaceOrderAction: function() {
                 fullScreenLoader.stopLoader();
                 this.isPlaceOrderActionAllowed(true);
+            },
+
+            /**
+             * Handle payment error
+             */
+            handlePaymentError: function(response) {
+                errorProcessor.process(response, self.messageContainer);
+                self.stopPerformingPlaceOrderAction();
             },
 
             /**
@@ -150,13 +191,7 @@ define(
                     if (statusCode === 200) {
                         self.omiseCardToken(response.id);
                         self.getPlaceOrderDeferredObject()
-                            .fail(
-                                function(response) {
-                                    errorProcessor.process(response, self.messageContainer);
-                                    fullScreenLoader.stopLoader();
-                                    self.isPlaceOrderActionAllowed(true);
-                                }
-                            ).done(
+                            .fail(self.handlePaymentError).done(
                                 function(response) {
                                     if (self.isThreeDSecureEnabled()) {
                                         var serviceUrl = urlBuilder.createUrl(
@@ -167,21 +202,13 @@ define(
                                         );
 
                                         storage.get(serviceUrl, false)
-                                            .fail(
-                                                function (response) {
-                                                    errorProcessor.process(response, self.messageContainer);
-                                                    fullScreenLoader.stopLoader();
-                                                    self.isPlaceOrderActionAllowed(true);
-                                                }
-                                            )
+                                            .fail(self.handlePaymentError)
                                             .done(
                                                 function (response) {
                                                     if (response) {
                                                         $.mage.redirect(response.authorize_uri);
                                                     } else {
-                                                        errorProcessor.process(response, self.messageContainer);
-                                                        fullScreenLoader.stopLoader();
-                                                        self.isPlaceOrderActionAllowed(true);
+                                                        self.stopPerformingPlaceOrderAction();
                                                     }
                                                 }
                                             );
@@ -211,6 +238,12 @@ define(
                 if (typeof Omise === 'undefined') {
                     alert($t('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
                     return false;
+                }
+
+                var card = this.omiseCard();
+                if ( card ) {
+                    this.processOrderWithCard(card);
+                    return true;
                 }
 
                 if (! this.validate()) {
@@ -247,6 +280,39 @@ define(
 
                 return false;
             },
+
+            processOrderWithCard: function (id) {
+                var self = this;
+
+                self.getPlaceOrderDeferredObject()
+                    .fail(self.handlePaymentError)
+                    .done(
+                        function(response) {
+                            if (self.isThreeDSecureEnabled()) {
+                                var serviceUrl = urlBuilder.createUrl(
+                                    '/orders/:order_id/omise-offsite',
+                                    {
+                                        order_id: response
+                                    }
+                                );
+
+                                storage.get(serviceUrl, false)
+                                    .fail(self.handlePaymentError)
+                                    .done(
+                                        function (response) {
+                                            if (response) {
+                                                $.mage.redirect(response.authorize_uri);
+                                            } else {
+                                                self.stopPerformingPlaceOrderAction()
+                                            }
+                                        }
+                                    );
+                            } else if (self.redirectAfterPlaceOrder) {
+                                redirectOnSuccessAction.execute();
+                            }
+                        }
+                    );
+            }
         });
     }
 );
