@@ -62,16 +62,16 @@ class CcConfigProvider implements ConfigProviderInterface
     public function getCards()
     {
         if (! $this->customer->getMagentoCustomerId() || ! $this->customer->getId()) {
-            return array();
+            return [];
         }
 
-        $cards = $this->customer->cards(array('order' => 'reverse_chronological'));
+        $cards = $this->customer->cards(['order' => 'reverse_chronological']);
 
         if (! $cards) {
-            return array();
+            return [];
         }
 
-        $data = array();
+        $data = [];
 
         foreach($cards['data'] as $card) {
             $label = $card['brand'] . ' **** ' . $card['last_digits'];

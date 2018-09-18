@@ -117,13 +117,13 @@ class Customer
     public function addCard($cardToken)
     {
         if (! $this->getId()) {
-            $this->create(array(
+            $this->create([
                 'email'       => $this->magentoCustomer->getEmail(),
                 'description' => trim($this->magentoCustomer->getFirstname() . ' ' . $this->magentoCustomer->getLastname())
-            ));
+            ]);
         }
 
-        $this->customerAPI = $this->customerAPI->update(array('card' => $cardToken));
+        $this->customerAPI = $this->customerAPI->update(['card' => $cardToken]);
 
         return $this;
     }
@@ -137,7 +137,7 @@ class Customer
      *
      * @see    https://github.com/omise/omise-php/blob/master/lib/omise/OmiseCardList.php
      */
-    public function cards($options = array())
+    public function cards($options = [])
     {
         return $this->customerAPI->cards($options);
     }
@@ -149,7 +149,7 @@ class Customer
      */
     public function getLatestCard()
     {
-        $cards = $this->cards(array('order' => 'reverse_chronological'));
+        $cards = $this->cards(['order' => 'reverse_chronological']);
 
         return $cards['total'] > 0 ? $cards['data'][0] : null;
     }
