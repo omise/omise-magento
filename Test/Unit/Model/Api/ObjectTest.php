@@ -98,7 +98,7 @@ class MockObject extends Object
 class MockOmiseObject implements \ArrayAccess
 {
     // Store the attributes of the object.
-    protected $_values = array();
+    protected $_values = [];
 
     public function refresh()
     {
