@@ -54,7 +54,9 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'omise_card_token': this.omiseCardToken()
+                        'omise_card_token': this.omiseCardToken(),
+                        'omise_card': this.omiseCard(),
+                        'omise_save_card': this.omiseSaveCard()
                     }
                 };
             },
@@ -81,7 +83,9 @@ define(
                         'omiseCardExpirationMonth',
                         'omiseCardExpirationYear',
                         'omiseCardSecurityCode',
-                        'omiseCardToken'
+                        'omiseCardToken',
+                        'omiseCard',
+                        'omiseSaveCard'
                     ]);
 
                 return this;
@@ -107,6 +111,35 @@ define(
                 }
 
                 return false;
+            },
+
+            /**
+             * @return {boolean}
+             */
+            isCustomerLoggedIn: function() {
+                return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn;
+            },
+
+            /**
+             * @return {boolean}
+             */
+            isCustomerHasCard: function() {
+                return this.getCustomerCards().length;
+            },
+
+            /**
+             * @return {array}
+             */
+            getCustomerCards: function() {
+                return window.checkoutConfig.payment.omise_cc.cards;
+            },
+
+            /**
+             * @return {bool}
+             */
+            chargeWithNewCard: function(element){
+                $('#payment_form_omise_cc').css({display: 'block'});
+                return true;
             },
 
             /**
@@ -213,6 +246,12 @@ define(
                     return false;
                 }
 
+                var card = this.omiseCard();
+                if ( card ) {
+                    this.processOrderWithCard(card);
+                    return true;
+                }
+
                 if (! this.validate()) {
                     return false;
                 }
@@ -247,6 +286,52 @@ define(
 
                 return false;
             },
+
+            processOrderWithCard: function (id) {
+                var self = this;
+
+                self.getPlaceOrderDeferredObject()
+                    .fail(
+                        function(response) {
+                            errorProcessor.process(response, self.messageContainer);
+                            fullScreenLoader.stopLoader();
+                            self.isPlaceOrderActionAllowed(true);
+                        }
+                    ).done(
+                        function(response) {
+                            if (self.isThreeDSecureEnabled()) {
+                                var serviceUrl = urlBuilder.createUrl(
+                                    '/orders/:order_id/omise-offsite',
+                                    {
+                                        order_id: response
+                                    }
+                                );
+
+                                storage.get(serviceUrl, false)
+                                    .fail(
+                                        function (response) {
+                                            errorProcessor.process(response, self.messageContainer);
+                                            fullScreenLoader.stopLoader();
+                                            self.isPlaceOrderActionAllowed(true);
+                                        }
+                                    )
+                                    .done(
+                                        function (response) {
+                                            if (response) {
+                                                $.mage.redirect(response.authorize_uri);
+                                            } else {
+                                                errorProcessor.process(response, self.messageContainer);
+                                                fullScreenLoader.stopLoader();
+                                                self.isPlaceOrderActionAllowed(true);
+                                            }
+                                        }
+                                    );
+                            } else if (self.redirectAfterPlaceOrder) {
+                                redirectOnSuccessAction.execute();
+                            }
+                        }
+                    );
+            }
         });
     }
 );
