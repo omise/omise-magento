@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
+    <test>
+            <email>
+                <send_email>send_email_email_template</send_email>
+            </email>
+            </test>
         <payment>
+
+            
             <omise>
                 <sandbox_status>0</sandbox_status>
                 <model>OmiseAdapter</model>
