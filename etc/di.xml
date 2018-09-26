@@ -37,7 +37,7 @@
     </virtualType>
     <!-- /Value Handler -->
 
-  <!--  Tesco payment solution-->
+    <!--  Tesco payment solution-->
     <virtualType name="OmiseTescoAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Tesco::CODE</argument>
