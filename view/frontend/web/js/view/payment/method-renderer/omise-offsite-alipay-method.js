@@ -68,6 +68,8 @@ define(
              * Handle payment error
              */
             handlePaymentError: function(response = null) {
+                var self = this;
+
                 if (response) {
                     errorProcessor.process(response, self.messageContainer);
                 }

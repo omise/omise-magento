@@ -5,7 +5,6 @@ define(
         'mage/storage',
         'mage/translate',
         'jquery',
-        'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
@@ -18,7 +17,6 @@ define(
         storage,
         $t,
         $,
-        validator,
         errorProcessor,
         fullScreenLoader,
         redirectOnSuccessAction,
@@ -164,6 +162,8 @@ define(
              * Handle payment error
              */
             handlePaymentError: function(response) {
+                var self = this;
+
                 errorProcessor.process(response, self.messageContainer);
                 self.stopPerformingPlaceOrderAction();
             },

@@ -80,6 +80,8 @@ define(
              * Handle payment error
              */
             handlePaymentError: function(response = null) {
+                var self = this;
+
                 if (response) {
                     errorProcessor.process(response, self.messageContainer);
                 }
@@ -102,7 +104,7 @@ define(
                 }
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(self.handlePaymentError(response))
+                    .fail(self.handlePaymentError)
                     .done(
                         function(response) {
                             var self = this;
