@@ -37,6 +37,40 @@
     </virtualType>
     <!-- /Value Handler -->
 
+    <!--  Tesco payment solution-->
+    <virtualType name="OmiseTescoAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Tesco::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMTescoValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Tesco :: Value Handler Pool -->
+    <virtualType name="OmiseAPMTescoValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMTescoConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    
+    <virtualType name="OmiseAPMTescoConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMTescoConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMTescoConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Tesco::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
     <!--  Alipay payment solution-->
     <virtualType name="OmiseAlipayAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>

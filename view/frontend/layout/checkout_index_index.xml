@@ -30,6 +30,9 @@
                                                                         </item>
                                                                         <item name="omise_offsite_alipay" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>      
+                                                                        <item name="omise_offline_tesco" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>                                                                        
                                                                     </item>
                                                                 </item>
