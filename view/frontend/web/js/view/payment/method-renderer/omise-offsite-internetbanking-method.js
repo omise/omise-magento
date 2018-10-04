@@ -5,7 +5,6 @@ define(
         'mage/storage',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
-        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
         'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor'
@@ -16,7 +15,6 @@ define(
         storage,
         Component,
         fullScreenLoader,
-        redirectOnSuccessAction,
         quote,
         urlBuilder,
         errorProcessor
@@ -79,15 +77,13 @@ define(
             /**
              * Handle payment error
              */
-            handlePaymentError: function(response = null) {
-                var self = this;
-
+            handlePaymentError: function(context, response = null) {
                 if (response) {
-                    errorProcessor.process(response, self.messageContainer);
+                    errorProcessor.process(response, context.messageContainer);
                 }
 
                 fullScreenLoader.stopLoader();
-                self.isPlaceOrderActionAllowed(true);
+                context.isPlaceOrderActionAllowed(true);
             },
 
             /**
@@ -117,7 +113,7 @@ define(
                             );
 
                             storage.get(serviceUrl, false)
-                                .fail(self.handlePaymentError)
+                                .fail(response => elf.handlePaymentError(self, response))
                                 .done(
                                     function (response) {
                                         if (response) {
