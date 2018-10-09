@@ -2,6 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <head>
         <css src="Omise_Payment::css/offsite-internetbanking.css" />
+        <script src="Omise_Payment::js/view/payment/error_handle.js"/>
         <script src="https://cdn.omise.co/omise.js.gz" src_type="url" />
     </head>
     <body>
