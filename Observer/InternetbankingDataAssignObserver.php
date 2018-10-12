@@ -19,11 +19,18 @@ class InternetbankingDataAssignObserver extends AbstractDataAssignObserver
         self::OFFSITE
     ];
 
+    private $log;
+    public function __construct(
+        \PSR\Log\LoggerInterface $log
+    ) {
+        $this->log = $log;
+    }
     /**
      * @param \Magento\Framework\Event\Observer $observer
      */
     public function execute(Observer $observer)
     {
+        $this->log->debug('observer', ['observer'=>$observer]);
         $dataObject = $this->readDataArgument($observer);
 
         $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);

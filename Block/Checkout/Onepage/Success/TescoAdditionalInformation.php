@@ -64,63 +64,6 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     }
 
     /**
-    * Post user question
-    *
-    * @return void
-    * @throws \Exception
-    */
-    public function sendEmail($imageUrl)
-    {
-        try {
-            $storeName =  $this->_scopeConfig->getValue(
-                'trans_email/ident_sales/name',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
-            $storeEmail = $this->_scopeConfig->getValue(
-                'trans_email/ident_sales/email',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
-
-            $ch = curl_init();
-            curl_setopt($ch,CURLOPT_URL,$imageUrl);
-            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-            $output=curl_exec($ch);
-
-            $postObject = new \Magento\Framework\DataObject();
-            $postObject->setData(['url' => $output]);
-
-
-
-            $error = false;
-
-            $sender = [
-                'name' => $storeName,
-                'email' => $this->_escaper->escapeHtml("email@naprawaok.nazwa.pl"),
-            ];
-
-            $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-            $transport = $this->_transportBuilder
-                ->setTemplateIdentifier('send_email_email_template')
-                ->setTemplateOptions([
-                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                    'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
-                ])
-                ->setTemplateVars(['data' => $postObject])
-                ->setFrom($sender)
-                ->addTo([ 'email'=>'jacek.stanusz@gmail.com',], $storeScope)
-                ->getTransport();
-
-            $transport->sendMessage(); ;
-
-            return;
-        } catch (\Exception $e) {
-            $this->log->debug('log - email', ['msg'=>$e]);
-            return;
-        }
-    }
-    
-    /**
      * Return HTML code with tesco lotus payment infromation
      *
      * @return string
@@ -136,15 +79,50 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
         if (!$tescoCodeImageUrl) {
             return '';
         }
-        
+        // get store name
+        $storeName =  $this->_scopeConfig->getValue(
+            'trans_email/ident_sales/name',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+        // get store email
+        $storeEmail = $this->_scopeConfig->getValue(
+            'trans_email/ident_sales/email',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$tescoCodeImageUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $output=curl_exec($ch);
+
+        $sender = [
+            'name' => $storeName,
+            'email' => $this->_escaper->escapeHtml("email@naprawaok.nazwa.pl"),
+        ];
+
+        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        /*$transport = $this->_transportBuilder
+            ->setTemplateIdentifier('send_email_email_template')
+            ->setTemplateOptions([
+                'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+                'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
+            ])
+            ->setTemplateVars(['data' => $postObject])
+            ->setFrom($sender)
+            ->addTo([ 'email'=>'jacek.stanusz@gmail.com',], $storeScope)
+            ->getTransport();
+
+        $transport->sendMessage();
+*/
+
         $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
-        
+
         $this->addData([
-            'tesco_code_url' => $tescoCodeImageUrl,
+            'tesco_code_image' => $output,
             'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
         ]);
         
-        $this->sendEmail($tescoCodeImageUrl);
         return parent::_toHtml();
     }
 }

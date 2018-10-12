@@ -6,4 +6,8 @@
     <event name="payment_method_assign_data_omise_offsite_internetbanking">
         <observer name="omise_data_assign" instance="Omise\Payment\Observer\InternetbankingDataAssignObserver" />
     </event>
+
+    <event name="sales_order_payment_place_end">
+        <observer name="omise_end_payment" instance="Omise\Payment\Observer\NewTescoPaymentObserver" />
+    </event>
 </config>
