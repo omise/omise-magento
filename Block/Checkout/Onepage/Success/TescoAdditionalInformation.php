@@ -18,16 +18,6 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     protected $inlineTranslation;
     
     /**
-    * @var \Magento\Framework\App\Config\ScopeConfigInterface
-    */
-    protected $scopeConfig;
-    
-    /**
-    * @var \Magento\Store\Model\StoreManagerInterface
-    */
-    protected $storeManager;
-    
-    /**
     * @var \Magento\Framework\Escaper
     */
     protected $_escaper;
@@ -47,19 +37,9 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Escaper $escaper,
-        \PSR\Log\LoggerInterface $log,
         array $data = []
     ) {
         $this->_checkoutSession = $checkoutSession;
-        $this->_transportBuilder = $transportBuilder;
-        $this->scopeConfig = $scopeConfig;
-        $this->storeManager = $storeManager;
-        $this->_escaper = $escaper;
-        $this->log = $log;
         parent::__construct($context, $data);
     }
 
@@ -72,54 +52,18 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     {
         $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
         if ($paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
-            return '';
+            return parent::_toHtml();
         }
-        $tescoCodeImageUrl =  $paymentData['additional_information']['barcode'];
+        $barcode =  $paymentData['additional_information']['barcode'];
 
-        if (!$tescoCodeImageUrl) {
-            return '';
+        if (!$barcode) {
+            return parent::_toHtml();
         }
-        // get store name
-        $storeName =  $this->_scopeConfig->getValue(
-            'trans_email/ident_sales/name',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-        // get store email
-        $storeEmail = $this->_scopeConfig->getValue(
-            'trans_email/ident_sales/email',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$tescoCodeImageUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $output=curl_exec($ch);
-
-        $sender = [
-            'name' => $storeName,
-            'email' => $this->_escaper->escapeHtml("email@naprawaok.nazwa.pl"),
-        ];
-
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        /*$transport = $this->_transportBuilder
-            ->setTemplateIdentifier('send_email_email_template')
-            ->setTemplateOptions([
-                'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
-            ])
-            ->setTemplateVars(['data' => $postObject])
-            ->setFrom($sender)
-            ->addTo([ 'email'=>'jacek.stanusz@gmail.com',], $storeScope)
-            ->getTransport();
-
-        $transport->sendMessage();
-*/
 
         $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
 
         $this->addData([
-            'tesco_code_image' => $output,
+            'tesco_code_image' => $barcode,
             'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
         ]);
         
