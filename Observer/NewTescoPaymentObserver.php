@@ -34,6 +34,8 @@ class NewTescoPaymentObserver implements ObserverInterface
         $this->_checkoutSession = $checkoutSession;
         $this->_transportBuilder = $transportBuilder;
     }
+
+
     public function convertSVGToHTML($svg)
     {
         $xml = new SimpleXMLElement($svg);
@@ -47,11 +49,11 @@ class NewTescoPaymentObserver implements ObserverInterface
                 
                 foreach ($child->children() as $rect) {
                     $attrArr = $rect->attributes();
-                    $div = $xhtml->createElement('div');
+                    $divRect = $xhtml->createElement('div');
                     $width = $attrArr['width'];
                     $margin =($attrArr['x'] - $prevX - $prevWidth) . 'px';
-                    $div->setAttribute('style', "float:left;position:relative;height:50px; width:$width; background-color:#000; margin-left:$margin");
-                    $xhtml->appendChild($div);
+                    $divRect->setAttribute('style', "float:left;position:relative;height:50px; width:$width; background-color:#000; margin-left:$margin");
+                    $xhtml->appendChild($divRect);
                     $prevX = $attrArr['x'];
                     $prevWidth = $attrArr['width'];
                 }
@@ -84,7 +86,14 @@ class NewTescoPaymentObserver implements ObserverInterface
             'trans_email/ident_sales/email',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
+        
+        //$this->log->debug('svg', ['svg'=> $paymentData['additional_information']['barcode']]);
+        //return;
+        $output = str_replace("//", '', $paymentData['additional_information']['barcode']);
 
+        $this->log->debug('log', ['html'=>$output]);
+        return;
+        $this->log->debug('log', ['html'=>$this->convertSVGToHTML($paymentData['additional_information']['barcode'])]);
         $sender = [
             'name' => $storeName,
             'email' => "email@naprawaok.nazwa.pl",
@@ -92,9 +101,8 @@ class NewTescoPaymentObserver implements ObserverInterface
         
         $emailData = new \Magento\Framework\DataObject();
 
-        $emailData->setData(['barcode'=>'hello', 'msg'=>"asl;fjfjadls;fjfjl"]);
-
-
+        $emailData->setData(['barcode'=>$this->convertSVGToHTML($paymentData['additional_information']['barcode']), 'msg'=>"asl;fjfjadls;fjfjl"]);
+        
         $transport = $this->_transportBuilder
             ->setTemplateIdentifier('send_email_email_template')
             ->setTemplateOptions([
@@ -105,7 +113,7 @@ class NewTescoPaymentObserver implements ObserverInterface
             ->setFrom($sender)
             ->addTo([ 'email'=>'jacek.stanusz@gmail.com',], \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
             ->getTransport();
-
+        
         $transport->sendMessage();
 
         $this->log->debug('observer - events', ['orderPaymentData'=>($order->getCustomerEmail())/*->getPayment()->getMethodInstance()->getCode()*/]);
