@@ -16,6 +16,16 @@ class Omise_Gateway_Model_Order extends Mage_Sales_Model_Order
     }
 
     /**
+     * Check whether the payment is in payment pending state
+     *
+     * @return bool
+     */
+    public function isPaymentPending()
+    {
+        return $this->getState() === Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
+    }
+
+    /**
      * @return self
      */
     public function loadBySession()

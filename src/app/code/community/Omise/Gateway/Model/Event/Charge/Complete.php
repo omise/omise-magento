@@ -50,12 +50,14 @@ class Omise_Gateway_Model_Event_Charge_Complete
             return;
         }
 
-        if ($order->isPaymentReview() && ($charge->isSuccessful() || $charge->isAwaitCapture())) {
+        $isPendingOrReview = $order->isPaymentReview() || $order->isPaymentPending();
+
+        if ($isPendingOrReview && ($charge->isSuccessful() || $charge->isAwaitCapture())) {
             $order->getPayment()->accept();
             return $order->save();
         }
 
-        if ($order->isPaymentReview() && $charge->isFailed()) {
+        if ($isPendingOrReview && $charge->isFailed()) {
             $order->getPayment()->deny();
             return $order->save();
         }
