@@ -45,7 +45,6 @@ class OmiseHelper extends AbstractHelper
 
     public function convertSVGToHTML($svg)
     {
-        return 'hahahahahah';
         $xml = new SimpleXMLElement($svg);
         if (!$xml)
         {
