@@ -20,47 +20,28 @@ class NewTescoPaymentObserver implements ObserverInterface
     * @var  \Magento\Framework\Mail\Template\TransportBuilder
     */
     private $_transportBuilder;
-
+    
+    /**
+    * @var  \Omise\Payment\Helper
+    */
+    private $_helper;
+    
     private $log;
 
     public function __construct(
         \PSR\Log\LoggerInterface $log,
+        \Omise\Payment\Helper\OmiseHeler $helper,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->log = $log;
+        $this->_helper = $helper;
         $this->_checkoutSession = $checkoutSession;
         $this->_transportBuilder = $transportBuilder;
     }
 
-
-    public function convertSVGToHTML($svg)
-    {
-        $xml = new SimpleXMLElement($svg);
-        $node = $xml->children()->children();
-        $xhtml = new DOMDocument();
-        foreach ($node as $child)
-        {
-            if ($child->getName() === 'g') {
-                $prevX = 0;
-                $prevWidth = 0;
-                
-                foreach ($child->children() as $rect) {
-                    $attrArr = $rect->attributes();
-                    $divRect = $xhtml->createElement('div');
-                    $width = $attrArr['width'];
-                    $margin =($attrArr['x'] - $prevX - $prevWidth) . 'px';
-                    $divRect->setAttribute('style', "float:left;position:relative;height:50px; width:$width; background-color:#000; margin-left:$margin");
-                    $xhtml->appendChild($divRect);
-                    $prevX = $attrArr['x'];
-                    $prevWidth = $attrArr['width'];
-                }
-            }
-        }
-        return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
-    }
 
     /**
      * Set forced canCreditmemo flag
@@ -89,7 +70,7 @@ class NewTescoPaymentObserver implements ObserverInterface
         
         //$this->log->debug('svg', ['svg'=> $paymentData['additional_information']['barcode']]);
         //return;
-        $output = str_replace("//", '', $paymentData['additional_information']['barcode']);
+        $output = str_replace("//", '', $this->_escaper->escapeHtml($paymentData['additional_information']['barcode']));
 
         $this->log->debug('log', ['html'=>$output]);
         return;
