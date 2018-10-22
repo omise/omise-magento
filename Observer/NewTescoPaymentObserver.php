@@ -30,7 +30,7 @@ class NewTescoPaymentObserver implements ObserverInterface
 
     public function __construct(
         \PSR\Log\LoggerInterface $log,
-        \Omise\Payment\Helper\OmiseHeler $helper,
+        \Omise\Payment\Helper\OmiseHelper $helper,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -51,6 +51,7 @@ class NewTescoPaymentObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        return;
         /** @var \Magento\Sales\Model\Order $order */
         $order = $this->_checkoutSession->getLastRealOrder();
         $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
