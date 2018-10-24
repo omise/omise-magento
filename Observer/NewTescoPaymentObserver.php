@@ -51,7 +51,6 @@ class NewTescoPaymentObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        return;
         /** @var \Magento\Sales\Model\Order $order */
         $order = $this->_checkoutSession->getLastRealOrder();
         $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
@@ -68,14 +67,9 @@ class NewTescoPaymentObserver implements ObserverInterface
             'trans_email/ident_sales/email',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
-        
-        //$this->log->debug('svg', ['svg'=> $paymentData['additional_information']['barcode']]);
-        //return;
-        $output = str_replace("//", '', $this->_escaper->escapeHtml($paymentData['additional_information']['barcode']));
 
-        $this->log->debug('log', ['html'=>$output]);
-        return;
-        $this->log->debug('log', ['html'=>$this->convertSVGToHTML($paymentData['additional_information']['barcode'])]);
+        $barcodeHtml = $this->_helper->convertTescoSVGCodeToHTML($paymentData['additional_information']['barcode']);
+
         $sender = [
             'name' => $storeName,
             'email' => "email@naprawaok.nazwa.pl",
@@ -83,7 +77,7 @@ class NewTescoPaymentObserver implements ObserverInterface
         
         $emailData = new \Magento\Framework\DataObject();
 
-        $emailData->setData(['barcode'=>$this->convertSVGToHTML($paymentData['additional_information']['barcode']), 'msg'=>"asl;fjfjadls;fjfjl"]);
+        $emailData->setData(['barcode'=>$barcodeHtml]);
         
         $transport = $this->_transportBuilder
             ->setTemplateIdentifier('send_email_email_template')
