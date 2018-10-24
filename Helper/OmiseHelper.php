@@ -42,7 +42,6 @@ class OmiseHelper extends AbstractHelper
         return $amount;
     }
 
-
     public function convertTescoSVGCodeToHTML($svg)
     {
         // remove from $svg unnecessary elements

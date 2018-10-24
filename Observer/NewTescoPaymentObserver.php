@@ -25,18 +25,14 @@ class NewTescoPaymentObserver implements ObserverInterface
     * @var  \Omise\Payment\Helper
     */
     private $_helper;
-    
-    private $log;
 
     public function __construct(
-        \PSR\Log\LoggerInterface $log,
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->_scopeConfig = $scopeConfig;
-        $this->log = $log;
         $this->_helper = $helper;
         $this->_checkoutSession = $checkoutSession;
         $this->_transportBuilder = $transportBuilder;
@@ -53,16 +49,19 @@ class NewTescoPaymentObserver implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order $order */
         $order = $this->_checkoutSession->getLastRealOrder();
-        $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
         $paymentData = $order->getPayment()->getData();
 
-        // get store name
+        if ($paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
+            return $this;
+        }
+
+        $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
+
         $storeName =  $this->_scopeConfig->getValue(
             'trans_email/ident_sales/name',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
         
-        // get store email
         $storeEmail = $this->_scopeConfig->getValue(
             'trans_email/ident_sales/email',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -72,7 +71,7 @@ class NewTescoPaymentObserver implements ObserverInterface
 
         $sender = [
             'name' => $storeName,
-            'email' => "email@naprawaok.nazwa.pl",
+            'email' => $storeEmail,
         ];
         
         $emailData = new \Magento\Framework\DataObject();
@@ -91,8 +90,6 @@ class NewTescoPaymentObserver implements ObserverInterface
             ->getTransport();
         
         $transport->sendMessage();
-
-        $this->log->debug('observer - events', ['orderPaymentData'=>($order->getCustomerEmail())/*->getPayment()->getMethodInstance()->getCode()*/]);
 
         return $this;
     }
