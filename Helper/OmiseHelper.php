@@ -46,11 +46,11 @@ class OmiseHelper extends AbstractHelper
     public function convertTescoSVGCodeToHTML($svg)
     {
         // remove from $svg unnecessary elements
-        
+
         // find first "<rect" node element
         // delete everything until first "<rect"
         $svg = substr($svg, strpos($svg, '<rect'));
-        
+
         //find last </g> closing tag and cut everything after it
         $svg = substr($svg, 0, strpos($svg, '</g>') + strlen('</g>'));
 
@@ -85,7 +85,7 @@ class OmiseHelper extends AbstractHelper
 
                     //set html attributes based on SVG attributes
                     $divRect->setAttribute('style', "float:left;position:relative;height:50px; width:$width; background-color:#000; margin-left:$margin");
-                    
+
                     $xhtml->appendChild($divRect);
 
                     $prevX = $attrArr['x'];
