@@ -90,6 +90,11 @@ class OmiseHelper extends AbstractHelper
                     $prevX = $attrArr['x'];
                     $prevWidth = $attrArr['width'];
                 }
+                // add empty div tag to clear 'float' css property
+                $attrArr = $rect->attributes();
+                $div = $xhtml->createElement('div');
+                $div->setAttribute('style', "clear:both");
+                $xhtml->appendChild($div);
             }
         }
         return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
