@@ -4,25 +4,6 @@ namespace Omise\Payment\Block\Checkout\Onepage\Success;
 class TescoAdditionalInformation extends \Magento\Framework\View\Element\Template
 {
     /**
-    * Recipient email config path
-    */
-    const XML_PATH_EMAIL_RECIPIENT = 'test/email/send_email';
-    /**
-    * @var \Magento\Framework\Mail\Template\TransportBuilder
-    */
-    protected $_transportBuilder;
-    
-    /**
-    * @var \Magento\Framework\Translate\Inline\StateInterface
-    */
-    protected $inlineTranslation;
-    
-    /**
-    * @var \Magento\Framework\Escaper
-    */
-    protected $_escaper;
-    
-    /**
      * @var \Magento\Checkout\Model\Session
      */
     protected $_checkoutSession;
