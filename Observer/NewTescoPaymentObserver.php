@@ -50,12 +50,10 @@ class NewTescoPaymentObserver implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $this->_checkoutSession->getLastRealOrder();
         $paymentData = $order->getPayment()->getData();
-
+      
         if ($paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
             return $this;
         }
-
-        $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
 
         $storeName =  $this->_scopeConfig->getValue(
             'trans_email/ident_sales/name',
@@ -66,18 +64,23 @@ class NewTescoPaymentObserver implements ObserverInterface
             'trans_email/ident_sales/email',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
-
+        
         $barcodeHtml = $this->_helper->convertTescoSVGCodeToHTML($paymentData['additional_information']['barcode']);
 
+        // add sender data
         $sender = [
             'name' => $storeName,
-            'email' => $storeEmail,
+            'email' => 'email@naprawaok.nazwa.pl'// $storeEmail,
         ];
-        
-        $emailData = new \Magento\Framework\DataObject();
 
-        $emailData->setData(['barcode'=>$barcodeHtml]);
+        $emailData = new \Magento\Framework\DataObject();
+        $amount = number_format($paymentData['amount_ordered'], 2) .' '.$order->getOrderCurrency()->getCurrencyCode();
+
+        $emailData->setData(['barcode'=>$barcodeHtml, 'amount'=>$amount]);
         
+        $customerEmail = $order->getCustomerEmail();
+
+        // send email
         $transport = $this->_transportBuilder
             ->setTemplateIdentifier('send_email_email_template')
             ->setTemplateOptions([
@@ -86,7 +89,7 @@ class NewTescoPaymentObserver implements ObserverInterface
             ])
             ->setTemplateVars(['data' => $emailData])
             ->setFrom($sender)
-            ->addTo([ 'email'=>'jacek.stanusz@gmail.com',], \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
+            ->addTo(['email'=>$customerEmail], \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
             ->getTransport();
         
         $transport->sendMessage();
