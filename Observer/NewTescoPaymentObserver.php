@@ -4,6 +4,7 @@ namespace Omise\Payment\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Payment\Model\InfoInterface;
 use Magento\Framework\Event\Observer;
+
 class NewTescoPaymentObserver implements ObserverInterface
 {
     /**
@@ -47,7 +48,6 @@ class NewTescoPaymentObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var \Magento\Sales\Model\Order $order */
         $order = $this->_checkoutSession->getLastRealOrder();
         $paymentData = $order->getPayment()->getData();
 
@@ -82,7 +82,7 @@ class NewTescoPaymentObserver implements ObserverInterface
 
         // send email
         $transport = $this->_transportBuilder
-            ->setTemplateIdentifier('send_email_email_template')
+            ->setTemplateIdentifier('send_email_tesco_template')
             ->setTemplateOptions([
                 'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
                 'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,

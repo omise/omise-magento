@@ -42,6 +42,13 @@ class OmiseHelper extends AbstractHelper
         return $amount;
     }
 
+    /**
+     * Convert tesco code returned from Omise Backend in SVG format to HTML format
+     * 
+     * @param  string  $svg
+     *
+     * @return string
+     */
     public function convertTescoSVGCodeToHTML($svg)
     {
         // remove from $svg unnecessary elements
