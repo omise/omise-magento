@@ -45,7 +45,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
                 Mage_Sales_Model_Order::STATE_PROCESSING,
                 Mage::helper('omise_gateway')->__('An amount of %s has been paid online.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );
-
+            $order->sendNewOrderEmail();
             return $this->_redirect('checkout/onepage/success');
         }
 

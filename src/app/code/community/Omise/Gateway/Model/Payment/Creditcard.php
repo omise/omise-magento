@@ -81,7 +81,6 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                             false,
                             Mage::helper('omise_gateway')->__('Capturing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
                         );
-
                 $order->addRelatedObject($invoice);
                 break;
 
