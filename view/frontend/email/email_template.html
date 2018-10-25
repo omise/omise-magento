@@ -1,8 +1,13 @@
-
- 
 <!--@subject {{trans "Tesco Logus Payment"}}  @-->
-<p>{{trans "%message" message="This is your Tesco Lotus payment code. Please print it and bring it to any Tesco Lotus store within the next 24 hours to finalise payment. After that time your order will be automatically cancelled"}}</p>
-<p>{{trans "%message" message="Amount:"}} {{var data.amount|raw}}</p>
-<p>
-    {{var data.barcode|raw}}
-</p>
+<div>
+    <p>{{trans "%thankyou" thankyou="Thank you for your order."}}</p>
+    <p>{{trans "%message" message="This is your Tesco Lotus payment code. Please print it and bring it to any Tesco
+        Lotus store within the next 24 hours to finalise payment. After that time your order will be automatically
+        cancelled."}}</p>
+    <p>{{trans "%amounttopay" amounttopay="Amount to pay:"}} {{var data.amount|raw}}</p>
+    <p><i>{{trans "%extrafees" extrafees="Extra fees may apply for the payment."}}</i></p>
+    <p style="margin:50px auto;min-width:600px;display: block;">
+        <div>{{var data.barcode|raw}}</div>
+    </p>
+    <p><i>{{var data.storename|raw}}</i></p>
+</div>

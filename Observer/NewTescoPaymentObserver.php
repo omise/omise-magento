@@ -50,7 +50,7 @@ class NewTescoPaymentObserver implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $this->_checkoutSession->getLastRealOrder();
         $paymentData = $order->getPayment()->getData();
-      
+
         if ($paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
             return $this;
         }
@@ -59,25 +59,25 @@ class NewTescoPaymentObserver implements ObserverInterface
             'trans_email/ident_sales/name',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
-        
+
         $storeEmail = $this->_scopeConfig->getValue(
             'trans_email/ident_sales/email',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
-        
+
         $barcodeHtml = $this->_helper->convertTescoSVGCodeToHTML($paymentData['additional_information']['barcode']);
 
         // add sender data
         $sender = [
             'name' => $storeName,
-            'email' => 'email@naprawaok.nazwa.pl'// $storeEmail,
+            'email' => $storeEmail,
         ];
 
         $emailData = new \Magento\Framework\DataObject();
         $amount = number_format($paymentData['amount_ordered'], 2) .' '.$order->getOrderCurrency()->getCurrencyCode();
 
-        $emailData->setData(['barcode'=>$barcodeHtml, 'amount'=>$amount]);
-        
+        $emailData->setData(['barcode'=>$barcodeHtml, 'amount'=>$amount, 'storename'=>$storeName]);
+
         $customerEmail = $order->getCustomerEmail();
 
         // send email
