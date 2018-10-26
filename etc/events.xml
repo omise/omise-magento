@@ -8,6 +8,6 @@
     </event>
 
     <event name="sales_order_payment_place_end">
-        <observer name="omise_end_payment" instance="Omise\Payment\Observer\NewTescoPaymentObserver" />
+        <observer name="omise_end_payment" instance="Omise\Payment\Observer\TescoPaymentObserver" />
     </event>
 </config>

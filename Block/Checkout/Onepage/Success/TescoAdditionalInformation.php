@@ -13,7 +13,6 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param array $data
      */
-    private $log;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -47,7 +46,7 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
             'tesco_code_image' => $barcode,
             'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
         ]);
-        
+
         return parent::_toHtml();
     }
 }

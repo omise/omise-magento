@@ -5,7 +5,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Payment\Model\InfoInterface;
 use Magento\Framework\Event\Observer;
 
-class NewTescoPaymentObserver implements ObserverInterface
+class TescoPaymentObserver implements ObserverInterface
 {
     /**
     * @var \Magento\Checkout\Model\Session
