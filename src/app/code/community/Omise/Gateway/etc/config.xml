@@ -141,7 +141,7 @@
                 <active>0</active>
                 <payment_action>authorize_capture</payment_action>
                 <model>omise_gateway/payment_offsiteinstalment</model>
-                <title>Instalment payment</title>
+                <title>Instalment payments</title>
             </omise_offsite_instalment>
 
         </payment>
