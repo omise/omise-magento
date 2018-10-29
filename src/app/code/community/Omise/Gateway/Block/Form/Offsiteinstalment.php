@@ -1,5 +1,34 @@
 <?php
 class Omise_Gateway_Block_Form_Offsiteinstalment extends Mage_Payment_Block_Form
 {
-    // Note that we need to have this class (even it's empty) as a reference for html block in checkout page.
+
+    /**
+     * Preparing global layout
+     * You can redefine this method in child classes for changing layout
+     *
+     * @return Mage_Core_Block_Abstract
+     *
+     * @see    Mage_Core_Block_Abstract
+     */
+    protected function _prepareLayout()
+    {
+        $this->setTemplate('payment/form/omise/omiseoffsiteinstalment.phtml');
+        return $this;
+    }
+
+    /**
+     * Render block HTML
+     *
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        Mage::dispatchEvent(
+            'payment_form_block_to_html_before',
+            array('block' => $this)
+        );
+
+        return parent::_toHtml();
+    }
+
 }

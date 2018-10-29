@@ -1,23 +1,23 @@
-#payment_form_omise_offsite_internet_banking {  }
-#payment_form_omise_offsite_internet_banking > li {
+.banks-list {  }
+.banks-list > li {
     border-bottom: 1px solid #eee;
     padding: 4px 0 12px;
     position: relative;
 }
 
-#payment_form_omise_offsite_internet_banking > li > input {
+.banks-list > li > input {
     position: absolute;
     top: 18px;
     left: 14px;
 }
 
-#payment_form_omise_offsite_internet_banking > li > label {
+.banks-list > li > label {
     width: 100%;
     margin-left: 36px;
     cursor: pointer;
 }
 
-#payment_form_omise_offsite_internet_banking .omise-logo-wrapper {
+.banks-list .omise-logo-wrapper {
     display: inline-block;
     padding: 5px;
     margin: 0 10px;
@@ -25,49 +25,49 @@
     vertical-align: top;
 }
 
-#payment_form_omise_offsite_internet_banking .omise-logo-wrapper img {
+.banks-list .omise-logo-wrapper img {
     width: 30px;
     height: 30px;
     display: inline-block;
 }
 
-#payment_form_omise_offsite_internet_banking .omise-banking-text-wrapper {
+.banks-list .omise-banking-text-wrapper {
     display: inline-block;
 }
 
-#payment_form_omise_offsite_internet_banking .secondary-text {
+.banks-list .secondary-text {
     color: #aaa;
     font-size: 80%;
 }
 
 /** SCB **/
-#payment_form_omise_offsite_internet_banking .scb {
+.banks-list .scb {
     background: #4e2e7f;
 }
-#payment_form_omise_offsite_internet_banking img.scb {
+.banks-list img.scb {
     background: url('../images/scb.svg') #4e2e7f;
 }
 
 /** KTB **/
-#payment_form_omise_offsite_internet_banking .ktb {
+.banks-list .ktb {
     background: #1ba5e1;
 }
-#payment_form_omise_offsite_internet_banking img.ktb {
+.banks-list img.ktb {
     background: url('../images/ktb.svg') #1ba5e1;
 }
 
 /** BAY **/
-#payment_form_omise_offsite_internet_banking .bay {
+.banks-list .bay {
     background: #fec43b;
 }
-#payment_form_omise_offsite_internet_banking img.bay {
+.banks-list img.bay {
     background: url('../images/bay.svg') #fec43b;
 }
 
 /** BBL **/
-#payment_form_omise_offsite_internet_banking .bbl {
+.banks-list .bbl {
     background: #1e4598;
 }
-#payment_form_omise_offsite_internet_banking img.bbl {
+.banks-list img.bbl {
     background: url('../images/bbl.svg') #1e4598;
 }
