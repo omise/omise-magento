@@ -21,7 +21,7 @@ class PaymentDetailsHandler implements HandlerInterface
         if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $response['charge']->source['references']['barcode']);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             $barcode=curl_exec($ch);
             $payment->setAdditionalInformation('barcode', $barcode);

@@ -61,10 +61,9 @@ class OmiseHelper extends AbstractHelper
         $svg = substr($svg, 0, strpos($svg, '</g>') + strlen('</g>'));
 
         //insert everything into master tag (requirement of SimpleXMLElement class)
-        $svg='<svg>'.$svg.'</svg>';
+        $svg='<svg>' . $svg . '</svg>';
         $xml = new SimpleXMLElement($svg);
-        if (!$xml)
-        {
+        if (!$xml) {
             return;
         }
 
@@ -75,8 +74,7 @@ class OmiseHelper extends AbstractHelper
         $xhtml = new DOMDocument();
 
         //analyze svg nodes, and generate html
-        foreach ($node as $child)
-        {
+        foreach ($node as $child) {
             // all rect nodes are in group master node
             if ($child->getName() === 'g') {
                 $prevX = 0;
@@ -86,11 +84,11 @@ class OmiseHelper extends AbstractHelper
                 foreach ($child->children() as $rect) {
                     $attrArr = $rect->attributes();
                     $divRect = $xhtml->createElement('div');
-                    $width = $attrArr['width'];
-                    $margin =($attrArr['x'] - $prevX - $prevWidth) . 'px';
+                    $width   = $attrArr['width'];
+                    $margin  = ($attrArr['x'] - $prevX - $prevWidth) . 'px';
 
                     //set html attributes based on SVG attributes
-                    $divRect->setAttribute('style', "float:left;position:relative;height:50px; width:$width; background-color:#000; margin-left:$margin");
+                    $divRect->setAttribute('style', "float:left; position:relative; height:50px; width:$width; background-color:#000; margin-left:$margin");
 
                     $xhtml->appendChild($divRect);
 
@@ -98,7 +96,6 @@ class OmiseHelper extends AbstractHelper
                     $prevWidth = $attrArr['width'];
                 }
                 // add empty div tag to clear 'float' css property
-                $attrArr = $rect->attributes();
                 $div = $xhtml->createElement('div');
                 $div->setAttribute('style', "clear:both");
                 $xhtml->appendChild($div);
