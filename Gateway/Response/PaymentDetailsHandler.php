@@ -23,7 +23,7 @@ class PaymentDetailsHandler implements HandlerInterface
             curl_setopt($ch, CURLOPT_URL, $response['charge']->source['references']['barcode']);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            $barcode=curl_exec($ch);
+            $barcode = curl_exec($ch);
             $payment->setAdditionalInformation('barcode', $barcode);
         }
     }

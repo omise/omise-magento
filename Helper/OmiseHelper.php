@@ -61,7 +61,7 @@ class OmiseHelper extends AbstractHelper
         $svg = substr($svg, 0, strpos($svg, '</g>') + strlen('</g>'));
 
         //insert everything into master tag (requirement of SimpleXMLElement class)
-        $svg='<svg>' . $svg . '</svg>';
+        $svg = '<svg>' . $svg . '</svg>';
         $xml = new SimpleXMLElement($svg);
         if (!$xml) {
             return;

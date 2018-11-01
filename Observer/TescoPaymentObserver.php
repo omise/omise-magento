@@ -74,7 +74,7 @@ class TescoPaymentObserver implements ObserverInterface
                 'name'  => $storeName,
                 'email' => $storeEmail,
             ])
-            ->addTo(['email'=>$customerEmail], \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
+            ->addTo(['email' => $customerEmail], \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
             ->getTransport();
         
         $transport->sendMessage();

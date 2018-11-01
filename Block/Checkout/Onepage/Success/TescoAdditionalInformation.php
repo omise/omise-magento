@@ -13,7 +13,6 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param array $data
      */
-
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
