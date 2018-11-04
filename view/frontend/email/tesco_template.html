@@ -4,6 +4,7 @@
     <p>{{trans "%message" message="This is your Tesco Lotus payment code. Please print it and bring it to any Tesco
         Lotus store within the next 24 hours to finalise payment. After that time your order will be automatically
         cancelled."}}</p>
+    <p>{{trans "%orderid" orderid="Order ID:"}} {{var data.orderId|raw}}</p>
     <p>{{trans "%amounttopay" amounttopay="Amount to pay:"}} {{var data.amount|raw}}</p>
     <p><i>{{trans "%extrafees" extrafees="Extra fees may apply for the payment."}}</i></p>
     <p style="margin:50px auto;min-width:600px;display: block;">

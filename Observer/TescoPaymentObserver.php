@@ -57,9 +57,10 @@ class TescoPaymentObserver implements ObserverInterface
         $storeName     = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
+        $orderId       = $order->getId();
 
         $emailData     = new \Magento\Framework\DataObject();
-        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName]);
+        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId]);
 
 
         // build and send email
