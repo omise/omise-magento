@@ -31,7 +31,7 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     {
         $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
         if (!isset($paymentData['additional_information']['payment_type']) || $paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
-            return parent::_toHtml();
+            return;
         }
         $tescoCodeImageUrl =  $paymentData['additional_information']['barcode'];
 
