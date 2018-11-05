@@ -47,7 +47,7 @@ After installing, you can configure the module by:
 
 Settings is displayed under the `Omise` section.
 
-<p align="center"><a alt="omise-magento-install-manual-04" href='https://user-images.githubusercontent.com/10651523/42024007-70ac5e70-7aeb-11e8-8839-21eb9d6f6633.png'><img src='https://user-images.githubusercontent.com/10651523/42024007-70ac5e70-7aeb-11e8-8839-21eb9d6f6633.png'></a></p>
+<p align="center"><a alt="omise-magento-install-manual-04" href='https://user-images.githubusercontent.com/10651523/46325091-ec450700-c620-11e8-8a09-2798676487d8.png'><img src='https://user-images.githubusercontent.com/10651523/46325091-ec450700-c620-11e8-8a09-2798676487d8.png'></a></p>
 
 The table below is the settings for the module and the description for each setting.
 
@@ -92,6 +92,14 @@ Available options:
 | Setting             | Description  |
 | ------------ | --------------------------------- |                                                                            
 | Enable/Disable | Enables or disables 'Alipay Payment method'|
+| Title |Payment Title displayed during checkout |
+
+**Tesco Bill Payment Solution**  
+Available options:
+
+| Setting             | Description  |
+| ------------ | --------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'Tesco Bill Payment method'|
 | Title |Payment Title displayed during checkout |
 
 ## Contributing

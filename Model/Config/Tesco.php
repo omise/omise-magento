@@ -8,5 +8,5 @@ class Tesco extends Config
     /**
      * @var string
      */
-    const CODE = 'omise_offsite_tesco';
+    const CODE = 'omise_offline_tesco';
 }

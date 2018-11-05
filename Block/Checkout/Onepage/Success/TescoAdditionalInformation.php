@@ -31,13 +31,15 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
     {
         $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
         if ($paymentData['additional_information']['payment_type'] === 'bill_payment_tesco_lotus' && $paymentData['additional_information']['barcode']) {
-            $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
-
-            $this->addData([
-                'tesco_code_image' => $paymentData['additional_information']['barcode'],
-                'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
-            ]);
+            return;
         }
+        $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
+
+        $this->addData([
+            'tesco_code_image' => $paymentData['additional_information']['barcode'],
+            'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
+        ]);
+        
         return parent::_toHtml();
     }
 }
