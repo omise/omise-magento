@@ -54,6 +54,7 @@ class Omise_Gateway_Model_Event_Charge_Complete
 
         if ($isPendingOrReview && ($charge->isSuccessful() || $charge->isAwaitCapture())) {
             $order->getPayment()->accept();
+            $order->sendNewOrderEmail();
             return $order->save();
         }
 

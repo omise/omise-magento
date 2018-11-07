@@ -31,7 +31,7 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
                 Mage_Sales_Model_Order::STATE_PROCESSING,
                 Mage::helper('omise_gateway')->__('Authorized amount of %s.', $order->getBaseCurrency()->formatTxt($order->getBaseTotalDue()))
             );
-
+            $order->sendNewOrderEmail();
             return $this->_redirect('checkout/onepage/success');
         }
 
@@ -45,7 +45,7 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
                 Mage_Sales_Model_Order::STATE_PROCESSING,
                 Mage::helper('omise_gateway')->__('Captured amount of %s online.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );
-
+            $order->sendNewOrderEmail();
             return $this->_redirect('checkout/onepage/success');
         }
 
