@@ -5,10 +5,11 @@ use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 
-class PaymentAPMBuilder implements BuilderInterface
+class APMBuilder implements BuilderInterface
 {
 
     /**
@@ -56,6 +57,11 @@ class PaymentAPMBuilder implements BuilderInterface
             case Alipay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'alipay'
+                ];
+                break;
+            case Tesco::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'bill_payment_tesco_lotus'
                 ];
                 break;
             case Internetbanking::CODE:

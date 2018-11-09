@@ -34,7 +34,26 @@
                    'data-container': getCode() + '-cc-token',
                    },
                    value: omiseCardToken"/>
-            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}">
+
+            <!-- ko if: isCustomerHasCard() -->
+                <h4><!-- ko i18n: 'Select a card you want to proceed' --><!-- /ko --></h4>
+                <ul style="padding-left: 1.3em; margin-bottom: 2em;">
+                    <!-- ko foreach: getCustomerCards() -->
+                        <li style="list-style: none; margin-bottom: 2rem;">
+                            <input name="payment[omise_card]" type="radio"
+                                data-bind="attr: {id: 'Card' + value}, checked: $parent.omiseCard, value: value"/>
+
+                            <label data-bind="attr: {for: 'Card' + value}"><!-- ko  text: label --><!-- /ko --></label>
+
+                        </li>
+                    <!-- /ko -->
+                    <li style="list-style: none;">
+                        <input id="chargeWithNewCard" name="payment[omise_card]" type="radio" data-bind="click: chargeWithNewCard.bind($data, $element), checked: omiseCard, value: ''" /> <label for="chargeWithNewCard"><!-- ko i18n: 'Use a new card'--><!-- /ko --></label>
+                    </li>
+                </ul>
+            <!-- /ko -->
+
+            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !isCustomerHasCard()">
                 <div class="field number required">
                     <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
                         <span><!-- ko i18n: 'Card number'--><!-- /ko --></span>
@@ -127,6 +146,17 @@
                                value: omiseCardSecurityCode"/>
                     </div>
                 </div>
+
+                <!-- ko if: isCustomerLoggedIn() -->
+                    <div class="field">
+                        <input  type="checkbox"
+                                data-bind="attr: {
+                                id: getCode() + 'SaveCard',
+                                },
+                                checked: omiseSaveCard"/>
+                        <label data-bind="attr: {for: getCode() + 'SaveCard'}"><!-- ko i18n: 'Remember this card' --><!-- /ko --></label>
+                    </div>
+                <!-- /ko -->
             </fieldset>
         </form>
         <div class="checkout-agreements-block">

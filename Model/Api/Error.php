@@ -10,7 +10,7 @@ class Error extends Object
     protected $code    = 'unexpected_error';
     protected $message = 'There is an unexpected error happened, please contact our support for further investigation.';
 
-    public function __construct($error = array())
+    public function __construct($error = [])
     {
         isset($error['code']) ? $this->setCode($error['code']) : '';
         isset($error['message']) ? $this->setMessage($error['message']) : '';

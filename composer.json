@@ -9,7 +9,7 @@
           "email": "support@omise.co"
         }
     ],
-    "version": "2.4.0-dev",
+    "version": "2.4.0",
     "minimum-stability": "stable",
     "type": "magento2-module",
     "license": "MIT",
