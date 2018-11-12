@@ -1,4 +1,5 @@
 <!--@subject {{trans "Tesco Lotus Payment"}}  @-->
+{{template config_path="design/email/header_template"}}
 <div>
     <p>{{trans "%thankyou" thankyou="Thank you for your order."}}</p>
     <p>{{trans "%message" message="This is your Tesco Lotus payment code. Please print it and bring it to any Tesco
@@ -12,3 +13,4 @@
     </p>
     <p><i>{{var data.storename|raw}}</i></p>
 </div>
+{{template config_path="design/email/footer_template"}}
