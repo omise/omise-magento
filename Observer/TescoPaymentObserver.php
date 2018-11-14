@@ -62,7 +62,7 @@ class TescoPaymentObserver implements ObserverInterface
         date_default_timezone_set("Asia/Bangkok");
 
         // get DateTime deadline that is in next 24 hours.
-        $validUntil    = date("H:i:s d-m-Y" , time() + 24 * 60 * 60) . ' ICT';
+        $validUntil    = date("d-m-Y H:i:s" , time() + 24 * 60 * 60) . ' ICT';
 
         $emailData     = new \Magento\Framework\DataObject();
         $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'valid' => $validUntil]);
