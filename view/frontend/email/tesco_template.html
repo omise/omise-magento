@@ -5,12 +5,13 @@
     <p>{{trans "%message" message="This is your Tesco Lotus payment code. Please print it and bring it to any Tesco
         Lotus store within the next 24 hours to finalise payment. After that time your order will be automatically
         cancelled."}}</p>
-    <p>{{trans "%orderid" orderid="Order ID:"}} {{var data.orderId|raw}}</p>
-    <p>{{trans "%amounttopay" amounttopay="Amount to pay:"}} {{var data.amount|raw}}</p>
+    <p>{{trans "%orderid" orderid="Order ID:"}} <strong>{{var data.orderId|raw}}</strong></p>
+    <p>{{trans "%valid" valid="Valid until:"}} <strong>{{var data.valid|raw}}</strong></p>
+    <p>{{trans "%amounttopay" amounttopay="Amount to pay:"}} <strong>{{var data.amount|raw}}</strong></p>
     <p><i>{{trans "%extrafees" extrafees="Extra fees may apply for the payment."}}</i></p>
     <p style="margin:50px auto;min-width:600px;display: block;">
         <div>{{var data.barcode|raw}}</div>
     </p>
-    <p><i>{{var data.storename|raw}}</i></p>
+    <p style="margin-top: 50px"><i>{{var data.storename|raw}}</i></p>
 </div>
 {{template config_path="design/email/footer_template"}}

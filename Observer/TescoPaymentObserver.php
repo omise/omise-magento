@@ -7,11 +7,6 @@ use Magento\Framework\Event\Observer;
 class TescoPaymentObserver implements ObserverInterface
 {
     /**
-    * @var \Magento\Checkout\Model\Session
-    */
-    private $_checkoutSession;
-
-    /**
     * @var \Magento\Framework\App\Config\ScopeConfigInterface
     */
     private $_scopeConfig;    
@@ -28,13 +23,11 @@ class TescoPaymentObserver implements ObserverInterface
 
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
-        \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->_scopeConfig      = $scopeConfig;
         $this->_helper           = $helper;
-        $this->_checkoutSession  = $checkoutSession;
         $this->_transportBuilder = $transportBuilder;
     }
 
@@ -45,8 +38,14 @@ class TescoPaymentObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $order       = $this->_checkoutSession->getLastRealOrder();
-        $paymentData = $order->getPayment()->getData();
+        $order       = $observer->getEvent()->getOrder();
+        $payment     = $order->getPayment();
+        
+        if (!$payment) {
+            return $this;
+        }
+
+        $paymentData = $payment->getData();
 
         if ($paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
             return $this;
@@ -57,11 +56,16 @@ class TescoPaymentObserver implements ObserverInterface
         $storeName     = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
-        $orderId       = $order->getId();
+        $orderId       = $order->getIncrementId();
+
+        // make sure timezone is Thailand.
+        date_default_timezone_set("Asia/Bangkok");
+
+        // get DateTime deadline that is in next 24 hours.
+        $validUntil    = date("H:i:s d-m-Y" , time() + 24 * 60 * 60) . ' ICT';
 
         $emailData     = new \Magento\Framework\DataObject();
-        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId]);
-
+        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'valid' => $validUntil]);
 
         // build and send email
         $transport = $this->_transportBuilder

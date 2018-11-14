@@ -7,7 +7,7 @@
         <observer name="omise_data_assign" instance="Omise\Payment\Observer\InternetbankingDataAssignObserver" />
     </event>
 
-    <event name="sales_order_payment_place_end">
-        <observer name="omise_end_payment" instance="Omise\Payment\Observer\TescoPaymentObserver" />
+    <event name="sales_order_place_after">
+        <observer name="omise_end_order" instance="Omise\Payment\Observer\TescoPaymentObserver" />
     </event>
 </config>
