@@ -7,6 +7,20 @@ use Magento\Payment\Gateway\Response\HandlerInterface;
 class PaymentDetailsHandler implements HandlerInterface
 {
     /**
+     * @param string $url URL to Tesco Barcode generated in Omise Backend
+     * @return string Barcode in SVG format
+     */
+    private function downloadTescoBarcode($url) 
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        return curl_exec($ch);
+    }
+
+    /**
      * @inheritdoc
      */
     public function handle(array $handlingSubject, array $response)
@@ -19,11 +33,7 @@ class PaymentDetailsHandler implements HandlerInterface
         $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
         
         if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $response['charge']->source['references']['barcode']);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            $barcode = curl_exec($ch);
+            $barcode = $this->downloadTescoBarcode($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
         }
     }
