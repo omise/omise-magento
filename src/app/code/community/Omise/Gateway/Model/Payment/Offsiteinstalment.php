@@ -25,6 +25,25 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     protected $_canReviewPayment   = true;
     protected $_isInitializeNeeded = true;
 
+    
+    /**
+     * Get an array of instalment backends suitable for this transaction
+     *
+     * @return array
+     */
+    public function getValidBackends()
+    {
+        // TODO - we need to get some of the order details here in order to select appropriate
+        // instalment backends to show the user. Need to look up how to get the details at this point
+
+        //////$order = $this->getInfoInstance()->getOrder();
+        return Mage::getModel('omise_gateway/api_capabilities')->getBackends(
+            'installment',
+            'THB', ////// $order->getBaseCurrencyCode(),
+            20000 ////// $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode())
+        );
+    }
+
     /**
      * Check method for processing with base currency
      * Note that Instalments can only be used with Omise Thailand account and 'THB' currency
@@ -93,7 +112,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Processing payment with instalments. Magento order ID: ' . $order->getIncrementId(),
-                'offsite'     => 'instalment', ////// $payment->getAdditionalInformation('offsite'),
+                // 'offsite'     => 'instalment', ////// $payment->getAdditionalInformation('offsite'),
+                'type'     => $payment->getAdditionalInformation('type'),
                 'return_uri'  => $this->getCallbackUri(),
                 'metadata'    => array(
                     'order_id' => $order->getIncrementId()

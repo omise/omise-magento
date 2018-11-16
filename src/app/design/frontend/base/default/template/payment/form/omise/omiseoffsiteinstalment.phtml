@@ -1,62 +1,31 @@
 <?php
 $code = $this->getMethodCode();
+$backends = $this->getInstalmentBackends();
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('omise/css/offsiteinternetbankingpayment.css'); ?>" />
 
 <ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
-    <!-- SCB -->
+
+    <?php foreach ($backends as $backend) { ?>
+        
     <li class="item">
-        <input id="internet_banking_scb" type="radio" name="payment[offsite]" value="internet_banking_scb" />
-        <label for="internet_banking_scb">
-            <div class="omise-logo-wrapper scb">
-                <img class="scb" />
+        <input id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
+        <label for="<?=$backend->_id;?>">
+            <div class="omise-logo-wrapper <?=$backend->_bankcode;?>">
+                <img class="<?=$backend->_bankcode;?>" />
             </div>
             <div class="omise-banking-text-wrapper">
-                <span class="title"><?=$this->__('Siam Commercial Bank');?></span><br/>
+                <span class="title"><?=$this->__($backend->_bankname);?></span><br/>
+                <select name="payment[term_<?=$backend->_id;?>]" id="payment_term_<?=$backend->_id;?>">
+                    <?php foreach ($backend->allowed_installment_terms as $termMonths) { ?>
+                        <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?></option>
+                    <?php } ?>
+                </select>
             </div>
         </label>
     </li>
 
-    <!-- KTB -->
-    <li class="item">
-        <input id="internet_banking_ktb" type="radio" name="payment[offsite]" value="internet_banking_ktb" />
-        <label for="internet_banking_ktb">
-            <div class="omise-logo-wrapper ktb">
-                <img class="ktb" />
-            </div>
-            <div class="omise-banking-text-wrapper">
-                <span class="title"><?=$this->__('Krungthai Bank');?></span><br/>
-            </div>
-        </label>
-    </li>
+    <? } ?>
 
-    <!-- BAY -->
-    <li class="item">
-        <input id="internet_banking_bay" type="radio" name="payment[offsite]" value="internet_banking_bay" />
-        <label for="internet_banking_bay">
-            <div class="omise-logo-wrapper bay">
-                <img class="bay" />
-            </div>
-            <div class="omise-banking-text-wrapper">
-                <span class="title"><?=$this->__('Krungsri Bank');?></span><br/>
-            </div>
-        </label>
-    </li>
-
-    <!-- BBL -->
-    <li class="item">
-        <input id="internet_banking_bbl" type="radio" name="payment[offsite]" value="internet_banking_bbl" />
-        <label for="internet_banking_bbl">
-            <div class="omise-logo-wrapper bbl">
-                <img class="bbl" />
-            </div>
-            <div class="omise-banking-text-wrapper">
-                <span class="title"><?=$this->__('Bangkok Bank');?></span><br/>
-            </div>
-        </label>
-    </li>
-    <li>
-        <span class="rate secondary-text"><?=$this->__('The bank may charge a small fee for the transaction.');?></span>
-    </li>
 </ul>

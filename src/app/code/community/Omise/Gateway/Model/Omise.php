@@ -78,7 +78,7 @@ class Omise_Gateway_Model_Omise extends Mage_Core_Model_Abstract
      *
      * @return void
      */
-    public function defineApiVersion($version = '2014-07-27')
+    public function defineApiVersion($version = '2017-11-02')
     {
         if (! defined('OMISE_API_VERSION')) {
             define('OMISE_API_VERSION', $version);

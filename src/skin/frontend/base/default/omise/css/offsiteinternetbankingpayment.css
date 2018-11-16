@@ -64,10 +64,34 @@
     background: url('../images/bay.svg') #fec43b;
 }
 
+/** FirstChoice **/
+.banks-list .first_choice {
+    background: #fec43b;
+}
+.banks-list img.first_choice {
+    background: url('../images/bay.svg') #fec43b;
+}
+
 /** BBL **/
 .banks-list .bbl {
     background: #1e4598;
 }
 .banks-list img.bbl {
     background: url('../images/bbl.svg') #1e4598;
+}
+
+/** KBank **/
+.banks-list .kbank {
+    background: transparent;
+}
+.banks-list img.kbank {
+    background: url('../images/kbank.svg') transparent;
+}
+
+/** KTC **/
+.banks-list .ktc {
+    background: transparent;
+}
+.banks-list img.ktc {
+    background: url('../images/ktc.svg') transparent;
 }
