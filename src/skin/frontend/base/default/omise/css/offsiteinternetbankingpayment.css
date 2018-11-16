@@ -66,10 +66,10 @@
 
 /** FirstChoice **/
 .banks-list .first_choice {
-    background: #fec43b;
+    background: #007bc4;
 }
 .banks-list img.first_choice {
-    background: url('../images/bay.svg') #fec43b;
+    background: url('../images/firstchoice.svg') #007bc4;
 }
 
 /** BBL **/
