@@ -32,14 +32,13 @@ class TescoPaymentObserver implements ObserverInterface
     }
 
     /**
-     *
      * @param \Magento\Framework\Event\Observer $observer
      * @return $this
      */
     public function execute(Observer $observer)
     {
-        $order       = $observer->getEvent()->getOrder();
-        $payment     = $order->getPayment();
+        $order   = $observer->getEvent()->getOrder();
+        $payment = $order->getPayment();
         
         if (!$payment) {
             return $this;
