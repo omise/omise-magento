@@ -61,15 +61,6 @@ define(
             },
 
             /**
-             * Handle payment error
-             */
-            handlePaymentError: function(response) {
-                errorProcessor.process(response, self.messageContainer);
-                fullScreenLoader.stopLoader();
-                self.isPlaceOrderActionAllowed(true);
-            },
-
-            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
@@ -85,7 +76,9 @@ define(
                 self.getPlaceOrderDeferredObject()
                     .fail(
                         function(response) {
-                            self.handlePaymentError(response);
+                            errorProcessor.process(response, self.messageContainer);
+                            fullScreenLoader.stopLoader();
+                            self.isPlaceOrderActionAllowed(true);
                         }
                     ).done(
                         function() {
