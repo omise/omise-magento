@@ -1,0 +1,19 @@
+<!--@subject {{trans "Tesco Lotus Payment"}}  @-->
+{{template config_path="design/email/header_template"}}
+<div>
+    <p>
+        {{trans "%thankyou" thankyou="Thank you for your order."}}</p>
+        {{trans "%message" message="This is your Tesco Lotus payment code. Please print it and bring it to any Tesco
+        Lotus store within the next 24 hours to finalise payment. After that time your order will be automatically
+        cancelled."}}<br/>
+        {{trans "%orderid" orderid="Order ID:"}} <strong>{{var data.orderId|raw}}</strong><br/>
+        {{trans "%valid" valid="Valid until:"}} <strong>{{var data.valid|raw}}</strong><br/>
+        {{trans "%amounttopay" amounttopay="Amount to pay:"}} <strong>{{var data.amount|raw}}</strong><br/>
+        <i>{{trans "%extrafees" extrafees="Extra fees may apply for the payment."}}</i>
+    </p>
+    <p style="margin: 50px auto; min-width: 600px; display: block;">
+        <div>{{var data.barcode|raw}}</div>
+    </p>
+    <p style="margin-top: 50px"><i>{{var data.storename|raw}}</i></p>
+</div>
+{{template config_path="design/email/footer_template"}}
