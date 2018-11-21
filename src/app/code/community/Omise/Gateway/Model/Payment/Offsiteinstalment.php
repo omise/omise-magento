@@ -33,14 +33,15 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      */
     public function getValidBackends()
     {
-        // TODO - we need to get some of the order details here in order to select appropriate
-        // instalment backends to show the user. Need to look up how to get the details at this point
 
-        //////$order = $this->getInfoInstance()->getOrder();
+        $quote = Mage::helper('checkout')->getQuote();
+        $currencyCode = $quote->getBaseCurrencyCode();
+        $amount = $quote->getBaseGrandTotal();
+
         return Mage::getModel('omise_gateway/api_capabilities')->getBackends(
             'installment',
-            'THB', ////// $order->getBaseCurrencyCode(),
-            20000 ////// $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode())
+            $currencyCode,
+            $this->getAmountInSubunits($amount, $currencyCode)
         );
     }
 
