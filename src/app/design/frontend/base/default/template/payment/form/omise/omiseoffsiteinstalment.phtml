@@ -11,7 +11,7 @@ $backends = $this->getInstalmentBackends();
         <input id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
         <label for="<?=$backend->_id;?>">
             <div class="omise-logo-wrapper <?=$backend->_bankcode;?>">
-                <img class="<?=$backend->_bankcode;?>" />
+                <div class="logo-<?=$backend->_bankcode;?>"></div>
             </div>
             <div class="omise-banking-text-wrapper">
                 <span class="title"><?=$this->__($backend->_bankname);?></span><br/>
