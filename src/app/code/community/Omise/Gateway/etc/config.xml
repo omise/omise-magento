@@ -103,6 +103,13 @@
                 </args>
             </omise_gateway>
         </routers>
+        <layout>
+            <updates>
+                <compare>
+                    <file>omise/gateway.xml</file>
+                </compare>
+            </updates>
+        </layout>        
     </frontend>
 
     <!--

@@ -3,8 +3,6 @@ $code = $this->getMethodCode();
 $backends = $this->getInstalmentBackends();
 ?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('omise/css/offsiteinternetbankingpayment.css'); ?>" />
-
 <ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
 
     <?php foreach ($backends as $backend) { ?>
