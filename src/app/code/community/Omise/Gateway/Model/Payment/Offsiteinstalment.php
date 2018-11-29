@@ -132,7 +132,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     {
         parent::assignData($data);
 
-        $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
+        $this->getInfoInstance()->setAdditionalInformation('type', $data->getData('type'));
     }
 
     /**
