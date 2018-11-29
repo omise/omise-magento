@@ -161,9 +161,7 @@ class Omise_Gateway_Model_Api_Charge extends Omise_Gateway_Model_Api_Object
      */
     public function isPaid()
     {
-        $paid = isset($this->paid) ? $this->paid : $this->captured;
-
-        return $paid;
+        return $this->paid;
     }
 
     /**
