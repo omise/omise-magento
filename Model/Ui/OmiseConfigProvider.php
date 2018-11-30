@@ -6,7 +6,7 @@ use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
 
-class CcConfigProvider implements ConfigProviderInterface
+class OmiseConfigProvider implements ConfigProviderInterface
 {
     /**
      * @var \Magento\Payment\Model\CcConfig
@@ -52,6 +52,9 @@ class CcConfigProvider implements ConfigProviderInterface
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                 ],
+                'capabilities' => [
+                    'capability_amount'=>10000000000
+                ]
             ]
         ];
     }
