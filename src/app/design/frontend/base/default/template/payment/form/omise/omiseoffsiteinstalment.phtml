@@ -8,7 +8,7 @@ $backends = $this->getInstalmentBackends();
     <?php if (count($backends))  { foreach ($backends as $backend) { ?>
         
     <li class="item">
-        <input id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
+        <input class="validate-one-required-by-name" id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
         <label for="<?=$backend->_id;?>">
             <div class="omise-logo-wrapper <?=$backend->_bankcode;?>">
                 <div class="logo-<?=$backend->_bankcode;?>"></div>
