@@ -5,7 +5,7 @@ $backends = $this->getInstalmentBackends();
 
 <ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
 
-    <?php foreach ($backends as $backend) { ?>
+    <?php if (count($backends))  { foreach ($backends as $backend) { ?>
         
     <li class="item">
         <input id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
@@ -15,7 +15,7 @@ $backends = $this->getInstalmentBackends();
             </div>
             <div class="omise-banking-text-wrapper">
                 <span class="title"><?=$this->__($backend->_bankname);?></span><br/>
-                <select name="payment[term_<?=$backend->_id;?>]" id="payment_term_<?=$backend->_id;?>">
+                <select name="payment[terms_<?=$backend->_id;?>]" id="payment_term_<?=$backend->_id;?>">
                     <?php foreach ($backend->allowed_installment_terms as $termMonths) { ?>
                         <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?></option>
                     <?php } ?>
@@ -24,6 +24,11 @@ $backends = $this->getInstalmentBackends();
         </label>
     </li>
 
-    <? } ?>
+    <?php }} else { ?>
+    <li class="item">
+        <?=$this->__('There are no instalment plans available for this purchase amount.');?>
+    </li>
+    <?php } ?>
+
 
 </ul>

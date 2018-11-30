@@ -106,15 +106,18 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     public function process(Varien_Object $payment, $amount)
     {
         $order = $payment->getOrder();
+        $currency = $order->getBaseCurrencyCode();
 
-        return parent::process(
+        return parent::_process(
             $payment,
             array(
-                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
-                'currency'    => $order->getBaseCurrencyCode(),
+                'amount'      => $this->getAmountInSubunits($amount, $currency),
+                'currency'    => $currency,
                 'description' => 'Processing payment with instalments. Magento order ID: ' . $order->getIncrementId(),
-                // 'offsite'     => 'instalment', ////// $payment->getAdditionalInformation('offsite'),
-                'type'     => $payment->getAdditionalInformation('type'),
+                'source'      => array(
+                    'type' => $payment->getAdditionalInformation('type'),
+                    'installment_terms' => $payment->getAdditionalInformation('terms')
+                ),
                 'return_uri'  => $this->getCallbackUri(),
                 'metadata'    => array(
                     'order_id' => $order->getIncrementId()
@@ -132,7 +135,10 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     {
         parent::assignData($data);
 
-        $this->getInfoInstance()->setAdditionalInformation('type', $data->getData('type'));
+        $type = $data->getData('type');
+
+        $this->getInfoInstance()->setAdditionalInformation('type', $type);
+        $this->getInfoInstance()->setAdditionalInformation('terms', $data->getData('terms_'.$type));
     }
 
     /**
