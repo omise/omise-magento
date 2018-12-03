@@ -2,19 +2,20 @@
 
 namespace Omise\Payment\Model\Api;
 
-use Exception;
 use OmiseCapabilities;
 
 class Capabilities extends Object
 {
-    public function __construct()
-    {
-        try {
-            $this->refresh(OmiseCapabilities::retrieve());
-        } catch (Exception $e) {
-            return null;
-        }
+    private $capabilities;
 
-        return $this;
+    public function __construct(\PSR\Log\LoggerInterface $log) {
+        $this->capabilities = OmiseCapabilities::retrieve();
+        $log->debug('from capability api construct', ['obj'=>$this->capabilities]);
+    }
+
+    public function read() {
+        return $this->capabilities->getBackends(
+            $this->capabilities->backendTypeIs('installment')
+        );    
     }
 }

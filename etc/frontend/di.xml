@@ -3,7 +3,7 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="omise_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CcConfigProvider</item>
+                <item name="omise_config_provider" xsi:type="object">Omise\Payment\Model\Ui\OmiseConfigProvider</item>
             </argument>
         </arguments>
     </type>

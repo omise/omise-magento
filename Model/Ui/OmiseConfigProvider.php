@@ -5,6 +5,8 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
+use Omise\Payment\Model\Capabilities;
+
 
 class OmiseConfigProvider implements ConfigProviderInterface
 {
@@ -26,11 +28,13 @@ class OmiseConfigProvider implements ConfigProviderInterface
     public function __construct(
         MagentoCcConfig $magentoCcConfig,
         OmiseCcConfig   $omiseCcConfig,
-        Customer        $customer
+        Customer        $customer,
+        Capabilities    $capabilities
     ) {
         $this->magentoCcConfig = $magentoCcConfig;
         $this->omiseCcConfig   = $omiseCcConfig;
         $this->customer        = $customer;
+        $this->capabilities    = $capabilities;
     }
 
     /**
@@ -52,9 +56,7 @@ class OmiseConfigProvider implements ConfigProviderInterface
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                 ],
-                'capabilities' => [
-                    'capability_amount'=>10000000000
-                ]
+                'capabilities' => $this->capabilities->get()
             ]
         ];
     }
