@@ -15,7 +15,7 @@ use OmiseEvent;
  * @property Object $data
  * @see      https://www.omise.co/events-api
  */
-class Event extends Object
+class Event extends BaseObject
 {
     /**
      * @param  string $id

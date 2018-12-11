@@ -30,7 +30,7 @@ use OmiseCharge;
  *
  * @see      https://www.omise.co/charges-api
  */
-class Charge extends Object
+class Charge extends BaseObject
 {
     /**
      * @param  string $id

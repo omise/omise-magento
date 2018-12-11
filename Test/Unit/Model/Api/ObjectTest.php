@@ -3,7 +3,7 @@
 namespace Omise\Payment\Test\Unit\Model\Api;
 
 use PHPUnit\Framework\TestCase;
-use Omise\Payment\Model\Api\Object;
+use Omise\Payment\Model\Api\BaseObject;
 
 class ObjectTest extends TestCase
 {

@@ -20,7 +20,7 @@ class CommandResponseValidator extends AbstractValidator
     {
         $charge = $validationSubject['response']['charge'];
 
-        if (! $charge instanceof \Omise\Payment\Model\Api\Object) {
+        if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
             return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage() ]);
         }
 

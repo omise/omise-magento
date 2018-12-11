@@ -5,7 +5,7 @@ namespace Omise\Payment\Model\Api;
 use Exception;
 use OmiseCustomer;
 
-class Customer extends Object
+class Customer extends BaseObject
 {
     /**
      * @param  string $id

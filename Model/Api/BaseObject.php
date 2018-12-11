@@ -4,7 +4,7 @@ namespace Omise\Payment\Model\Api;
 
 use Exception;
 
-class Object
+class BaseObject
 {
     /**
      * @var mixed
@@ -12,7 +12,7 @@ class Object
     protected $object;
 
     /**
-     * @param  mixed $object  of \Omise\Payment\Model\Api\Object.
+     * @param  mixed $object  of \Omise\Payment\Model\Api\BaseObject.
      *
      * @return self
      */
