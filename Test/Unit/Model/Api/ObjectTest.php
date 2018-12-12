@@ -91,7 +91,7 @@ class MockObject extends Object
 /**
  * Mock Omise object class.
  * Usually OmiseObject will be extended by Omise resource classes (i.e. OmiseCharge, OmiseCustomer and so on).
- * Here is to mock that object so we can test 'refresh' its object into \Model\Api\Object.
+ * Here is to mock that object so we can test 'refresh' its object into \Model\Api\BaseObject.
  *
  * @see refresh_omise_object  method of this test (it will be used only in that test).
  */
