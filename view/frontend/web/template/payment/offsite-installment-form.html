@@ -61,12 +61,11 @@
                                 <span class="title" data-bind="i18n: 'First Choice'"></span>
                             </div>
                         </label>
-                        <select data-bind="options: getFCTerms(),
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
                                            optionsText: function(item) {
-                                               return item + ' (pop: ' + item + ')'
+                                               return item;
                                            },
-                                           value: selectedCountry,
-                                           optionsCaption: 'Choose...'"></select>
+                                           optionsCaption: 'Choose terms...'"></select>
                     </li>
 
                     <!-- KBank -->

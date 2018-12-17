@@ -78,8 +78,17 @@ define(
                 return true;
             },
 
-            getTerms() {
-                return ko.observableArray([1,2,3,4,5,6,7]);
+            /**
+             * Returns Installment Terms
+             *
+             * @return {array}
+             */            
+            getInstallmentTerms(id) {
+                const capabilities = checkoutConfig.payment.capabilities;
+                for (const key in capabilities) {
+                    if (capabilities[key]._id === 'installment_'+id)
+                    return ko.observableArray(capabilities[key].allowed_installment_terms);
+                }
             },
 
             /**

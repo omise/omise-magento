@@ -117,7 +117,6 @@ define(
              * @return {boolean}
              */
             isCustomerLoggedIn: function() {
-                console.log(checkoutConfig.payment)
                 return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn;
 
             },
