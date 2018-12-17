@@ -100,7 +100,7 @@ class Offsite extends Action
         try {
             $charge = $this->charge->find($charge_id);
 
-            if (! $charge instanceof \Omise\Payment\Model\Api\Object) {
+            if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
                 throw new Exception('Couldn\'t retrieve charge transaction. Please contact administrator.');
             }
 

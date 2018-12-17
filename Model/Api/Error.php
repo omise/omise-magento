@@ -2,7 +2,7 @@
 
 namespace Omise\Payment\Model\Api;
 
-class Error extends Object
+class Error extends BaseObject
 {
     /**
      * @var string
