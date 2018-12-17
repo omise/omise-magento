@@ -5,8 +5,10 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
+use Omise\Payment\Model\Capabilities;
 
-class CcConfigProvider implements ConfigProviderInterface
+
+class OmiseConfigProvider implements ConfigProviderInterface
 {
     /**
      * @var \Magento\Payment\Model\CcConfig
@@ -26,11 +28,13 @@ class CcConfigProvider implements ConfigProviderInterface
     public function __construct(
         MagentoCcConfig $magentoCcConfig,
         OmiseCcConfig   $omiseCcConfig,
-        Customer        $customer
+        Customer        $customer,
+        Capabilities    $capabilities
     ) {
         $this->magentoCcConfig = $magentoCcConfig;
         $this->omiseCcConfig   = $omiseCcConfig;
         $this->customer        = $customer;
+        $this->capabilities    = $capabilities;
     }
 
     /**
@@ -52,6 +56,7 @@ class CcConfigProvider implements ConfigProviderInterface
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                 ],
+                'capabilities' => $this->capabilities->get()
             ]
         ];
     }

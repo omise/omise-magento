@@ -29,7 +29,9 @@ define(
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
+            getarr: function() {
+               return [1,2,3];
+            },
             /**
              * Get payment method code
              *
@@ -74,6 +76,10 @@ define(
              */
             isActive: function() {
                 return true;
+            },
+
+            getTerms() {
+                return ko.observableArray([1,2,3,4,5,6,7]);
             },
 
             /**
