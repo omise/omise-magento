@@ -48,9 +48,9 @@
 
                     <!-- First Choice -->
                     <li class="items">
-                        <input type="radio" name="offsite" value="installment_fc" data-bind="
+                        <input type="radio" name="offsite" value="installment_first_choice" data-bind="
                             attr: {
-                                id: getCode() + '_fc'
+                                id: getCode() + '_first_choice'
                             },
                             checked: omiseOffsite" />
                         <label for="omise_offsite_installment_fc">
@@ -65,6 +65,7 @@
                                            optionsText: function(item) {
                                                return item;
                                            },
+                                           value: installmentCapability,
                                            optionsCaption: 'Choose terms...'"></select>
                     </li>
 

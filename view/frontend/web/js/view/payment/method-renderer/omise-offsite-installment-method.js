@@ -49,7 +49,8 @@ define(
             initObservable: function() {
                 this._super()
                     .observe([
-                        'omiseOffsite'
+                        'omiseOffsite',
+                        'installmentCapability'
                     ]);
 
                 return this;
@@ -64,7 +65,8 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'offsite': this.omiseOffsite()
+                        'offsite': this.omiseOffsite(),
+                        'terms': this.installmentCapability()
                     }
                 };
             },

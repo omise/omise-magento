@@ -5,8 +5,10 @@ use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
@@ -25,16 +27,22 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
+    const SOURCE_INSTALLMENT_TERMS = 'installment_terms';
+
+    /**
+     * @var string
+     */
     const RETURN_URI = 'return_uri';
 
     /**
      * @var \Magento\Framework\UrlInterface
      */
     protected $url;
-
-    public function __construct(UrlInterface $url)
+    private $log;
+    public function __construct(UrlInterface $url, \PSR\Log\LoggerInterface $log)
     {
         $this->url = $url;
+        $this->log = $log;
     }
 
     /**
@@ -46,29 +54,37 @@ class APMBuilder implements BuilderInterface
     {
         $paymentInfo = [
             self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
-                '_secure' => true
-            ])
+                '_secure' => true,
+            ]),
         ];
 
         $payment = SubjectReader::readPayment($buildSubject);
-        $method  = $payment->getPayment();
-        
+        $method = $payment->getPayment();
+        $this->log->debug("apm builder - installment", ['installment' => $method->getMethod()]);
         switch ($method->getMethod()) {
             case Alipay::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'alipay'
+                    self::SOURCE_TYPE => 'alipay',
                 ];
                 break;
             case Tesco::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'bill_payment_tesco_lotus'
+                    self::SOURCE_TYPE => 'bill_payment_tesco_lotus',
                 ];
                 break;
             case Internetbanking::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => $method->getAdditionalInformation(InternetbankingDataAssignObserver::OFFSITE)
+                    self::SOURCE_TYPE => $method->getAdditionalInformation(InternetbankingDataAssignObserver::OFFSITE),
                 ];
                 break;
+            case Installment::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE              => $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE),
+                    self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(InstallmentDataAssignObserver::TERMS),
+                ];
+                $this->log->debug("apm builder - installment", ['pi' => $paymentInfo]);
+                break;
+
         }
 
         return $paymentInfo;
