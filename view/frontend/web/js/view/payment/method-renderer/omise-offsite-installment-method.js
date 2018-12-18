@@ -29,9 +29,7 @@ define(
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-            getarr: function() {
-               return [1,2,3];
-            },
+
             /**
              * Get payment method code
              *
@@ -50,7 +48,7 @@ define(
                 this._super()
                     .observe([
                         'omiseOffsite',
-                        'installmentCapability'
+                        'installmentTerms'
                     ]);
 
                 return this;
@@ -66,7 +64,7 @@ define(
                     'method': this.item.method,
                     'additional_data': {
                         'offsite': this.omiseOffsite(),
-                        'terms': this.installmentCapability()
+                        'terms': this.installmentTerms()
                     }
                 };
             },
