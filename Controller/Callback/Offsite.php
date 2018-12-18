@@ -11,6 +11,7 @@ use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Installment;
 
 class Offsite extends Action
 {
@@ -77,7 +78,7 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if (! in_array($payment->getMethod(), [Alipay::CODE, Internetbanking::CODE])) {
+        if (! in_array($payment->getMethod(), [Alipay::CODE, Internetbanking::CODE, Installment::CODE])) {
             $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
