@@ -110,6 +110,17 @@ define(
             },
 
             /**
+             * Check if order value meets minimum requirement
+             *
+             * @return {boolean}
+             */
+            orderValueTooLow: function () {
+                console.log(window.checkoutConfig);
+                return window.checkoutConfig.totalsData.base_grand_total < 5000;
+            },
+
+
+            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
