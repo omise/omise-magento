@@ -2,8 +2,7 @@
     padding: 1rem 0;
 }
 
-#omise_offsite_internetbankingForm, #omise_offsite_installmentForm {  }
-#omise_offsite_internetbankingForm, #omise_offsite_installmentForm li.items {
+#omise_offsite_internetbankingForm li.items, #omise_offsite_installmentForm li.items {
     border-bottom: 1px solid #eee;
     padding: 12px 0 12px;
     position: relative;
@@ -21,7 +20,7 @@
     cursor: pointer;
 }
 
-#omise_offsite_internetbankingForm .omise-logo-wrapper , #omise_offsite_installmentForm .omise-logo-wrapper {
+#omise_offsite_internetbankingForm .omise-logo-wrapper, #omise_offsite_installmentForm .omise-logo-wrapper {
     display: inline-block;
     padding: 5px;
     margin: 0 10px;
