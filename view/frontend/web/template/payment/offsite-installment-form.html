@@ -62,11 +62,11 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
-                                           optionsText: function(item) {
-                                               return item;
-                                           },
-                                           value: installmentCapability,
-                                           optionsCaption: 'Choose terms...'"></select>
+                                        optionsText: function(item) {
+                                           return item;
+                                        },
+                                        value: installmentCapability,
+                                        optionsCaption: 'Choose terms...'"></select>
                     </li>
 
                     <!-- KBank -->
@@ -84,6 +84,12 @@
                                 <span class="title" data-bind="i18n: 'Kasikorn Bank'"></span>
                             </div>
                         </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
+                                        optionsText: function(item) {
+                                            return item;
+                                        },
+                                        value: installmentCapability,
+                                        optionsCaption: 'Choose terms...'"></select>
 
                     </li>
 
