@@ -53,27 +53,27 @@ class APMBuilder implements BuilderInterface
     {
         $paymentInfo = [
             self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
-                '_secure' => true,
-            ]),
+                '_secure' => true
+            ])
         ];
 
         $payment = SubjectReader::readPayment($buildSubject);
-        $method = $payment->getPayment();
+        $method  = $payment->getPayment();
 
         switch ($method->getMethod()) {
             case Alipay::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'alipay',
+                    self::SOURCE_TYPE => 'alipay'
                 ];
                 break;
             case Tesco::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'bill_payment_tesco_lotus',
+                    self::SOURCE_TYPE => 'bill_payment_tesco_lotus'
                 ];
                 break;
             case Internetbanking::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => $method->getAdditionalInformation(InternetbankingDataAssignObserver::OFFSITE),
+                    self::SOURCE_TYPE => $method->getAdditionalInformation(InternetbankingDataAssignObserver::OFFSITE)
                 ];
                 break;
             case Installment::CODE:
@@ -82,7 +82,6 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(InstallmentDataAssignObserver::TERMS),
                 ];
                 break;
-
         }
 
         return $paymentInfo;

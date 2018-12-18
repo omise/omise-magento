@@ -15,11 +15,10 @@ class Capabilities
      * @var \Omise\Payment\Model\Api\Capabilities
      */
     protected $capabilitiesAPI;
-    public $log;
+    
     public function __construct(
         Omise $omise,
-        OmiseCapabilitiesAPI $capabilitiesAPI,
-        \PSR\Log\LoggerInterface $log
+        OmiseCapabilitiesAPI $capabilitiesAPI
     ) {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
