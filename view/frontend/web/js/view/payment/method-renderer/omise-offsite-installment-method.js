@@ -75,7 +75,7 @@ define(
              * @return {boolean}
              */
             isActive: function () {
-                return true;
+                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
             },
 
             /**
@@ -89,6 +89,24 @@ define(
                     if (capabilities[key]._id === 'installment_' + id)
                         return ko.observableArray(capabilities[key].allowed_installment_terms);
                 }
+            },
+
+            /**
+             * Get order currency
+             *
+             * @return {string}
+             */
+            getOrderCurrency: function () {
+                return window.checkoutConfig.quoteData.quote_currency_code;
+            },
+
+            /**
+             * Get store currency
+             *
+             * @return {string}
+             */
+            getStoreCurrency: function () {
+                return window.checkoutConfig.quoteData.store_currency_code;
             },
 
             /**
