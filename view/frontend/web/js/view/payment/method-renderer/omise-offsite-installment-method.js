@@ -35,7 +35,7 @@ define(
              *
              * @return {string}
              */
-            getCode: function() {
+            getCode: function () {
                 return 'omise_offsite_installment';
             },
 
@@ -44,7 +44,7 @@ define(
              *
              * @return this
              */
-            initObservable: function() {
+            initObservable: function () {
                 this._super()
                     .observe([
                         'omiseOffsite',
@@ -59,7 +59,7 @@ define(
              *
              * @return {Object}
              */
-            getData: function() {
+            getData: function () {
                 return {
                     'method': this.item.method,
                     'additional_data': {
@@ -74,7 +74,7 @@ define(
              *
              * @return {boolean}
              */
-            isActive: function() {
+            isActive: function () {
                 return true;
             },
 
@@ -82,12 +82,12 @@ define(
              * Returns Installment Terms
              *
              * @return {array}
-             */            
+             */
             getInstallmentTerms(id) {
                 const capabilities = checkoutConfig.payment.capabilities;
                 for (const key in capabilities) {
-                    if (capabilities[key]._id === 'installment_'+id)
-                    return ko.observableArray(capabilities[key].allowed_installment_terms);
+                    if (capabilities[key]._id === 'installment_' + id)
+                        return ko.observableArray(capabilities[key].allowed_installment_terms);
                 }
             },
 
@@ -97,7 +97,7 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function(data, event) {
+            placeOrder: function (data, event) {
                 var self = this;
 
                 if (event) {
@@ -106,13 +106,13 @@ define(
 
                 self.getPlaceOrderDeferredObject()
                     .fail(
-                        function(response) {
+                        function (response) {
                             errorProcessor.process(response, self.messageContainer);
                             fullScreenLoader.stopLoader();
                             self.isPlaceOrderActionAllowed(true);
                         }
                     ).done(
-                        function(response) {
+                        function (response) {
                             var self = this;
 
                             var serviceUrl = urlBuilder.createUrl(

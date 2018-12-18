@@ -54,6 +54,7 @@
                                         },
                                         valueAllowUnset: true,
                                         value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_ktc',
                                         optionsCaption: 'Choose terms...'"></select>
                     </li>
 
@@ -80,8 +81,9 @@
                                         optionsText: function(item) {
                                            return item;
                                         },
-                                        value: installmentTerms,
                                         valueAllowUnset: true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_first_choice',
                                         optionsCaption: 'Choose terms...'"></select>
                     </li>
 
@@ -108,8 +110,9 @@
                                         optionsText: function(item) {
                                             return item;
                                         },
-                                        value: installmentTerms,
                                         valueAllowUnset: true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_kbank',
                                         optionsCaption: 'Choose terms...'"></select>
 
                     </li>
@@ -139,6 +142,7 @@
                                         },
                                         valueAllowUnset:true,
                                         value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_bbl',
                                         optionsCaption: 'Choose terms...'"></select>
                     </li>
                 </ul>
