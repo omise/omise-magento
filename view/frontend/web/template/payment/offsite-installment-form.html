@@ -35,7 +35,11 @@
                             attr: {
                                 id: getCode() + '_ktc'
                             },
-                            checked: omiseOffsite" />
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                    installmentTerms(null); 
+                                    return true; 
+                                }" />
                         <label for="omise_offsite_installment_ktc">
                             <div class="omise-logo-wrapper ktc">
                                 <img class="ktc" />
@@ -48,6 +52,7 @@
                                         optionsText: function(item) {
                                             return item;
                                         },
+                                        valueAllowUnset: true,
                                         value: installmentTerms,
                                         optionsCaption: 'Choose terms...'"></select>
                     </li>
@@ -58,7 +63,11 @@
                             attr: {
                                 id: getCode() + '_first_choice'
                             },
-                            checked: omiseOffsite" />
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
                         <label for="omise_offsite_installment_fc">
                             <div class="omise-logo-wrapper fc">
                                 <img class="fc" />
@@ -72,6 +81,7 @@
                                            return item;
                                         },
                                         value: installmentTerms,
+                                        valueAllowUnset: true,
                                         optionsCaption: 'Choose terms...'"></select>
                     </li>
 
@@ -81,7 +91,11 @@
                             attr: {
                                 id: getCode() + '_kbank'
                             },
-                            checked: omiseOffsite" />
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
                         <label for="omise_offsite_installment_kbank">
                             <div class="omise-logo-wrapper kbank">
                                 <img class="kbank" />
@@ -95,6 +109,7 @@
                                             return item;
                                         },
                                         value: installmentTerms,
+                                        valueAllowUnset: true,
                                         optionsCaption: 'Choose terms...'"></select>
 
                     </li>
@@ -105,7 +120,11 @@
                             attr: {
                                 id: getCode() + '_bbl'
                             },
-                            checked: omiseOffsite" />
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
                         <label for="omise_offsite_intstallment_bbl">
                             <div class="omise-logo-wrapper bbl">
                                 <img class="bbl" />
@@ -118,6 +137,7 @@
                                         optionsText: function(item) {
                                             return item;
                                         },
+                                        valueAllowUnset:true,
                                         value: installmentTerms,
                                         optionsCaption: 'Choose terms...'"></select>
                     </li>
