@@ -8,9 +8,8 @@ class Capabilities extends Object
 {
     private $capabilities;
 
-    public function __construct(\PSR\Log\LoggerInterface $log) {
+    public function __construct() {
         $this->capabilities = OmiseCapabilities::retrieve();
-        $log->debug('from capability api construct', ['obj'=>$this->capabilities]);
     }
 
     public function read() {

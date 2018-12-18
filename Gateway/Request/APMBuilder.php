@@ -38,11 +38,10 @@ class APMBuilder implements BuilderInterface
      * @var \Magento\Framework\UrlInterface
      */
     protected $url;
-    private $log;
-    public function __construct(UrlInterface $url, \PSR\Log\LoggerInterface $log)
+
+    public function __construct(UrlInterface $url)
     {
         $this->url = $url;
-        $this->log = $log;
     }
 
     /**
@@ -60,7 +59,7 @@ class APMBuilder implements BuilderInterface
 
         $payment = SubjectReader::readPayment($buildSubject);
         $method = $payment->getPayment();
-        $this->log->debug("apm builder - installment", ['installment' => $method->getMethod()]);
+
         switch ($method->getMethod()) {
             case Alipay::CODE:
                 $paymentInfo[self::SOURCE] = [
@@ -82,7 +81,6 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_TYPE              => $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE),
                     self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(InstallmentDataAssignObserver::TERMS),
                 ];
-                $this->log->debug("apm builder - installment", ['pi' => $paymentInfo]);
                 break;
 
         }

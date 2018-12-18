@@ -115,10 +115,8 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                console.log(window.checkoutConfig);
                 return window.checkoutConfig.totalsData.base_grand_total < 5000;
             },
-
 
             /**
              * Hook the placeOrder function.

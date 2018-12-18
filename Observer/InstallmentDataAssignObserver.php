@@ -11,6 +11,10 @@ class InstallmentDataAssignObserver extends AbstractDataAssignObserver
      * @var string
      */
     const OFFSITE = 'offsite';
+
+    /**
+     * @var string
+     */
     const TERMS   = 'terms';
 
     /**
@@ -20,10 +24,7 @@ class InstallmentDataAssignObserver extends AbstractDataAssignObserver
         self::OFFSITE,
         self::TERMS
     ];
-    private $log;
-    public function __construct(\PSR\Log\LoggerInterface $log){
-        $this->log = $log;
-    }
+
     /**
      * @param \Magento\Framework\Event\Observer $observer
      */
@@ -32,8 +33,6 @@ class InstallmentDataAssignObserver extends AbstractDataAssignObserver
         $dataObject = $this->readDataArgument($observer);
 
         $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
-
-        $this->log->debug('from observer installment', ['msg'=>$additionalData]);
 
         if (! is_array($additionalData)) {
             return;
