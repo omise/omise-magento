@@ -48,7 +48,7 @@
             <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
         </arguments>
     </virtualType>
-     <!-- Installment :: Value Handler Pool -->
+    <!-- Installment :: Value Handler Pool -->
     <virtualType name="OmiseAPMInstallmentValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">

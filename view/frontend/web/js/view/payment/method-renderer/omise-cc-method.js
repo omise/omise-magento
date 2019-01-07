@@ -118,7 +118,6 @@ define(
              */
             isCustomerLoggedIn: function() {
                 return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn;
-
             },
 
             /**
