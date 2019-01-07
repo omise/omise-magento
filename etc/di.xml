@@ -48,7 +48,7 @@
             <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
         </arguments>
     </virtualType>
-     <!-- Internet Banking :: Value Handler Pool -->
+     <!-- Installment :: Value Handler Pool -->
     <virtualType name="OmiseAPMInstallmentValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -56,12 +56,12 @@
             </argument>
         </arguments>
     </virtualType>
-     <virtualType name="OmiseAPMInstallmentConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+    <virtualType name="OmiseAPMInstallmentConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">OmiseAPMInstallmentConfig</argument>
         </arguments>
     </virtualType>
-     <virtualType name="OmiseAPMInstallmentConfig" type="Magento\Payment\Gateway\Config\Config">
+    <virtualType name="OmiseAPMInstallmentConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Installment::CODE</argument>
         </arguments>
