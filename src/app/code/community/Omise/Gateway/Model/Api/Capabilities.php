@@ -12,9 +12,9 @@ class Omise_Gateway_Model_Api_Capabilities extends Omise_Gateway_Model_Api_Objec
     public function getBackends($type = '', $currency = '', $amount = null)
     {
         $params = [];
-        if ($type) $params[] = self::$_capabilities->backendTypeIs($type);
-        if ($currency) $params[] = self::$_capabilities->backendSupportsCurrency($currency);
-        if (!is_null($amount)) $params[] = self::$_capabilities->backendSupportsChargeAmount($amount);
+        if ($type) $params[] = self::$_capabilities->backendFilter['type']($type);
+        if ($currency) $params[] = self::$_capabilities->backendFilter['currency']($currency);
+        if (!is_null($amount)) $params[] = self::$_capabilities->backendFilter['chargeAmount']($amount);
 
         return call_user_func_array([self::$_capabilities, 'getBackends'], $params);
     }

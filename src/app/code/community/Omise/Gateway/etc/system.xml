@@ -155,8 +155,8 @@
                         </omise_offsite_alipay>
 
                         <omise_offsite_instalment type="group">
-                            <label>Instalment Payment</label>
-                            <comment>Enables bank customers to pay in instalments (only available in Thailand).</comment>
+                            <label>Instalment Payments</label>
+                            <comment>Enables bank customers to pay in instalments.</comment>
                             <sort_order>720</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
