@@ -84,7 +84,7 @@ define(
              * @return {array}
              */
             getInstallmentTerms(id) {
-                const capabilities = checkoutConfig.payment.capabilities;
+                const capabilities = checkoutConfig.capabilities;
                 for (const key in capabilities) {
                     if (capabilities[key]._id === 'installment_' + id)
                         return ko.observableArray(capabilities[key].allowed_installment_terms);
