@@ -66,10 +66,13 @@ class CcConfigProvider implements ConfigProviderInterface
         }
 
         $cards = $this->customer->cards(['order' => 'reverse_chronological']);
+
         if (! $cards) {
             return [];
         }
+
         $data = [];
+
         foreach($cards['data'] as $card) {
             $label = $card['brand'] . ' **** ' . $card['last_digits'];
             $data[] = [
@@ -77,6 +80,7 @@ class CcConfigProvider implements ConfigProviderInterface
                 'label' => $label
             ];
         }
+    
         return $data;
     }
 }
