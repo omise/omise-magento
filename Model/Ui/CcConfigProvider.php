@@ -1,23 +1,28 @@
 <?php
 namespace Omise\Payment\Model\Ui;
+
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
+
 class CcConfigProvider implements ConfigProviderInterface
 {
     /**
      * @var \Magento\Payment\Model\CcConfig
      */
     protected $magentoCcConfig;
+
     /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     protected $omiseCcConfig;
+
     /**
      * @var Omise\Payment\Model\Customer
      */
     protected $customer;
+
     public function __construct(
         MagentoCcConfig $magentoCcConfig,
         OmiseCcConfig   $omiseCcConfig,
@@ -27,6 +32,7 @@ class CcConfigProvider implements ConfigProviderInterface
         $this->omiseCcConfig   = $omiseCcConfig;
         $this->customer        = $customer;
     }
+
     /**
      * Retrieve assoc array of checkout configuration
      *
@@ -49,6 +55,7 @@ class CcConfigProvider implements ConfigProviderInterface
             ]
         ];
     }
+
     /**
      * @return  array
      */
@@ -57,11 +64,15 @@ class CcConfigProvider implements ConfigProviderInterface
         if (! $this->customer->getMagentoCustomerId() || ! $this->customer->getId()) {
             return [];
         }
+
         $cards = $this->customer->cards(['order' => 'reverse_chronological']);
+
         if (! $cards) {
             return [];
         }
+
         $data = [];
+
         foreach($cards['data'] as $card) {
             $label = $card['brand'] . ' **** ' . $card['last_digits'];
             $data[] = [
@@ -69,6 +80,7 @@ class CcConfigProvider implements ConfigProviderInterface
                 'label' => $label
             ];
         }
+
         return $data;
     }
 }
