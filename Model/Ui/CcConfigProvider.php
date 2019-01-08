@@ -12,12 +12,12 @@ class CcConfigProvider implements ConfigProviderInterface
      * @var \Magento\Payment\Model\CcConfig
      */
     protected $magentoCcConfig;
-    
+
     /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     protected $omiseCcConfig;
-    
+
     /**
      * @var Omise\Payment\Model\Customer
      */
