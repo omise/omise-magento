@@ -1,6 +1,5 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_Payment
-{
+class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_Payment {
     /**
      * @var string
      */
@@ -31,9 +30,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      *
      * @return array
      */
-    public function getValidBackends()
-    {
-
+    public function getValidBackends() {
         $quote = Mage::helper('checkout')->getQuote();
         $currencyCode = $quote->getBaseCurrencyCode();
         $amount = $quote->getBaseGrandTotal();
@@ -48,13 +45,14 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     /**
      * Check method for processing with base currency
      * Note that Instalments can only be used with Omise Thailand account and 'THB' currency
+     * This should probably be changed in the future as this is actually determined by the
+     * Capability API response
      *
      * @param  string $currencyCode
      *
      * @return boolean
      */
-    public function canUseForCurrency($currencyCode)
-    {
+    public function canUseForCurrency($currencyCode) {
         return (strtoupper($currencyCode) === 'THB' && strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode()) === 'THB');
     }
 
@@ -64,8 +62,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      * @param string        $payment_action
      * @param Varien_Object $state_object
      */
-    public function initialize($payment_action, $state_object)
-    {
+    public function initialize($payment_action, $state_object) {
         $payment = $this->getInfoInstance();
         $order   = $payment->getOrder();
 
@@ -90,7 +87,6 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
             $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
             $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
             $state_object->setIsNotified(false);
-
             return;
         }
 
@@ -103,8 +99,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      *
      * @return Omise_Gateway_Model_Api_Charge
      */
-    public function process(Varien_Object $payment, $amount)
-    {
+    public function process(Varien_Object $payment, $amount) {
         $order = $payment->getOrder();
         $currency = $order->getBaseCurrencyCode();
 
@@ -131,8 +126,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      *
      * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
      */
-    public function assignData($data)
-    {
+    public function assignData($data) {
         parent::assignData($data);
 
         $type = $data->getData('type');
@@ -146,8 +140,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      *
      * @see app/code/core/Mage/Sales/Model/Quote/Payment.php
      */
-    public function getOrderPlaceRedirectUrl()
-    {
+    public function getOrderPlaceRedirectUrl() {
         return Mage::getSingleton('checkout/session')->getOmiseAuthorizeUri();
     }
 
@@ -156,8 +149,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      *
      * @return string
      */
-    public function getCallbackUri($params = array())
-    {
+    public function getCallbackUri($params = array()) {
         return Mage::getUrl(
             'omise/callback_validateoffsiteinstalment',
             array(

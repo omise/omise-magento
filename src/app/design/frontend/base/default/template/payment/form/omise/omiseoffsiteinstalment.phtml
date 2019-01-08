@@ -5,7 +5,7 @@ $backends = $this->getInstalmentBackends();
 
 <ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
 
-    <?php if (count($backends))  { foreach ($backends as $backend) { ?>
+    <?php if (count($backends)) { foreach ($backends as $backend) { ?>
         
     <li class="item">
         <input class="validate-one-required-by-name" id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
@@ -29,6 +29,5 @@ $backends = $this->getInstalmentBackends();
         <?=$this->__('There are no instalment plans available for this purchase amount.');?>
     </li>
     <?php } ?>
-
 
 </ul>

@@ -20,16 +20,14 @@
  *
  * @see      https://www.omise.co/source-api
  */
-class Omise_Gateway_Model_Api_Source extends Omise_Gateway_Model_Api_Object
-{
+class Omise_Gateway_Model_Api_Source extends Omise_Gateway_Model_Api_Object {
 
     /**
      * @param  array $params
      *
      * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
      */
-    public function create($params)
-    {
+    public function create($params) {
         try {
             $this->_refresh(OmiseSource::create($params));
         } catch (Exception $e) {

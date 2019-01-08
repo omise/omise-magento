@@ -1,12 +1,11 @@
 <?php
-class Omise_Gateway_Callback_ValidateoffsiteinstalmentController extends Omise_Gateway_Controller_Base
-{
-    public function indexAction()
-    {
+class Omise_Gateway_Callback_ValidateoffsiteinstalmentController extends Omise_Gateway_Controller_Base {
+
+    public function indexAction() {
         // Callback validation.
         $order = $this->_getOrder();
 
-        if (! $payment = $order->getPayment()) {
+        if (!$payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
                 $this->__('Instalment payment validation failed, we cannot retrieve your payment information. Please contact our support team to confirm the payment.')
             );
@@ -21,7 +20,6 @@ class Omise_Gateway_Callback_ValidateoffsiteinstalmentController extends Omise_G
 
         if ($charge instanceof Omise_Gateway_Model_Api_Error) {
             Mage::getSingleton('core/session')->addError($charge->getMessage());
-
             return $this->_redirect('checkout/cart');
         }
 
