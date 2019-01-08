@@ -80,7 +80,7 @@ class CcConfigProvider implements ConfigProviderInterface
                 'label' => $label
             ];
         }
-    
+
         return $data;
     }
 }
