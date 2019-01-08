@@ -5,16 +5,19 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
+
 class CcConfigProvider implements ConfigProviderInterface
 {
     /**
      * @var \Magento\Payment\Model\CcConfig
      */
     protected $magentoCcConfig;
+    
     /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     protected $omiseCcConfig;
+    
     /**
      * @var Omise\Payment\Model\Customer
      */
@@ -61,7 +64,7 @@ class CcConfigProvider implements ConfigProviderInterface
         if (! $this->customer->getMagentoCustomerId() || ! $this->customer->getId()) {
             return [];
         }
-        
+
         $cards = $this->customer->cards(['order' => 'reverse_chronological']);
         if (! $cards) {
             return [];
