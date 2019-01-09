@@ -64,9 +64,7 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('ktc'),
-                                        optionsText: function(item) {
-                                            return item;
-                                        },
+                                        optionsText: item,
                                         valueAllowUnset: true,
                                         value: installmentTerms,
                                         visible: omiseOffsite() === 'installment_ktc',
@@ -93,9 +91,7 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
-                                        optionsText: function(item) {
-                                           return item;
-                                        },
+                                        optionsText: item;
                                         valueAllowUnset: true,
                                         value: installmentTerms,
                                         visible: omiseOffsite() === 'installment_first_choice',
@@ -122,9 +118,7 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
-                                        optionsText: function(item) {
-                                            return item;
-                                        },
+                                        optionsText: item,
                                         valueAllowUnset: true,
                                         value: installmentTerms,
                                         visible: omiseOffsite() === 'installment_kbank',
@@ -152,9 +146,7 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bbl'),
-                                        optionsText: function(item) {
-                                            return item;
-                                        },
+                                        optionsText: item,
                                         valueAllowUnset:true,
                                         value: installmentTerms,
                                         visible: omiseOffsite() === 'installment_bbl',
@@ -180,9 +172,7 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
-                                        optionsText: function(item) {
-                                            return item;
-                                        },
+                                        optionsText: item,
                                         valueAllowUnset:true,
                                         value: installmentTerms,
                                         visible: omiseOffsite() === 'installment_bay',
