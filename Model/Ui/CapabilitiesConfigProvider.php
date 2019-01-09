@@ -27,32 +27,20 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Checks if Installment payment method is enabled
-     * If it is, than it download capabilities thorough Capability Model,
-     * Otherwise returns empty array
-     *
-     * @return array
-     */
-    private function getCapabilities()
-    {
-        $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
-        foreach ($listOfActivePaymentMethods as $method) {
-            if ($method->getCode() === OmiseInstallmentConfig::CODE) {
-                return $this->capabilities->get();
-            }
-        }
-        return [];
-    }
-
-    /**
      * Retrieve assoc array of checkout configuration
      *
      * @return array
      */
     public function getConfig()
     {
-        return [
-            'capabilities' => $this->getCapabilities(),
-        ];
+        $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
+        foreach ($listOfActivePaymentMethods as $method) {
+            if ($method->getCode() === OmiseInstallmentConfig::CODE) {
+                return [ 
+                    'capabilities' => $this->capabilities->get()
+                ];
+            }
+        }
+        return null;
     }
 }
