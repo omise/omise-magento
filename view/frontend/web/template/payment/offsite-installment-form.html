@@ -160,6 +160,34 @@
                                         visible: omiseOffsite() === 'installment_bbl',
                                         optionsCaption: 'Choose number of montly payments'"></select>
                     </li>
+                     <!-- BAY -->
+                     <li class="items">
+                        <input type="radio" name="offsite" value="installment_bay" data-bind="
+                            attr: {
+                                id: getCode() + '_bay'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
+                        <label for="omise_offsite_intstallment_bay">
+                            <div class="omise-logo-wrapper bay">
+                                <img class="bay" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Krungsri'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
+                                        optionsText: function(item) {
+                                            return item;
+                                        },
+                                        valueAllowUnset:true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_bay',
+                                        optionsCaption: 'Choose number of montly payments'"></select>
+                    </li>
                 </ul>
             </fieldset>
         </form>

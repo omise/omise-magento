@@ -61,7 +61,7 @@
     background: #fec43b;
 }
 #omise_offsite_internetbankingForm img.bay, #omise_offsite_installmentForm img.bay {
-    background: url('../images/bay.svg') #fec43b;
+    background: url('../images/bsay.svg') #fec43b;
 }
 
 /** BBL **/
@@ -87,7 +87,7 @@
 #omise_offsite_internetbankingForm img.fc, #omise_offsite_installmentForm img.fc {
     background: url('../images/fc.svg') #007bc4;
 }
-/** KBank **/
+/** KBank **/``
 #omise_offsite_internetbankingForm .kbank, #omise_offsite_installmentForm .kbank {
     background: rgb(247, 226, 226);
 }
