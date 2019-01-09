@@ -4,6 +4,9 @@ class OmiseCapabilities extends OmiseApiResource
 {
     const ENDPOINT = 'capability';
 
+    /**
+     * @var array  of the filterable keys.
+     */
     const FILTERS = array(
         'backend' => array('currency', 'type', 'chargeAmount')
     );
@@ -11,7 +14,7 @@ class OmiseCapabilities extends OmiseApiResource
     protected function __construct($publickey = null, $secretkey = null)
     {
         parent::__construct($publickey, $secretkey);
-        $this->_setupFilterShortcuts();
+        $this->setupFilterShortcuts();
     }
 
     /**
@@ -20,15 +23,17 @@ class OmiseCapabilities extends OmiseApiResource
      * As well as the original:
      *    $capabilities->makeBackendFilterCurrency('THB')
      */
-    protected function _setupFilterShortcuts()
+    protected function setupFilterShortcuts()
     {
-        foreach (self::FILTERS as $filterSubject=>$availableFilters) {
-            $filterArrayName = $filterSubject.'Filter';
+        foreach (self::FILTERS as $filterSubject => $availableFilters) {
+            $filterArrayName = $filterSubject . 'Filter';
             $this->$filterArrayName = array();
             $tempArr = &$this->$filterArrayName;
             foreach ($availableFilters as $type) {
-                $funcName = "make".ucfirst($filterSubject).'Filter'.$type;
-                $tempArr[$type] = function() use ($funcName) { return call_user_func_array(array($this, $funcName), func_get_args()); };
+                $funcName = 'make' . ucfirst($filterSubject) . 'Filter' . $type;
+                $tempArr[$type] = function () use ($funcName) {
+                    return call_user_func_array(array($this, $funcName), func_get_args());
+                };
             }
         }
     }
@@ -47,27 +52,34 @@ class OmiseCapabilities extends OmiseApiResource
     }
 
     /**
+     * (non-PHPdoc)
+     *
+     * @see OmiseApiResource::g_reload()
+     */
+    public function reload()
+    {
+        parent::g_reload(self::getUrl());
+    }
+
+    /**
      * Retrieves array of payment backends. Optionally pass in as many filter functions as you want
      * (muliple arguments, or a single array)
      *
      * @param [func1,fun2,...] OR func1, func2,...
-     *    
+     *
      * @return array
      */
     public function getBackends()
     {
-        // check for filters
-        if ($filters = func_get_args()) $filter = self::_combineFilters(self::_argsToVariadic($filters));
-        $res = $this['payment_backends'];
-        array_walk(
-            $res,
-            function($v, $k) use (&$res) {
-                $id = array_keys($v)[0];
-                $res[$k][$id]['_id'] = $id;
-            }
+        $backends = array_map(
+            function ($backend) {
+                $new = (object)(array_merge(reset($backend), ['_id'=>array_keys($backend)[0]]));
+                return $new;
+            },
+            $this['payment_backends']
         );
-        $res = array_map(function($a) { return (object)reset($a); }, $res);
-        return !empty($filter) ? array_filter($res, $filter) : $res;
+        // return backends (filtered if requested)
+        return ($filters = func_get_args()) ? array_filter($backends, self::combineFilters(self::argsToVariadic($filters))) : $backends;
     }
 
     /**
@@ -79,7 +91,9 @@ class OmiseCapabilities extends OmiseApiResource
      */
     public function makeBackendFilterCurrency($currency)
     {
-        return function($backend) use ($currency) { return in_array(strtoupper($currency), $backend->currencies); };
+        return function ($backend) use ($currency) {
+            return in_array(strtolower($currency), array_map('strtolower', $backend->currencies));
+        };
     }
 
     /**
@@ -91,7 +105,9 @@ class OmiseCapabilities extends OmiseApiResource
      */
     public function makeBackendFilterType($type)
     {
-        return function($backend) use ($type) { return $backend->type==$type; };
+        return function ($backend) use ($type) {
+            return $backend->type == $type;
+        };
     }
 
     /**
@@ -105,7 +121,7 @@ class OmiseCapabilities extends OmiseApiResource
     {
         $defMin = $this['limits']['charge_amount']['min'];
         $defMax = $this['limits']['charge_amount']['max'];
-        return function($backend) use ($amount, $defMin, $defMax) {
+        return function ($backend) use ($amount, $defMin, $defMax) {
             // temporary hack for now to correct min value for instalments to 500000
             if ($backend->type == 'installment') {
                 $min = 500000;
@@ -124,10 +140,14 @@ class OmiseCapabilities extends OmiseApiResource
      *
      * @return function
      */
-    private static function _combineFilters($filters)
+    private static function combineFilters($filters)
     {
-        return function($a) use ($filters) {
-            foreach ($filters as $filter) if (!$filter($a)) return false;
+        return function ($value) use ($filters) {
+            foreach ($filters as $filter) {
+                if (!$filter($value)) {
+                    return false;
+                }
+            }
             return true;
         };
     }
@@ -139,19 +159,9 @@ class OmiseCapabilities extends OmiseApiResource
      *
      * @return function
      */
-    private static function _argsToVariadic($argArray)
+    private static function argsToVariadic($argArray)
     {
-        return count($argArray)==1 && is_array($argArray[0]) ? $argArray[0] : $argArray;
-    }
-
-    /**
-     * (non-PHPdoc)
-     *
-     * @see OmiseApiResource::g_reload()
-     */
-    public function reload()
-    {
-        parent::g_reload(self::getUrl());
+        return count($argArray) == 1 && is_array($argArray[0]) ? $argArray[0] : $argArray;
     }
 
     /**
@@ -159,7 +169,7 @@ class OmiseCapabilities extends OmiseApiResource
      */
     private static function getUrl()
     {
-        return OMISE_API_URL.self::ENDPOINT;
+        return OMISE_API_URL . self::ENDPOINT;
     }
 
     /**
