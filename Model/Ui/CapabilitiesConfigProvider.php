@@ -37,7 +37,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         foreach ($listOfActivePaymentMethods as $method) {
             if ($method->getCode() === OmiseInstallmentConfig::CODE) {
                 return [ 
-                    'capabilities' => $this->capabilities->get()
+                    'capabilities' => $this->capabilities->retrieve()
                 ];
             }
         }

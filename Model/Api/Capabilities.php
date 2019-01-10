@@ -12,7 +12,12 @@ class Capabilities extends Object
         $this->capabilities = OmiseCapabilities::retrieve();
     }
 
-    public function read() {
+    /**
+     * Get Installment capabilities array from Omise-PHP
+     * 
+     * @return array
+     */
+    public function retrieve() {
         return $this->capabilities->getBackends(
             $this->capabilities->backendTypeIs('installment')
         );    

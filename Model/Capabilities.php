@@ -28,7 +28,10 @@ class Capabilities
         $this->omise->defineApiKeys();
     }
 
-    public function get() {
-        return $this->capabilitiesAPI->read();
+    /**
+     * @return array
+     */
+    public function retrieve() {
+        return $this->capabilitiesAPI->retrieve();
     }
 }
