@@ -5,7 +5,6 @@ define(
         'mage/storage',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
-        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
         'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor'
@@ -16,7 +15,6 @@ define(
         storage,
         Component,
         fullScreenLoader,
-        redirectOnSuccessAction,
         quote,
         urlBuilder,
         errorProcessor
