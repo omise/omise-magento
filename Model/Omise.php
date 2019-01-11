@@ -73,7 +73,7 @@ class Omise
             define(
                 'OMISE_USER_AGENT_SUFFIX',
                 sprintf(
-                    'OmiseMagento/%s-dev Magento/%s',
+                    'OmiseMagento/%s Magento/%s',
                     $this->getModuleVersion(),
                     $this->getMagentoVersion()
                 )
