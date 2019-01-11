@@ -15,11 +15,12 @@ class Capabilities
      * @var \Omise\Payment\Model\Api\Capabilities
      */
     protected $capabilitiesAPI;
-    
+
     public function __construct(
         Omise $omise,
         OmiseCapabilitiesAPI $capabilitiesAPI
-    ) {
+    )
+    {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
 
@@ -31,7 +32,8 @@ class Capabilities
     /**
      * @return array
      */
-    public function retrieve() {
-        return $this->capabilitiesAPI->retrieve();
+    public function retrieveInstallmentBackends()
+    {
+        return $this->capabilitiesAPI->getInstallmentBackends();
     }
 }

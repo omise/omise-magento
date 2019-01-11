@@ -82,10 +82,10 @@ define(
              * @return {array}
              */
             getInstallmentTerms(id) {
-                const capabilities = checkoutConfig.capabilities;
-                for (const key in capabilities) {
-                    if (capabilities[key]._id === 'installment_' + id)
-                        return ko.observableArray(capabilities[key].allowed_installment_terms);
+                const installmentBackends = checkoutConfig.installment_backends;
+                for (const key in installmentBackends) {
+                    if (installmentBackends[key]._id === 'installment_' + id)
+                        return ko.observableArray(installmentBackends[key].allowed_installment_terms);
                 }
             },
 

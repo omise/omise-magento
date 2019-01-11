@@ -8,7 +8,8 @@ class Capabilities extends Object
 {
     private $capabilities;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->capabilities = OmiseCapabilities::retrieve();
     }
 
@@ -17,9 +18,10 @@ class Capabilities extends Object
      * 
      * @return array
      */
-    public function retrieve() {
+    public function getInstallmentBackends()
+    {
         return $this->capabilities->getBackends(
-            $this->capabilities->backendTypeIs('installment')
+            $this->capabilities->makeBackendFilterType('installment')
         );    
     }
 }

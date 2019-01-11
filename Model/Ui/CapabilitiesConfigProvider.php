@@ -20,7 +20,8 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         Capabilities               $capabilities,
         PaymentMethodListInterface $paymentLists,
         StoreManagerInterface      $storeManager
-    ) {
+    )
+    {
         $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
@@ -37,7 +38,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         foreach ($listOfActivePaymentMethods as $method) {
             if ($method->getCode() === OmiseInstallmentConfig::CODE) {
                 return [ 
-                    'capabilities' => $this->capabilities->retrieve()
+                    'installment_backends' => $this->capabilities->retrieveInstallmentBackends()
                 ];
             }
         }
