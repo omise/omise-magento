@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="omise_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CcConfigProvider</item>
+                <item name="omise_cc_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CcConfigProvider</item>
+                <item name="omise_capabilities_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CapabilitiesConfigProvider</item>
             </argument>
         </arguments>
     </type>

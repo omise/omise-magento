@@ -1,0 +1,202 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio" name="payment[method]" class="radio" data-bind="attr: {
+               'id': getCode()
+               },
+               value: getCode(),
+               checked: isChecked,
+               click: selectPaymentMethod,
+               visible: isRadioButtonVisible(),
+               enable: isActive() && !orderValueTooLow()" />
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <span data-bind="text: getTitle()"></span>
+        </label>
+        <div data-bind="visible: !isActive()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <div data-bind="i18n: 'Option available only for orders in THB'"></div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="visible: orderValueTooLow()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <div data-bind="i18n: 'Minimum order value is 5000 THB'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() -->
+        <!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() -->
+            <!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="omise-banking-fee-warn" data-bind="i18n: 'Choose your installment terms'"></div>
+        <form class="form" data-bind="attr: {
+              id: getCode() + 'Form',
+              }">
+
+            <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
+                <ul class="form-list">
+                    <!-- KTC -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="installment_ktc" data-bind="
+                            attr: {
+                                id: getCode() + '_ktc'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                    installmentTerms(null); 
+                                    return true; 
+                                }" />
+                        <label for="omise_offsite_installment_ktc">
+                            <div class="omise-logo-wrapper ktc">
+                                <img class="ktc" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Krungthai Card'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('ktc'),
+                                        optionsText: item,
+                                        valueAllowUnset: true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_ktc',
+                                        optionsCaption: 'Choose number of montly payments'"></select>
+                    </li>
+
+                    <!-- First Choice -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="installment_first_choice" data-bind="
+                            attr: {
+                                id: getCode() + '_first_choice'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
+                        <label for="omise_offsite_installment_first_choice">
+                            <div class="omise-logo-wrapper fc">
+                                <img class="fc" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'First Choice'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
+                                        optionsText: item;
+                                        valueAllowUnset: true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_first_choice',
+                                        optionsCaption: 'Choose number of montly payments'"></select>
+                    </li>
+
+                    <!-- KBank -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="installment_kbank" data-bind="
+                            attr: {
+                                id: getCode() + '_kbank'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
+                        <label for="omise_offsite_installment_kbank">
+                            <div class="omise-logo-wrapper kbank">
+                                <img class="kbank" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Kasikorn Bank'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
+                                        optionsText: item,
+                                        valueAllowUnset: true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_kbank',
+                                        optionsCaption: 'Choose number of montly payments'"></select>
+
+                    </li>
+
+                    <!-- BBL -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="installment_bbl" data-bind="
+                            attr: {
+                                id: getCode() + '_bbl'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
+                        <label for="omise_offsite_installment_bbl">
+                            <div class="omise-logo-wrapper bbl">
+                                <img class="bbl" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Bangkok Bank'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bbl'),
+                                        optionsText: item,
+                                        valueAllowUnset:true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_bbl',
+                                        optionsCaption: 'Choose number of montly payments'"></select>
+                    </li>
+                     <!-- BAY -->
+                     <li class="items">
+                        <input type="radio" name="offsite" value="installment_bay" data-bind="
+                            attr: {
+                                id: getCode() + '_bay'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                installmentTerms(null); 
+                                return true; 
+                            };" />
+                        <label for="omise_offsite_installment_bay">
+                            <div class="omise-logo-wrapper bay">
+                                <img class="bay" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Krungsri'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
+                                        optionsText: item,
+                                        valueAllowUnset:true,
+                                        value: installmentTerms,
+                                        visible: omiseOffsite() === 'installment_bay',
+                                        optionsCaption: 'Choose number of montly payments'"></select>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() -->
+            <!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout" type="submit" disabled="disabled" data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
