@@ -135,9 +135,6 @@ class Offsite extends Action
                     case Alipay::CODE:
                         $dispPaymentMethod = "Alipay";
                         break;
-                    default:
-                        $dispPaymentMethod = "Unknown";
-                        break;
                 }
                 
                 // Add transaction.
