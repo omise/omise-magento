@@ -47,7 +47,7 @@ After installing, you can configure the module by:
 
 Settings is displayed under the `Omise` section.
 
-<p align="center"><a alt="omise-magento-install-manual-04" href='https://user-images.githubusercontent.com/10651523/46325091-ec450700-c620-11e8-8a09-2798676487d8.png'><img src='https://user-images.githubusercontent.com/10651523/46325091-ec450700-c620-11e8-8a09-2798676487d8.png'></a></p>
+<p align="center"><a alt="omise-magento-install-manual-04" href='https://user-images.githubusercontent.com/10651523/51095402-15ac2c00-17e7-11e9-8ee2-b2122ccf5401.png'><img src='https://user-images.githubusercontent.com/10651523/51095402-15ac2c00-17e7-11e9-8ee2-b2122ccf5401.png'></a></p>
 
 The table below is the settings for the module and the description for each setting.
 
