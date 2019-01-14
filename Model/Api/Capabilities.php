@@ -4,7 +4,7 @@ namespace Omise\Payment\Model\Api;
 
 use OmiseCapabilities;
 
-class Capabilities extends Object
+class Capabilities extends BaseObject
 {
     private $capabilities;
 
