@@ -42,6 +42,6 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                 ];
             }
         }
-        return null;
+        return [];
     }
 }
