@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v2.6 _(Jan 15, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.6)
+
+### 👾 Bug Fixes
+- Model\Ui\CapabilitiesConfigProvider: returns an empty array instaed of null when Installment payment method is disabled. (PR [#174](https://github.com/omise/omise-magento/pull/174))
+
 ### [v2.5 _(Jan 14, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.5)
 
 ### ✨ Highlights
