@@ -36,7 +36,7 @@ class TescoAdditionalInformation extends \Magento\Framework\View\Element\Templat
         $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
 
         $this->addData([
-            'tesco_code_image' => $paymentData['additional_information']['barcode'],
+            'tesco_barcode_svg' => $paymentData['additional_information']['barcode'],
             'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
         ]);
         
