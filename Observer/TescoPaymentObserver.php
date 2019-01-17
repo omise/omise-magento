@@ -39,19 +39,15 @@ class TescoPaymentObserver implements ObserverInterface
     {
         $order   = $observer->getEvent()->getOrder();
         $payment = $order->getPayment();
-        
-        if (!$payment) {
+
+        if ($payment->getAdditionalData('payment_type') !== 'bill_payment_tesco_lotus') {
             return $this;
         }
 
-        $paymentData = $payment->getData();
-
-        if ($paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
-            return $this;
-        }
+        $paymentData   = $payment->getData();
 
         $amount        = number_format($paymentData['amount_ordered'], 2) . ' ' . $order->getOrderCurrency()->getCurrencyCode();
-        $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($paymentData['additional_information']['barcode']);
+        $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalData('barcode'));
         $storeName     = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
