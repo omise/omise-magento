@@ -32,10 +32,14 @@ class Omise_Gateway_Block_Form_Offsiteinstalment extends Mage_Payment_Block_Form
             'payment_form_block_to_html_before',
             array('block' => $this)
         );
-
         return parent::_toHtml();
     }
 
+    /**
+     * Gets an array of available instalment backends (with some conveniences added for building HTML)
+     *
+     * @return [backends]
+     */
     public function getInstalmentBackends() {
         $backends = Mage::getModel('omise_gateway/payment_offsiteinstalment')->getValidBackends();
         foreach ($backends as &$backend) {

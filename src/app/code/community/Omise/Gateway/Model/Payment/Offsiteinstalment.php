@@ -24,7 +24,6 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     protected $_canReviewPayment   = true;
     protected $_isInitializeNeeded = true;
 
-    
     /**
      * Get an array of instalment backends suitable for this transaction
      *
