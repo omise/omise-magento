@@ -2,6 +2,9 @@
 
 ### [v2.7 _(Jan 21, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.7)
 
+### 🚀 Enhancements
+- Changed in composer omise-php requirement to version 2.11.1 (PR [#177](https://github.com/omise/omise-magento/pull/177))
+
 ### 👾 Bug Fixes
 - Fix: Display correctly barcode from tesco lotus on checkout success page (PR [#180](https://github.com/omise/omise-magento/pull/180))
 - Fix: Order can't be completed when choosing other payment methods than Omise (PR [#179](https://github.com/omise/omise-magento/pull/179))
