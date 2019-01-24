@@ -22,24 +22,24 @@ class CreditCardBuilder implements BuilderInterface
     public function build(array $buildSubject)
     {
         $payment = SubjectReader::readPayment($buildSubject);
-        $method = $payment->getPayment();
-
-        $paymentData = null;
-
-        if ($method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER)) {
-            $paymentData = [
-                self::CUSTOMER => $method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER),
-                self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::CARD),
-            ];
-        } else {
-            $paymentData = [
-                self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN)
+        $method  = $payment->getPayment();
+    
+        // if charge ID already exists than it is 'manual capture' request, so no other data is necessary to build request
+        if ($charge_id = $method->getAdditionalInformation(CreditCardDataObserver::CHARGE_ID)) {
+            return [
+                self::CHARGE_ID => $charge_id
             ];
         }
 
-        //add information about charge_id, if charge id exists than it is 'manual capture' request.
-        $paymentData[self::CHARGE_ID] = $method->getAdditionalInformation(CreditCardDataObserver::CHARGE_ID);
+        if ($method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER)) {
+            return [
+                self::CUSTOMER => $method->getAdditionalInformation(CreditCardDataObserver::CUSTOMER),
+                self::CARD     => $method->getAdditionalInformation(CreditCardDataObserver::CARD)
+            ];
+        }
 
-        return $paymentData;
+        return [ 
+            self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN)
+        ];
     }
 }

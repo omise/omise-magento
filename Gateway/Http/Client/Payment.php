@@ -35,9 +35,9 @@ class Payment implements ClientInterface
 
     public function __construct(
         ApiCharge $apiCharge,
-        Omise $omise
+        Omise     $omise
     ) {
-        $this->omise = $omise;
+        $this->omise     = $omise;
         $this->apiCharge = $apiCharge;
     }
 
@@ -56,8 +56,8 @@ class Payment implements ClientInterface
         $transferObjectBody = $transferObject->getBody();
 
         // if charge_id already exists than action is 'manual capture'
-        if ($chargeID = $transferObjectBody['charge_id']) {
-            $charge = $this->apiCharge->find($chargeID);
+        if (isset($transferObjectBody['charge_id'])) {
+            $charge = $this->apiCharge->find($transferObjectBody['charge_id']);
             return ['charge' => $charge->capture()];
         }
 
