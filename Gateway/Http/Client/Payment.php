@@ -24,6 +24,18 @@ class Payment implements ClientInterface
     const PROCESS_STATUS_FAILED = 'failed';
 
     /**
+     *
+     * @var string
+     */
+    const CHARGE_ID = 'charge_id';
+
+    /**
+     *
+     * @var string
+     */
+    const CHARGE = 'charge';
+
+    /**
      * @var Omise\Payment\Model\Omise
      */
     protected $omise;
@@ -56,11 +68,11 @@ class Payment implements ClientInterface
         $transferObjectBody = $transferObject->getBody();
 
         // if charge_id already exists than action is 'manual capture'
-        if (isset($transferObjectBody['charge_id'])) {
-            $charge = $this->apiCharge->find($transferObjectBody['charge_id']);
-            return ['charge' => $charge->capture()];
+        if (isset($transferObjectBody[self::CHARGE_ID])) {
+            $charge = $this->apiCharge->find($transferObjectBody[self::CHARGE_ID]);
+            return [self::CHARGE => $charge->capture()];
         }
 
-        return ['charge' => $this->apiCharge->create($transferObjectBody)];
+        return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];
     }
 }
