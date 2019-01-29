@@ -37,7 +37,6 @@ define(
             }
         );
 
-        
         rendererList.push(
             {
                 type: 'omise_offline_tesco',
