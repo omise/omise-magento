@@ -1,6 +1,6 @@
 <?php
 $code = $this->getMethodCode();
-$backends = $this->getInstalmentBackends();
+$backends = $this->getInstallmentBackends();
 ?>
 
 <ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
@@ -26,7 +26,7 @@ $backends = $this->getInstalmentBackends();
 
     <?php }} else { ?>
     <li class="item">
-        <?=$this->__('There are no instalment plans available for this purchase amount.');?>
+        <?=$this->__('There are no installment plans available for this purchase amount.');?>
     </li>
     <?php } ?>
 

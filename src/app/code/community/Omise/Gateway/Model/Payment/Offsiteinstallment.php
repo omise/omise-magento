@@ -1,14 +1,15 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_Payment {
-    /**
-     * @var string
-     */
-    protected $_code = 'omise_offsite_instalment';
+class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model_Payment {
 
     /**
      * @var string
      */
-    protected $_formBlockType = 'omise_gateway/form_offsiteinstalment';
+    protected $_code = 'omise_offsite_installment';
+
+    /**
+     * @var string
+     */
+    protected $_formBlockType = 'omise_gateway/form_offsiteinstallment';
 
     /**
      * @var string
@@ -25,7 +26,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
     protected $_isInitializeNeeded = true;
 
     /**
-     * Get an array of instalment backends suitable for this transaction
+     * Get an array of installment backends suitable for this transaction
      *
      * @return array
      */
@@ -43,7 +44,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
 
     /**
      * Check method for processing with base currency
-     * Note that Instalments can only be used with Omise Thailand account and 'THB' currency
+     * Note that Installments can only be used with Omise Thailand account and 'THB' currency
      * This should probably be changed in the future as this is actually determined by the
      * Capability API response
      *
@@ -77,7 +78,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
                     Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER,
                     $invoice,
                     false,
-                    Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise Instalment payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                    Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise Installment payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
                 );
 
         $order->addRelatedObject($invoice);
@@ -107,7 +108,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
             array(
                 'amount'      => $this->getAmountInSubunits($amount, $currency),
                 'currency'    => $currency,
-                'description' => 'Processing payment with instalments. Magento order ID: ' . $order->getIncrementId(),
+                'description' => 'Processing payment with installments. Magento order ID: ' . $order->getIncrementId(),
                 'source'      => array(
                     'type' => $payment->getAdditionalInformation('type'),
                     'installment_terms' => $payment->getAdditionalInformation('terms')
@@ -150,11 +151,12 @@ class Omise_Gateway_Model_Payment_Offsiteinstalment extends Omise_Gateway_Model_
      */
     public function getCallbackUri($params = array()) {
         return Mage::getUrl(
-            'omise/callback_validateoffsiteinstalment',
+            'omise/callback_validateoffsiteinstallment',
             array(
                 '_secure' => Mage::app()->getStore()->isCurrentlySecure(),
                 '_query'  => $params
             )
         );
     }
+    
 }

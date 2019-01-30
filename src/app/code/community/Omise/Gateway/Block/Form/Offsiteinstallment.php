@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Block_Form_Offsiteinstalment extends Mage_Payment_Block_Form {
+class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_Form {
 
     static protected $_banknames = [
         'bay'             => 'Krungsri',
@@ -18,7 +18,7 @@ class Omise_Gateway_Block_Form_Offsiteinstalment extends Mage_Payment_Block_Form
      * @see    Mage_Core_Block_Abstract
      */
     protected function _prepareLayout() {
-        $this->setTemplate('payment/form/omise/omiseoffsiteinstalment.phtml');
+        $this->setTemplate('payment/form/omise/omiseoffsiteinstallment.phtml');
         return $this;
     }
 
@@ -36,12 +36,12 @@ class Omise_Gateway_Block_Form_Offsiteinstalment extends Mage_Payment_Block_Form
     }
 
     /**
-     * Gets an array of available instalment backends (with some conveniences added for building HTML)
+     * Gets an array of available installment backends (with some conveniences added for building HTML)
      *
      * @return [backends]
      */
-    public function getInstalmentBackends() {
-        $backends = Mage::getModel('omise_gateway/payment_offsiteinstalment')->getValidBackends();
+    public function getInstallmentBackends() {
+        $backends = Mage::getModel('omise_gateway/payment_offsiteinstallment')->getValidBackends();
         foreach ($backends as &$backend) {
             $backend->_bankcode = str_replace('installment_', '', $backend->_id);
             $backend->_bankname = self::$_banknames[$backend->_bankcode];

@@ -144,12 +144,12 @@
                 <title>Alipay</title>
             </omise_offsite_alipay>
 
-            <omise_offsite_instalment>
+            <omise_offsite_installment>
                 <active>0</active>
                 <payment_action>authorize_capture</payment_action>
-                <model>omise_gateway/payment_offsiteinstalment</model>
-                <title>Instalment payments</title>
-            </omise_offsite_instalment>
+                <model>omise_gateway/payment_offsiteinstallment</model>
+                <title>Installment payments</title>
+            </omise_offsite_installment>
 
         </payment>
     </default>

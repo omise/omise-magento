@@ -1,6 +1,6 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment
-{
+class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment {
+
     /**
      * @var string
      */
@@ -139,4 +139,5 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
             )
         );
     }
+    
 }
