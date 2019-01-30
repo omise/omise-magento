@@ -25,7 +25,7 @@ class Omise_Gateway_Model_Api_Source extends Omise_Gateway_Model_Api_Object {
     /**
      * @param  array $params
      *
-     * @return Omise_Gateway_Model_Api_Charge|Omise_Gateway_Model_Api_Error
+     * @return Omise_Gateway_Model_Api_Source|Omise_Gateway_Model_Api_Error
      */
     public function create($params) {
         try {
@@ -39,7 +39,7 @@ class Omise_Gateway_Model_Api_Source extends Omise_Gateway_Model_Api_Object {
                 )
             );
         }
-
+        
         return $this;
     }
 
