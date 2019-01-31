@@ -27,7 +27,7 @@ class Omise_Gateway_Callback_ValidateoffsiteinstallmentController extends Omise_
             $order->markAsAwaitPayment(
                 $payment->getLastTransId(),
                 Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
-                Mage::helper('omise_gateway')->__('The payment is in progress.<br/>More explanation here...')
+                Mage::helper('omise_gateway')->__('_The payment has not been confirmed yet.<br/>It may take up to 24 hours to confirm your payment. In case of any questions please don’t hesitate to contact us._ ')
             );
             Mage::getSingleton('checkout/session')->addNotice(Mage::helper('omise_gateway')->__('Please note - the payment process is still ongoing. Once it is complete, you will receive the order confirmation.'));
             return $this->_redirect('checkout/onepage/success');
