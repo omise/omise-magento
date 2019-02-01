@@ -158,5 +158,4 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
             )
         );
     }
-    
 }
