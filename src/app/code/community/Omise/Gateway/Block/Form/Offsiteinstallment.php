@@ -48,5 +48,4 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
         }
         return $backends;
     }
-
 }
