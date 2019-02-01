@@ -42,6 +42,7 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
      */
     public function getInstallmentBackends() {
         $backends = Mage::getModel('omise_gateway/payment_offsiteinstallment')->getValidBackends();
+ 
         foreach ($backends as &$backend) {
             $backend->_bankcode = str_replace('installment_', '', $backend->_id);
             $backend->_bankname = self::$_banknames[$backend->_bankcode];
