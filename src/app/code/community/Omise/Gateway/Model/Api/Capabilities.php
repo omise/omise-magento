@@ -1,13 +1,17 @@
 <?php
-class Omise_Gateway_Model_Api_Capabilities extends Omise_Gateway_Model_Api_Object {
+class Omise_Gateway_Model_Api_Capabilities extends Omise_Gateway_Model_Api_Object
+{
 
-    static protected $_capabilities;
+    protected static $_capabilities;
 
     /**
      * Retrieves and stores capabilities if we haven't already done so
      */
-    public function __construct() {
-        if (!self::$_capabilities) self::$_capabilities = self::getCapabilities();
+    public function __construct()
+    {
+        if (!self::$_capabilities) {
+            self::$_capabilities = self::getCapabilities();
+        }
     }
 
     /**
@@ -15,11 +19,18 @@ class Omise_Gateway_Model_Api_Capabilities extends Omise_Gateway_Model_Api_Objec
      *
      * @return string
      */
-    public function getBackends($type = '', $currency = '', $amount = null) {
+    public function getBackends($type = '', $currency = '', $amount = null)
+    {
         $params = [];
-        if ($type) $params[] = self::$_capabilities->backendFilter['type']($type);
-        if ($currency) $params[] = self::$_capabilities->backendFilter['currency']($currency);
-        if (!is_null($amount)) $params[] = self::$_capabilities->backendFilter['chargeAmount']($amount);
+        if ($type) {
+            $params[] = self::$_capabilities->backendFilter['type']($type);
+        }
+        if ($currency) {
+            $params[] = self::$_capabilities->backendFilter['currency']($currency);
+        }
+        if (!is_null($amount)) {
+            $params[] = self::$_capabilities->backendFilter['chargeAmount']($amount);
+        }
 
         return self::$_capabilities->getBackends($params);
     }
@@ -29,8 +40,8 @@ class Omise_Gateway_Model_Api_Capabilities extends Omise_Gateway_Model_Api_Objec
      *
      * @return string
      */
-    public static function getCapabilities() {
+    public static function getCapabilities()
+    {
         return OmiseCapabilities::retrieve();
     }
-
 }

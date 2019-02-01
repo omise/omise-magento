@@ -1,7 +1,9 @@
 <?php
-class Omise_Gateway_Callback_ValidateoffsiteinstallmentController extends Omise_Gateway_Controller_Base {
+class Omise_Gateway_Callback_ValidateoffsiteinstallmentController extends Omise_Gateway_Controller_Base
+{
 
-    public function indexAction() {
+    public function indexAction()
+    {
         // Callback validation.
         $order = $this->_getOrder();
 
@@ -52,5 +54,4 @@ class Omise_Gateway_Callback_ValidateoffsiteinstallmentController extends Omise_
 
         return $this->_redirect('checkout/cart');
     }
-    
 }
