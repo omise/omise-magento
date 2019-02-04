@@ -23,12 +23,14 @@
     margin: 0 10px;
     border-radius: 2px;
     vertical-align: top;
+    background: transparent;
 }
 
 .banks-list .omise-logo-wrapper > div {
     width: 30px;
     height: 30px;
     display: block;
+    background: url('../images/bank.svg') transparent;
 }
 
 .banks-list .omise-banking-text-wrapper {
@@ -45,7 +47,7 @@
     background: #4e2e7f;
 }
 .banks-list .logo-scb {
-    background: url('../images/scb.svg') #4e2e7f;
+    background: url('../images/scb.svg') #4e2e7f !important;
 }
 
 /** KTB **/
@@ -53,7 +55,7 @@
     background: #1ba5e1;
 }
 .banks-list .logo-ktb {
-    background: url('../images/ktb.svg') #1ba5e1;
+    background: url('../images/ktb.svg') #1ba5e1 !important;
 }
 
 /** BAY **/
@@ -61,7 +63,7 @@
     background: #fec43b;
 }
 .banks-list .logo-bay {
-    background: url('../images/bay.svg') #fec43b;
+    background: url('../images/bay.svg') #fec43b !important;
 }
 
 /** FirstChoice **/
@@ -69,7 +71,7 @@
     background: #007bc4;
 }
 .banks-list .logo-first_choice {
-    background: url('../images/firstchoice.svg') #007bc4;
+    background: url('../images/firstchoice.svg') #007bc4 !important;
 }
 
 /** BBL **/
@@ -77,7 +79,7 @@
     background: #1e4598;
 }
 .banks-list .logo-bbl {
-    background: url('../images/bbl.svg') #1e4598;
+    background: url('../images/bbl.svg') #1e4598 !important;
 }
 
 /** KBank **/
@@ -85,7 +87,7 @@
     background: #ffffff;
 }
 .banks-list .logo-kbank {
-    background: url('../images/kbank.svg') #ffffff;
+    background: url('../images/kbank.svg') #ffffff !important;
 }
 
 /** KTC **/
@@ -93,5 +95,5 @@
     background: #ffffff;
 }
 .banks-list .logo-ktc {
-    background: url('../images/ktc.svg') #ffffff;
+    background: url('../images/ktc.svg') #ffffff !important;
 }

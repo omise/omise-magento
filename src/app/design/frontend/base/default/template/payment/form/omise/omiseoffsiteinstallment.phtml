@@ -14,7 +14,7 @@ $backends = $this->getInstallmentBackends();
                 <div class="logo-<?=$backend->_bankcode;?>"></div>
             </div>
             <div class="omise-banking-text-wrapper">
-                <span class="title"><?=$this->__($backend->_bankname);?></span><br/>
+                <span class="title"><?=$this->__($backend->_bankname ?: 'Unknown installment provider');?></span><br/>
                 <select name="payment[terms_<?=$backend->_id;?>]" id="payment_term_<?=$backend->_id;?>">
                     <?php foreach ($backend->allowed_installment_terms as $termMonths) { ?>
                         <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?></option>
