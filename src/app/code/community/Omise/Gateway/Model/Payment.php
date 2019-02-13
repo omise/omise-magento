@@ -44,26 +44,6 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
     }
 
     /**
-     * @param  array $sourceDetails
-     *
-     * @return Omise_Gateway_Model_Api_Source
-     */
-    protected function _makeSource($sourceDetails)
-    {
-        $source = Mage::getModel('omise_gateway/api_source')->create($sourceDetails);
-
-        if (! $source instanceof Omise_Gateway_Model_Api_Source) {
-            Mage::throwException(
-                Mage::helper('payment')->__(
-                    ($source instanceof Omise_Gateway_Model_Api_Error) ? $source->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
-                )
-            );
-        }
-
-        return $source;
-    }
-
-    /**
      * @param  int    $amount
      * @param  string $currency
      *
@@ -88,15 +68,6 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     protected function _process(Varien_Object $payment, $params)
     {
-        // check if we need to create a source
-        if (!empty($params['source']) && is_array($params['source'])) {
-            $source = $this->_makeSource(array_merge($params['source'], [
-                'amount'    => $params['amount'],
-                'currency'  => $params['currency']
-            ]));
-            $params['source'] = $source->id;
-        }
-
         $charge = Mage::getModel('omise_gateway/api_charge')->create($params);
 
         if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
