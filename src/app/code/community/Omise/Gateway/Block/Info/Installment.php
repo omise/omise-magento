@@ -1,11 +1,11 @@
 <?php
 /**
- * Internet banking payment info
+ * Instalment payment info
  */
-class Omise_Gateway_Block_Info_InternetBanking extends Mage_Payment_Block_Info {
+class Omise_Gateway_Block_Info_Installment extends Mage_Payment_Block_Info {
 
     /**
-     * Prepare internet banking related payment info
+     * Prepare instalment related payment info
      *
      * @param Varien_Object|array $transport
      * @return Varien_Object
@@ -18,11 +18,7 @@ class Omise_Gateway_Block_Info_InternetBanking extends Mage_Payment_Block_Info {
 
         $transport = parent::_prepareSpecificInformation($transport);
 
-        $info = $this->getInfo()->getAdditionalInformation();
-
-        var_dump($info);
-
-        $data = [ 'Bank' => 'Bank name' ];
+        $data = ['Provider'=>'Instalment provider here...'];
 
         return $transport->setData(array_merge($data, $transport->getData()));
     }

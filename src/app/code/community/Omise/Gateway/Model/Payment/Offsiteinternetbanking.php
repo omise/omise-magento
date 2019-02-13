@@ -14,7 +14,6 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     /**
      * @var string
      */
-    // protected $_infoBlockType = 'payment/info';
     protected $_infoBlockType = 'omise_gateway/info_internetbanking';
 
     /**
