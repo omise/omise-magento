@@ -1,6 +1,5 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment
-{
+class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment {
 
     /**
      * @var string
@@ -15,7 +14,8 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     /**
      * @var string
      */
-    protected $_infoBlockType = 'payment/info';
+    // protected $_infoBlockType = 'payment/info';
+    protected $_infoBlockType = 'omise_gateway/info_internetbanking';
 
     /**
      * Payment Method features
@@ -140,4 +140,5 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
             )
         );
     }
+    
 }
