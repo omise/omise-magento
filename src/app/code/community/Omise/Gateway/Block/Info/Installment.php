@@ -17,8 +17,12 @@ class Omise_Gateway_Block_Info_Installment extends Mage_Payment_Block_Info {
         }
 
         $transport = parent::_prepareSpecificInformation($transport);
+        $info = $this->getInfo()->getAdditionalInformation();
 
-        $data = ['Provider'=>'Instalment provider here...'];
+        $data = [
+            Mage::helper('omise_gateway')->__('Provider') => Mage::helper('omise_gateway')->installmentProviderName($info['type']),
+            Mage::helper('omise_gateway')->__('Monthly payments') => $info['terms']
+        ];
 
         return $transport->setData(array_merge($data, $transport->getData()));
     }

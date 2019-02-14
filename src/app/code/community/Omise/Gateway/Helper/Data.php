@@ -32,5 +32,10 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->__(array_key_exists($code, $banks) ? $banks[$code] : 'Unknown bank');
     }
 
+    public function installmentProviderName($code) {
+        $providers = Mage::getSingleton('omise_gateway/config')->getInstallmentProviders();
+        return $this->__(array_key_exists($code, $providers) ? $providers[$code] : 'Unknown provider');
+    }
+
 
 }

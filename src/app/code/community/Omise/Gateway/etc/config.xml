@@ -77,6 +77,7 @@
 
         <payment>
             <omise>
+
                 <internet_banking>
                     <internet_banking_scb>
                         <name>Siam Commercial Bank</name>
@@ -91,8 +92,28 @@
                         <name>Bangkok Bank</name>
                     </internet_banking_bbl>
                 </internet_banking>
+
+                <installment>
+                    <installment_bay>
+                        <name>Krungsri</name>
+                    </installment_bay>
+                    <installment_first_choice>
+                        <name>First Choice</name>
+                    </installment_first_choice>
+                    <installment_kbank>
+                        <name>KBank</name>
+                    </installment_kbank>
+                    <installment_bbl>
+                        <name>Bangkok Bank</name>
+                    </installment_bbl>
+                    <installment_ktc>
+                        <name>KTC</name>
+                    </installment_ktc>
+                </installment>
+
             </omise>
         </payment>
+
     </global>
 
     <!--

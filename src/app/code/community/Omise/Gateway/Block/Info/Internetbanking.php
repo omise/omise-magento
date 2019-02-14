@@ -17,7 +17,6 @@ class Omise_Gateway_Block_Info_InternetBanking extends Mage_Payment_Block_Info {
         }
 
         $transport = parent::_prepareSpecificInformation($transport);
-
         $info = $this->getInfo()->getAdditionalInformation();
 
         $data = [ Mage::helper('omise_gateway')->__('Bank') => Mage::helper('omise_gateway')->internetBankingName($info['type']) ];
