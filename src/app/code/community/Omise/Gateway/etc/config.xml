@@ -74,6 +74,25 @@
                 <class>Omise_Gateway_Helper</class>
             </omise_gateway>
         </helpers>
+
+        <payment>
+            <omise>
+                <internet_banking>
+                    <internet_banking_scb>
+                        <name>Siam Commercial Bank</name>
+                    </internet_banking_scb>
+                    <internet_banking_ktb>
+                        <name>Krungthai Bank</name>
+                    </internet_banking_ktb>
+                    <internet_banking_bay>
+                        <name>Krungsri Bank</name>
+                    </internet_banking_bay>
+                    <internet_banking_bbl>
+                        <name>Bangkok Bank</name>
+                    </internet_banking_bbl>
+                </internet_banking>
+            </omise>
+        </payment>
     </global>
 
     <!--
