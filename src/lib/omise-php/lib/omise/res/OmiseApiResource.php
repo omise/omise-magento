@@ -1,9 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/obj/OmiseObject.php';
-require_once dirname(__FILE__).'/../exception/OmiseExceptions.php';
-
-define('OMISE_PHP_LIB_VERSION', '2.9.1');
+define('OMISE_PHP_LIB_VERSION', '2.11.1');
 define('OMISE_API_URL', 'https://api.omise.co/');
 define('OMISE_VAULT_URL', 'https://vault.omise.co/');
 
@@ -147,16 +144,28 @@ class OmiseApiResource extends OmiseObject
         $array = json_decode($result, true);
 
         // If response is invalid or not a JSON.
-        if (count($array) === 0 || ! isset($array['object'])) {
+        if (!$this->isValidAPIResponse($array)) {
             throw new Exception('Unknown error. (Bad Response)');
         }
 
         // If response is an error object.
-        if ($array['object'] === 'error') {
+        if (!empty($array['object']) && $array['object'] === 'error') {
             throw OmiseException::getInstance($array);
         }
 
         return $array;
+    }
+
+    /**
+     * Checks if response from API was valid.
+     *
+     * @param  array  $array  - decoded JSON response
+     *
+     * @return boolean
+     */
+    protected function isValidAPIResponse($array)
+    {
+        return count($array) && isset($array['object']);
     }
 
     /**

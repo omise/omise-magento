@@ -14,7 +14,7 @@
     -->
     <modules>
         <Omise_Gateway>
-            <version>1.15.0</version>
+            <version>1.16.0</version>
         </Omise_Gateway>
     </modules>
 
@@ -103,6 +103,13 @@
                 </args>
             </omise_gateway>
         </routers>
+        <layout>
+            <updates>
+                <compare>
+                    <file>omise/gateway.xml</file>
+                </compare>
+            </updates>
+        </layout>        
     </frontend>
 
     <!--
@@ -112,6 +119,7 @@
     -->
     <default>
         <payment>
+
             <omise_gateway>
                 <active>1</active>
                 <order_status>1</order_status>
@@ -135,6 +143,14 @@
                 <model>omise_gateway/payment_offsitealipay</model>
                 <title>Alipay</title>
             </omise_offsite_alipay>
+
+            <omise_offsite_installment>
+                <active>0</active>
+                <payment_action>authorize_capture</payment_action>
+                <model>omise_gateway/payment_offsiteinstallment</model>
+                <title>Installment payments</title>
+            </omise_offsite_installment>
+
         </payment>
     </default>
 </config>

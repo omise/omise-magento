@@ -1,6 +1,7 @@
 <?php
 class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment
 {
+
     /**
      * @var string
      */
@@ -93,7 +94,7 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
                 'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'    => $order->getBaseCurrencyCode(),
                 'description' => 'Processing payment with Internet Banking. Magento order ID: ' . $order->getIncrementId(),
-                'offsite'     => $payment->getAdditionalInformation('offsite'),
+                'source'      => array('type' => $payment->getAdditionalInformation('type')),
                 'return_uri'  => $this->getCallbackUri(),
                 'metadata'    => array(
                     'order_id' => $order->getIncrementId()
@@ -111,7 +112,7 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     {
         parent::assignData($data);
 
-        $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
+        $this->getInfoInstance()->setAdditionalInformation('type', $data->getData('bank_type'));
     }
 
     /**

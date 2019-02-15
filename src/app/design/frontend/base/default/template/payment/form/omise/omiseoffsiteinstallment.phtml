@@ -1,0 +1,33 @@
+<?php
+$code = $this->getMethodCode();
+$backends = $this->getInstallmentBackends();
+?>
+
+<ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
+
+    <?php if (count($backends)) { foreach ($backends as $backend) { ?>
+        
+    <li class="item">
+        <input class="validate-one-required-by-name" id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
+        <label for="<?=$backend->_id;?>">
+            <div class="omise-logo-wrapper <?=$backend->_bankcode;?>">
+                <div class="logo-<?=$backend->_bankcode;?>"></div>
+            </div>
+            <div class="omise-banking-text-wrapper">
+                <span class="title"><?=$this->__($backend->_bankname);?></span><br/>
+                <select name="payment[terms_<?=$backend->_id;?>]" id="payment_term_<?=$backend->_id;?>">
+                    <?php foreach ($backend->allowed_installment_terms as $termMonths) { ?>
+                        <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </label>
+    </li>
+
+    <?php }} else { ?>
+    <li class="item">
+        <?=$this->__('There are no installment plans available for this purchase amount.');?>
+    </li>
+    <?php } ?>
+
+</ul>

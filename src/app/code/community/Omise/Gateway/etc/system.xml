@@ -153,6 +153,27 @@
                                 </active>
                             </fields>
                         </omise_offsite_alipay>
+
+                        <omise_offsite_installment type="group">
+                            <label>Installment Payments</label>
+                            <comment>Enables customers to pay in installments.</comment>
+                            <sort_order>720</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_model>omise_gateway/adminhtml_system_config_fieldset_payment</frontend_model>
+                            <fields>
+                                <active translate="label">
+                                    <label>Enabled</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>1</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                </active>
+                            </fields>
+                        </omise_offsite_installment>
                     </fields>
                 </omise_payment>
             </groups>

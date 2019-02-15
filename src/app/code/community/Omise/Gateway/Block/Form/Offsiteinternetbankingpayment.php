@@ -30,4 +30,5 @@ class Omise_Gateway_Block_Form_Offsiteinternetbankingpayment extends Mage_Paymen
 
         return parent::_toHtml();
     }
+    
 }
