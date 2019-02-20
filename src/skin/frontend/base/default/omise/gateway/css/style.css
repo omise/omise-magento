@@ -46,54 +46,54 @@
 .banks-list .scb {
     background: #4e2e7f;
 }
-.banks-list .logo-scb {
-    background: url('../images/scb.svg') #4e2e7f !important;
+.banks-list .omise-logo-wrapper > div.logo-scb {
+    background: url('../images/scb.svg') #4e2e7f;
 }
 
 /** KTB **/
 .banks-list .ktb {
     background: #1ba5e1;
 }
-.banks-list .logo-ktb {
-    background: url('../images/ktb.svg') #1ba5e1 !important;
+.banks-list .omise-logo-wrapper > div.logo-ktb {
+    background: url('../images/ktb.svg') #1ba5e1;
 }
 
 /** BAY **/
 .banks-list .bay {
     background: #fec43b;
 }
-.banks-list .logo-bay {
-    background: url('../images/bay.svg') #fec43b !important;
+.banks-list .omise-logo-wrapper > div.logo-bay {
+    background: url('../images/bay.svg') #fec43b;
 }
 
 /** FirstChoice **/
 .banks-list .first_choice {
     background: #007bc4;
 }
-.banks-list .logo-first_choice {
-    background: url('../images/firstchoice.svg') #007bc4 !important;
+.banks-list .omise-logo-wrapper > div.logo-first_choice {
+    background: url('../images/firstchoice.svg') #007bc4;
 }
 
 /** BBL **/
 .banks-list .bbl {
     background: #1e4598;
 }
-.banks-list .logo-bbl {
-    background: url('../images/bbl.svg') #1e4598 !important;
+.banks-list .omise-logo-wrapper > div.logo-bbl {
+    background: url('../images/bbl.svg') #1e4598;
 }
 
 /** KBank **/
 .banks-list .kbank {
     background: #ffffff;
 }
-.banks-list .logo-kbank {
-    background: url('../images/kbank.svg') #ffffff !important;
+.banks-list .omise-logo-wrapper > div.logo-kbank {
+    background: url('../images/kbank.svg') #ffffff;
 }
 
 /** KTC **/
 .banks-list .ktc {
     background: #ffffff;
 }
-.banks-list .logo-ktc {
-    background: url('../images/ktc.svg') #ffffff !important;
+.banks-list .omise-logo-wrapper > div.logo-ktc {
+    background: url('../images/ktc.svg') #ffffff;
 }
