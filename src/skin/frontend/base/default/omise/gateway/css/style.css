@@ -23,12 +23,14 @@
     margin: 0 10px;
     border-radius: 2px;
     vertical-align: top;
+    background: transparent;
 }
 
 .banks-list .omise-logo-wrapper > div {
     width: 30px;
     height: 30px;
     display: block;
+    background: url('../images/bank.svg') transparent;
 }
 
 .banks-list .omise-banking-text-wrapper {
@@ -44,7 +46,7 @@
 .banks-list .scb {
     background: #4e2e7f;
 }
-.banks-list .logo-scb {
+.banks-list .omise-logo-wrapper > div.logo-scb {
     background: url('../images/scb.svg') #4e2e7f;
 }
 
@@ -52,7 +54,7 @@
 .banks-list .ktb {
     background: #1ba5e1;
 }
-.banks-list .logo-ktb {
+.banks-list .omise-logo-wrapper > div.logo-ktb {
     background: url('../images/ktb.svg') #1ba5e1;
 }
 
@@ -60,7 +62,7 @@
 .banks-list .bay {
     background: #fec43b;
 }
-.banks-list .logo-bay {
+.banks-list .omise-logo-wrapper > div.logo-bay {
     background: url('../images/bay.svg') #fec43b;
 }
 
@@ -68,7 +70,7 @@
 .banks-list .first_choice {
     background: #007bc4;
 }
-.banks-list .logo-first_choice {
+.banks-list .omise-logo-wrapper > div.logo-first_choice {
     background: url('../images/firstchoice.svg') #007bc4;
 }
 
@@ -76,7 +78,7 @@
 .banks-list .bbl {
     background: #1e4598;
 }
-.banks-list .logo-bbl {
+.banks-list .omise-logo-wrapper > div.logo-bbl {
     background: url('../images/bbl.svg') #1e4598;
 }
 
@@ -84,7 +86,7 @@
 .banks-list .kbank {
     background: #ffffff;
 }
-.banks-list .logo-kbank {
+.banks-list .omise-logo-wrapper > div.logo-kbank {
     background: url('../images/kbank.svg') #ffffff;
 }
 
@@ -92,6 +94,6 @@
 .banks-list .ktc {
     background: #ffffff;
 }
-.banks-list .logo-ktc {
+.banks-list .omise-logo-wrapper > div.logo-ktc {
     background: url('../images/ktc.svg') #ffffff;
 }
