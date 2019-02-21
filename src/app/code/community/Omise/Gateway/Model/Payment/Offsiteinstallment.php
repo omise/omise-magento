@@ -1,5 +1,6 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model_Payment {
+class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model_Payment
+{
 
     /**
      * @var string
@@ -30,7 +31,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      *
      * @return array
      */
-    public function getValidBackends() {
+    public function getValidBackends()
+    {
         $quote = Mage::helper('checkout')->getQuote();
         $currencyCode = $quote->getBaseCurrencyCode();
         $amount = $quote->getBaseGrandTotal();
@@ -52,7 +54,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      *
      * @return boolean
      */
-    public function canUseForCurrency($currencyCode) {
+    public function canUseForCurrency($currencyCode)
+    {
         return (strtoupper($currencyCode) === 'THB' && strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode()) === 'THB');
     }
 
@@ -62,7 +65,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      * @param string        $payment_action
      * @param Varien_Object $state_object
      */
-    public function initialize($payment_action, $state_object) {
+    public function initialize($payment_action, $state_object)
+    {
         $payment = $this->getInfoInstance();
         $order   = $payment->getOrder();
 
@@ -99,7 +103,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      *
      * @return Omise_Gateway_Model_Api_Charge
      */
-    public function process(Varien_Object $payment, $amount) {
+    public function process(Varien_Object $payment, $amount)
+    {
         $order = $payment->getOrder();
         $currency = $order->getBaseCurrencyCode();
 
@@ -126,7 +131,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      *
      * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
      */
-    public function assignData($data) {
+    public function assignData($data)
+    {
         parent::assignData($data);
 
         $type = $data->getData('type');
@@ -140,7 +146,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      *
      * @see app/code/core/Mage/Sales/Model/Quote/Payment.php
      */
-    public function getOrderPlaceRedirectUrl() {
+    public function getOrderPlaceRedirectUrl()
+    {
         return Mage::getSingleton('checkout/session')->getOmiseAuthorizeUri();
     }
 
@@ -149,7 +156,8 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
      *
      * @return string
      */
-    public function getCallbackUri($params = array()) {
+    public function getCallbackUri($params = array())
+    {
         return Mage::getUrl(
             'omise/callback_validateoffsiteinstallment',
             array(

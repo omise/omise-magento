@@ -1,7 +1,8 @@
 <?php
 class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    public function formatPrice($currency, $amount) {
+    public function formatPrice($currency, $amount)
+    {
 
         switch (strtoupper($currency)) {
             case 'THB':
@@ -24,18 +25,17 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $amount;
-
     }
 
-    public function internetBankingName($code) {
+    public function internetBankingName($code)
+    {
         $banks = Mage::getSingleton('omise_gateway/config')->getInternetBankingBanks();
         return $this->__(array_key_exists($code, $banks) ? $banks[$code] : "New bank ($code)");
     }
 
-    public function installmentProviderName($code) {
+    public function installmentProviderName($code)
+    {
         $providers = Mage::getSingleton('omise_gateway/config')->getInstallmentProviders();
         return $this->__(array_key_exists($code, $providers) ? $providers[$code] : "New provider ($code)");
     }
-
-
 }

@@ -2,7 +2,8 @@
 /**
  * Instalment payment info
  */
-class Omise_Gateway_Block_Info_Installment extends Mage_Payment_Block_Info {
+class Omise_Gateway_Block_Info_Installment extends Mage_Payment_Block_Info
+{
 
     /**
      * Prepare instalment related payment info
@@ -26,5 +27,4 @@ class Omise_Gateway_Block_Info_Installment extends Mage_Payment_Block_Info {
 
         return $transport->setData(array_merge($data, $transport->getData()));
     }
-
 }

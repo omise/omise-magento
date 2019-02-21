@@ -1,5 +1,6 @@
 <?php
-class Omise_Gateway_Model_Config extends Mage_Core_Model_Abstract {
+class Omise_Gateway_Model_Config extends Mage_Core_Model_Abstract
+{
 
     /**
      * Note:
@@ -8,7 +9,8 @@ class Omise_Gateway_Model_Config extends Mage_Core_Model_Abstract {
      *
      * @see Magento: lib/Varien/Object.php
      */
-    protected function _construct() {
+    protected function _construct()
+    {
         $this->_init('omise_gateway/config');
     }
 
@@ -17,10 +19,13 @@ class Omise_Gateway_Model_Config extends Mage_Core_Model_Abstract {
      *
      * @return array
      */
-    public function getInternetBankingBanks() {
+    public function getInternetBankingBanks()
+    {
         $_types = Mage::getConfig()->getNode('global/payment/omise/internet_banking')->asArray();
         $types = [];
-        foreach ($_types as $code=>$data) $types[$code] = $data['name'];
+        foreach ($_types as $code => $data) {
+            $types[$code] = $data['name'];
+        }
         return $types;
     }
 
@@ -29,11 +34,13 @@ class Omise_Gateway_Model_Config extends Mage_Core_Model_Abstract {
      *
      * @return array
      */
-    public function getInstallmentProviders() {
+    public function getInstallmentProviders()
+    {
         $_types = Mage::getConfig()->getNode('global/payment/omise/installment')->asArray();
         $types = [];
-        foreach ($_types as $code=>$data) $types[$code] = $data['name'];
+        foreach ($_types as $code => $data) {
+            $types[$code] = $data['name'];
+        }
         return $types;
     }
-
 }
