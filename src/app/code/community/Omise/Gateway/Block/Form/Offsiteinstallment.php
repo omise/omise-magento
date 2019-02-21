@@ -1,5 +1,6 @@
 <?php
-class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_Form {
+class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_Form
+{
 
     /**
      * Preparing global layout
@@ -34,7 +35,8 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
      *
      * @return [backends]
      */
-    public function getInstallmentBackends() {
+    public function getInstallmentBackends()
+    {
         $backends = Mage::getModel('omise_gateway/payment_offsiteinstallment')->getValidBackends();
  
         foreach ($backends as &$backend) {
