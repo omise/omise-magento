@@ -111,7 +111,6 @@ class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_M
     public function assignData($data)
     {
         parent::assignData($data);
-
         $this->getInfoInstance()->setAdditionalInformation('type', $data->getData('bank_type'));
     }
 
