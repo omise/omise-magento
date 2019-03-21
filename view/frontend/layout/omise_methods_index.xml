@@ -1,0 +1,10 @@
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+
+        <referenceContainer name="content">
+            <block class="Omise\Payment\Block\Customer\PaymentMethods" name="omise_cards" template="Omise_Payment::cards.phtml"></block>
+        </referenceContainer>
+    </body>
+</page>

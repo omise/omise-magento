@@ -1,0 +1,32 @@
+<?php
+$cards = $block->getCards();
+if ($cards)
+    foreach($cards['data'] as $card) {
+        $label = $card['brand'] . ' **** **** **** ' . $card['last_digits'];
+        $data[] = [
+            'value' => $card['id'],
+            'label' => $label
+        ];
+    }
+?>
+<?php if (count($cards) !== 0): ?>
+    <div class="table-wrapper my-credit-cards">
+        <table class="data table table-credit-cards" id="my-orders-table">
+            <caption class="table-caption"><?= /* @noEscape */ __('Stored Payment Methods') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col card-number"><?= /* @noEscape */ __('Card Number') ?></th>
+                <th scope="col" class="col expire"><?= /* @noEscape */ __('Expiration Date') ?></th>
+                <th scope="col" class="col card-type"><?= /* @noEscape */ __('Type') ?></th>
+                <th scope="col" class="col actions">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+<?php elseif (count($cards) === 0): ?>
+    <div class="message info empty"><span><?= /* @noEscape */ __('You have no stored payment methods.') ?></span></div>
+<?php endif ?>
