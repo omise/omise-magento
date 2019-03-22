@@ -1,13 +1,6 @@
 <?php
 class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_Form
 {
-    protected static $_banknames = [
-        'bay'             => 'Krungsri',
-        'first_choice'    => 'First Choice',
-        'kbank'           => 'KBank',
-        'bbl'             => 'Bangkok Bank',
-        'ktc'             => 'KTC',
-    ];
 
     /**
      * Preparing global layout
@@ -48,7 +41,7 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
  
         foreach ($backends as &$backend) {
             $backend->_bankcode = str_replace('installment_', '', $backend->_id);
-            $backend->_bankname = self::$_banknames[$backend->_bankcode];
+            $backend->_bankname = Mage::helper('omise_gateway')->installmentProviderName($backend->_id);
         }
         return $backends;
     }

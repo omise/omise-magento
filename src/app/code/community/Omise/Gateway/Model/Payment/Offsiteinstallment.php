@@ -1,6 +1,7 @@
 <?php
 class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model_Payment
 {
+
     /**
      * @var string
      */
@@ -14,7 +15,7 @@ class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model
     /**
      * @var string
      */
-    protected $_infoBlockType = 'payment/info';
+    protected $_infoBlockType = 'omise_gateway/info_installment';
 
     /**
      * Payment Method features
