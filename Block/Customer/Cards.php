@@ -49,6 +49,6 @@ class Cards extends Template
      */
     public function getDeleteLink($card)
     {
-        return $this->getUrl('omse/methods/delete', ['card_id' => $card['id']]);
+        return $this->getUrl('omise/methods/delete', ['card_id' => $card['id']]);
     }
 }
