@@ -47,7 +47,6 @@ class PaymentMethods extends Template
             $this->log->debug('no customer id or magento customer id', ['magid'=> $this->customer->getMagentoCustomerId()]);
             return null;
         }
-        $this->log->debug('list of cards', ['cards'=>$this->customer->cards(['order' => 'reverse_chronological'])]);
         return $this->customer->cards(['order' => 'reverse_chronological']);
     }
 }

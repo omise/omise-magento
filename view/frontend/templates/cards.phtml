@@ -1,13 +1,5 @@
 <?php
 $cards = $block->getCards();
-if ($cards)
-    foreach($cards['data'] as $card) {
-        $label = $card['brand'] . ' **** **** **** ' . $card['last_digits'];
-        $data[] = [
-            'value' => $card['id'],
-            'label' => $label
-        ];
-    }
 ?>
 <?php if (count($cards) !== 0): ?>
     <div class="table-wrapper my-credit-cards">
@@ -22,7 +14,15 @@ if ($cards)
             </tr>
             </thead>
             <tbody>
-
+            
+            <?php foreach($cards['data'] as $card): ?>
+            <tr>
+                <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
+                <td><?php echo$card['expiration_year']; ?>/<?php echo $card['expiration_year']; ?></td>
+                <td><?php echo $card['brand'] ?></td>
+                <td></td>
+            </tr>
+    <?php endforeach; ?>
             </tbody>
         </table>
     </div>
