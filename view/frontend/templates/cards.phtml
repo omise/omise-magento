@@ -1,6 +1,7 @@
 <?php
 $cards = $block->getCards();
 ?>
+
 <?php if (count($cards) !== 0): ?>
     <div class="table-wrapper my-credit-cards">
         <table class="data table table-credit-cards" id="my-orders-table">
@@ -13,16 +14,15 @@ $cards = $block->getCards();
                 <th scope="col" class="col actions">&nbsp;</th>
             </tr>
             </thead>
-            <tbody>
-            
-            <?php foreach($cards['data'] as $card): ?>
+            <tbody>            
+<?php foreach($cards['data'] as $card): ?>
             <tr>
                 <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
-                <td><?php echo$card['expiration_year']; ?>/<?php echo $card['expiration_year']; ?></td>
+                <td><?php echo$card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
                 <td><?php echo $card['brand'] ?></td>
-                <td></td>
+                <td><a href="<?php echo $block->getDeleteLink($card)?>"><?= /* @noEscape */ __('Delete') ?></a></td>
             </tr>
-    <?php endforeach; ?>
+<?php endforeach; ?>
             </tbody>
         </table>
     </div>

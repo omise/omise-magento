@@ -7,7 +7,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NotFoundException;
 
-class Index extends \Magento\Framework\App\Action\Action
+class Cards extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var Session

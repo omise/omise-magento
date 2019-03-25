@@ -7,7 +7,7 @@ use Omise\Payment\Model\Customer;
 /**
  * Class PaymentTokens
  */
-class PaymentMethods extends Template
+class Cards extends Template
 {
     /**
      * @var PSR\Log\LoggerInterface
@@ -20,7 +20,6 @@ class PaymentMethods extends Template
     private $customer;
 
     /**
-     * PaymentMethods constructor.
      * @param Template\Context $context
      * @param Omise\Payment\Model\Customer $customer
      * @param PSR\Log\LoggerInterface $log
@@ -42,11 +41,14 @@ class PaymentMethods extends Template
      */
     public function getCards()
     {
-        $this->log->debug('getting cards');
-        if (! $this->customer->getMagentoCustomerId() || ! $this->customer->getId()) {
-            $this->log->debug('no customer id or magento customer id', ['magid'=> $this->customer->getMagentoCustomerId()]);
-            return null;
-        }
-        return $this->customer->cards(['order' => 'reverse_chronological']);
+        return !$this->customer->getMagentoCustomerId() || !$this->customer->getId() ? null : $this->customer->cards(['order' => 'reverse_chronological']);
+    }
+
+    /**
+     * @return  string
+     */
+    public function getDeleteLink($card)
+    {
+        return $this->getUrl('omse/methods/delete', ['card_id' => $card['id']]);
     }
 }
