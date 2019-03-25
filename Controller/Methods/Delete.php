@@ -4,14 +4,8 @@ namespace Omise\Payment\Controller\Methods;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Exception\NotFoundException;
-use Magento\Vault\Model\PaymentTokenManagement;
-
+use Omise\Payment\Model\Customer;
 
 class Delete extends \Magento\Framework\App\Action\Action
 {
@@ -25,36 +19,43 @@ class Delete extends \Magento\Framework\App\Action\Action
      * @var array
      */
     private $errorsMap = [];
+
+    /**
+     * @var Magento\Customer\Model\Session
+     */
     private $customerSession;
 
-    private $log;
+    /**
+     * @var Omise\Payment\Model\Customer
+     */
+    private $customer;
+
     /**
      * @param Context $context
      * @param Session $customerSession
-     * @param JsonFactory $jsonFactory
      * @param PaymentTokenRepositoryInterface $tokenRepository
      * @param PaymentTokenManagement $paymentTokenManagement
      */
     public function __construct(
         Context $context,
         Session $customerSession,
-        \PSR\Log\LoggerInterface $log
+        Customer $customer
     ) {
-        $this->log = $log;
-        $this->log->debug('logging delete action');
         parent::__construct($context, $customerSession);
         $this->customerSession = $customerSession;
+        $this->customer = $customer;
+
         $this->errorsMap = [
             self::WRONG_TOKEN => __('No token found.'),
             self::WRONG_REQUEST => __('Wrong request.'),
-            self::ACTION_EXCEPTION => __('Deletion failure. Please try again.')
+            self::ACTION_EXCEPTION => __('Deletion failure. Please try again.'),
         ];
     }
 
     /**
      * Dispatch request
      *
-     * @return ResultInterface|ResponseInterface
+     * @return Magento\Framework\Controller\ResultInterface|Magento\Framework\App\ResponseInterface
      * @throws NotFoundException
      */
     public function execute()
@@ -65,12 +66,13 @@ class Delete extends \Magento\Framework\App\Action\Action
         }
 
         $cardId = $this->getCardID($request);
+
         if ($cardId === null) {
             return $this->createErrorResponse(self::WRONG_TOKEN);
         }
 
         try {
-            $this->customer->delete();
+            $this->customer->deleteCard($cardId);
         } catch (\Exception $e) {
             return $this->createErrorResponse(self::ACTION_EXCEPTION);
         }
@@ -80,7 +82,7 @@ class Delete extends \Magento\Framework\App\Action\Action
 
     /**
      * @param int $errorCode
-     * @return ResponseInterface
+     * @return Magento\Framework\App\ResponseInterface
      */
     private function createErrorResponse($errorCode)
     {
@@ -92,7 +94,7 @@ class Delete extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return ResponseInterface
+     * @return Magento\Framework\App\ResponseInterface
      */
     private function createSuccessMessage()
     {
@@ -104,22 +106,21 @@ class Delete extends \Magento\Framework\App\Action\Action
 
     /**
      * @param Http $request
-     * @return PaymentTokenInterface|null
+     * @return string|null
      */
     private function getCardID(Http $request)
     {
-        $this->log->debug('card'.$request->getParam('card_id'));
         return $request->getParam('card_id');
     }
 
     /**
      * Dispatch request
      *
-     * @param RequestInterface $request
-     * @return ResponseInterface
+     * @param  Magento\Framework\App\RequestInterface $request
+     * @return Magento\Framework\App\ResponseInterface
      * @throws NotFoundException
      */
-    public function dispatch(RequestInterface $request)
+    public function dispatch(\Magento\Framework\App\RequestInterface $request)
     {
         if (!$this->customerSession->authenticate()) {
             $this->_actionFlag->set('', 'no-dispatch', true);

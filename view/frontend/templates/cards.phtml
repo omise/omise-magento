@@ -1,3 +1,29 @@
+<script type="text/javascript">// <![CDATA[
+require([
+        'jquery',
+        'Magento_Ui/js/modal/confirm'
+    ],
+    function($, confirmation) {
+         $('#cc-delete').on('click', function(event){
+             event.preventDefault();
+                 confirmation({
+             title: 'Delete Card',
+             content: 'Are you sure?',
+             actions: {
+                 confirm: function(){
+                    window.location.href = event.currentTarget.href;
+                 },
+                 cancel: function(){
+                   return false;
+                 },
+                 always: function(){}
+             }
+           });
+       });
+      }
+);
+// ]]></script>
+
 <?php
 $cards = $block->getCards();
 ?>
@@ -18,9 +44,9 @@ $cards = $block->getCards();
 <?php foreach($cards['data'] as $card): ?>
             <tr>
                 <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
-                <td><?php echo$card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
+                <td><?php echo $card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
                 <td><?php echo $card['brand'] ?></td>
-                <td><a href="<?php echo $block->getDeleteLink($card)?>"><?= /* @noEscape */ __('Delete') ?></a></td>
+                <td><a id="cc-delete" href="<?php echo $block->getDeleteLink($card)?>"><?= /* @noEscape */ __('Delete') ?></a></td>
             </tr>
 <?php endforeach; ?>
             </tbody>
