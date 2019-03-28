@@ -1,11 +1,8 @@
 <?php
 namespace Omise\Payment\Controller\Methods;
 
-use Magento\Customer\Model\Session;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\NotFoundException;
-use Omise\Payment\Model\Customer;
 
 class Delete extends \Magento\Framework\App\Action\Action
 {
@@ -31,23 +28,22 @@ class Delete extends \Magento\Framework\App\Action\Action
     private $customer;
 
     /**
-     * @param Context $context
-     * @param Session $customerSession
-     * @param PaymentTokenRepositoryInterface $tokenRepository
-     * @param PaymentTokenManagement $paymentTokenManagement
+     * @param Context  $context
+     * @param Session  $customerSession
+     * @param Customer $customer
      */
     public function __construct(
-        Context $context,
-        Session $customerSession,
-        Customer $customer
+        \Magento\Framework\App\Action\Context $context,
+        \Magento\Customer\Model\Session       $customerSession,
+        \Omise\Payment\Model\Customer         $customer
     ) {
         parent::__construct($context, $customerSession);
         $this->customerSession = $customerSession;
-        $this->customer = $customer;
+        $this->customer        = $customer;
 
         $this->errorsMap = [
-            self::WRONG_TOKEN => __('No token found.'),
-            self::WRONG_REQUEST => __('Wrong request.'),
+            self::WRONG_TOKEN      => __('No token found.'),
+            self::WRONG_REQUEST    => __('Wrong request.'),
             self::ACTION_EXCEPTION => __('Deletion failure. Please try again.'),
         ];
     }
@@ -101,6 +97,7 @@ class Delete extends \Magento\Framework\App\Action\Action
         $this->messageManager->addSuccessMessage(
             __('Stored Payment Method was successfully removed')
         );
+
         return $this->_redirect('omise/methods/cards');
     }
 
@@ -118,13 +115,14 @@ class Delete extends \Magento\Framework\App\Action\Action
      *
      * @param  Magento\Framework\App\RequestInterface $request
      * @return Magento\Framework\App\ResponseInterface
-     * @throws NotFoundException
+     * @throws Magento\Framework\Exception\NotFoundException
      */
     public function dispatch(\Magento\Framework\App\RequestInterface $request)
     {
         if (!$this->customerSession->authenticate()) {
             $this->_actionFlag->set('', 'no-dispatch', true);
         }
+
         return parent::dispatch($request);
     }
 }
