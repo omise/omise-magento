@@ -10,11 +10,6 @@ use Omise\Payment\Model\Customer;
 class Cards extends Template
 {
     /**
-     * @var PSR\Log\LoggerInterface
-     */
-    private $log;
-
-    /**
      * @var Omise\Payment\Model\Customer;
      */
     private $customer;
@@ -22,17 +17,14 @@ class Cards extends Template
     /**
      * @param Template\Context $context
      * @param Omise\Payment\Model\Customer $customer
-     * @param PSR\Log\LoggerInterface $log
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         Customer $customer,
-        \PSR\Log\LoggerInterface $log,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->log = $log;
         $this->customer = $customer;
     }
 
