@@ -7,7 +7,7 @@ use Magento\Payment\Gateway\Http\TransferInterface;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Omise\Payment\Model\Omise;
 
-class Payment implements ClientInterface
+abstract class AbstractPayment implements ClientInterface
 {
     /**
      * Client request status represented to successful request step.
@@ -49,8 +49,15 @@ class Payment implements ClientInterface
         ApiCharge $apiCharge,
         Omise     $omise
     ) {
-        $this->omise     = $omise;
+        $this->omise = $omise;
         $this->apiCharge = $apiCharge;
+    }
+
+    protected function setupOmiseLib()
+    {
+        $this->omise->defineUserAgent();
+        $this->omise->defineApiVersion();
+        $this->omise->defineApiKeys();
     }
 
     /**
@@ -58,21 +65,5 @@ class Payment implements ClientInterface
      *
      * @return \Omise\Payment\Model\Api\Charge|\Omise\Payment\Model\Api\Error
      */
-    public function placeRequest(TransferInterface $transferObject)
-    {
-
-        $this->omise->defineUserAgent();
-        $this->omise->defineApiVersion();
-        $this->omise->defineApiKeys();
-        
-        $transferObjectBody = $transferObject->getBody();
-
-        // if charge_id already exists than action is 'manual capture'
-        if (isset($transferObjectBody[self::CHARGE_ID])) {
-            $charge = $this->apiCharge->find($transferObjectBody[self::CHARGE_ID]);
-            return [self::CHARGE => $charge->capture()];
-        }
-
-        return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];
-    }
+    abstract public function placeRequest(TransferInterface $transferObject);
 }
