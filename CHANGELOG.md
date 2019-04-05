@@ -1,6 +1,18 @@
 # CHANGELOG
 
-### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
+### [v1.16 _(Apr 5, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.16)
+
+#### 🚀 Enhancements
+
+- Adds a more detailed info block on checkout screen for 'Internet Banking' payments. The selected bank is now shown as well, instead of just saying 'Internet Banking'
+
+
+#### 👾 Bug Fixes
+
+- Fixes an issue with orders not being updated after order cancellation in some situations
+- Fixes an issue where order emails were sometimes not being sent
+
+---### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
 
 #### 🚀 Enhancements
 
