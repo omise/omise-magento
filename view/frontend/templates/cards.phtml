@@ -31,7 +31,7 @@ $cards = $block->getCards();
 <?php if (count($cards['data']) !== 0): ?>
     <div class="table-wrapper my-credit-cards">
         <table class="data table table-credit-cards" id="my-orders-table">
-            <caption class="table-caption"><?= /* @noEscape */ __('Stored Payment Methods') ?></caption>
+            <caption class="table-caption"><?= /* @noEscape */ __('Stored Credit/Debit Cards') ?></caption>
             <thead>
                 <tr>
                     <th scope="col" class="col card-number"><?= /* @noEscape */ __('Card Number') ?></th>
@@ -53,5 +53,5 @@ $cards = $block->getCards();
         </table>
     </div>
 <?php elseif (count($cards['data']) === 0): ?>
-    <div class="message info empty"><span><?= /* @noEscape */ __('You have no stored payment methods.') ?></span></div>
+    <div class="message info empty"><span><?= /* @noEscape */ __('You have no stored card.') ?></span></div>
 <?php endif ?>
