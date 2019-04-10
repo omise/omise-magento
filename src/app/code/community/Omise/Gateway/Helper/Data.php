@@ -36,6 +36,12 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
     public function installmentProviderName($code)
     {
         $providers = Mage::getSingleton('omise_gateway/config')->getInstallmentProviders();
-        return $this->__(array_key_exists($code, $providers) ? $providers[$code] : "New provider ($code)");
+        return $this->__(array_key_exists($code, $providers) ? $providers[$code]['name'] : "New provider ($code)");
+    }
+
+    public function installmentProviderInterestRate($code)
+    {
+        $providers = Mage::getSingleton('omise_gateway/config')->getInstallmentProviders();
+        return (double)($providers[$code]['interest_rate']);
     }
 }
