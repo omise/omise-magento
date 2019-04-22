@@ -27,30 +27,30 @@ require([
 $cards = $block->getCards();
 ?>
 
-<?php if (count($cards['data']) !== 0): ?>
+<?php if (!empty($cards['data'])): ?>
     <div class="table-wrapper my-credit-cards">
         <table class="data table table-credit-cards" id="my-orders-table">
-            <caption class="table-caption"><?= /* @noEscape */ __('Stored Credit/Debit Cards') ?></caption>
+            <caption class="table-caption"><?=/* @noEscape */__('Stored Credit/Debit Cards')?></caption>
             <thead>
                 <tr>
-                    <th scope="col" class="col card-number"><?= /* @noEscape */ __('Card Number') ?></th>
-                    <th scope="col" class="col expire"><?= /* @noEscape */ __('Expiration Date') ?></th>
-                    <th scope="col" class="col card-type"><?= /* @noEscape */ __('Type') ?></th>
+                    <th scope="col" class="col card-number"><?=/* @noEscape */__('Card Number')?></th>
+                    <th scope="col" class="col expire"><?=/* @noEscape */__('Expiration Date')?></th>
+                    <th scope="col" class="col card-type"><?=/* @noEscape */__('Type')?></th>
                     <th scope="col" class="col actions">&nbsp;</th>
                 </tr>
             </thead>
-            <tbody>            
-<?php foreach($cards['data'] as $card): ?>
+            <tbody>
+<?php foreach ($cards['data'] as $card): ?>
                 <tr>
                     <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
                     <td><?php echo $card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
                     <td><?php echo $card['brand'] ?></td>
-                    <td><a class="omise-cc-delete" href="<?php echo $block->getDeleteLink($card)?>"><?= /* @noEscape */ __('Delete') ?></a></td>
+                    <td><a class="omise-cc-delete" href="<?php echo $block->getDeleteLink($card) ?>"><?=/* @noEscape */__('Delete')?></a></td>
                 </tr>
-<?php endforeach; ?>
+<?php endforeach;?>
             </tbody>
         </table>
     </div>
 <?php else: ?>
-    <div class="message info empty"><span><?= /* @noEscape */ __('You have no stored card.') ?></span></div>
-<?php endif ?>
+    <div class="message info empty"><span><?=/* @noEscape */__('You have no stored card.')?></span></div>
+<?php endif?>
