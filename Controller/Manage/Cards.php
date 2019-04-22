@@ -56,6 +56,9 @@ class Cards extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        return $this->pageFactory->create();
+        $resultPage = $this->pageFactory->create();
+        $resultPage->getConfig()->getTitle()->set(__('Stored Credit/Debit Cards'));
+
+        return $resultPage;
     }
 }
