@@ -4,11 +4,10 @@ require([
         'Magento_Ui/js/modal/confirm'
     ],
     function($, confirmation) {
-         $('#cc-delete').on('click', function(event){
+         $('.omise-cc-delete').on('click', function(event){
              event.preventDefault();
                  confirmation({
-             title: 'Delete Card',
-             content: 'Are you sure?',
+             content: 'Are you sure you want to delete card?',
              actions: {
                  confirm: function(){
                     window.location.href = event.currentTarget.href;
@@ -46,12 +45,12 @@ $cards = $block->getCards();
                     <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
                     <td><?php echo $card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
                     <td><?php echo $card['brand'] ?></td>
-                    <td><a id="cc-delete" href="<?php echo $block->getDeleteLink($card)?>"><?= /* @noEscape */ __('Delete') ?></a></td>
+                    <td><a class="omise-cc-delete" href="<?php echo $block->getDeleteLink($card)?>"><?= /* @noEscape */ __('Delete') ?></a></td>
                 </tr>
 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-<?php elseif (count($cards['data']) === 0): ?>
+<?php else: ?>
     <div class="message info empty"><span><?= /* @noEscape */ __('You have no stored card.') ?></span></div>
 <?php endif ?>
