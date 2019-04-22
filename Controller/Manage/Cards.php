@@ -1,5 +1,5 @@
 <?php
-namespace Omise\Payment\Controller\Methods;
+namespace Omise\Payment\Controller\Manage;
 
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
@@ -15,7 +15,7 @@ class Cards extends \Magento\Framework\App\Action\Action
     protected $customerSession;
 
     /**
-     * @var Magento\Framework\View\Result\PageFactory
+     * @var \Magento\Framework\View\Result\PageFactory
      */
     private $pageFactory;
 
@@ -56,9 +56,6 @@ class Cards extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $resultPage = $this->pageFactory->create();
-        $resultPage->getConfig()->getTitle()->set(__('Stored Payment Methods'));
-
-        return $resultPage;
+        return $this->pageFactory->create();
     }
 }

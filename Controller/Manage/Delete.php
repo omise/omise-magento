@@ -1,5 +1,5 @@
 <?php
-namespace Omise\Payment\Controller\Methods;
+namespace Omise\Payment\Controller\Manage;
 
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\NotFoundException;
@@ -86,7 +86,7 @@ class Delete extends \Magento\Framework\App\Action\Action
             $this->errorsMap[$errorCode]
         );
 
-        return $this->_redirect('omise/methods/cards');
+        return $this->_redirect('omise/manage/cards');
     }
 
     /**
@@ -98,7 +98,7 @@ class Delete extends \Magento\Framework\App\Action\Action
             __('Stored Payment Method was successfully removed')
         );
 
-        return $this->_redirect('omise/methods/cards');
+        return $this->_redirect('omise/manage/cards');
     }
 
     /**
