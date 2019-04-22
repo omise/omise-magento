@@ -95,7 +95,7 @@ class Delete extends \Magento\Framework\App\Action\Action
     private function createSuccessMessage()
     {
         $this->messageManager->addSuccessMessage(
-            __('Saved Credit/Debit Card data was successfully removed')
+            __('Saved credit/debit card data was successfully removed')
         );
 
         return $this->_redirect('omise/manage/cards');
