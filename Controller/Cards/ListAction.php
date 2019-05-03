@@ -1,5 +1,5 @@
 <?php
-namespace Omise\Payment\Controller\Manage;
+namespace Omise\Payment\Controller\Cards;
 
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
@@ -7,7 +7,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NotFoundException;
 
-class Cards extends \Magento\Framework\App\Action\Action
+class ListAction extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var Session

@@ -1,10 +1,10 @@
 <?php
-namespace Omise\Payment\Controller\Manage;
+namespace Omise\Payment\Controller\Cards;
 
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\NotFoundException;
 
-class Delete extends \Magento\Framework\App\Action\Action
+class DeleteAction extends \Magento\Framework\App\Action\Action
 {
     const WRONG_REQUEST = 1;
 
@@ -86,7 +86,7 @@ class Delete extends \Magento\Framework\App\Action\Action
             $this->errorsMap[$errorCode]
         );
 
-        return $this->_redirect('omise/manage/cards');
+        return $this->_redirect('omise/cards/listaction');
     }
 
     /**
@@ -98,7 +98,7 @@ class Delete extends \Magento\Framework\App\Action\Action
             __('Saved credit/debit card data was successfully removed')
         );
 
-        return $this->_redirect('omise/manage/cards');
+        return $this->_redirect('omise/cards/listaction');
     }
 
     /**
