@@ -44,4 +44,12 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
         $providers = Mage::getSingleton('omise_gateway/config')->getInstallmentProviders();
         return (double)($providers[$code]['interest_rate']);
     }
+
+    public function installmentProviderMonthlyMinimum($code, $currencyCode='thb')
+    {
+        $providers = Mage::getSingleton('omise_gateway/config')->getInstallmentProviders();
+        return (int)($providers[$code]['monthly_minimum_subunits_'.$currencyCode]);
+    }
+
+
 }
