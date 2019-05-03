@@ -68,6 +68,7 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
             $backend->_bankcode = str_replace('installment_', '', $backend->_id);
             $backend->_bankname = Mage::helper('omise_gateway')->installmentProviderName($backend->_id);
             $backend->_interest_rate = Mage::helper('omise_gateway')->installmentProviderInterestRate($backend->_id);
+            $backend->_monthly_minimum_thb = Mage::helper('omise_gateway')->installmentProviderMonthlyMinimum($backend->_id);
         }
         return $backends;
     }
