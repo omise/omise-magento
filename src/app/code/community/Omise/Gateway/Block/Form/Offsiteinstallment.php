@@ -48,7 +48,6 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
     public function getMonthlyPaymentAmount($saleAmount, $monthCount, $interestRatePC)
     {
         $interestRate = $this->isInterestFree() ? 0 : $interestRatePC/100;
-        var_dump($interestRate);
         $VAT = 0.07; // Should this be in config, and also country dependent??
         $interestAmount = $interestRate * $monthCount * $saleAmount * (1+$VAT);
         $totalAmount = $saleAmount + $interestAmount;
@@ -68,7 +67,7 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
             $backend->_bankcode = str_replace('installment_', '', $backend->_id);
             $backend->_bankname = Mage::helper('omise_gateway')->installmentProviderName($backend->_id);
             $backend->_interest_rate = Mage::helper('omise_gateway')->installmentProviderInterestRate($backend->_id);
-            $backend->_monthly_minimum_thb = Mage::helper('omise_gateway')->installmentProviderMonthlyMinimum($backend->_id);
+            $backend->_monthly_minimum_subunits_thb = Mage::helper('omise_gateway')->installmentProviderMonthlyMinimum($backend->_id);
         }
         return $backends;
     }

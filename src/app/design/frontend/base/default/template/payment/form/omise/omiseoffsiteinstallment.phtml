@@ -27,6 +27,7 @@ $currencyHelper = Mage::app()->getLocale()->currency($quote->getBaseCurrencyCode
 
                     <?php foreach ($backend->allowed_installment_terms as $termMonths) {
                         $monthlyPaymentAmount = $this->getMonthlyPaymentAmount($saleAmount, $termMonths, $backend->_interest_rate);
+                        // TODO - need to check here if monthly amount is >= ($backend->_monthly_minimum_subunits_thb/100)
                         $monthlyPaymentText = $currencyHelper->toCurrency($monthlyPaymentAmount) . ' ' .$this->__('/ month');
                     ?>
                         <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?> - <?=$monthlyPaymentText;?></option>
