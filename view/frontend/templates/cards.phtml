@@ -10,12 +10,13 @@ require([
              content: $.mage.__('Are you sure you want to delete this card?'),
              actions: {
                  confirm: function(){
-                    window.location.href = event.currentTarget.href;
+                    $.post(event.currentTarget.attributes.getNamedItem('data-link').value, function() {
+                        location.reload();
+                    });
                  },
                  cancel: function(){
                    return false;
                  },
-                 always: function(){}
              }
            });
        });
@@ -45,7 +46,7 @@ $cards = $block->getCards();
                     <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
                     <td><?php echo $card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
                     <td><?php echo $card['brand'] ?></td>
-                    <td><a class="omise-cc-delete" href="<?php echo $block->getDeleteLink($card) ?>"><?=/* @noEscape */__('Delete')?></a></td>
+                    <td><a class="omise-cc-delete" href="#" data-link="<?php echo $block->getDeleteLink($card) ?>"><?=/* @noEscape */__('Delete')?></a></td>
                 </tr>
 <?php endforeach;?>
             </tbody>
