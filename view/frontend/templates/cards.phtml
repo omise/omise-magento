@@ -5,20 +5,20 @@ require([
     ],
     function($, confirmation) {
          $('.omise-cc-delete').on('click', function(event){
-             event.preventDefault();
-                 confirmation({
-             content: $.mage.__('Are you sure you want to delete this card?'),
-             actions: {
-                 confirm: function(){
-                    $.post(event.currentTarget.attributes.getNamedItem('data-link').value, function() {
-                        location.reload();
-                    });
-                 },
-                 cancel: function(){
-                   return false;
-                 },
-             }
-           });
+            event.preventDefault();
+            confirmation({
+                content: $.mage.__('Are you sure you want to delete this card?'),
+                actions: {
+                    confirm: function() {
+                        $.post(event.currentTarget.attributes.getNamedItem('data-link').value, function() {
+                            location.reload();
+                        });
+                    },
+                    cancel: function(){
+                        return false;
+                    },
+                }
+            });
        });
       }
 );
