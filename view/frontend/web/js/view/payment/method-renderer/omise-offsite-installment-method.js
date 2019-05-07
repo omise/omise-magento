@@ -113,7 +113,7 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return window.checkoutConfig.totalsData.base_grand_total < 5000;
+                return window.checkoutConfig.totalsData.base_grand_total < 3000;
             },
 
             /**

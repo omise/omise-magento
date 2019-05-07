@@ -129,6 +129,19 @@ class Customer
     }
 
     /**
+     * Delete card
+     *
+     * @param  string $cardToken
+     *
+     * @see    https://github.com/omise/omise-php/blob/master/lib/omise/OmiseCardList.php
+     */
+    public function deleteCard($cardToken)
+    {
+        $card = $this->customerAPI->cards()->retrieve($cardToken);
+        $card->destroy();
+    }
+
+    /**
      * Retrieve all cards that belong to a specific Omise Customer object.
      *
      * @param  array $options
