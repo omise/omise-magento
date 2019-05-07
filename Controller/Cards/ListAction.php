@@ -1,16 +1,10 @@
 <?php
 namespace Omise\Payment\Controller\Cards;
 
-use Magento\Customer\Model\Session;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Exception\NotFoundException;
-
 class ListAction extends \Magento\Framework\App\Action\Action
 {
     /**
-     * @var Session
+     * @var \Magento\Checkout\Model\Session
      */
     protected $customerSession;
 
@@ -20,12 +14,12 @@ class ListAction extends \Magento\Framework\App\Action\Action
     private $pageFactory;
 
     /**
-     * @param Context $context
-     * @param Session $customerSession
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Customer\Model\Session $customerSession
      */
     public function __construct(
-        Context $context,
-        Session $customerSession,
+        \Magento\Framework\App\Action\Context $context,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\View\Result\PageFactory $pageFactory
     ) {
         parent::__construct($context);
@@ -34,13 +28,9 @@ class ListAction extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * Dispatch request
-     *
-     * @param RequestInterface $request
-     * @return ResponseInterface
-     * @throws NotFoundException
+     * {@inheritdoc}
      */
-    public function dispatch(RequestInterface $request)
+    public function dispatch(\Magento\Framework\App\RequestInterface $request)
     {
         if (!$this->customerSession->authenticate()) {
             $this->_actionFlag->set('', 'no-dispatch', true);
@@ -49,10 +39,7 @@ class ListAction extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * Dispatch request
-     *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
-     * @throws \Magento\Framework\Exception\NotFoundException
+     * {@inheritdoc}
      */
     public function execute()
     {

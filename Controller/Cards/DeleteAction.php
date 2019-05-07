@@ -2,7 +2,6 @@
 namespace Omise\Payment\Controller\Cards;
 
 use Magento\Framework\App\Request\Http;
-use Magento\Framework\Exception\NotFoundException;
 
 class DeleteAction extends \Magento\Framework\App\Action\Action
 {
@@ -49,10 +48,7 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * Dispatch request
-     *
-     * @return Magento\Framework\Controller\ResultInterface|Magento\Framework\App\ResponseInterface
-     * @throws NotFoundException
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -111,11 +107,7 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * Dispatch request
-     *
-     * @param  Magento\Framework\App\RequestInterface $request
-     * @return Magento\Framework\App\ResponseInterface
-     * @throws Magento\Framework\Exception\NotFoundException
+     * {@inheritdoc}
      */
     public function dispatch(\Magento\Framework\App\RequestInterface $request)
     {

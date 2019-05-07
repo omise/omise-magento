@@ -5,7 +5,7 @@ use Magento\Framework\View\Element\Template;
 use Omise\Payment\Model\Customer;
 
 /**
- * Class PaymentTokens
+ * Class Cards
  */
 class Cards extends Template
 {
@@ -15,7 +15,7 @@ class Cards extends Template
     private $customer;
 
     /**
-     * @param Template\Context $context
+     * @param \Magento\Framework\View\Element\Template $context
      * @param Omise\Payment\Model\Customer $customer
      * @param array $data
      */
@@ -29,7 +29,7 @@ class Cards extends Template
     }
 
     /**
-     * @return  array
+     * @return  array|null
      */
     public function getCards()
     {

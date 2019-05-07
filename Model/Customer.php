@@ -133,7 +133,6 @@ class Customer
      *
      * @param  string $cardToken
      *
-     *
      * @see    https://github.com/omise/omise-php/blob/master/lib/omise/OmiseCardList.php
      */
     public function deleteCard($cardToken)
