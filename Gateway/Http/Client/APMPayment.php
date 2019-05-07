@@ -11,8 +11,6 @@ class APMPayment extends AbstractPayment
      */
     public function placeRequest(\Magento\Payment\Gateway\Http\TransferInterface $transferObject)
     {
-        $this->setupOmiseLib();
-
         $transferObjectBody = $transferObject->getBody();
 
         return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];

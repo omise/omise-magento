@@ -45,19 +45,19 @@ abstract class AbstractPayment implements ClientInterface
      */
     protected $apiCharge;
 
+    /**
+     * @param \Omise\Payment\Model\Api\Charge $apiCharge
+     * @param \Omise\Payment\Model\Omise $omise;
+     */
     public function __construct(
         ApiCharge $apiCharge,
         Omise     $omise
     ) {
-        $this->omise = $omise;
-        $this->apiCharge = $apiCharge;
-    }
+        $omise->defineUserAgent();
+        $omise->defineApiVersion();
+        $omise->defineApiKeys();
 
-    protected function setupOmiseLib()
-    {
-        $this->omise->defineUserAgent();
-        $this->omise->defineApiVersion();
-        $this->omise->defineApiKeys();
+        $this->apiCharge = $apiCharge;
     }
 
     /**

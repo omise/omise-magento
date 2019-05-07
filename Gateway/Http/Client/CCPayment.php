@@ -11,8 +11,6 @@ class CCPayment extends AbstractPayment
      */
     public function placeRequest(\Magento\Payment\Gateway\Http\TransferInterface $transferObject)
     {
-        $this->setupOmiseLib();
-
         $transferObjectBody = $transferObject->getBody();
 
         // if charge_id already exists than action is 'manual capture'
