@@ -11,8 +11,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
 
     const ACTION_EXCEPTION = 3;
 
-    const CARD_LIST_ACTION_PATH = 'omise/cards/listaction';
-
     /**
      * @var array
      */
@@ -83,8 +81,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
         $this->messageManager->addErrorMessage(
             $this->errorsMap[$errorCode]
         );
-
-        return $this->_redirect(self::CARD_LIST_ACTION_PATH);
     }
 
     /**
@@ -95,8 +91,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
         $this->messageManager->addSuccessMessage(
             __('Saved credit/debit card was successfully removed')
         );
-
-        return $this->_redirect(self::CARD_LIST_ACTION_PATH);
     }
 
     /**
