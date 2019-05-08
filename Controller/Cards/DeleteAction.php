@@ -54,19 +54,19 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
     {
         $request = $this->_request;
         if (!$request instanceof Http) {
-            return $this->createErrorResponse(self::WRONG_REQUEST);
+            return $this->createErrorMessage(self::WRONG_REQUEST);
         }
 
         $cardId = $this->getCardID($request);
 
         if ($cardId === null) {
-            return $this->createErrorResponse(self::WRONG_TOKEN);
+            return $this->createErrorMessage(self::WRONG_TOKEN);
         }
 
         try {
             $this->customer->deleteCard($cardId);
         } catch (\Exception $e) {
-            return $this->createErrorResponse(self::ACTION_EXCEPTION);
+            return $this->createErrorMessage(self::ACTION_EXCEPTION);
         }
 
         return $this->createSuccessMessage();
@@ -75,16 +75,13 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
     /**
      * @param int $errorCode
      */
-    private function createErrorResponse($errorCode)
+    private function createErrorMessage($errorCode)
     {
         $this->messageManager->addErrorMessage(
             $this->errorsMap[$errorCode]
         );
     }
 
-    /**
-     * @return Magento\Framework\App\ResponseInterface
-     */
     private function createSuccessMessage()
     {
         $this->messageManager->addSuccessMessage(
