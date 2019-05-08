@@ -11,8 +11,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
 
     const ACTION_EXCEPTION = 3;
 
-    const CARD_LIST_ACTION_PATH = 'omise/cards/listaction';
-
     /**
      * @var array
      */
@@ -56,19 +54,19 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
     {
         $request = $this->_request;
         if (!$request instanceof Http) {
-            return $this->createErrorResponse(self::WRONG_REQUEST);
+            return $this->createErrorMessage(self::WRONG_REQUEST);
         }
 
         $cardId = $this->getCardID($request);
 
         if ($cardId === null) {
-            return $this->createErrorResponse(self::WRONG_TOKEN);
+            return $this->createErrorMessage(self::WRONG_TOKEN);
         }
 
         try {
             $this->customer->deleteCard($cardId);
         } catch (\Exception $e) {
-            return $this->createErrorResponse(self::ACTION_EXCEPTION);
+            return $this->createErrorMessage(self::ACTION_EXCEPTION);
         }
 
         return $this->createSuccessMessage();
@@ -76,27 +74,19 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
 
     /**
      * @param int $errorCode
-     * @return Magento\Framework\App\ResponseInterface
      */
-    private function createErrorResponse($errorCode)
+    private function createErrorMessage($errorCode)
     {
         $this->messageManager->addErrorMessage(
             $this->errorsMap[$errorCode]
         );
-
-        return $this->_redirect(self::CARD_LIST_ACTION_PATH);
     }
 
-    /**
-     * @return Magento\Framework\App\ResponseInterface
-     */
     private function createSuccessMessage()
     {
         $this->messageManager->addSuccessMessage(
             __('Saved credit/debit card was successfully removed')
         );
-
-        return $this->_redirect(self::CARD_LIST_ACTION_PATH);
     }
 
     /**
