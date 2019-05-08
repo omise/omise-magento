@@ -149,7 +149,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseAPMRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="client" xsi:type="object">OmiseAPMCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseAPMInitializeCommandResponseValidator</argument>
         </arguments>
@@ -235,7 +235,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeThreeDSecureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMAuthorizeResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
         </arguments>
@@ -258,7 +258,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureThreeDSecureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
         </arguments>
@@ -310,7 +310,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseAuthorizeRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseAuthorizeCommandResponseValidator</argument>
         </arguments>
@@ -332,7 +332,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseCaptureRequest</argument>
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">OmiseCharge</argument>
+            <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
         </arguments>
@@ -349,7 +349,9 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="OmiseCharge" type="Omise\Payment\Gateway\Http\Client\Payment"></virtualType>
+    <virtualType name="OmiseAPMCharge" type="Omise\Payment\Gateway\Http\Client\APMPayment"></virtualType>
+
+    <virtualType name="OmiseCCCharge" type="Omise\Payment\Gateway\Http\Client\CCPayment"></virtualType>
 
     <virtualType name="OmiseAdapter" type="OmiseCcAdapter">
         <arguments>

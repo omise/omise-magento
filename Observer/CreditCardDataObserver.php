@@ -16,6 +16,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     const CARD          = 'omise_card';
     const REMEMBER_CARD = 'omise_save_card';
     const CUSTOMER      = 'customer';
+    const CHARGE_ID     = 'charge_id';
 
     /**
      * @var array
@@ -24,7 +25,8 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
         self::TOKEN,
         self::CARD,
         self::REMEMBER_CARD,
-        self::CUSTOMER
+        self::CUSTOMER,
+        self::CHARGE_ID
     ];
 
     /**

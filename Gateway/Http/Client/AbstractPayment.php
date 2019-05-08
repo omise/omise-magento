@@ -2,14 +2,12 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 
-use Exception;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
+use Omise\Payment\Model\Omise;
 
-class Payment implements ClientInterface
+abstract class AbstractPayment implements ClientInterface
 {
     /**
      * Client request status represented to successful request step.
@@ -26,6 +24,18 @@ class Payment implements ClientInterface
     const PROCESS_STATUS_FAILED = 'failed';
 
     /**
+     *
+     * @var string
+     */
+    const CHARGE_ID = 'charge_id';
+
+    /**
+     *
+     * @var string
+     */
+    const CHARGE = 'charge';
+
+    /**
      * @var Omise\Payment\Model\Omise
      */
     protected $omise;
@@ -35,11 +45,18 @@ class Payment implements ClientInterface
      */
     protected $apiCharge;
 
+    /**
+     * @param \Omise\Payment\Model\Api\Charge $apiCharge
+     * @param \Omise\Payment\Model\Omise $omise;
+     */
     public function __construct(
         ApiCharge $apiCharge,
         Omise     $omise
     ) {
-        $this->omise     = $omise;
+        $omise->defineUserAgent();
+        $omise->defineApiVersion();
+        $omise->defineApiKeys();
+
         $this->apiCharge = $apiCharge;
     }
 
@@ -48,12 +65,5 @@ class Payment implements ClientInterface
      *
      * @return \Omise\Payment\Model\Api\Charge|\Omise\Payment\Model\Api\Error
      */
-    public function placeRequest(TransferInterface $transferObject)
-    {
-        $this->omise->defineUserAgent();
-        $this->omise->defineApiVersion();
-        $this->omise->defineApiKeys();
-
-        return ['charge' => $this->apiCharge->create($transferObject->getBody())];
-    }
+    abstract public function placeRequest(TransferInterface $transferObject);
 }
