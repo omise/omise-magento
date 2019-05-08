@@ -74,7 +74,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
 
     /**
      * @param int $errorCode
-     * @return Magento\Framework\App\ResponseInterface
      */
     private function createErrorResponse($errorCode)
     {
