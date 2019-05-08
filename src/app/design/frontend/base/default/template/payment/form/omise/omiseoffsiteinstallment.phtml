@@ -30,7 +30,9 @@ $currencyHelper = Mage::app()->getLocale()->currency($quote->getBaseCurrencyCode
                         // This will need to change if we introduce instalment payments for currencies with different subunit settings
                         if ($monthlyPaymentAmount >= ($backend->_monthly_minimum_subunits_thb/100)) {
                             $monthlyPaymentText = $currencyHelper->toCurrency($monthlyPaymentAmount) . ' ' .$this->__('/ month'); ?>
+
                             <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?> - <?=$monthlyPaymentText;?></option>
+                            
                         <?php } 
                     }?>
                     
