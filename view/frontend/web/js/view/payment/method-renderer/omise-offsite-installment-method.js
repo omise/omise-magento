@@ -67,7 +67,11 @@ define(
                 };
             },
 
-
+            getInstallmentTerms: function () {
+                var termsStr = installmentTerms();
+                console.log(termsStr);
+                return termsStr.substring(0, termsStr.indexOf('months') - 1);
+            },
 
             /**
              * Is method available to display
@@ -84,6 +88,7 @@ define(
              * @return {array}
              */
             getInstallmentTerms(id) {
+                //console.log(checkoutConfig);
                 const installmentBackends = checkoutConfig.installment_backends;
                 const total = checkoutConfig.quoteData.grand_total;
 
