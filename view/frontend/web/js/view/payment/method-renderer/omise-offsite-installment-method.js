@@ -67,6 +67,8 @@ define(
                 };
             },
 
+
+
             /**
              * Is method available to display
              *
@@ -105,6 +107,15 @@ define(
              */
             getOrderCurrency: function () {
                 return window.checkoutConfig.quoteData.quote_currency_code;
+            },
+
+            /**
+             * Get zero interests setting
+             *
+             * @return {string}
+             */
+            isZeroInterests: function () {
+                return window.checkoutConfig.is_zero_interest;
             },
 
             /**
