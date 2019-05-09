@@ -46,7 +46,7 @@ define(
                 this._super()
                     .observe([
                         'omiseOffsite',
-                        'installmentTerms'
+                        'installmentTerms',
                     ]);
 
                 return this;
@@ -83,9 +83,18 @@ define(
              */
             getInstallmentTerms(id) {
                 const installmentBackends = checkoutConfig.installment_backends;
+                const total = checkoutConfig.quoteData.grand_total;
+
                 for (const key in installmentBackends) {
-                    if (installmentBackends[key]._id === 'installment_' + id)
-                        return ko.observableArray(installmentBackends[key].allowed_installment_terms);
+                    if (installmentBackends[key]._id === 'installment_' + id) {
+                        const terms = installmentBackends[key].allowed_installment_terms;
+                        var dispTerms = [];
+                        for (let i = 0; i < terms.length; i++) {
+                            dispTerms.push(`${terms[i]} months (${(total / terms[i]).toFixed(0)} THB / month)`);
+                        }
+
+                        return dispTerms;
+                    }
                 }
             },
 
@@ -99,7 +108,7 @@ define(
             },
 
             /**
-             * Get store currency
+             * Get store currency 
              *
              * @return {string}
              */
