@@ -1,4 +1,5 @@
 <?php
+
 $code = $this->getMethodCode();
 $backends = $this->getInstallmentBackends();
 $isInterestFree = $this->isInterestFree();
@@ -32,7 +33,7 @@ $currencyHelper = Mage::app()->getLocale()->currency($quote->getBaseCurrencyCode
                             $monthlyPaymentText = $currencyHelper->toCurrency($monthlyPaymentAmount) . ' ' .$this->__('/ month'); ?>
 
                             <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?> - <?=$monthlyPaymentText;?></option>
-                            
+
                         <?php } 
                     }?>
                     
