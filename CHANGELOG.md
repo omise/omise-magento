@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### [v1.17 _(May 10, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.17)
+
+#### 🚀 Enhancements
+
+- Update Omise-PHP lib v2.11.2 (according to the change of Installment minimum amount) (PR [#192](https://github.com/omise/omise-magento/pull/192))
+- Show instalment amounts, interest rates, and enforce monthly and overall minimum payments (PR [#190](https://github.com/omise/omise-magento/pull/190))
+- Deal with unknown instalment providers (merge after #169) (PR [#184](https://github.com/omise/omise-magento/pull/184))
+- Instalment payments for Magento 1 (PR [#169](https://github.com/omise/omise-magento/pull/169))
+
+
 ### [v1.16 _(Apr 5, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.16)
 
 #### 🚀 Enhancements
@@ -12,7 +22,7 @@
 - Fixes an issue with orders not being updated after order cancellation in some situations
 - Fixes an issue where order emails were sometimes not being sent
 
----### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
+### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
 
 #### 🚀 Enhancements
 
