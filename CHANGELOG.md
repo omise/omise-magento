@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v1.2 _(May 10, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.2)
+
+#### 🚀 Enhancements
+
+- Adds a new payment method 'instalment payments' - currently only for Thailand
+
+---
+
 ### [v1.16 _(Apr 5, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.16)
 
 #### 🚀 Enhancements
@@ -12,7 +20,9 @@
 - Fixes an issue with orders not being updated after order cancellation in some situations
 - Fixes an issue where order emails were sometimes not being sent
 
----### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
+---
+
+### [v1.15 _(Sep 11, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.15)
 
 #### 🚀 Enhancements
 
