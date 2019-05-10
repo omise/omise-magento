@@ -96,15 +96,18 @@
                 <installment>
                     <installment_bay>
                         <name>Krungsri</name>
+                        <monthly_minimum_subunits_thb>50000</monthly_minimum_subunits_thb>
                     </installment_bay>
                     <installment_first_choice>
                         <name>First Choice</name>
+                        <interest_rate>1.3</interest_rate>
                     </installment_first_choice>
                     <installment_kbank>
                         <name>KBank</name>
                     </installment_kbank>
                     <installment_bbl>
                         <name>Bangkok Bank</name>
+                        <monthly_minimum_subunits_thb>50000</monthly_minimum_subunits_thb>
                     </installment_bbl>
                     <installment_ktc>
                         <name>KTC</name>
@@ -189,6 +192,8 @@
                 <payment_action>authorize_capture</payment_action>
                 <model>omise_gateway/payment_offsiteinstallment</model>
                 <title>Installment payments</title>
+                <default_interest_rate>0.8</default_interest_rate>
+                <default_monthly_minimum_subunits_thb>30000</default_monthly_minimum_subunits_thb>
             </omise_offsite_installment>
 
         </payment>

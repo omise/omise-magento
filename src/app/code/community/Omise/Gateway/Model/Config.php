@@ -39,7 +39,13 @@ class Omise_Gateway_Model_Config extends Mage_Core_Model_Abstract
         $_types = Mage::getConfig()->getNode('global/payment/omise/installment')->asArray();
         $types = [];
         foreach ($_types as $code => $data) {
-            $types[$code] = $data['name'];
+            $types[$code] = $data;
+            if (!array_key_exists('interest_rate', $data)) {
+                $types[$code]['interest_rate'] = Mage::getConfig()->getNode('default/payment/omise_offsite_installment/default_interest_rate');
+            }
+            if (!array_key_exists('monthly_minimum_subunits_thb', $data)) {
+                $types[$code]['monthly_minimum_subunits_thb'] = Mage::getConfig()->getNode('default/payment/omise_offsite_installment/default_monthly_minimum_subunits_thb');
+            }
         }
         return $types;
     }

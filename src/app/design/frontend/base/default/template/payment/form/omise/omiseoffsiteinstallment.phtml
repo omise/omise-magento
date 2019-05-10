@@ -1,11 +1,20 @@
 <?php
+
 $code = $this->getMethodCode();
 $backends = $this->getInstallmentBackends();
+$isInterestFree = $this->isInterestFree();
+
+$quote = Mage::helper('checkout')->getQuote();
+$saleAmount = $quote->getBaseGrandTotal();
+$currencyHelper = Mage::app()->getLocale()->currency($quote->getBaseCurrencyCode());
+
 ?>
 
 <ul id="payment_form_<?php echo $code; ?>" class="banks-list form-list" style="display:none;">
 
-    <?php if (count($backends)) { foreach ($backends as $backend) { ?>
+    <?php if (count($backends)) { foreach ($backends as $backend) {
+        $installmentText = $backend->_bankname . ($isInterestFree ? '' : ' ('.$backend->_interest_rate.'%)');
+    ?>
         
     <li class="item">
         <input class="validate-one-required-by-name" id="<?=$backend->_id;?>" type="radio" name="payment[type]" value="<?=$backend->_id;?>" />
@@ -14,11 +23,20 @@ $backends = $this->getInstallmentBackends();
                 <div class="logo-<?=$backend->_bankcode;?>"></div>
             </div>
             <div class="omise-banking-text-wrapper">
-                <span class="title"><?=$backend->_bankname;?></span><br/>
+                <span class="title"><?=$installmentText;?></span><br/>
                 <select name="payment[terms_<?=$backend->_id;?>]" id="payment_term_<?=$backend->_id;?>">
-                    <?php foreach ($backend->allowed_installment_terms as $termMonths) { ?>
-                        <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?></option>
-                    <?php } ?>
+
+                    <?php foreach ($backend->allowed_installment_terms as $termMonths) {
+                        $monthlyPaymentAmount = $this->getMonthlyPaymentAmount($saleAmount, $termMonths, $backend->_interest_rate);
+                        // This will need to change if we introduce instalment payments for currencies with different subunit settings
+                        if ($monthlyPaymentAmount >= ($backend->_monthly_minimum_subunits_thb/100)) {
+                            $monthlyPaymentText = $currencyHelper->toCurrency($monthlyPaymentAmount) . ' ' .$this->__('/ month'); ?>
+
+                            <option value="<?=$termMonths;?>"><?=$termMonths;?> <?=$this->__('months');?> - <?=$monthlyPaymentText;?></option>
+
+                        <?php } 
+                    }?>
+                    
                 </select>
             </div>
         </label>
@@ -29,5 +47,10 @@ $backends = $this->getInstallmentBackends();
         <?=$this->__('There are no installment plans available for this purchase amount.');?>
     </li>
     <?php } ?>
+
+    <?php $interestInfo = $isInterestFree ? 'All installment payments are interest free' : 'Monthly payment rates shown may be inaccurate as interest rates are subject to change.'; ?>
+    <li>
+        <span class="rate secondary-text"><?=$this->__($interestInfo);?></span>
+    </li>
 
 </ul>

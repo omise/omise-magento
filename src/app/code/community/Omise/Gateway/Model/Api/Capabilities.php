@@ -36,6 +36,16 @@ class Omise_Gateway_Model_Api_Capabilities extends Omise_Gateway_Model_Api_Objec
     }
 
     /**
+     * Retrieves zero_interest_installments setting
+     *
+     * @return string
+     */
+    public static function isZeroInterestInstallments()
+    {
+        return self::$_capabilities['zero_interest_installments'];
+    }
+
+    /**
      * Retrieves capabilities object
      *
      * @return string

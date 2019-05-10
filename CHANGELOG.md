@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v1.16 _(Apr 5, 2018)_](https://github.com/omise/omise-magento/releases/tag/v1.16)
+### [v1.16 _(Apr 5, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.16)
 
 #### 🚀 Enhancements
 
