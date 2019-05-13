@@ -56,10 +56,16 @@ define(
                 return this;
             },
 
-            areTermsSelected() {
+            /**
+             * Check if terms are selected
+             */
+            getTerms() {
                  return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
             },
 
+            /**
+             * Reset selected terms
+             */
             resetTerms() {
                 this.installmentTermsBBL(null);
                 this.installmentTermsKBank(null);
@@ -78,7 +84,7 @@ define(
                     'method': this.item.method,
                     'additional_data': {
                         'offsite': this.omiseOffsite(),
-                        'terms': this.installmentTermsFC() || this.installmentTermsKTC() ||  this.installmentTermsKBank() || this.installmentTermsBBL() || this.installmentTermsBAY()
+                        'terms': this.getTerms()
                     }
                 };
             },

@@ -193,7 +193,7 @@
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked()) && omiseOffsite() && areTermsSelected() ">
+                        enable: (getCode() == isChecked()) && omiseOffsite() && getTerms() ">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>
