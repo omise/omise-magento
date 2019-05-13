@@ -52,9 +52,9 @@
                             },
                             checked: omiseOffsite,
                             click: function(data, event) { 
-                                    installmentTerms(null); 
-                                    return true; 
-                                }" />
+                                resetTerms();
+                                return true;
+                            }" />
                         <label for="omise_offsite_installment_ktc">
                             <div class="omise-logo-wrapper ktc">
                                 <img class="ktc" />
@@ -66,7 +66,7 @@
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('ktc'),
                                         optionsText: item,
                                         valueAllowUnset: true,
-                                        value: installmentTerms,
+                                        value: installmentTermsKTC,
                                         visible: omiseOffsite() === 'installment_ktc',
                                         optionsCaption: 'Choose number of montly payments'"></select>
                     </li>
@@ -79,8 +79,8 @@
                             },
                             checked: omiseOffsite,
                             click: function(data, event) { 
-                                installmentTerms(null); 
-                                return true; 
+                                resetTerms();
+                                return true;
                             };" />
                         <label for="omise_offsite_installment_first_choice">
                             <div class="omise-logo-wrapper fc">
@@ -93,7 +93,7 @@
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
                                         optionsText: item;
                                         valueAllowUnset: true,
-                                        value: installmentTerms,
+                                        value: installmentTermsFC,
                                         visible: omiseOffsite() === 'installment_first_choice',
                                         optionsCaption: 'Choose number of montly payments'"></select>
                     </li>
@@ -106,8 +106,8 @@
                             },
                             checked: omiseOffsite,
                             click: function(data, event) { 
-                                installmentTerms(null); 
-                                return true; 
+                                resetTerms();
+                                return true;
                             };" />
                         <label for="omise_offsite_installment_kbank">
                             <div class="omise-logo-wrapper kbank">
@@ -120,7 +120,7 @@
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
                                         optionsText: item,
                                         valueAllowUnset: true,
-                                        value: installmentTerms,
+                                        value: installmentTermsKBank,
                                         visible: omiseOffsite() === 'installment_kbank',
                                         optionsCaption: 'Choose number of montly payments'"></select>
 
@@ -134,8 +134,8 @@
                             },
                             checked: omiseOffsite,
                             click: function(data, event) { 
-                                installmentTerms(null); 
-                                return true; 
+                                resetTerms();
+                                return true;
                             };" />
                         <label for="omise_offsite_installment_bbl">
                             <div class="omise-logo-wrapper bbl">
@@ -148,7 +148,7 @@
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bbl'),
                                         optionsText: item,
                                         valueAllowUnset:true,
-                                        value: installmentTerms,
+                                        value: installmentTermsBBL,
                                         visible: omiseOffsite() === 'installment_bbl',
                                         optionsCaption: 'Choose number of montly payments'"></select>
                     </li>
@@ -160,8 +160,8 @@
                             },
                             checked: omiseOffsite,
                             click: function(data, event) { 
-                                installmentTerms(null); 
-                                return true; 
+                                resetTerms();
+                                return true;
                             };" />
                         <label for="omise_offsite_installment_bay">
                             <div class="omise-logo-wrapper bay">
@@ -174,7 +174,7 @@
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
                                         optionsText: item,
                                         valueAllowUnset:true,
-                                        value: installmentTerms,
+                                        value: installmentTermsBAY,
                                         visible: omiseOffsite() === 'installment_bay',
                                         optionsCaption: 'Choose number of montly payments'"></select>
                     </li>
@@ -193,7 +193,7 @@
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked()) && omiseOffsite() && installmentTerms()">
+                        enable: (getCode() == isChecked()) && omiseOffsite() && areTermsSelected() ">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>

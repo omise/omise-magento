@@ -46,10 +46,26 @@ define(
                 this._super()
                     .observe([
                         'omiseOffsite',
-                        'installmentTerms'
+                        'installmentTermsFC',
+                        'installmentTermsKTC',
+                        'installmentTermsKBank',
+                        'installmentTermsBBL',
+                        'installmentTermsBAY',
                     ]);
 
                 return this;
+            },
+
+            areTermsSelected() {
+                 return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
+            },
+
+            resetTerms() {
+                this.installmentTermsBBL(null);
+                this.installmentTermsKBank(null);
+                this.installmentTermsFC(null);
+                this.installmentTermsKTC(null);
+                this.installmentTermsBAY(null);
             },
 
             /**
@@ -62,7 +78,7 @@ define(
                     'method': this.item.method,
                     'additional_data': {
                         'offsite': this.omiseOffsite(),
-                        'terms': this.installmentTerms()
+                        'terms': this.installmentTermsFC() || this.installmentTermsKTC() ||  this.installmentTermsKBank() || this.installmentTermsBBL() || this.installmentTermsBAY()
                     }
                 };
             },
