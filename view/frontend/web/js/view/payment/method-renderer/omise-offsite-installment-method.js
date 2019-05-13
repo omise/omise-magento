@@ -31,7 +31,7 @@ define(
             /**
              * Get payment method code
              *
-             * @return {string}
+             * @return {string|null}
              */
             getCode: function () {
                 return 'omise_offsite_installment';
@@ -46,10 +46,33 @@ define(
                 this._super()
                     .observe([
                         'omiseOffsite',
-                        'installmentTerms',
+                        'installmentTermsFC',
+                        'installmentTermsKTC',
+                        'installmentTermsKBank',
+                        'installmentTermsBBL',
+                        'installmentTermsBAY',
                     ]);
 
                 return this;
+            },
+
+            /**
+             * Get installment terms
+             * @return {string}
+             */
+            getTerms() {
+                 return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
+            },
+
+            /**
+             * Reset selected terms
+             */
+            resetTerms() {
+                this.installmentTermsBBL(null);
+                this.installmentTermsKBank(null);
+                this.installmentTermsFC(null);
+                this.installmentTermsKTC(null);
+                this.installmentTermsBAY(null);
             },
 
             /**
@@ -62,13 +85,13 @@ define(
                     'method': this.item.method,
                     'additional_data': {
                         'offsite': this.omiseOffsite(),
-                        'terms': this.installmentTerms()
+                        'terms': this.getTerms()
                     }
                 };
             },
 
-            getInstallmentTerms: function () {
-                var termsStr = installmentTerms();
+            getFormattedInstallmentTerms: function () {
+                var termsStr = getTerms();
                 console.log(termsStr);
                 return termsStr.substring(0, termsStr.indexOf('months') - 1);
             },
