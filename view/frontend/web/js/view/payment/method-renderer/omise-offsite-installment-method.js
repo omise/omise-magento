@@ -121,10 +121,12 @@ define(
                         const terms = installmentBackends[key].allowed_installment_terms;
                         var dispTerms = [];
                         for (let i = 0; i < terms.length; i++) {
-                            dispTerms.push(`${terms[i]} months (${(total / terms[i]).toFixed(0)} THB / month)`);
+                            dispTerms.push({ label: `${terms[i]} months (${(total / terms[i]).toFixed(0)} THB / month)`, key: terms[i]});
                         }
 
-                        return dispTerms;
+                        return ko.observableArray(
+                            dispTerms
+                        )
                     }
                 }
             },

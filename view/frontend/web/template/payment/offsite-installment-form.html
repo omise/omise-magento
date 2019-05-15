@@ -64,7 +64,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('ktc'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset: true,
                                         value: installmentTermsKTC,
                                         visible: omiseOffsite() === 'installment_ktc',
@@ -91,7 +96,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
-                                        optionsText: item;
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset: true,
                                         value: installmentTermsFC,
                                         visible: omiseOffsite() === 'installment_first_choice',
@@ -118,7 +128,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset: true,
                                         value: installmentTermsKBank,
                                         visible: omiseOffsite() === 'installment_kbank',
@@ -146,7 +161,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bbl'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset:true,
                                         value: installmentTermsBBL,
                                         visible: omiseOffsite() === 'installment_bbl',
@@ -172,7 +192,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset:true,
                                         value: installmentTermsBAY,
                                         visible: omiseOffsite() === 'installment_bay',
