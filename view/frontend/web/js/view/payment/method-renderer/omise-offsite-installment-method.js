@@ -172,12 +172,6 @@ define(
                 };
             },
 
-            getFormattedInstallmentTerms: function () {
-                var termsStr = getTerms();
-                console.log(termsStr);
-                return termsStr.substring(0, termsStr.indexOf('months') - 1);
-            },
-
             /**
              * Is method available to display
              *
