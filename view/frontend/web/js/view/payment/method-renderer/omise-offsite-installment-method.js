@@ -66,13 +66,63 @@ define(
              */
             getInstallmentMinimum(id) {
                 switch (id) {
-                    case 'kbank': return 500;
-                    case 'bbl': return 500;
-                    case 'bay': return 300;
+                    case 'kbank':        return 500;
+                    case 'bbl':          return 500;
+                    case 'bay':          return 300;
                     case 'first_choice': return 300;
-                    case 'ktc': return 300;
-                    default: return NaN;
+                    case 'ktc':          return 300;
+                    default:             return NaN;
                 }
+            },
+
+            /**
+             * Get Installment yearly interest rate
+             *
+             * NOTE: in the future this function should return data from capabilities object.
+             *
+             * @return {float}
+             */
+            getinstallmentInterestRate(id) {
+                switch (id) {
+                    case 'kbank':        return 0.08;
+                    case 'bbl':          return 0.08;
+                    case 'bay':          return 0.08;
+                    case 'first_choice': return 0.3;
+                    case 'ktc':          return 0.08;
+                    default:             return NaN;
+                }
+            },
+
+            /**
+             * Get zero interests setting
+             *
+             * @return {string}
+             */
+            isZeroInterests() {
+                return window.checkoutConfig.is_zero_interest;
+            },
+
+            /**
+             * Calculates single installment amount
+             *
+             * @return {integer}
+             */
+            calculateInstallmentAmount(id, terms) {
+                const total = checkoutConfig.quoteData.grand_total;
+
+                if (this.isZeroInterests()) {
+                    return (total / terms).toFixed(0)
+                }
+
+                // get yearly interests setting
+                const rate = this.getinstallmentInterestRate(id);
+
+                // NOTE: total amount should be increased by interests
+                // that customer will pay
+                // increase ratio is calculated using formula:
+                // ratio = 1 + ([yearly interests rate] / [12 months in year] * [number of monthly payments])
+                const incTotal = total * (1 + rate / 12 * terms);
+                return ( incTotal / terms ).toFixed(0);
             },
 
             /**
@@ -144,7 +194,6 @@ define(
              */
             getInstallmentTerms(id) {
                 const installmentBackends = checkoutConfig.installment_backends;
-                const total = checkoutConfig.quoteData.grand_total;
                 const templateLabel = $.mage.__('%terms months (%amount THB / month)');
 
                 for (const key in installmentBackends) {
@@ -154,8 +203,9 @@ define(
                         var dispTerms = [];
                         for (let i = 0; i < terms.length; i++) {
                             if (this.isMinimumAmount(id, terms[i])) {
+                                const amount = this.calculateInstallmentAmount(id, terms[i]);
                                 dispTerms.push({
-                                    label: templateLabel.replace('%terms', terms[i]).replace('%amount', (total / terms[i]).toFixed(0)),
+                                    label: templateLabel.replace('%terms', terms[i]).replace('%amount', amount),
                                     key: terms[i]
                                 });
                             }
@@ -163,7 +213,7 @@ define(
 
                         return ko.observableArray(
                             dispTerms
-                        )
+                        );
                     }
                 }
             },
@@ -175,15 +225,6 @@ define(
              */
             getOrderCurrency: function () {
                 return window.checkoutConfig.quoteData.quote_currency_code;
-            },
-
-            /**
-             * Get zero interests setting
-             *
-             * @return {string}
-             */
-            isZeroInterests: function () {
-                return window.checkoutConfig.is_zero_interest;
             },
 
             /**
