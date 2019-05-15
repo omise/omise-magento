@@ -58,7 +58,8 @@ define(
 
             /**
              * Get installment terms
-             * @return {string}
+             * 
+             * @return {string|null}
              */
             getTerms() {
                  return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
