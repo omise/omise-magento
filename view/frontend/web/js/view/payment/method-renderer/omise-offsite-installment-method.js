@@ -62,7 +62,7 @@ define(
              * @return {string|null}
              */
             getTerms() {
-                 return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
+                return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
             },
 
             /**
@@ -112,16 +112,20 @@ define(
              * @return {array}
              */
             getInstallmentTerms(id) {
-                //console.log(checkoutConfig);
                 const installmentBackends = checkoutConfig.installment_backends;
                 const total = checkoutConfig.quoteData.grand_total;
+                const templateLabel = $.mage.__('%terms months (%amount THB / month)');
 
                 for (const key in installmentBackends) {
                     if (installmentBackends[key]._id === 'installment_' + id) {
                         const terms = installmentBackends[key].allowed_installment_terms;
+
                         var dispTerms = [];
                         for (let i = 0; i < terms.length; i++) {
-                            dispTerms.push({ label: `${terms[i]} months (${(total / terms[i]).toFixed(0)} THB / month)`, key: terms[i]});
+                            dispTerms.push({ 
+                                label: templateLabel.replace('%terms', terms[i]).replace('%amount', (total / terms[i]).toFixed(0)),
+                                key: terms[i] 
+                            });
                         }
 
                         return ko.observableArray(
