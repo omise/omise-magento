@@ -57,6 +57,37 @@ define(
             },
 
             /**
+             * Get Installment minimum
+             * this function respects info from: https://www.omise.co/installment-payment
+             *
+             * NOTE: in the future this function should return data from capabilities object.
+             *
+             * @return {integer}
+             */
+            getInstallmentMinimum(id) {
+                switch (id) {
+                    case 'kbank': return 500;
+                    case 'bbl': return 500;
+                    case 'bay': return 300;
+                    case 'first_choice': return 300;
+                    case 'ktc': return 300;
+                    default: return NaN;
+                }
+            },
+
+            /**
+             * Checks if minimum amount is respected
+             * 
+             * @return {boolean}
+             */
+            isMinimumAmount(id, terms) {
+                const min = this.getInstallmentMinimum(id);
+                const total = checkoutConfig.quoteData.grand_total;
+
+                return total / terms >= min;
+            },
+
+            /**
              * Get installment terms
              * 
              * @return {string|null}
@@ -122,10 +153,12 @@ define(
 
                         var dispTerms = [];
                         for (let i = 0; i < terms.length; i++) {
-                            dispTerms.push({ 
-                                label: templateLabel.replace('%terms', terms[i]).replace('%amount', (total / terms[i]).toFixed(0)),
-                                key: terms[i] 
-                            });
+                            if (this.isMinimumAmount(id, terms[i])) {
+                                dispTerms.push({
+                                    label: templateLabel.replace('%terms', terms[i]).replace('%amount', (total / terms[i]).toFixed(0)),
+                                    key: terms[i]
+                                });
+                            }
                         }
 
                         return ko.observableArray(
