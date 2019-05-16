@@ -31,7 +31,7 @@ define(
             /**
              * Get payment method code
              *
-             * @return {string|null}
+             * @return {string}
              */
             getCode: function () {
                 return 'omise_offsite_installment';
@@ -76,7 +76,7 @@ define(
             },
 
             /**
-             * Get Installment yearly interest rate
+             * Get Installment monthly interest rate
              *
              * NOTE: in the future this function should return data from capabilities object.
              *
