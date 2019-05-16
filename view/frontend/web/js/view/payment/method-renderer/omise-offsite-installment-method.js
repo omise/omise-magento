@@ -94,6 +94,17 @@ define(
             },
 
             /**
+             * Get VAT tax rate
+             *
+             * NOTE: in the future this function should return data from capabilities object.
+             *
+             * @return {float}
+             */
+            getVatRate() {
+                return 0.07;
+            },
+
+            /**
              * Get zero interests setting
              *
              * @return {string}
@@ -109,7 +120,7 @@ define(
              */
             calculateSingleInstallmentAmount(id, terms) {
                 const total = this.getTotal();
-                const tax = 0.07;
+                const tax = this.getVatRate();
 
                 if (this.isZeroInterests()) {
                     //merchant pays interests
@@ -135,6 +146,11 @@ define(
                 return singleInstallment >= min;
             },
 
+            /**
+             * Get total amount of an order
+             *
+             * @return {integer}
+             */
             getTotal() {
                 return +window.checkoutConfig.totalsData.grand_total;
             },
