@@ -84,11 +84,11 @@ define(
              */
             getinstallmentInterestRate(id) {
                 switch (id) {
-                    case 'kbank':        return 0.08;
-                    case 'bbl':          return 0.08;
-                    case 'bay':          return 0.08;
-                    case 'first_choice': return 0.3;
-                    case 'ktc':          return 0.08;
+                    case 'kbank':        return 0.0065;
+                    case 'bbl':          return 0.008;
+                    case 'bay':          return 0.008;
+                    case 'first_choice': return 0.013;
+                    case 'ktc':          return 0.008;
                     default:             return NaN;
                 }
             },
@@ -107,22 +107,20 @@ define(
              *
              * @return {integer}
              */
-            calculateInstallmentAmount(id, terms) {
-                const total = checkoutConfig.quoteData.grand_total;
+            calculateSingleInstallmentAmount(id, terms) {
+                const total = this.getTotal();
+                const tax = 0.07;
 
                 if (this.isZeroInterests()) {
+                    //merchant pays interests
                     return (total / terms).toFixed(0)
                 }
 
                 // get yearly interests setting
                 const rate = this.getinstallmentInterestRate(id);
+                const interests = ((1 + tax) * rate * terms * total);
 
-                // NOTE: total amount should be increased by interests
-                // that customer will pay
-                // increase ratio is calculated using formula:
-                // ratio = 1 + ([yearly interests rate] / [12 months in year] * [number of monthly payments])
-                const incTotal = total * (1 + rate / 12 * terms);
-                return ( incTotal / terms ).toFixed(0);
+                return + ( ( (total + interests ) / terms ).toFixed( 0 ) );
             },
 
             /**
@@ -132,9 +130,13 @@ define(
              */
             isMinimumAmount(id, terms) {
                 const min = this.getInstallmentMinimum(id);
-                const total = checkoutConfig.quoteData.grand_total;
+                const singleInstallment = this.calculateSingleInstallmentAmount(id, terms);
 
-                return total / terms >= min;
+                return singleInstallment >= min;
+            },
+
+            getTotal() {
+                return +window.checkoutConfig.totalsData.grand_total;
             },
 
             /**
@@ -197,7 +199,8 @@ define(
                         var dispTerms = [];
                         for (let i = 0; i < terms.length; i++) {
                             if (this.isMinimumAmount(id, terms[i])) {
-                                const amount = this.calculateInstallmentAmount(id, terms[i]);
+                                const amount = this.calculateSingleInstallmentAmount(id, terms[i]);
+
                                 dispTerms.push({
                                     label: templateLabel.replace('%terms', terms[i]).replace('%amount', amount),
                                     key: terms[i]
@@ -236,7 +239,7 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return window.checkoutConfig.totalsData.base_grand_total < 3000;
+                return this.getTotal() < 3000;
             },
 
             /**
