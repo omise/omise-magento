@@ -30,7 +30,7 @@ class Capabilities extends BaseObject
      *
      * @return bool
      */
-    public function isZeroInterests() {
+    public function isZeroInterest() {
         return $this->capabilities['zero_interest_installments'];
     }
 }

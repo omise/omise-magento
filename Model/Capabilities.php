@@ -40,8 +40,8 @@ class Capabilities
     /**
      * @return bool
      */
-    public function isZeroInterests()
+    public function isZeroInterest()
     {
-        return $this->capabilitiesAPI->isZeroInterests();
+        return $this->capabilitiesAPI->isZeroInterest();
     }
 }

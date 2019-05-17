@@ -103,11 +103,11 @@ define(
             },
 
             /**
-             * Get zero interests setting
+             * Get zero interest setting
              *
              * @return {string}
              */
-            isZeroInterests() {
+            isZeroInterest() {
                 return window.checkoutConfig.is_zero_interest;
             },
 
@@ -120,16 +120,16 @@ define(
                 const total = this.getTotal();
                 const tax = this.getVatRate();
 
-                if (this.isZeroInterests()) {
-                    //merchant pays interests
+                if (this.isZeroInterest) {
+                    //merchant pays interest
                     return (total / terms).toFixed(0)
                 }
 
-                // get monthly interests setting
+                // get monthly interest setting
                 const rate = this.getinstallmentInterestRate(id);
-                const interests = ((1 + tax) * rate * terms * total);
+                const interest = ((1 + tax) * rate * terms * total);
 
-                return + ( ( (total + interests ) / terms ).toFixed( 0 ) );
+                return + ( ( (total + interest ) / terms ).toFixed( 0 ) );
             },
 
             /**

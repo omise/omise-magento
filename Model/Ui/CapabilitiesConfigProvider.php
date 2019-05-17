@@ -39,7 +39,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             if ($method->getCode() === OmiseInstallmentConfig::CODE) {
                 return [ 
                     'installment_backends' => $this->capabilities->retrieveInstallmentBackends(),
-                    'is_zero_interest' => $this->capabilities->isZeroInterests()
+                    'is_zero_interest' => $this->capabilities->isZeroInterest()
                 ];
             }
         }
