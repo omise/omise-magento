@@ -51,6 +51,7 @@
                         <input id="chargeWithNewCard" name="payment[omise_card]" type="radio" data-bind="click: chargeWithNewCard.bind($data, $element), checked: omiseCard, value: ''" /> <label for="chargeWithNewCard"><!-- ko i18n: 'Use a new card'--><!-- /ko --></label>
                     </li>
                 </ul>
+                <a href="#">Manage your cards</a>
             <!-- /ko -->
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !isCustomerHasCard()">
