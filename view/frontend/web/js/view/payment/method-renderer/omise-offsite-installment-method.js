@@ -71,7 +71,6 @@ define(
                     case 'bay':          return 300;
                     case 'first_choice': return 300;
                     case 'ktc':          return 300;
-                    default:             return NaN;
                 }
             },
 
@@ -89,7 +88,6 @@ define(
                     case 'bay':          return 0.008;
                     case 'first_choice': return 0.013;
                     case 'ktc':          return 0.008;
-                    default:             return NaN;
                 }
             },
 
@@ -127,7 +125,7 @@ define(
                     return (total / terms).toFixed(0)
                 }
 
-                // get yearly interests setting
+                // get monthly interests setting
                 const rate = this.getinstallmentInterestRate(id);
                 const interests = ((1 + tax) * rate * terms * total);
 
