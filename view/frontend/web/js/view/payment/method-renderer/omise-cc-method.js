@@ -62,6 +62,17 @@ define(
             },
 
             /**
+             * Get url to manage cards in customer's panel
+             * 
+             * @return {string}
+             */
+            getManageCardsUrl() {
+                return urlBuilder.createUrl(
+                    '/omise/manage/cards',
+                );
+            },
+
+            /**
              * Get Omise public key
              *
              * @return {string}
