@@ -120,7 +120,7 @@ define(
                 const total = this.getTotal();
                 const tax = this.getVatRate();
 
-                if (this.isZeroInterest) {
+                if (this.isZeroInterest()) {
                     //merchant pays interest
                     return (total / terms).toFixed(0)
                 }
