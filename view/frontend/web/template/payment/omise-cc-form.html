@@ -36,7 +36,7 @@
                    value: omiseCardToken"/>
 
             <!-- ko if: isCustomerHasCard() -->
-                <h4><!-- ko i18n: 'Select a card you want to proceed' --><!-- /ko --></h4>
+                <h4><!-- ko i18n: 'Select a card to proceed' --><!-- /ko --></h4>
                 <ul style="padding-left: 1.3em; margin-bottom: 2em;">
                     <!-- ko foreach: getCustomerCards() -->
                         <li style="list-style: none; margin-bottom: 2rem;">
@@ -51,6 +51,9 @@
                         <input id="chargeWithNewCard" name="payment[omise_card]" type="radio" data-bind="click: chargeWithNewCard.bind($data, $element), checked: omiseCard, value: ''" /> <label for="chargeWithNewCard"><!-- ko i18n: 'Use a new card'--><!-- /ko --></label>
                     </li>
                 </ul>
+                <a data-bind = "attr: { href: checkout.baseUrl + 'omise/cards/listaction' }" target="_blank">
+                    <span data-bind="i18n: 'Manage your cards'"></span>
+                </a>
             <!-- /ko -->
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !isCustomerHasCard()">
