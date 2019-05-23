@@ -101,6 +101,15 @@ define(
             },
 
             /**
+             * Checks if sandbox is turned on
+             *
+             * @return {string}
+             */
+            isSandboxOn: function () {
+                return window.checkoutConfig.isOmiseSandboxOn;
+            },
+
+            /**
              * Returns Installment Terms
              *
              * @return {array}

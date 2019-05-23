@@ -20,7 +20,7 @@ class PluginConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
         return [
-            'isOmiseSandboxEnabled' => $this->config->isSandboxEnabled()
+            'isOmiseSandboxOn' => $this->config->isSandboxEnabled()
         ];
     }
 }
