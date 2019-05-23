@@ -12,9 +12,6 @@
                enable: isActive()"/>
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
-            <!-- ko if: isSandboxOn() -->
-            <span data-bind="i18n: ''"></span>
-            <!-- /ko -->
         </label>
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
