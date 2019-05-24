@@ -106,10 +106,13 @@
     position: fixed;
     top: 0;
     left: 10%;
-    text-transform: uppercase;
     text-align: center;
     padding: 5px;
     border-radius: 0 0 10px 10px;
     border-top: none;
     opacity: 0.75;
+}
+
+.omise-test-warning a, .omise-test-warning a:hover {
+    color: #007;
 }
