@@ -97,3 +97,19 @@
 .banks-list .omise-logo-wrapper > div.logo-ktc {
     background: url('../images/ktc.svg') #ffffff;
 }
+
+.omise-test-warning {
+    background: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    width: 80%;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 5px;
+    border-radius: 0 0 10px 10px;
+    border-top: none;
+    opacity: 0.75;
+}

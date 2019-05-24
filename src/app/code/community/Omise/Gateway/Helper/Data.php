@@ -51,5 +51,10 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
         return (int)($providers[$code]['monthly_minimum_subunits_'.$currencyCode]);
     }
 
+    public function getTestModeJS()
+    {
+        $isTestMode = Mage::getModel('omise_gateway/config')->load(1)->test_mode;
+        return $isTestMode ? 'omise/gateway/js/testmode.js' : '';
+    }
 
 }
