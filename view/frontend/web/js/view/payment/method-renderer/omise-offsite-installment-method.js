@@ -60,11 +60,12 @@ define(
 
             /**
              * Format Price
-             *
+             * 
+             * @param {float} amount - Amount to be formatted
              * @return {string}
              */
-            getFormattedPrice: function (price) {
-                return priceUtils.formatPrice(price, quote.getPriceFormat());
+            getFormattedAmount: function (amount) {
+                return priceUtils.formatPrice(amount, quote.getPriceFormat());
             },
 
             /**
@@ -73,15 +74,16 @@ define(
              *
              * NOTE: in the future this function should return data from capabilities object.
              *
+             * @param {string} id - Bank ID
              * @return {integer}
              */
-            getInstallmentMinimum(id) {
+            getInstallmentMinimum: function (id) {
                 switch (id) {
-                    case 'kbank':        return 500;
-                    case 'bbl':          return 500;
-                    case 'bay':          return 300;
+                    case 'kbank': return 500;
+                    case 'bbl': return 500;
+                    case 'bay': return 300;
                     case 'first_choice': return 300;
-                    case 'ktc':          return 300;
+                    case 'ktc': return 300;
                 }
             },
 
@@ -89,16 +91,17 @@ define(
              * Get Installment monthly interest rate
              *
              * NOTE: in the future this function should return data from capabilities object.
-             *
+             * 
+             * @param {string} id - Bank id
              * @return {float}
              */
-            getinstallmentInterestRate(id) {
+            getInstallmentInterestRate: function (id) {
                 switch (id) {
-                    case 'kbank':        return 0.0065;
-                    case 'bbl':          return 0.008;
-                    case 'bay':          return 0.008;
+                    case 'kbank': return 0.0065;
+                    case 'bbl': return 0.008;
+                    case 'bay': return 0.008;
                     case 'first_choice': return 0.013;
-                    case 'ktc':          return 0.008;
+                    case 'ktc': return 0.008;
                 }
             },
 
@@ -109,25 +112,27 @@ define(
              *
              * @return {float}
              */
-            getVatRate() {
+            getVatRate: function () {
                 return 0.07;
             },
 
             /**
              * Get zero interest setting
              *
-             * @return {string}
+             * @return {boolean}
              */
-            isZeroInterest() {
+            isZeroInterest: function () {
                 return window.checkoutConfig.is_zero_interest;
             },
 
             /**
              * Calculates single installment amount
-             *
+             * 
+             * @param {string} id - Bank ID
+             * @param {integer} terms - number of monthly installments
              * @return {integer}
              */
-            calculateSingleInstallmentAmount(id, terms) {
+            calculateSingleInstallmentAmount: function (id, terms) {
                 const total = this.getTotal();
                 const tax = this.getVatRate();
 
@@ -137,22 +142,12 @@ define(
                 }
 
                 // get monthly interest setting
-                const rate = this.getinstallmentInterestRate(id);
+                const rate = this.getInstallmentInterestRate(id);
+
+                //calculate interests
                 const interest = ((1 + tax) * rate * terms * total);
 
-                return + ( ( (total + interest ) / terms ).toFixed( 0 ) );
-            },
-
-            /**
-             * Checks if minimum amount is respected
-             * 
-             * @return {boolean}
-             */
-            isMinimumAmount(id, terms) {
-                const min = this.getInstallmentMinimum(id);
-                const singleInstallment = this.calculateSingleInstallmentAmount(id, terms);
-
-                return singleInstallment >= min;
+                return + (((total + interest) / terms).toFixed(0));
             },
 
             /**
@@ -160,8 +155,8 @@ define(
              *
              * @return {integer}
              */
-            getTotal() {
-                return +window.checkoutConfig.totalsData.grand_total;
+            getTotal: function () {
+                return + window.checkoutConfig.totalsData.grand_total;
             },
 
             /**
@@ -169,14 +164,14 @@ define(
              * 
              * @return {string|null}
              */
-            getTerms() {
+            getTerms: function () {
                 return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
             },
 
             /**
              * Reset selected terms
              */
-            resetTerms() {
+            resetTerms: function () {
                 this.installmentTermsBBL(null);
                 this.installmentTermsKBank(null);
                 this.installmentTermsFC(null);
@@ -210,33 +205,36 @@ define(
 
             /**
              * Returns Installment Terms
-             *
+             * @param {string} id - Bank id
              * @return {array}
              */
-            getInstallmentTerms(id) {
+            getInstallmentTerms: function (id) {
                 const installmentBackends = checkoutConfig.installment_backends;
                 const templateLabel = $.mage.__('%terms months (%amount / month)');
 
                 for (const key in installmentBackends) {
-                    if (installmentBackends[key]._id === 'installment_' + id) {
-                        const terms = installmentBackends[key].allowed_installment_terms;
-
-                        var dispTerms = [];
-                        for (let i = 0; i < terms.length; i++) {
-                            if (this.isMinimumAmount(id, terms[i])) {
-                                const amount = this.getFormattedPrice(this.calculateSingleInstallmentAmount(id, terms[i]));
-
-                                dispTerms.push({
-                                    label: templateLabel.replace('%terms', terms[i]).replace('%amount', amount),
-                                    key: terms[i]
-                                });
-                            }
-                        }
-
-                        return ko.observableArray(
-                            dispTerms
-                        );
+                    if (installmentBackends[key]._id !== 'installment_' + id) {
+                        continue;
                     }
+
+                    let dispTerms = [];
+                    const terms = installmentBackends[key].allowed_installment_terms;
+                    const minSingleInstallment = this.getInstallmentMinimum(id);
+
+                    for (let i = 0; i < terms.length; i++) {
+                        const amount = this.calculateSingleInstallmentAmount(id, terms[i]);
+
+                        if (amount >= minSingleInstallment) {
+                            dispTerms.push({
+                                label: templateLabel.replace('%terms', terms[i]).replace('%amount', this.getFormattedAmount(amount)),
+                                key: terms[i]
+                            });
+                        }
+                    }
+
+                    return ko.observableArray(
+                        dispTerms
+                    );
                 }
             },
 
@@ -250,7 +248,7 @@ define(
             },
 
             /**
-             * Get store currency 
+             * Get store currency
              *
              * @return {string}
              */
