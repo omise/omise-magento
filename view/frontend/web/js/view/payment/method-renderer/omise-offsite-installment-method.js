@@ -7,7 +7,8 @@ define(
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/model/quote',
         'Magento_Checkout/js/model/url-builder',
-        'Magento_Checkout/js/model/error-processor'
+        'Magento_Checkout/js/model/error-processor',
+        'Magento_Catalog/js/price-utils',
     ],
     function (
         $,
@@ -17,7 +18,8 @@ define(
         fullScreenLoader,
         quote,
         urlBuilder,
-        errorProcessor
+        errorProcessor,
+        priceUtils,
     ) {
         'use strict';
 
@@ -54,6 +56,15 @@ define(
                     ]);
 
                 return this;
+            },
+
+            /**
+             * Format Price
+             *
+             * @return {string}
+             */
+            getFormattedPrice: function (price) {
+                return priceUtils.formatPrice(price, quote.getPriceFormat());
             },
 
             /**
@@ -204,7 +215,7 @@ define(
              */
             getInstallmentTerms(id) {
                 const installmentBackends = checkoutConfig.installment_backends;
-                const templateLabel = $.mage.__('%terms months (%amount THB / month)');
+                const templateLabel = $.mage.__('%terms months (%amount / month)');
 
                 for (const key in installmentBackends) {
                     if (installmentBackends[key]._id === 'installment_' + id) {
@@ -213,7 +224,7 @@ define(
                         var dispTerms = [];
                         for (let i = 0; i < terms.length; i++) {
                             if (this.isMinimumAmount(id, terms[i])) {
-                                const amount = this.calculateSingleInstallmentAmount(id, terms[i]);
+                                const amount = this.getFormattedPrice(this.calculateSingleInstallmentAmount(id, terms[i]));
 
                                 dispTerms.push({
                                     label: templateLabel.replace('%terms', terms[i]).replace('%amount', amount),
