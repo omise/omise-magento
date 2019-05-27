@@ -1,4 +1,3 @@
-
 window.addEventListener('load', function() {
 	var warning = document.createElement('div'); 
 	warning.innerHTML = Translator.translate('OMISE TEST MODE') + ' - \
