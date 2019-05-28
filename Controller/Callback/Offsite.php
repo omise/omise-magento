@@ -67,7 +67,7 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
+        if (! in_array($order->getState(), [ Order::STATE_PENDING_PAYMENT, Order::STATE_PROCESSING ])) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
@@ -135,6 +135,9 @@ class Offsite extends Action
                         break;
                     case Alipay::CODE:
                         $dispPaymentMethod = "Alipay";
+                        break;
+                    case Truemoney::CODE:
+                        $dispPaymentMethod = "True Money";
                         break;
                 }
                 
