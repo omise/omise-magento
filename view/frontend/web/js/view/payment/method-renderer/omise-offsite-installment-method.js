@@ -138,7 +138,7 @@ define(
 
                 if (this.isZeroInterest()) {
                     //merchant pays interest
-                    return (total / terms).toFixed(0)
+                    return (total / terms).toFixed(2)
                 }
 
                 // get monthly interest setting
@@ -147,7 +147,7 @@ define(
                 //calculate interests
                 const interest = ((1 + tax) * rate * terms * total);
 
-                return + (((total + interest) / terms).toFixed(0));
+                return + (((total + interest) / terms).toFixed(2));
             },
 
             /**
