@@ -8,6 +8,7 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 
