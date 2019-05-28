@@ -32,6 +32,11 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
+    const SOURCE_PHONE_NUM = 'phone_number';
+
+    /**
+     * @var string
+     */
     const RETURN_URI = 'return_uri';
 
     /**
@@ -80,6 +85,12 @@ class APMBuilder implements BuilderInterface
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE              => $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE),
                     self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(InstallmentDataAssignObserver::TERMS),
+                ];
+                break;
+            case Truemoney::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE      => 'truemoney',
+                    self::SOURCE_PHONE_NUM => $method->getOrder()->getBillingAddress()->getTelephone(),
                 ];
                 break;
         }
