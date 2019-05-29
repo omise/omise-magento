@@ -48,8 +48,7 @@ class Omise_Gateway_Block_Form_Offsiteinstallment extends Mage_Payment_Block_For
     public function getMonthlyPaymentAmount($saleAmount, $monthCount, $interestRatePC)
     {
         $interestRate = $this->isInterestFree() ? 0 : $interestRatePC/100;
-        $VAT = 0.07; // Should this be in config, and also country dependent??
-        $interestAmount = $interestRate * $monthCount * $saleAmount * (1 + $VAT);
+        $interestAmount = $interestRate * $monthCount * $saleAmount;
         $totalAmount = $saleAmount + $interestAmount;
         return $totalAmount/$monthCount;
     }
