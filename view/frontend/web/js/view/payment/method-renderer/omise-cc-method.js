@@ -101,6 +101,15 @@ define(
             },
 
             /**
+             * Checks if sandbox is turned on
+             *
+             * @return {boolean}
+             */
+            isSandboxOn: function () {
+                return window.checkoutConfig.isOmiseSandboxOn;
+            },
+
+            /**
              * Is 3-D Secure config enabled
              *
              * @return {boolean}
