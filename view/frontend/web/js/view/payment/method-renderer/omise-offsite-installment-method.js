@@ -70,13 +70,13 @@ define(
 
             /**
              * Get formatted message about installment value limitation
-             * 
+             *
+             * NOTE: this value should be taken directly from capability object when it is fully implemented.
+             *
              * @return {string}
              */
             getMinimumOrderText: function () {
-                const formattedAmount = this.getFormattedAmount(3000);
-
-                return 'Minimum order value is %amount'.replace('%amount', formattedAmount);
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(3000));
             },
 
             /**
