@@ -129,10 +129,7 @@ define(
                     return (total / terms).toFixed(2)
                 }
 
-                // get monthly interest setting
                 const rate = this.getInstallmentInterestRate(id);
-
-                //calculate interests
                 const interest = rate * terms * total;
 
                 return + (((total + interest) / terms).toFixed(2));
