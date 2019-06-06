@@ -69,6 +69,17 @@ define(
             },
 
             /**
+             * Get formatted message about installment value limitation
+             * 
+             * @return {string}
+             */
+            getMinimumOrderText: function () {
+                const formattedAmount = this.getFormattedAmount(3000);
+
+                return 'Minimum order value is %amount'.replace('%amount', formattedAmount);
+            },
+
+            /**
              * Get Installment minimum
              * this function respects info from: https://www.omise.co/installment-payment
              *
