@@ -22,6 +22,7 @@ define(
         priceUtils,
     ) {
         'use strict';
+        const installmentMinimumPurchaseAmount = 3000;
 
         return Component.extend({
             defaults: {
@@ -76,7 +77,7 @@ define(
              * @return {string}
              */
             getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(3000));
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(installmentMinimumPurchaseAmount));
             },
 
             /**
@@ -261,7 +262,7 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return this.getTotal() < 3000;
+                return this.getTotal() < installmentMinimumPurchaseAmount;
             },
 
             /**
