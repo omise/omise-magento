@@ -7,6 +7,8 @@
 "Print", "พิมพ์"
 "Choose your installment terms","เลือกระยะเวลาการผ่อนชำระ"
 "Miminum order value is 3000 THB", "ยอดสั่งซื้อขั้นต่ำ 3000 บาท"
+"Choose number of monthly payments", "เลือกระยะเวลาผ่อนชำระ"
+"%terms months (%amount / month)", "%terms เดือน (%amount / เดือน)"
 "Manage your cards", "จัดการบัตร"
 "more info", "ข้อมูลเพิ่มเติม"
 "Test mode", "โหมดทดสอบ"

@@ -36,4 +36,12 @@ class Capabilities
     {
         return $this->capabilitiesAPI->getInstallmentBackends();
     }
+
+    /**
+     * @return bool
+     */
+    public function isZeroInterest()
+    {
+        return $this->capabilitiesAPI->isZeroInterest();
+    }
 }
