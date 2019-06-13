@@ -63,7 +63,7 @@ define(
              * @return {boolean}
              */
             isActive: function () {
-                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';;
+                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
             },
 
             /**
