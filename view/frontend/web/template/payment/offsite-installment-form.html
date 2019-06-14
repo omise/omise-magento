@@ -11,6 +11,13 @@
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
         </label>
+        <div data-bind="visible: isSandboxOn()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank" href="https://www.omise.co/what-are-test-keys-and-live-keys"><span data-bind="i18n: 'more info'"></span></a>)
+                </div>
+            </div>
+        </div>
         <div data-bind="visible: !isActive()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
@@ -18,10 +25,10 @@
                 </div>
             </div>
         </div>
-        <div data-bind="visible: orderValueTooLow()" class="page messages">
+        <div data-bind="visible: isActive() && orderValueTooLow()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
-                    <div data-bind="i18n: 'Minimum order value is 3000 THB'"></div>
+                    <div data-bind="text: getMinimumOrderText()"></div>
                 </div>
             </div>
         </div>
@@ -64,7 +71,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('ktc'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset: true,
                                         value: installmentTermsKTC,
                                         visible: omiseOffsite() === 'installment_ktc',
@@ -91,7 +103,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
-                                        optionsText: item;
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset: true,
                                         value: installmentTermsFC,
                                         visible: omiseOffsite() === 'installment_first_choice',
@@ -118,7 +135,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset: true,
                                         value: installmentTermsKBank,
                                         visible: omiseOffsite() === 'installment_kbank',
@@ -146,7 +168,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bbl'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset:true,
                                         value: installmentTermsBBL,
                                         visible: omiseOffsite() === 'installment_bbl',
@@ -172,7 +199,12 @@
                             </div>
                         </label>
                         <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
-                                        optionsText: item,
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
                                         valueAllowUnset:true,
                                         value: installmentTermsBAY,
                                         visible: omiseOffsite() === 'installment_bay',

@@ -95,6 +95,15 @@ define(
             },
 
             /**
+             * Checks if sandbox is turned on
+             *
+             * @return {boolean}
+             */
+            isSandboxOn: function () {
+                return window.checkoutConfig.isOmiseSandboxOn;
+            },
+
+            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *

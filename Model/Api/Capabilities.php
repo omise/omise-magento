@@ -15,7 +15,7 @@ class Capabilities extends BaseObject
 
     /**
      * Get Installment capabilities array from Omise-PHP
-     * 
+     *
      * @return array
      */
     public function getInstallmentBackends()
@@ -23,5 +23,14 @@ class Capabilities extends BaseObject
         return $this->capabilities->getBackends(
             $this->capabilities->makeBackendFilterType('installment')
         );    
+    }
+
+    /**
+     * Get information about zero interest installments
+     *
+     * @return bool
+     */
+    public function isZeroInterest() {
+        return $this->capabilities['zero_interest_installments'];
     }
 }
