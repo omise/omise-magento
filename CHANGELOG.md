@@ -103,7 +103,7 @@
 ## [2.0] 2016-12-26
 #### FIRST RELEASE FOR MAGENTO COMMUNITY EDITION 2.1.2 & 2.1.3
 The first release contains a feature to create charge with auto capture and manual capture.
-The merchant can select a setting, sandbox, to switch between test mode and live mode.
+The merchant can select a setting, test mode, to switch between test mode and live mode.
 
 The list of charge can be found at Omise dashboard.
 

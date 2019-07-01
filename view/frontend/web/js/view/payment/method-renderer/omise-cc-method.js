@@ -101,12 +101,12 @@ define(
             },
 
             /**
-             * Checks if sandbox is turned on
+             * Checks if test mode is turned on
              *
              * @return {boolean}
              */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
+            isTestModeEnabled: function () {
+                return window.checkoutConfig.isOmiseTestModeOn;
             },
 
             /**
