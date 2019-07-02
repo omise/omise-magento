@@ -61,14 +61,14 @@ class Offsite extends Action
     {
         $order = $this->session->getLastRealOrder();
 
-        if ($order->getState() === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
         if (! $order->getId()) {
             $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
+        }
+
+        if ($order->getState() === Order::STATE_PROCESSING) {
+            return $this->redirect(self::PATH_SUCCESS);
         }
 
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
