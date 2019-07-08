@@ -60,7 +60,7 @@ define(
                     'method': this.item.method,
                     'additional_data': {
                         'offsite': this.omiseOffsite(),
-                        'truePhoneNumber': this.trueMoneyPhoneNumber()
+                        'phone_num': this.trueMoneyPhoneNumber() && this.trueMoneyPhoneNumber() !== '' ? this.trueMoneyPhoneNumber() : quote.billingAddress().telephone,
                     }
                 };
             },
