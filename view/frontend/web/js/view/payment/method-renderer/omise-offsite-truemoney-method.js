@@ -40,11 +40,35 @@ define(
             },
 
             /**
+             * Initiate observable fields
+             *
+             * @return this
+             */
+            initObservable: function () {
+                console.log(quote);
+                this._super()
+                    .observe([
+                        'trueMoneyPhoneNumber'
+                    ]);
+
+                return this;
+            },
+
+            /**
              * Get order currency
              *
              * @return {string}
              */
             getOrderCurrency: function () {
+                return window.checkoutConfig.quoteData.quote_currency_code;
+            },
+
+            /**
+             * Get order currency
+             *
+             * @return {string}
+             */
+            getPhoneNumber: function () {
                 return window.checkoutConfig.quoteData.quote_currency_code;
             },
 
