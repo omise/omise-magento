@@ -5,10 +5,9 @@ define(
         'mage/storage',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
-        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
         'Magento_Checkout/js/model/url-builder',
-        'Magento_Checkout/js/model/error-processor'
+        'Magento_Checkout/js/model/error-processor',
     ],
     function (
         $,
@@ -16,7 +15,6 @@ define(
         storage,
         Component,
         fullScreenLoader,
-        redirectOnSuccessAction,
         quote,
         urlBuilder,
         errorProcessor
@@ -45,12 +43,10 @@ define(
              * @return this
              */
             initObservable: function () {
-                console.log(quote);
                 this._super()
                     .observe([
                         'trueMoneyPhoneNumber'
                     ]);
-
                 return this;
             },
 
@@ -68,8 +64,8 @@ define(
              *
              * @return {string}
              */
-            getPhoneNumber: function () {
-                return window.checkoutConfig.quoteData.quote_currency_code;
+            getCustomerPhoneNumber: function () {
+                return quote.billingAddress().telephone;
             },
 
             /**
