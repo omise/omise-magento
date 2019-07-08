@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 🚀 Enhancements
+
+- True Money Payment Method Implementation (PR [#211](https://github.com/omise/omise-magento/pull/211))
+
+### 👾 Bug Fixes
+
 ### [v2.7 _(Jan 21, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.7)
 
 ### 🚀 Enhancements

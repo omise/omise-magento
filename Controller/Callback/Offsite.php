@@ -12,6 +12,7 @@ use Omise\Payment\Model\Api\Charge;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Truemoney;
 
 class Offsite extends Action
 {
@@ -66,6 +67,10 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
+        if ($order->getState() === Order::STATE_PROCESSING) {
+            return $this->redirect(self::PATH_SUCCESS);
+        }
+
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our support if you have any questions.'));
 
@@ -79,7 +84,7 @@ class Offsite extends Action
         }
         
         $paymentMethod = $payment->getMethod();
-        if (! in_array($paymentMethod, [Alipay::CODE, Internetbanking::CODE, Installment::CODE])) {
+        if (! in_array($paymentMethod, [Alipay::CODE, Internetbanking::CODE, Installment::CODE, Truemoney::CODE])) {
             $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
@@ -134,6 +139,9 @@ class Offsite extends Action
                         break;
                     case Alipay::CODE:
                         $dispPaymentMethod = "Alipay";
+                        break;
+                    case Truemoney::CODE:
+                        $dispPaymentMethod = "True Money";
                         break;
                 }
                 

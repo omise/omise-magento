@@ -39,6 +39,13 @@ define(
 
         rendererList.push(
             {
+                type: 'omise_offsite_truemoney',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-truemoney-method'
+            }
+        );
+
+        rendererList.push(
+            {
                 type: 'omise_offline_tesco',
                 component: 'Omise_Payment/js/view/payment/method-renderer/omise-offline-tesco-method'
             }
