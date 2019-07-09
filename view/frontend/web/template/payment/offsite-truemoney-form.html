@@ -28,23 +28,24 @@
         </div>
     </div>
     <div class="payment-method-content">
-        <div class="field number required">
-            <label data-bind="attr: {for: getCode() + 'trueMoneyPhoneNumber'}" class="label">
-                <h4><!-- ko i18n: 'True Money Phone Number'--><!-- /ko --></h4>
-            </label>
-            <div class="control">
-                <input type="text" class="input-text"
-                       data-bind="attr: {
-                       id: getCode() + 'trueMoneyPhoneNumber',
-                       value: trueMoneyPhoneNumber,
-                       placeholder: getCustomerPhoneNumber()
-                    }"/>
-            </div>
-        </div>
+        <div class="field number">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() -->
         <!-- /ko -->
         <!--/ko-->
+            <label data-bind="attr: {for: getCode() + 'phoneNumber'}" class="label">
+                <h4><!-- ko i18n: 'True Money Phone Number'--><!-- /ko --></h4>
+            </label>
+            <div class="control truemoney-number">
+                <input type="text" class="input-text"
+                       data-bind="attr: {
+                       id: getCode() + 'phoneNumber',
+                       placeholder: getCustomerSavedPhoneNumber()
+                       },
+                       value: trueMoneyPhoneNumber,
+                    "/>
+            </div>
+        </div>
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() -->

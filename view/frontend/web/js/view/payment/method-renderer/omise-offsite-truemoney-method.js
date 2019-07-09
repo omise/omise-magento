@@ -59,8 +59,7 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'offsite': this.omiseOffsite(),
-                        'phone_num': this.trueMoneyPhoneNumber() && this.trueMoneyPhoneNumber() !== '' ? this.trueMoneyPhoneNumber() : quote.billingAddress().telephone,
+                        'truemoney_phone_num': this.trueMoneyPhoneNumber() && this.trueMoneyPhoneNumber() !== '' ? this.trueMoneyPhoneNumber() : quote.billingAddress().telephone,
                     }
                 };
             },
@@ -75,11 +74,11 @@ define(
             },
 
             /**
-             * Get order currency
+             * Get customer phone number saved in profile
              *
              * @return {string}
              */
-            getCustomerPhoneNumber: function () {
+            getCustomerSavedPhoneNumber: function () {
                 return quote.billingAddress().telephone;
             },
 
