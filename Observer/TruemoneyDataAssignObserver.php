@@ -10,18 +10,12 @@ class TruemoneyDataAssignObserver extends AbstractDataAssignObserver
     /**
      * @var string
      */
-    const OFFSITE = 'offsite';
-
-    /**
-     * @var string
-     */
-    const PHONE_NUM   = 'phone_num';
+    const PHONE_NUM   = 'truemoney_phone_num';
 
     /**
      * @var array
      */
     protected $additionalInformationList = [
-        self::OFFSITE,
         self::PHONE_NUM
     ];
 
