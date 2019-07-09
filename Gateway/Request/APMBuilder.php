@@ -91,7 +91,7 @@ class APMBuilder implements BuilderInterface
                 break;
             case Truemoney::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE      => $method->getAdditionalInformation(TruemoneyDataAssignObserver::OFFSITE),
+                    self::SOURCE_TYPE      => 'truemoney',
                     self::SOURCE_PHONE_NUM => $method->getAdditionalInformation(TruemoneyDataAssignObserver::PHONE_NUM),
                 ];
                 break;
