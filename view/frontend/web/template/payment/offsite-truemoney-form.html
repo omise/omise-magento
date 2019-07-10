@@ -28,11 +28,11 @@
         </div>
     </div>
     <div class="payment-method-content">
-        <div class="field number">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() -->
         <!-- /ko -->
         <!--/ko-->
+        <div class="field number">
             <label data-bind="attr: {for: getCode() + 'phoneNumber'}" class="label">
                 <h4><!-- ko i18n: 'True Money Phone Number'--><!-- /ko --></h4>
             </label>
