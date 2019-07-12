@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Payment:etc/error_mapping.xsd">
+    <message_list>
+        <message code="failed_fraud_check" translate="true">Card was marked as fraudulent.</message>
+        <message code="failed_processing" translate="true">General payment processing failure.</message>
+        <message code="insufficient_balance" translate="true">Insufficient funds in the account or the card has reached the credit limit.</message>
+        <message code="insufficient_fund" translate="true">Insufficient funds in the account or the card has reached the credit limit.</message>
+        <message code="invalid_account_number" translate="true">Valid account for payment method not found.</message>
+        <message code="invalid_account" translate="true">Valid account for payment method not found.</message>
+        <message code="invalid_security_code" translate="true">Security code invalid or card did not pass preauthorization.</message>
+        <message code="payment_cancelled" translate="true">Payment cancelled by payer.</message>
+        <message code="payment_rejected" translate="true">Payment rejected by issuer.</message>
+        <message code="stolen_or_lost_card" translate="true">Card stolen or lost.</message>
+        <message code="timeout" translate="true">Payer did not take action before charge expiration.</message>
+    </message_list>
+</mapping>
