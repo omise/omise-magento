@@ -59,7 +59,7 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'truemoney_phone_num': this.trueMoneyPhoneNumber() && this.trueMoneyPhoneNumber() !== '' ? this.trueMoneyPhoneNumber() : quote.billingAddress().telephone,
+                        'truemoney_phone_number': this.trueMoneyPhoneNumber() && this.trueMoneyPhoneNumber() !== '' ? this.trueMoneyPhoneNumber() : quote.billingAddress().telephone,
                     }
                 };
             },
