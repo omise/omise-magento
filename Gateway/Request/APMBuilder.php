@@ -11,6 +11,7 @@ use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
+use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
 {
@@ -33,7 +34,7 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const SOURCE_PHONE_NUM = 'phone_number';
+    const SOURCE_PHONE_NUMBER = 'phone_number';
 
     /**
      * @var string
@@ -90,8 +91,8 @@ class APMBuilder implements BuilderInterface
                 break;
             case Truemoney::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE      => 'truemoney',
-                    self::SOURCE_PHONE_NUM => $method->getOrder()->getBillingAddress()->getTelephone(),
+                    self::SOURCE_TYPE         => 'truemoney',
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(TruemoneyDataAssignObserver::PHONE_NUMBER),
                 ];
                 break;
         }
