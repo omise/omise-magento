@@ -34,7 +34,7 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
-    const SOURCE_PHONE_NUM = 'phone_number';
+    const SOURCE_PHONE_NUMBER = 'phone_number';
 
     /**
      * @var string
@@ -91,8 +91,8 @@ class APMBuilder implements BuilderInterface
                 break;
             case Truemoney::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE      => 'truemoney',
-                    self::SOURCE_PHONE_NUM => $method->getAdditionalInformation(TruemoneyDataAssignObserver::PHONE_NUMBER),
+                    self::SOURCE_TYPE         => 'truemoney',
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(TruemoneyDataAssignObserver::PHONE_NUMBER),
                 ];
                 break;
         }
