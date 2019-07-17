@@ -110,6 +110,14 @@ Available options:
 | Enable/Disable | Enables or disables 'Installment Payment method'|
 | Title |Payment Title displayed during checkout |
 
+**True Money Payment Solution**  
+Available options:
+
+| Setting             | Description  |
+| ------------ | --------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'True Money Payment method'|
+| Title |Payment Title displayed during checkout |
+
 ## Contributing
 
 Thanks for your interest in contributing to Omise Magento. We're looking forward to hearing your thoughts and willing to review your changes.
