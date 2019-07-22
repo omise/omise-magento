@@ -51,6 +51,13 @@ define(
             }
         );
 
+        rendererList.push(
+            {
+                type: 'omise_offsite_conviniencestore',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-conviniencestore-method'
+            }
+        );
+
         return Component.extend({});
     }
 );
