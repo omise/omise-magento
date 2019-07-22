@@ -95,3 +95,8 @@
 #omise_offsite_internetbankingForm img.kbank, #omise_offsite_installmentForm img.kbank {
     background: url('../images/kbank.svg')rgb(247, 226, 226);
 }
+
+#omise_offsite_truemoneyphoneNumber {
+    width: 225px;
+    margin-bottom:18px;
+}

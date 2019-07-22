@@ -1,12 +1,34 @@
 # CHANGELOG
 
+### [v2.8 _(Jul 17, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.8)
+
+### ✨ Highlights
+
+- Introducing support for True Money Payments (PR [#201](https://github.com/omise/omise-magento/pull/201))
+- Manual Capture Functionality - you can capture Credit Card payments directly in Admin Panel (PR [#182](https://github.com/omise/omise-magento/pull/182))
+- Installments - change minimum order from 5000 to 3000 THB (PR [#188](https://github.com/omise/omise-magento/pull/188))
+- Delete Saved Credit Card Information (PR [#186](https://github.com/omise/omise-magento/pull/186))
+
+### 🚀 Enhancements
+
+- Edit phone number on checkout-page when making True Money payment (PR [#207](https://github.com/omise/omise-magento/pull/207))
+- Change to display an error message using ErrorMessageMapper (PR [#205](https://github.com/omise/omise-magento/pull/205))
+- Better format of installment minimum amount message (PR [#203](https://github.com/omise/omise-magento/pull/203))
+- Display info on checkout if a plugin is in the Sandbox mode (PR [#198](https://github.com/omise/omise-magento/pull/198))
+- Manage cards link on the checkout page (PR [#197](https://github.com/omise/omise-magento/pull/197))
+- Display Installment terms (PR [#196](https://github.com/omise/omise-magento/pull/196))
+- Refactoring - removed unnecessary redirections (PR [#191](https://github.com/omise/omise-magento/pull/191))
+- Enable 'Order' button only if installment terms are chosen (PR [#183](https://github.com/omise/omise-magento/pull/183))
+⠀⠀⠀⠀⠀⠀⠀⠀⠀
+### 👾 Bug Fixes
+
+- Fix for unable to select some installment terms (PR [#195](https://github.com/omise/omise-magento/pull/195))
+
+### [v2.7 _(Jan 21, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.7)
+
 ### 🚀 Enhancements
 
 - True Money Payment Method Implementation (PR [#211](https://github.com/omise/omise-magento/pull/211))
-
-### 👾 Bug Fixes
-
-### [v2.7 _(Jan 21, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.7)
 
 ### 🚀 Enhancements
 - Changed in composer omise-php requirement to version 2.11.1 (PR [#177](https://github.com/omise/omise-magento/pull/177))
