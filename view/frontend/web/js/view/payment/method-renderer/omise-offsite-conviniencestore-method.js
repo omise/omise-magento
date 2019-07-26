@@ -47,12 +47,51 @@ define(
             },
 
             /**
+             * Get a checkout form data
+             *
+             * @return {Object}
+             */
+            getData: function () {
+                return {
+                    'method': this.item.method,
+                    'additional_data': {
+                        'conv_store_phone_number': this.convinienceStorePhoneNumber() && this.convinienceStorePhoneNumber() !== '' ? this.convinienceStorePhoneNumber() : quote.billingAddress().telephone,
+                        'conv_store_email': this.convinienceStoreEmail() && this.convinienceStoreEmail() !== '' ? this.convinienceStoreEmail() : quote.billingAddress().telephone,
+                    }
+                };
+            },
+
+            /**
+             * Initiate observable fields
+             *
+             * @return this
+             */
+            initObservable: function () {
+                this._super()
+                    .observe([
+                        'convinienceStorePhoneNumber',
+                        'convinienceStoreEmail'
+                    ]);
+                return this;
+            },
+
+            /**
              * Checks if sandbox is turned on
              *
              * @return {boolean}
              */
             isSandboxOn: function () {
                 return window.checkoutConfig.isOmiseSandboxOn;
+            },
+
+            /**
+             * Get customer phone number saved in profile
+             *
+             * @return {string}
+             */
+            getCustomerSavedEmail: function () {
+                console.log(quote.billingAddress());
+                return quote.billingAddress().email;
             },
 
             /**

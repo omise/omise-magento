@@ -20,6 +20,24 @@
                 </div>
             </div>
         </div>
+        <div class="control">
+            <input type="text" class="input-text"
+                   data-bind="attr: {
+                   id: getCode() + 'phoneNumber',
+                   placeholder: getCustomerSavedPhoneNumber()
+                   },
+                   value: convinienceStorePhoneNumber,
+                "/>
+        </div>
+        <div class="control">
+            <input type="text" class="input-text"
+                   data-bind="attr: {
+                   id: getCode() + 'email',
+                   placeholder: getCustomerSavedEmail()
+                   },
+                   value: convinienceStoreEmail,
+                "/>
+        </div>
     </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
