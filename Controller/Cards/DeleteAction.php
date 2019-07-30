@@ -36,7 +36,7 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
         \Magento\Customer\Model\Session       $customerSession,
         \Omise\Payment\Model\Customer         $customer
     ) {
-        parent::__construct($context, $customerSession);
+        parent::__construct($context);
         $this->customerSession = $customerSession;
         $this->customer        = $customer;
 
