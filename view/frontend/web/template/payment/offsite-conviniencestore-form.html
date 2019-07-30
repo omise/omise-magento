@@ -20,30 +20,30 @@
                 </div>
             </div>
         </div>
-        <div class="control">
-            <input type="text" class="input-text"
-                   data-bind="attr: {
-                   id: getCode() + 'phoneNumber',
-                   placeholder: getCustomerSavedPhoneNumber()
-                   },
-                   value: convinienceStorePhoneNumber,
-                "/>
-        </div>
-        <div class="control">
-            <input type="text" class="input-text"
-                   data-bind="attr: {
-                   id: getCode() + 'email',
-                   placeholder: getCustomerSavedEmail()
-                   },
-                   value: convinienceStoreEmail,
-                "/>
-        </div>
     </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() -->
         <!-- /ko -->
         <!--/ko-->
+        <div class="control">
+            <h4><!-- ko i18n: 'Phone Number'--><!-- /ko --></h4>
+            <input type="text" class="input-text"
+                   data-bind="attr: {
+                   id: getCode() + 'phoneNumber'
+                   },
+                   value: convinienceStorePhoneNumber,
+                "/>
+        </div>
+        <div class="control">
+            <h4><!-- ko i18n: 'Email Address'--><!-- /ko --></h4>
+            <input type="text" class="input-text"
+                   data-bind="attr: {
+                   id: getCode() + 'email'
+                   },
+                   value: convinienceStoreEmail,
+                "/>
+        </div>
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() -->
