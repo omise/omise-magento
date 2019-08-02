@@ -15,6 +15,10 @@
         <observer name="omise_data_assign_truemoney" instance="Omise\Payment\Observer\TruemoneyDataAssignObserver" />
     </event>
 
+    <event name="payment_method_assign_data_omise_offsite_conviniencestore">
+        <observer name="omise_data_assign_conviniencestore" instance="Omise\Payment\Observer\ConviniencestoreDataAssignObserver" />
+    </event>
+
     <event name="sales_order_place_after">
         <observer name="omise_end_order" instance="Omise\Payment\Observer\TescoPaymentObserver" />
     </event>
