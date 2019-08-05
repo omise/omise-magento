@@ -13,10 +13,10 @@ use Omise\Payment\Model\Config\Conviniencestore;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
+use Omise\Payment\Observer\ConviniencestoreDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
 {
-
     /**
      * @var string
      */
@@ -36,6 +36,11 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const SOURCE_PHONE_NUMBER = 'phone_number';
+
+    /**
+     * @var string
+     */
+    const SOURCE_EMAIL = 'email';
 
     /**
      * @var string
@@ -98,7 +103,9 @@ class APMBuilder implements BuilderInterface
                 break;
             case Conviniencestore::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'conviniencestore',
+                    self::SOURCE_TYPE         => 'conviniencestore',
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(ConviniencestoreDataAssignObserver::PHONE_NUMBER),
+                    self::SOURCE_EMAIL        => $method->getAdditionalInformation(ConviniencestoreDataAssignObserver::EMAIL)
                 ];
                 break;
         }
