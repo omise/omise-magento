@@ -10,15 +10,17 @@ class ConviniencestoreDataAssignObserver extends AbstractDataAssignObserver
     /**
      * @var string
      */
-    const PHONE_NUMBER = 'conv_store_phone_number';
-    const EMAIL        = 'conv_store_email';
+    const PHONE_NUMBER  = 'conv_store_phone_number';
+    const EMAIL         = 'conv_store_email';
+    const CUSTOMER_NAME = 'conv_store_customer_name';
 
     /**
      * @var array
      */
     protected $additionalInformationList = [
         self::PHONE_NUMBER,
-        self::EMAIL
+        self::EMAIL,
+        self::CUSTOMER_NAME
     ];
 
     /**

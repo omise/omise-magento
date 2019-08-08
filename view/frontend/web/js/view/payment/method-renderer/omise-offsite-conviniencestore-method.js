@@ -6,8 +6,9 @@ define(
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/model/quote',
+        'Magento_Customer/js/view/customer',
         'Magento_Checkout/js/model/url-builder',
-        'Magento_Checkout/js/model/error-processor'
+        'Magento_Checkout/js/model/error-processor',
     ],
     function (
         $,
@@ -16,6 +17,7 @@ define(
         Component,
         fullScreenLoader,
         quote,
+        customer,
         urlBuilder,
         errorProcessor
     ) {
@@ -57,6 +59,7 @@ define(
                     'additional_data': {
                         'conv_store_phone_number': this.convinienceStorePhoneNumber() && this.convinienceStorePhoneNumber() !== '' ? this.convinienceStorePhoneNumber() : quote.billingAddress().telephone,
                         'conv_store_email': this.convinienceStoreEmail() && this.convinienceStoreEmail() !== '' ? this.convinienceStoreEmail() : quote.billingAddress().telephone,
+                        'conv_store_customer_name': this.getConvinienceStoreCustomersName()
                     }
                 };
             },
@@ -89,9 +92,8 @@ define(
              *
              * @return {string}
              */
-            getCustomerSavedEmail: function () {
-                console.log(quote.billingAddress());
-                return quote.billingAddress().email;
+            getConvinienceStoreCustomersName: function() {
+                return customer().customer().fullname;
             },
 
             /**

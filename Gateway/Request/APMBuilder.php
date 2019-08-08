@@ -40,6 +40,11 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
+    const SOURCE_NAME = 'name';
+
+    /**
+     * @var string
+     */
     const SOURCE_EMAIL = 'email';
 
     /**
@@ -103,9 +108,10 @@ class APMBuilder implements BuilderInterface
                 break;
             case Conviniencestore::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE         => 'conviniencestore',
+                    self::SOURCE_TYPE         => 'econtext',
                     self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(ConviniencestoreDataAssignObserver::PHONE_NUMBER),
-                    self::SOURCE_EMAIL        => $method->getAdditionalInformation(ConviniencestoreDataAssignObserver::EMAIL)
+                    self::SOURCE_EMAIL        => $method->getAdditionalInformation(ConviniencestoreDataAssignObserver::EMAIL),
+                    self::SOURCE_NAME         => $method->getAdditionalInformation(ConviniencestoreDataAssignObserver::CUSTOMER_NAME)
                 ];
                 break;
         }
