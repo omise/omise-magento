@@ -9,6 +9,8 @@ define(
         'Magento_Customer/js/view/customer',
         'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor',
+        'Magento_Catalog/js/price-utils',
+        'mage/validation'
     ],
     function (
         $,
@@ -19,9 +21,12 @@ define(
         quote,
         customer,
         urlBuilder,
-        errorProcessor
+        errorProcessor,
+        priceUtils
     ) {
         'use strict';
+
+        const convStoreMinimumPurchaseAmount = 150;
 
         return Component.extend({
             defaults: {
@@ -57,8 +62,8 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'conv_store_phone_number': this.convinienceStorePhoneNumber() && this.convinienceStorePhoneNumber() !== '' ? this.convinienceStorePhoneNumber() : quote.billingAddress().telephone,
-                        'conv_store_email': this.convinienceStoreEmail() && this.convinienceStoreEmail() !== '' ? this.convinienceStoreEmail() : quote.billingAddress().telephone,
+                        'conv_store_phone_number': this.convinienceStorePhoneNumber(),
+                        'conv_store_email': this.convinienceStoreEmail(),
                         'conv_store_customer_name': this.getConvinienceStoreCustomersName()
                     }
                 };
@@ -88,12 +93,50 @@ define(
             },
 
             /**
+             * Get total amount of an order
+             *
+             * @return {integer}
+             */
+            getTotal: function () {
+                return + window.checkoutConfig.totalsData.grand_total;
+            },
+
+            /**
              * Get customer phone number saved in profile
              *
              * @return {string}
              */
             getConvinienceStoreCustomersName: function() {
                 return customer().customer().fullname;
+            },
+
+            /**
+             * Format Price
+             * 
+             * @param {float} amount - Amount to be formatted
+             * @return {string}
+             */
+            getFormattedAmount: function (amount) {
+                return priceUtils.formatPrice(amount, quote.getPriceFormat());
+            },
+
+            /* Get formatted message about installment value limitation
+            *
+            * NOTE: this value should be taken directly from capability object when it is fully implemented.
+            *
+            * @return {string}
+            */
+            getMinimumOrderText: function () {
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(convStoreMinimumPurchaseAmount));
+            },
+
+            /**
+             * Check if order value meets minimum requirement
+             *
+             * @return {boolean}
+             */
+            orderValueTooLow: function () {
+                return this.getTotal() < convStoreMinimumPurchaseAmount;
             },
 
             /**
