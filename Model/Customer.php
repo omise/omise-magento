@@ -97,9 +97,12 @@ class Customer
      *
      * @return self
      */
-    public function create(array $params)
+    public function create()
     {
-        $this->customerAPI = $this->customerAPI->create($params);
+        $this->customerAPI = $this->customerAPI->create([
+            'email'       => $this->magentoCustomer->getEmail(),
+            'description' => trim($this->magentoCustomer->getFirstname() . ' ' . $this->magentoCustomer->getLastname())
+        ]);
 
         $this->magentoCustomer->setData(self::OMISE_CUSTOMER_ID_FIELD, $this->customerAPI->id);
         $this->magentoCustomerResource->saveAttribute($this->magentoCustomer, self::OMISE_CUSTOMER_ID_FIELD);
@@ -117,10 +120,7 @@ class Customer
     public function addCard($cardToken)
     {
         if (! $this->getId()) {
-            $this->create([
-                'email'       => $this->magentoCustomer->getEmail(),
-                'description' => trim($this->magentoCustomer->getFirstname() . ' ' . $this->magentoCustomer->getLastname())
-            ]);
+            $this->create();
         }
 
         $this->customerAPI = $this->customerAPI->update(['card' => $cardToken]);
@@ -163,7 +163,6 @@ class Customer
     public function getLatestCard()
     {
         $cards = $this->cards(['order' => 'reverse_chronological']);
-
         return $cards['total'] > 0 ? $cards['data'][0] : null;
     }
 
@@ -174,7 +173,15 @@ class Customer
     protected function initializeObject()
     {
         if ($this->getId()) {
-            $this->customerAPI = $this->customerAPI->find($this->getId());
+            $customerAPI = $this->customerAPI->find($this->getId());
+
+            if ($customerAPI instanceof \Omise\Payment\Model\Api\Error) {
+                // instance of Error if merchants Omise account and key has been changed
+                $this->create();
+                $customerAPI = $this->customerAPI->find($this->getId());
+            }
+
+            $this->customerAPI = $customerAPI;
         }
     }
 }
