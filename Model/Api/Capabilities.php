@@ -8,7 +8,7 @@ class Capabilities extends BaseObject
 {
     private $capabilities;
 
-    public function __construct(\PSR\Log\LoggerInterface $log)
+    public function __construct()
     {
         try {
             $this->capabilities = OmiseCapabilities::retrieve();
