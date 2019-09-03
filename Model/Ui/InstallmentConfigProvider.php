@@ -7,7 +7,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 
-class CapabilitiesConfigProvider implements ConfigProviderInterface
+class InstallmentConfigProvider implements ConfigProviderInterface
 {
     private $_storeManager;
 
