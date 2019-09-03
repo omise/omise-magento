@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
             <group id="omise" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -34,10 +35,11 @@
                 </field>
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Webhook endpoint</label>
-                    <comment><![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>
+                    <comment>
+                        <![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a><em>(HTTPS only)</em>.]]>
+                    </comment>
                     <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook</frontend_model>
                 </field>
-
                 <group id="omise_cc" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Credit Card Solution</label>
                     <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
@@ -64,7 +66,6 @@
                         <config_path>payment/omise_cc/3ds</config_path>
                     </field>
                 </group>
-
                 <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Internet Banking Solution</label>
                     <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
@@ -124,6 +125,34 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_installment/title</config_path>
                     </field>
+                    <group id="omise_offsite_installment_advanced" translate="label" sortOrder="241" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Advanced</label>
+                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Kasikorn</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_installment_kbank/active</config_path>
+                        </field>
+                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Krungthai</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_installment_krungthai/active</config_path>
+                        </field>
+                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Bangkok Bank</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_installment_bbl/active</config_path>
+                        </field>
+                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Krungsri</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_installment_krungsri/active</config_path>
+                        </field>
+                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable First Choice</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_installment_fc/active</config_path>
+                        </field>
+                    </group>
                 </group>
                 <group id="omise_offsite_truemoney" translate="label" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable True Money Solution</label>
