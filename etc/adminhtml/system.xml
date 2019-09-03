@@ -125,29 +125,30 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_installment/title</config_path>
                     </field>
-                    <group id="omise_offsite_installment_advanced" translate="label" sortOrder="241" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <group id="omise_offsite_installment_advanced" translate="label" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Advanced</label>
-                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <fieldset_css>payments-other-header</fieldset_css>
+                        <field id="active_kasikorn" translate="label comment" type="select" sortOrder="251" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Kasikorn</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/omise_offsite_installment_kbank/active</config_path>
                         </field>
-                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="active_krungthai" translate="label comment" type="select" sortOrder="252" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Krungthai</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/omise_offsite_installment_krungthai/active</config_path>
                         </field>
-                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="active_bbl" translate="label comment" type="select" sortOrder="253" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Bangkok Bank</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/omise_offsite_installment_bbl/active</config_path>
                         </field>
-                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="active_krungsri" translate="label comment" type="select" sortOrder="254" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Krungsri</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/omise_offsite_installment_krungsri/active</config_path>
                         </field>
-                        <field id="active" translate="label comment" type="select" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="active_fc" translate="label comment" type="select" sortOrder="255" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable First Choice</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/omise_offsite_installment_fc/active</config_path>
