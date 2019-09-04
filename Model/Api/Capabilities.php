@@ -10,7 +10,11 @@ class Capabilities extends BaseObject
 
     public function __construct()
     {
-        $this->capabilities = OmiseCapabilities::retrieve();
+        try {
+            $this->capabilities = OmiseCapabilities::retrieve();
+        } catch (\Exception $e) {
+            // do nothing
+        }
     }
 
     /**
@@ -20,9 +24,10 @@ class Capabilities extends BaseObject
      */
     public function getInstallmentBackends()
     {
-        return $this->capabilities->getBackends(
+        return $this->capabilities ? $this->capabilities->getBackends(
             $this->capabilities->makeBackendFilterType('installment')
-        );    
+        )
+        : null;
     }
 
     /**
@@ -31,6 +36,6 @@ class Capabilities extends BaseObject
      * @return bool
      */
     public function isZeroInterest() {
-        return $this->capabilities['zero_interest_installments'];
+        return $this->capabilities ? $this->capabilities['zero_interest_installments'] : false;
     }
 }
