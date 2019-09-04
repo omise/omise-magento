@@ -33,9 +33,17 @@ class OmiseHelper extends AbstractHelper
             case 'GBP': 
             case 'SGD':
             case 'THB':
-            case 'USD':  
+            case 'USD':
+            case 'AUD':
+            case 'CAD':
+            case 'CHF':
+            case 'CNY':
+            case 'DKK':
+            case 'HKD':
+            case 'MYR':
+
                 // Convert to a small unit
-                $amount = $amount * 100;
+                $amount *= 100;
                 break;
         }
 
