@@ -6,17 +6,18 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     protected $_omise;
 
-    /**
-     * @var array
-     */
-    private $_currency_subunits = array(
-        'JPY' => 1,
-        'THB' => 100,
-        'SGD' => 100,
-        'USD' => 100,
-        'EUR' => 100,
-        'GBP' => 100
-    );
+    // /**
+    //  * @var array
+    //  */
+    // private $_currency_subunits = array(
+    //     ////// move to subunits function in omise_gateway helper
+    //     'JPY' => 1,
+    //     'THB' => 100,
+    //     'SGD' => 100,
+    //     'USD' => 100,
+    //     'EUR' => 100,
+    //     'GBP' => 100
+    // );
 
     /**
      * Load necessary file and setup Omise keys
@@ -36,26 +37,31 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
      */
     protected function _isCurrencySupport($currency)
     {
-        if (isset($this->_currency_subunits[strtoupper($currency)])) {
-            return true;
-        }
+        return Mage::helper('omise_gateway')->isCurrencySupported($currency);
 
-        return false;
+        // if (isset($this->_currency_subunits[strtoupper($currency)])) {
+        //     return true;
+        // }
+
+        // return false;
     }
 
     /**
-     * @param  int    $amount
+     * @param  numeric  $amount
      * @param  string $currency
      *
      * @return int
      */
     public function getAmountInSubunits($amount, $currency)
     {
-        if ($this->_isCurrencySupport($currency)) {
-            return $this->_currency_subunits[$currency] * $amount;
-        }
+        // ////// move to omise_gateway helper
+        // if ($this->_isCurrencySupport($currency)) {
+        //     return $this->_currency_subunits[$currency] * $amount;
+        // }
 
-        return $amount;
+        // return $amount;
+
+        return Mage::helper('omise_gateway')->amountToSubunits($currency, $amount);
     }
 
     /**
