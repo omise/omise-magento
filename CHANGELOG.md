@@ -16,7 +16,6 @@
 - Fix error when change Omise Account (PR [#215](https://github.com/omise/omise-magento/pull/215))
 - Fix: Too many parameters are sent to parent class in DeleteAction (PR [#213](https://github.com/omise/omise-magento/pull/213))
 
-
 ### [v2.8 _(Jul 17, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.8)
 
 ### ✨ Highlights
