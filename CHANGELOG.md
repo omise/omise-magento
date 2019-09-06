@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### [v2.9 _(Sep 06, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.9)
+
+### ✨ Highlights
+
+- Adding Support for new currencies (PR [#218](https://github.com/omise/omise-magento/pull/218))
+
+### 🚀 Enhancements
+
+- Translation of error messages to Thai Language (PR [#210](https://github.com/omise/omise-magento/pull/210))
+⠀⠀⠀⠀⠀⠀⠀⠀⠀
+### 👾 Bug Fixes
+
+- Handle exception when getting capabilities with invalid Omise Keys (PR [#216](https://github.com/omise/omise-magento/pull/216))
+- Fix error when change Omise Account (PR [#215](https://github.com/omise/omise-magento/pull/215))
+- Fix: Too many parameters are sent to parent class in DeleteAction (PR [#213](https://github.com/omise/omise-magento/pull/213))
+
+
 ### [v2.8 _(Jul 17, 2019)_](https://github.com/omise/omise-magento/releases/tag/v2.8)
 
 ### ✨ Highlights
