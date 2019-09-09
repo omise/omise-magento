@@ -7,7 +7,7 @@
                checked: isChecked,
                click: selectPaymentMethod,
                visible: isRadioButtonVisible(),
-               enable: isActive() && !orderValueTooLow()" />
+               enable: isActive() && !orderValueTooLow() && isAnyInstallmentOptionActive()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
         </label>
@@ -25,7 +25,14 @@
                 </div>
             </div>
         </div>
-        <div data-bind="visible: isActive() && orderValueTooLow()" class="page messages">
+        <div data-bind="visible: !isAnyInstallmentOptionActive()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <div data-bind="i18n: 'There are no any installment options available'"></div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="visible: isAnyInstallmentOptionActive() && isActive() && orderValueTooLow()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
                     <div data-bind="text: getMinimumOrderText()"></div>
@@ -52,7 +59,9 @@
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
                 <ul class="form-list">
                     <!-- KTC -->
-                    <li class="items">
+                    <li class="items" data-bind="
+                        visible: isInstallmentOptionActive(getCode() + '_ktc')
+                    ">
                         <input type="radio" name="offsite" value="installment_ktc" data-bind="
                             attr: {
                                 id: getCode() + '_ktc'
@@ -84,7 +93,9 @@
                     </li>
 
                     <!-- First Choice -->
-                    <li class="items">
+                    <li class="items" data-bind="
+                        visible: isInstallmentOptionActive(getCode() + '_first_choice')
+                    ">
                         <input type="radio" name="offsite" value="installment_first_choice" data-bind="
                             attr: {
                                 id: getCode() + '_first_choice'
@@ -116,7 +127,9 @@
                     </li>
 
                     <!-- KBank -->
-                    <li class="items">
+                    <li class="items" data-bind="
+                        visible: isInstallmentOptionActive(getCode() + '_kbank')
+                    ">
                         <input type="radio" name="offsite" value="installment_kbank" data-bind="
                             attr: {
                                 id: getCode() + '_kbank'
@@ -149,7 +162,9 @@
                     </li>
 
                     <!-- BBL -->
-                    <li class="items">
+                    <li class="items" data-bind="
+                        visible: isInstallmentOptionActive(getCode() + '_bbl')
+                    ">
                         <input type="radio" name="offsite" value="installment_bbl" data-bind="
                             attr: {
                                 id: getCode() + '_bbl'
@@ -179,8 +194,10 @@
                                         visible: omiseOffsite() === 'installment_bbl',
                                         optionsCaption: 'Choose number of montly payments'"></select>
                     </li>
-                     <!-- BAY -->
-                     <li class="items">
+                    <!-- BAY -->
+                    <li class="items"  data-bind="
+                        visible: isInstallmentOptionActive(getCode() + '_bbl')
+                    ">
                         <input type="radio" name="offsite" value="installment_bay" data-bind="
                             attr: {
                                 id: getCode() + '_bay'

@@ -70,6 +70,29 @@ define(
             },
 
             /**
+             * Format Price
+             * 
+             * @param {string} option Name of option to be verified
+             * @return {boolean}
+             */
+            isInstallmentOptionActive: function (option) {
+                return parseInt(window.checkoutConfig.installment_config[option]);
+            },
+
+            /**
+             * Format Price
+             * 
+             * @param {string} option Name of option to be verified
+             * @return {boolean}
+             */
+            isAnyInstallmentOptionActive: function () {
+                return parseInt(window.checkoutConfig.installment_config['omise_offsite_installment_kbank'])
+                    || parseInt(window.checkoutConfig.installment_config['omise_offsite_installment_ktc'])
+                    || parseInt(window.checkoutConfig.installment_config['omise_offsite_installment_first_choice'])
+                    || parseInt(window.checkoutConfig.installment_config['omise_offsite_installment_bbl'])
+                    || parseInt(window.checkoutConfig.installment_config['omise_offsite_installment_bay']);
+            },
+            /**
              * Get formatted message about installment value limitation
              *
              * NOTE: this value should be taken directly from capability object when it is fully implemented.
