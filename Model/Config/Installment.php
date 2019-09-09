@@ -11,8 +11,8 @@ class Installment extends Config
     const CODE = 'omise_offsite_installment';
 
     const KBANK       = 'omise_offsite_installment_kbank';
-    const KRUNGTHAI   = 'omise_offsite_installment_krungthai';
-    const FIRSTCHOICE = 'omise_offsite_installment_fc';
+    const KRUNGTHAI   = 'omise_offsite_installment_ktc';
+    const FIRSTCHOICE = 'omise_offsite_installment_first_choice';
     const BBL         = 'omise_offsite_installment_bbl';
-    const KRUNGSRI    = 'omise_offsite_installment_krungsri';
+    const KRUNGSRI    = 'omise_offsite_installment_bay';
 }

@@ -131,27 +131,27 @@
                         <field id="active_kasikorn" translate="label comment" type="select" sortOrder="251" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Kasikorn</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_installment_kbank/active</config_path>
+                            <config_path>installment_config/omise_offsite_installment_kbank/active</config_path>
                         </field>
                         <field id="active_krungthai" translate="label comment" type="select" sortOrder="252" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Krungthai</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_installment_krungthai/active</config_path>
+                            <config_path>installment_config/omise_offsite_installment_ktc/active</config_path>
                         </field>
                         <field id="active_bbl" translate="label comment" type="select" sortOrder="253" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Bangkok Bank</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_installment_bbl/active</config_path>
+                            <config_path>installment_config/omise_offsite_installment_bbl/active</config_path>
                         </field>
                         <field id="active_krungsri" translate="label comment" type="select" sortOrder="254" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Krungsri</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_installment_krungsri/active</config_path>
+                            <config_path>installment_config/omise_offsite_installment_bay/active</config_path>
                         </field>
                         <field id="active_fc" translate="label comment" type="select" sortOrder="255" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable First Choice</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_installment_fc/active</config_path>
+                            <config_path>installment_config/omise_offsite_installment_first_choice/active</config_path>
                         </field>
                     </group>
                 </group>

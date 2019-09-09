@@ -8,23 +8,23 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <send_email>send_email_email_template</send_email>
             </email>
         </tesco>
-        <installment_option>
-            <omise_offsite_installment_fc>
+        <installment_config>
+            <omise_offsite_installment_first_choice>
                 <active>1</active>
-            </omise_offsite_installment_fc>
-            <omise_offsite_installment_krungthai>
+            </omise_offsite_installment_first_choice>
+            <omise_offsite_installment_ktc>
                 <active>1</active>
-            </omise_offsite_installment_krungthai>
+            </omise_offsite_installment_ktc>
             <omise_offsite_installment_bbl>
                 <active>1</active>
             </omise_offsite_installment_bbl>
-            <omise_offsite_installment_krungsri>
+            <omise_offsite_installment_bay>
                 <active>1</active>
-            </omise_offsite_installment_krungsri>
+            </omise_offsite_installment_bay>
             <omise_offsite_installment_kbank>
                 <active>1</active>
             </omise_offsite_installment_kbank>
-        </installment_option>
+        </installment_config>
         <payment>
             <omise>
                 <sandbox_status>0</sandbox_status>

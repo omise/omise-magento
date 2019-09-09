@@ -5,6 +5,7 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Payment\Api\PaymentMethodListInterface;
 
 class InstallmentConfigProvider implements ConfigProviderInterface
 {
@@ -38,7 +39,11 @@ class InstallmentConfigProvider implements ConfigProviderInterface
             if ($method->getCode() === OmiseInstallmentConfig::CODE) {
                 return [
                     'installment_config' => [
-                        OmiseInstallmentConfig::KBANK => $this->scopeConfig->getValue('payment/' . OmiseInstallmentConfig::KBANK . '/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
+                        OmiseInstallmentConfig::KBANK => $this->_scopeConfig->getValue('installment_config/' . OmiseInstallmentConfig::KBANK . '/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+                        OmiseInstallmentConfig::BBL => $this->_scopeConfig->getValue('installment_config/' . OmiseInstallmentConfig::BBL . '/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+                        OmiseInstallmentConfig::KRUNGTHAI => $this->_scopeConfig->getValue('installment_config/' . OmiseInstallmentConfig::KRUNGTHAI . '/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+                        OmiseInstallmentConfig::FIRSTCHOICE => $this->_scopeConfig->getValue('installment_config/' . OmiseInstallmentConfig::FIRSTCHOICE . '/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+                        OmiseInstallmentConfig::KRUNGSRI => $this->_scopeConfig->getValue('installment_config/' . OmiseInstallmentConfig::KRUNGSRI . '/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
                     ]
                 ];
             }
