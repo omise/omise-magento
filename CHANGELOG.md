@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v1.18 _(Sep 9, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.18)
+
+#### 🚀 Enhancements
+
+- Adds support for more currencies (PR [#220](https://github.com/omise/omise-magento/pull/220))
+
+---
+
 ### [v1.17 _(May 10, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.17)
 
 #### 🚀 Enhancements
@@ -9,6 +17,7 @@
 - Deal with unknown instalment providers (merge after #169) (PR [#184](https://github.com/omise/omise-magento/pull/184))
 - Instalment payments for Magento 1 (PR [#169](https://github.com/omise/omise-magento/pull/169))
 
+---
 
 ### [v1.16 _(Apr 5, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.16)
 
