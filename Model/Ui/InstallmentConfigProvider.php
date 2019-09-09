@@ -10,10 +10,18 @@ use Magento\Payment\Api\PaymentMethodListInterface;
 class InstallmentConfigProvider implements ConfigProviderInterface
 {
     /**
-     * @var Magento\Payment\Api\PaymentMethodListInterface;
+     * @var Magento\Payment\Api\PaymentMethodListInterface
      */
     private $_paymentLists;
+
+    /**
+     * @var Magento\Framework\App\Config\ScopeConfigInterface
+     */
     private $_scopeConfig;
+
+    /**
+     * @var Magento\Store\Model\StoreManagerInterface
+     */
     private $_storeManager;
 
     public function __construct(
