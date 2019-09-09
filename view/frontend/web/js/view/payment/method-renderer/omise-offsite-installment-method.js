@@ -9,6 +9,7 @@ define(
         'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Catalog/js/price-utils',
+        'Omise_Payment/js/view/payment/payment-tools'
     ],
     function (
         $,
