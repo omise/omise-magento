@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <tesco>
@@ -7,49 +8,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <send_email>send_email_email_template</send_email>
             </email>
         </tesco>
-        <payment>
-
-            <omise>
-                <sandbox_status>0</sandbox_status>
-                <model>OmiseAdapter</model>
-            </omise>
-
-            <omise_cc>
-                <active>0</active>
-                <title>Credit / Debit Card</title>
-                <model>OmiseCcAdapter</model>
-                <is_gateway>1</is_gateway>
-                <can_initialize>1</can_initialize>
-                <can_use_checkout>1</can_use_checkout>
-                <can_authorize>1</can_authorize>
-                <can_capture>1</can_capture>
-                <payment_action>authorize</payment_action>
-            </omise_cc>
-
-            <omise_offsite_internetbanking>
-                <active>0</active>
-                <title>Internet Banking</title>
-                <model>OmiseInternetbankingAdapter</model>
-                <is_gateway>1</is_gateway>
-                <can_initialize>1</can_initialize>
-                <can_use_checkout>1</can_use_checkout>
-                <can_capture>1</can_capture>
-                <can_review_payment>1</can_review_payment>
-                <payment_action>authorize_capture</payment_action>
-            </omise_offsite_internetbanking>
-            
-            <omise_offsite_alipay>
-                <active>0</active>
-                <title>Alipay</title>
-                <model>OmiseAlipayAdapter</model>
-                <is_gateway>1</is_gateway>
-                <can_initialize>1</can_initialize>
-                <can_use_checkout>1</can_use_checkout>
-                <can_capture>1</can_capture>
-                <can_review_payment>1</can_review_payment>
-                <payment_action>authorize_capture</payment_action>
-            </omise_offsite_alipay>
-
+        <installment_option>
             <omise_offsite_installment_fc>
                 <active>1</active>
             </omise_offsite_installment_fc>
@@ -65,7 +24,45 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
             <omise_offsite_installment_kbank>
                 <active>1</active>
             </omise_offsite_installment_kbank>
-
+        </installment_option>
+        <payment>
+            <omise>
+                <sandbox_status>0</sandbox_status>
+                <model>OmiseAdapter</model>
+            </omise>
+            <omise_cc>
+                <active>0</active>
+                <title>Credit / Debit Card</title>
+                <model>OmiseCcAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <payment_action>authorize</payment_action>
+            </omise_cc>
+            <omise_offsite_internetbanking>
+                <active>0</active>
+                <title>Internet Banking</title>
+                <model>OmiseInternetbankingAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_internetbanking>
+            <omise_offsite_alipay>
+                <active>0</active>
+                <title>Alipay</title>
+                <model>OmiseAlipayAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_alipay>
             <omise_offsite_installment>
                 <active>0</active>
                 <title>Installment</title>
@@ -77,7 +74,6 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_installment>
-
             <omise_offsite_truemoney>
                 <active>0</active>
                 <title>True Money</title>
@@ -89,7 +85,6 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_truemoney>
-
             <omise_offline_tesco>
                 <active>0</active>
                 <title>Tesco Bill Payment</title>
