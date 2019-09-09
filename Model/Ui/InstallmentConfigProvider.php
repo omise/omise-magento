@@ -4,6 +4,7 @@ namespace Omise\Payment\Model\Ui;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class InstallmentConfigProvider implements ConfigProviderInterface
 {
@@ -12,14 +13,17 @@ class InstallmentConfigProvider implements ConfigProviderInterface
      */
     private $_paymentLists;
     private $_scopeConfig;
+    private $_storeManager;
 
     public function __construct(
         PaymentMethodListInterface $paymentLists,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface       $scopeConfig,
+        StoreManagerInterface      $storeManager
     )
     {
         $this->_paymentLists = $paymentLists;
         $this->_scopeConfig  = $scopeConfig;
+        $this->_storeManager = $storeManager;
     }
 
     /**
