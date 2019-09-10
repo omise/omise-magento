@@ -22,9 +22,8 @@ define(
         priceUtils,
     ) {
         'use strict';
-        const installmentMinimumPurchaseAmount = 3000;
 
-        return Component.extend({
+        return {
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
@@ -92,9 +91,7 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function (data, event) {
-                var self = this;
-
+            placeOrder: function (event, self) {
                 if (event) {
                     event.preventDefault();
                 }
@@ -141,6 +138,6 @@ define(
 
                 return true;
             }
-        });
+        };
     }
 );
