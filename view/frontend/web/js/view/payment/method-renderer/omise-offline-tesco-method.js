@@ -5,7 +5,8 @@ define(
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/error-processor'
+        'Magento_Checkout/js/model/error-processor',
+        'Omise_Payment/js/view/payment/payment-tools'
     ],
     function (
         ko,
@@ -13,7 +14,8 @@ define(
         fullScreenLoader,
         redirectOnSuccessAction,
         quote,
-        errorProcessor
+        errorProcessor,
+        paymentTools,
     ) {
         'use strict';
 
@@ -39,7 +41,7 @@ define(
              * @return {boolean}
              */
             isActive: function() {
-                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
+                return paymentTools.getOrderCurrency().toLowerCase() === 'thb' && paymentTools.getStoreCurrency().toLowerCase() === 'thb';
             },
 
             /**
@@ -49,24 +51,6 @@ define(
              */
             isSandboxOn: function () {
                 return window.checkoutConfig.isOmiseSandboxOn;
-            },
-
-            /**
-             * Get order currency
-             *
-             * @return {string}
-             */
-            getOrderCurrency: function () {
-                return window.checkoutConfig.quoteData.quote_currency_code;
-            },
-
-            /**
-             * Get store currency
-             *
-             * @return {string}
-             */
-            getStoreCurrency: function () {
-                return window.checkoutConfig.quoteData.store_currency_code;
             },
 
             /**

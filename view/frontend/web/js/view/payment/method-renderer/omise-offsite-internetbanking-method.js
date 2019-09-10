@@ -25,7 +25,7 @@ define(
              *
              * @return {string}
              */
-            getCode: function() {
+            getCode: function () {
                 return 'omise_offsite_internetbanking';
             },
 
@@ -34,7 +34,7 @@ define(
              *
              * @return this
              */
-            initObservable: function() {
+            initObservable: function () {
                 this._super()
                     .observe([
                         'omiseOffsite'
@@ -48,7 +48,7 @@ define(
              *
              * @return {Object}
              */
-            getData: function() {
+            getData: function () {
                 return {
                     'method': this.item.method,
                     'additional_data': {
@@ -62,7 +62,7 @@ define(
              *
              * @return {boolean}
              */
-            isActive: function() {
+            isActive: function () {
                 return paymentTools.getOrderCurrency().toLowerCase() === 'thb' && paymentTools.getStoreCurrency().toLowerCase() === 'thb';
             },
 
@@ -81,7 +81,7 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function(data, event) {
+            placeOrder: function (data, event) {
                 return paymentTools.placeOrder(event, this);
             }
         });
