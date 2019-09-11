@@ -50,24 +50,6 @@ define(
             },
 
             /**
-             * Is method available to display
-             *
-             * @return {boolean}
-             */
-            isActive: function () {
-                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
-            },
-
-            /**
-             * Checks if sandbox is turned on
-             *
-             * @return {boolean}
-             */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
-            },
-
-            /**
              * Get order currency
              *
              * @return {string}
