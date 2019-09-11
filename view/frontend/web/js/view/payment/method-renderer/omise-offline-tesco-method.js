@@ -41,7 +41,7 @@ define(
              * @return {boolean}
              */
             isActive: function() {
-                return paymentTools.getOrderCurrency().toLowerCase() === 'thb' && paymentTools.getStoreCurrency().toLowerCase() === 'thb';
+                return paymentTools.getOrderCurrency() === 'thb' && paymentTools.getStoreCurrency() === 'thb';
             },
 
             /**

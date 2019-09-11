@@ -46,7 +46,7 @@ define(
              * @return {integer}
              */
             getTotal: function () {
-                return + window.checkoutConfig.totalsData.grand_total;
+                return window.checkoutConfig.totalsData.grand_total;
             },
 
             /**
@@ -55,7 +55,7 @@ define(
              * @return {string}
              */
             getOrderCurrency: function () {
-                return window.checkoutConfig.quoteData.quote_currency_code;
+                return window.checkoutConfig.quoteData.quote_currency_code.toLowerCase();
             },
 
             /**
@@ -64,7 +64,7 @@ define(
              * @return {string}
              */
             getStoreCurrency: function () {
-                return window.checkoutConfig.quoteData.store_currency_code;
+                return window.checkoutConfig.quoteData.store_currency_code.toLowerCase.toLowerCase();
             },
 
             /**

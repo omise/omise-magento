@@ -55,8 +55,8 @@ define(
                     'method': this.item.method,
                     'additional_data': {
                         'omise_card_token': this.omiseCardToken(),
-                        'omise_card': this.omiseCard(),
-                        'omise_save_card': this.omiseSaveCard()
+                        'omise_card':       this.omiseCard(),
+                        'omise_save_card':  this.omiseSaveCard()
                     }
                 };
             },
