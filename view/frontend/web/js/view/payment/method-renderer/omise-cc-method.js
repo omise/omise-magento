@@ -285,15 +285,11 @@ define(
                 var isCardExpirationYearValid  = $('#' + this.getCode() + 'CardExpirationYear').valid();
                 var isCardSecurityCodeValid    = $('#' + this.getCode() + 'CardSecurityCode').valid();
 
-                if (isCardNumberValid
+                return isCardNumberValid
                     && isCardHolderNameValid
                     && isCardExpirationMonthValid
                     && isCardExpirationYearValid
-                    && isCardSecurityCodeValid) {
-                    return true;
-                }
-
-                return false;
+                    && isCardSecurityCodeValid;
             },
 
             processOrderWithCard: function (id) {
