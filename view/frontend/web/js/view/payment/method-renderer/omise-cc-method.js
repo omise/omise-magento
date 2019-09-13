@@ -3,7 +3,6 @@ define(
         'ko',
         'Magento_Payment/js/view/payment/cc-form',
         'mage/storage',
-        'mage/translate',
         'jquery',
         'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/error-processor',
@@ -16,7 +15,6 @@ define(
         ko,
         Component,
         storage,
-        $t,
         $,
         validator,
         errorProcessor,
@@ -251,7 +249,7 @@ define(
                 }
 
                 if (typeof Omise === 'undefined') {
-                    alert($t('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
+                    alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
                     return false;
                 }
 
