@@ -23,7 +23,7 @@ define(
 
         return {
             defaults: {
-                template: 'Omise_Payment/payment/offsite-installment-form'
+                return_url: '/orders/:order_id/omise-offsite'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
@@ -62,7 +62,7 @@ define(
              * @return {string}
              */
             getStoreCurrency: function () {
-                return window.checkoutConfig.quoteData.store_currency_code.toLowerCase.toLowerCase();
+                return window.checkoutConfig.quoteData.store_currency_code.toLowerCase();
             },
 
             /**
@@ -88,7 +88,7 @@ define(
                             var self = this;
 
                             var serviceUrl = urlBuilder.createUrl(
-                                '/orders/:order_id/omise-offsite',
+                                this.return_url,
                                 {
                                     order_id: response
                                 }
