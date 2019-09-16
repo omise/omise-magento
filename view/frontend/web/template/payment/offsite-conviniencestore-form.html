@@ -33,24 +33,31 @@
         <!-- ko template: getTemplate() -->
         <!-- /ko -->
         <!--/ko-->
-        <div class="control">
-            <h4><!-- ko i18n: 'Phone Number'--><!-- /ko --></h4>
-            <input type="text" class="input-text"
-                   data-bind="attr: {
-                   id: getCode() + 'phoneNumber'
-                   },
-                   value: convinienceStorePhoneNumber,
-                "/>
-        </div>
-        <div class="control">
-            <h4><!-- ko i18n: 'Email Address'--><!-- /ko --></h4>
-            <input type="text" class="input-text"
-                   data-bind="attr: {
-                   id: getCode() + 'email'
-                   },
-                   value: convinienceStoreEmail,
-                "/>
-        </div>
+        <form class="form"
+            data-bind="attr: {
+                id: getCode() + 'Form',
+            }">
+            <div class="control">
+                <h4><!-- ko i18n: 'Phone Number'--><!-- /ko --></h4>
+                <input type="text" class="minimum-length-10 maximum-length-11 input-text" 
+                    data-validate="{required:true, 'validate-digits':true, 'validate-length':true}"
+                    data-bind="attr: {
+                            id: getCode() + 'phoneNumber',
+                        },
+                        value: convinienceStorePhoneNumber,
+                    " />
+            </div>
+            <div class="control">
+                <h4><!-- ko i18n: 'Email Address'--><!-- /ko --></h4>
+                <input type="text" class="input-text"
+                    data-validate="{required:true, 'validate-email':true}"
+                    data-bind="attr: {
+                    id: getCode() + 'email'
+                    },
+                    value: convinienceStoreEmail,
+                    " />
+            </div>
+        </form>
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() -->

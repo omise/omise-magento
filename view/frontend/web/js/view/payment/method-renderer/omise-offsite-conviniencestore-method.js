@@ -10,7 +10,7 @@ define(
         'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Catalog/js/price-utils',
-        'mage/validation'
+        'mage/validation',
     ],
     function (
         $,
@@ -140,6 +140,21 @@ define(
             },
 
             /**
+             * Hook the validate function.
+             * Original source: validate(); @ module-checkout/view/frontend/web/js/view/payment/default.js
+             *
+             * @return {boolean}
+             */
+            validate: function () {
+                $('#' + this.getCode() + 'Form').validation();
+
+                var isEmailValid       = $('#' + this.getCode() + 'email').valid();
+                var isPhoneNumberValid = $('#' + this.getCode() + 'phoneNumber').valid();
+
+                return isEmailValid && isPhoneNumberValid;
+            },
+
+            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
@@ -150,6 +165,10 @@ define(
 
                 if (event) {
                     event.preventDefault();
+                }
+
+                if (! this.validate()) {
+                    return false;
                 }
 
                 self.getPlaceOrderDeferredObject()
