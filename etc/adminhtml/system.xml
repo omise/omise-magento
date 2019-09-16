@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
             <group id="omise" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -34,10 +35,11 @@
                 </field>
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Webhook endpoint</label>
-                    <comment><![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>
+                    <comment>
+                        <![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a><em>(HTTPS only)</em>.]]>
+                    </comment>
                     <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook</frontend_model>
                 </field>
-
                 <group id="omise_cc" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Credit Card Solution</label>
                     <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
@@ -64,81 +66,83 @@
                         <config_path>payment/omise_cc/3ds</config_path>
                     </field>
                 </group>
-
-                <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Internet Banking Solution</label>
-                    <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Omise Internet Banking Solution.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_internetbanking/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offsite_internetbanking/title</config_path>
-                    </field>
-                </group>
-                <group id="omise_offsite_alipay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Alipay Solution</label>
-                    <comment>Enables customers to pay using Alipay method</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Alipay Payment Solution.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_alipay/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offsite_alipay/title</config_path>
-                    </field>
-                </group>
-                <group id="omise_offline_tesco" translate="label" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Tesco Bill Payment Solution</label>
-                    <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Tesco Bill Payment Solution.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offline_tesco/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offline_tesco/title</config_path>
-                    </field>
-                </group>
-                <group id="omise_offsite_installment" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Installment Solution</label>
-                    <comment>Enables customers to pay using Installment method</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Installment Payment Solution.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_installment/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offsite_installment/title</config_path>
-                    </field>
-                </group>
-                <group id="omise_offsite_truemoney" translate="label" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable True Money Solution</label>
-                    <comment>Enables customers to pay using True Money method</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable True Money Payment Solution.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_truemoney/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offsite_truemoney/title</config_path>
-                    </field>
+                <group id="omise_th_payments" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Payments available in Thailand</label>
+                    <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Internet Banking Solution</label>
+                        <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
+                        <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable/Disable</label>
+                            <comment>Enable Omise Internet Banking Solution.</comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_internetbanking/active</config_path>
+                        </field>
+                        <field id="title" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Title</label>
+                            <comment>This controls the title which the user sees during checkout.</comment>
+                            <config_path>payment/omise_offsite_internetbanking/title</config_path>
+                        </field>
+                    </group>
+                    <group id="omise_offsite_alipay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Alipay Solution</label>
+                        <comment>Enables customers to pay using Alipay method</comment>
+                        <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable/Disable</label>
+                            <comment>Enable Alipay Payment Solution.</comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_alipay/active</config_path>
+                        </field>
+                        <field id="title" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Title</label>
+                            <comment>This controls the title which the user sees during checkout.</comment>
+                            <config_path>payment/omise_offsite_alipay/title</config_path>
+                        </field>
+                    </group>
+                    <group id="omise_offline_tesco" translate="label" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Tesco Bill Payment Solution</label>
+                        <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
+                        <field id="active" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable/Disable</label>
+                            <comment>Enable Tesco Bill Payment Solution.</comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offline_tesco/active</config_path>
+                        </field>
+                        <field id="title" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Title</label>
+                            <comment>This controls the title which the user sees during checkout.</comment>
+                            <config_path>payment/omise_offline_tesco/title</config_path>
+                        </field>
+                    </group>
+                    <group id="omise_offsite_installment" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Installment Solution</label>
+                        <comment>Enables customers to pay using Installment method</comment>
+                        <field id="active" translate="label comment" type="select" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable/Disable</label>
+                            <comment>Enable Installment Payment Solution.</comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_installment/active</config_path>
+                        </field>
+                        <field id="title" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Title</label>
+                            <comment>This controls the title which the user sees during checkout.</comment>
+                            <config_path>payment/omise_offsite_installment/title</config_path>
+                        </field>
+                    </group>
+                    <group id="omise_offsite_truemoney" translate="label" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable True Money Solution</label>
+                        <comment>Enables customers to pay using True Money method</comment>
+                        <field id="active" translate="label comment" type="select" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable/Disable</label>
+                            <comment>Enable True Money Payment Solution.</comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/omise_offsite_truemoney/active</config_path>
+                        </field>
+                        <field id="title" translate="label" type="text" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Title</label>
+                            <comment>This controls the title which the user sees during checkout.</comment>
+                            <config_path>payment/omise_offsite_truemoney/title</config_path>
+                        </field>
+                    </group>
                 </group>
             </group>
         </section>
