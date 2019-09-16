@@ -67,7 +67,7 @@
                     </field>
                 </group>
                 <group id="omise_th_payments" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Payments available in Thailand</label>
+                <label>Othe Payment methods available in Thailand only</label>
                     <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable Internet Banking Solution</label>
                         <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
