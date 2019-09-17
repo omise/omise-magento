@@ -13,25 +13,25 @@ class Installment extends Config
     /**
      * @var string
      */
-    const KBANK = 'omise_offsite_installment_kbank';
+    const KBANK = CODE + '_kbank';
 
     /**
      * @var string
      */
-    const KRUNGTHAI = 'omise_offsite_installment_ktc';
+    const KRUNGTHAI = CODE + '_ktc';
 
     /**
      * @var string
      */
-    const FIRSTCHOICE = 'omise_offsite_installment_first_choice';
+    const FIRSTCHOICE = CODE + '_first_choice';
 
     /**
      * @var string
      */
-    const BBL = 'omise_offsite_installment_bbl';
+    const BBL = CODE + '_bbl';
 
     /**
      * @var string
      */
-    const KRUNGSRI = 'omise_offsite_installment_bay';
+    const KRUNGSRI = CODE + '_bay';
 }
