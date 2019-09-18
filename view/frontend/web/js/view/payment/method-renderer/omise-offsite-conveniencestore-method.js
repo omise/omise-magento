@@ -30,7 +30,7 @@ define(
 
         return Component.extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-conviniencestore-form'
+                template: 'Omise_Payment/payment/offsite-conveniencestore-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
@@ -41,7 +41,7 @@ define(
              * @return {string}
              */
             getCode: function () {
-                return 'omise_offsite_conviniencestore';
+                return 'omise_offsite_conveniencestore';
             },
 
             /**
@@ -62,9 +62,9 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'conv_store_phone_number': this.convinienceStorePhoneNumber(),
-                        'conv_store_email': this.convinienceStoreEmail(),
-                        'conv_store_customer_name': this.getConvinienceStoreCustomersName()
+                        'conv_store_phone_number': this.convenienceStorePhoneNumber(),
+                        'conv_store_email': this.convenienceStoreEmail(),
+                        'conv_store_customer_name': this.getConvenienceStoreCustomersName()
                     }
                 };
             },
@@ -77,8 +77,8 @@ define(
             initObservable: function () {
                 this._super()
                     .observe([
-                        'convinienceStorePhoneNumber',
-                        'convinienceStoreEmail'
+                        'convenienceStorePhoneNumber',
+                        'convenienceStoreEmail'
                     ]);
                 return this;
             },
@@ -106,7 +106,7 @@ define(
              *
              * @return {string}
              */
-            getConvinienceStoreCustomersName: function() {
+            getConvenienceStoreCustomersName: function() {
                 return customer().customer().fullname;
             },
 

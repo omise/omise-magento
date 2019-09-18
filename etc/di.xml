@@ -168,36 +168,36 @@
     </virtualType>
     <!-- /Value Handler -->
 
-    <!--  Convinience Store payment solution-->
-    <virtualType name="OmiseConviniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">
+    <!--  Convenience Store payment solution-->
+    <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Conviniencestore::CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Conveniencestore::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
-            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMConviniencestoreValueHandlerPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMConveniencestoreValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
         </arguments>
     </virtualType>
 
-    <!-- Convinience Store :: Value Handler Pool -->
-    <virtualType name="OmiseAPMConviniencestoreValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+    <!-- Convenience Store :: Value Handler Pool -->
+    <virtualType name="OmiseAPMConveniencestoreValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
-                <item name="default" xsi:type="string">OmiseAPMConviniencestoreConfigValueHandler</item>
+                <item name="default" xsi:type="string">OmiseAPMConveniencestoreConfigValueHandler</item>
             </argument>
         </arguments>
     </virtualType>
     
-    <virtualType name="OmiseAPMConviniencestoreConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+    <virtualType name="OmiseAPMConveniencestoreConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
-            <argument name="configInterface" xsi:type="object">OmiseAPMConviniencestoreConfig</argument>
+            <argument name="configInterface" xsi:type="object">OmiseAPMConveniencestoreConfig</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="OmiseAPMConviniencestoreConfig" type="Magento\Payment\Gateway\Config\Config">
+    <virtualType name="OmiseAPMConveniencestoreConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Conviniencestore::CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Conveniencestore::CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
