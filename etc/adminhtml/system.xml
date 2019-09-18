@@ -140,7 +140,7 @@
                     </field>
                 </group>
                 <group id="omise_offsite_conveniencestore" translate="label" sortOrder="290" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Convenience Store</label>
+                    <label>Enable Convenience Store Payment</label>
                     <comment>Enables customers to easily pay using Convenience Store method (only available in Japan).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
