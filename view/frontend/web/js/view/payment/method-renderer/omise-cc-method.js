@@ -130,8 +130,8 @@ define(
             /**
              * @return {boolean}
              */
-            isCustomerHasCard: function() {
-                return this.getCustomerCards().length;
+            hasSavedCards: function() {
+                return this.getCustomerCards().length > 0;
             },
 
             /**
