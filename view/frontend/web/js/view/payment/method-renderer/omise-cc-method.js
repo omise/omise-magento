@@ -1,11 +1,11 @@
 define(
     [
         'ko',
+        'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Payment/js/view/payment/cc-form',
         'mage/storage',
         'mage/translate',
         'jquery',
-        'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
@@ -14,11 +14,11 @@ define(
     ],
     function (
         ko,
+        Base,
         Component,
         storage,
         $t,
         $,
-        validator,
         errorProcessor,
         fullScreenLoader,
         redirectOnSuccessAction,
@@ -27,23 +27,17 @@ define(
     ) {
         'use strict';
 
-        return Component.extend({
+        return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/omise-cc-form'
+                template: 'Omise_Payment/payment/omise-cc-form',
             },
 
             redirectAfterPlaceOrder: true,
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            /**
-             * Get payment method code
-             *
-             * @return {string}
-             */
-            getCode: function() {
-                return 'omise_cc';
-            },
+            code: 'omise_cc',
+            active: true,
 
             /**
              * Get a checkout form data
@@ -89,24 +83,6 @@ define(
                     ]);
 
                 return this;
-            },
-
-            /**
-             * Is method available to display
-             *
-             * @return {boolean}
-             */
-            isActive: function() {
-                return true;
-            },
-
-            /**
-             * Checks if sandbox is turned on
-             *
-             * @return {boolean}
-             */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
             },
 
             /**
@@ -277,13 +253,15 @@ define(
              * @return {boolean}
              */
             validate: function () {
-                $('#' + this.getCode() + 'Form').validation();
+
+                var prefix = '#' + this.getCode();
+                $(prefix + 'Form').validation();
                 
-                var isCardNumberValid          = $('#' + this.getCode() + 'CardNumber').valid();
-                var isCardHolderNameValid      = $('#' + this.getCode() + 'CardHolderName').valid();
-                var isCardExpirationMonthValid = $('#' + this.getCode() + 'CardExpirationMonth').valid();
-                var isCardExpirationYearValid  = $('#' + this.getCode() + 'CardExpirationYear').valid();
-                var isCardSecurityCodeValid    = $('#' + this.getCode() + 'CardSecurityCode').valid();
+                var isCardNumberValid          = $(prefix + 'CardNumber').valid();
+                var isCardHolderNameValid      = $(prefix + 'CardHolderName').valid();
+                var isCardExpirationMonthValid = $(prefix + 'CardExpirationMonth').valid();
+                var isCardExpirationYearValid  = $(prefix + 'CardExpirationYear').valid();
+                var isCardSecurityCodeValid    = $(prefix + 'CardSecurityCode').valid();
 
                 if (isCardNumberValid
                     && isCardHolderNameValid
