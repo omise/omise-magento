@@ -4,6 +4,8 @@
         <referenceContainer name="order.success.additional.info">
             <block class="Omise\Payment\Block\Checkout\Onepage\Success\TescoAdditionalInformation" name="onepage.success.tesco_info"
             template="Omise_Payment::checkout/onepage/success/tesco_additional_info.phtml"/>
+            <block class="Omise\Payment\Block\Checkout\Onepage\Success\PaymentConfirmation" name="onepage.success.confirmation" 
+            template="Omise_Payment::checkout/onepage/success/payment_confirmation.phtml"/>
         </referenceContainer>
     </body>
 </page>
