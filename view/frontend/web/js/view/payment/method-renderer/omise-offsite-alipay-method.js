@@ -3,14 +3,12 @@ define(
         'ko',
         'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
     ],
     function (
         ko,
         Base,
         Component,
-        redirectOnSuccessAction,
         quote
     ) {
         'use strict';
