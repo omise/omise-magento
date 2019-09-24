@@ -15,6 +15,8 @@ define(
     ) {
         'use strict';
 
+        const RETURN_URL = '/orders/:order_id/omise-offsite';
+
         return Object.assign({}, Base, {
 
             /**
@@ -38,7 +40,7 @@ define(
                             self = this,
                             storageFailHandler = this.buildFailHandler(self),
                             serviceUrl = urlBuilder.createUrl(
-                                '/orders/:order_id/omise-offsite',
+                                RETURN_URL,
                                 { order_id: response }
                             )
                         ;
