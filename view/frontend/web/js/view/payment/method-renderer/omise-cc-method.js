@@ -87,11 +87,7 @@ define(
              * @return {boolean}
              */
             isThreeDSecureEnabled: function() {
-                if (window.checkoutConfig.payment.omise_cc.offsitePayment) {
-                    return true;
-                }
-
-                return false;
+                return window.checkoutConfig.payment.omise_cc.offsitePayment;
             },
 
             /**
@@ -251,36 +247,27 @@ define(
                 var failHandler = this.buildFailHandler(self);
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(
-                        failHandler
-                    ).done(
-                        function(response) {
-                            if (self.isThreeDSecureEnabled()) {
-                                var serviceUrl = urlBuilder.createUrl(
-                                    '/orders/:order_id/omise-offsite',
-                                    {
-                                        order_id: response
-                                    }
-                                );
+                    .fail(failHandler)
+                    .done(function(response) {
+                        if (self.isThreeDSecureEnabled()) {
+                            var serviceUrl = urlBuilder.createUrl(
+                                '/orders/:order_id/omise-offsite',
+                                { order_id: response }
+                            );
 
-                                storage.get(serviceUrl, false)
-                                    .fail(
-                                        failHandler
-                                    )
-                                    .done(
-                                        function (response) {
-                                            if (response) {
-                                                $.mage.redirect(response.authorize_uri);
-                                            } else {
-                                                failHandler(response);
-                                            }
-                                        }
-                                    );
-                            } else if (self.redirectAfterPlaceOrder) {
-                                redirectOnSuccessAction.execute();
-                            }
+                            storage.get(serviceUrl, false)
+                                .fail(failHandler)
+                                .done(function (response) {
+                                    if (response) {
+                                        $.mage.redirect(response.authorize_uri);
+                                    } else {
+                                        failHandler(response);
+                                    }
+                                });
+                        } else if (self.redirectAfterPlaceOrder) {
+                            redirectOnSuccessAction.execute();
                         }
-                    );
+                    });
             }
         });
     }
