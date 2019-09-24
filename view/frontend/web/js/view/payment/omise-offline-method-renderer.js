@@ -15,7 +15,7 @@ define(
              * @return {boolean}
              */
             isActive: function() {
-                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
+                return this.getOrderCurrency() === 'thb' && this.getStoreCurrency() === 'thb';
             },
 
             /**
@@ -24,7 +24,7 @@ define(
              * @return {string}
              */
             getOrderCurrency: function () {
-                return window.checkoutConfig.quoteData.quote_currency_code;
+                return window.checkoutConfig.quoteData.quote_currency_code.toLowerCase();
             },
 
             /**
@@ -33,7 +33,7 @@ define(
              * @return {string}
              */
             getStoreCurrency: function () {
-                return window.checkoutConfig.quoteData.store_currency_code;
+                return window.checkoutConfig.quoteData.store_currency_code.toLowerCase();
             }
 
         });

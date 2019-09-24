@@ -42,7 +42,7 @@
                    },
                    value: omiseCardToken"/>
 
-            <!-- ko if: isCustomerHasCard() -->
+            <!-- ko if: hasSavedCards() -->
                 <h4><!-- ko i18n: 'Select a card to proceed' --><!-- /ko --></h4>
                 <ul style="padding-left: 1.3em; margin-bottom: 2em;">
                     <!-- ko foreach: getCustomerCards() -->
@@ -63,7 +63,7 @@
                 </a>
             <!-- /ko -->
 
-            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !isCustomerHasCard()">
+            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !hasSavedCards()">
                 <div class="field number required">
                     <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
                         <span><!-- ko i18n: 'Card number'--><!-- /ko --></span>

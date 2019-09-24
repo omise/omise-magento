@@ -4,9 +4,7 @@ define(
         'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Payment/js/view/payment/cc-form',
         'mage/storage',
-        'mage/translate',
         'jquery',
-        'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
@@ -17,9 +15,7 @@ define(
         Base,
         Component,
         storage,
-        $t,
         $,
-        errorProcessor,
         fullScreenLoader,
         redirectOnSuccessAction,
         quote,
@@ -108,8 +104,8 @@ define(
             /**
              * @return {boolean}
              */
-            isCustomerHasCard: function() {
-                return this.getCustomerCards().length;
+            hasSavedCards: function() {
+                return !!this.getCustomerCards().length;
             },
 
             /**
@@ -150,8 +146,9 @@ define(
              *
              * @return {void}
              */
-            generateTokenAndPerformPlaceOrderAction: function(data) {
+            generateTokenAndPerformPlaceOrderAction: function() {
                 var self = this;
+                var failHandler = this.buildFailHandler(self);
 
                 this.startPerformingPlaceOrderAction();
 
@@ -168,46 +165,27 @@ define(
                     if (statusCode === 200) {
                         self.omiseCardToken(response.id);
                         self.getPlaceOrderDeferredObject()
-                            .fail(
-                                function(response) {
-                                    errorProcessor.process(response, self.messageContainer);
-                                    fullScreenLoader.stopLoader();
-                                    self.isPlaceOrderActionAllowed(true);
-                                }
-                            ).done(
-                                function(response) {
-                                    if (self.isThreeDSecureEnabled()) {
-                                        var serviceUrl = urlBuilder.createUrl(
-                                            '/orders/:order_id/omise-offsite',
-                                            {
-                                                order_id: response
-                                            }
-                                        );
+                            .fail(failHandler)
+                            .done(function(response) {
+                                if (self.isThreeDSecureEnabled()) {
+                                    var serviceUrl = urlBuilder.createUrl(
+                                        '/orders/:order_id/omise-offsite',
+                                        { order_id: response }
+                                    );
 
-                                        storage.get(serviceUrl, false)
-                                            .fail(
-                                                function (response) {
-                                                    errorProcessor.process(response, self.messageContainer);
-                                                    fullScreenLoader.stopLoader();
-                                                    self.isPlaceOrderActionAllowed(true);
-                                                }
-                                            )
-                                            .done(
-                                                function (response) {
-                                                    if (response) {
-                                                        $.mage.redirect(response.authorize_uri);
-                                                    } else {
-                                                        errorProcessor.process(response, self.messageContainer);
-                                                        fullScreenLoader.stopLoader();
-                                                        self.isPlaceOrderActionAllowed(true);
-                                                    }
-                                                }
-                                            );
-                                    } else if (self.redirectAfterPlaceOrder) {
-                                        redirectOnSuccessAction.execute();
-                                    }
+                                    storage.get(serviceUrl, false)
+                                        .fail(failHandler)
+                                        .done(function (response) {
+                                            if (response) {
+                                                $.mage.redirect(response.authorize_uri);
+                                            } else {
+                                                failHandler(response);
+                                            }
+                                        });
+                                } else if (self.redirectAfterPlaceOrder) {
+                                    redirectOnSuccessAction.execute();
                                 }
-                            );
+                            });
                     } else {
                         alert(response.message);
                         self.stopPerformingPlaceOrderAction();
@@ -227,7 +205,7 @@ define(
                 }
 
                 if (typeof Omise === 'undefined') {
-                    alert($t('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
+                    alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
                     return false;
                 }
 
@@ -241,7 +219,7 @@ define(
                     return false;
                 }
 
-                this.generateTokenAndPerformPlaceOrderAction(data);
+                this.generateTokenAndPerformPlaceOrderAction();
 
                 return true;
             },
@@ -253,37 +231,28 @@ define(
              * @return {boolean}
              */
             validate: function () {
+                var
+                    prefix = '#' + this.getCode(),
+                    fields = [
+                        'CardNumber',
+                        'CardHolderName',
+                        'CardExpirationMonth',
+                        'CardExpirationYear',
+                        'CardSecurityCode'
+                    ]
+                ;
 
-                var prefix = '#' + this.getCode();
                 $(prefix + 'Form').validation();
-                
-                var isCardNumberValid          = $(prefix + 'CardNumber').valid();
-                var isCardHolderNameValid      = $(prefix + 'CardHolderName').valid();
-                var isCardExpirationMonthValid = $(prefix + 'CardExpirationMonth').valid();
-                var isCardExpirationYearValid  = $(prefix + 'CardExpirationYear').valid();
-                var isCardSecurityCodeValid    = $(prefix + 'CardSecurityCode').valid();
-
-                if (isCardNumberValid
-                    && isCardHolderNameValid
-                    && isCardExpirationMonthValid
-                    && isCardExpirationYearValid
-                    && isCardSecurityCodeValid) {
-                    return true;
-                }
-
-                return false;
+                return fields.map(f=>$(prefix+f).valid()).every(valid=>valid);
             },
 
             processOrderWithCard: function (id) {
                 var self = this;
+                var failHandler = this.buildFailHandler(self);
 
                 self.getPlaceOrderDeferredObject()
                     .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
+                        failHandler
                     ).done(
                         function(response) {
                             if (self.isThreeDSecureEnabled()) {
@@ -296,20 +265,14 @@ define(
 
                                 storage.get(serviceUrl, false)
                                     .fail(
-                                        function (response) {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
-                                        }
+                                        failHandler
                                     )
                                     .done(
                                         function (response) {
                                             if (response) {
                                                 $.mage.redirect(response.authorize_uri);
                                             } else {
-                                                errorProcessor.process(response, self.messageContainer);
-                                                fullScreenLoader.stopLoader();
-                                                self.isPlaceOrderActionAllowed(true);
+                                                failHandler(response);
                                             }
                                         }
                                     );

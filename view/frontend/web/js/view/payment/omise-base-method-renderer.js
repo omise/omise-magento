@@ -1,9 +1,11 @@
 define(
     [
-    
+        'Magento_Checkout/js/model/error-processor',
+        'Magento_Checkout/js/model/full-screen-loader'
     ],
     function (
-
+        errorProcessor,
+        fullScreenLoader
     ) {
         'use strict';
 
@@ -34,7 +36,20 @@ define(
              */
             isSandboxOn: function () {
                 return window.checkoutConfig.isOmiseSandboxOn;
-            }
+            },
+
+            /**
+             * Creates a fail handler for given context
+             *
+             * @return {boolean}
+             */
+             buildFailHandler(context) {
+                return function (response) {
+                    errorProcessor.process(response, context.messageContainer);
+                    fullScreenLoader.stopLoader();
+                    context.isPlaceOrderActionAllowed(true);
+                }
+             }
 
         };
 

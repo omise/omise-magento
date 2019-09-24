@@ -25,50 +25,34 @@ define(
              */
             placeOrder: function (data, event) {
                 var self = this;
+                var failHandler = this.buildFailHandler(self);
 
                 if (event) {
                     event.preventDefault();
                 }
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function (response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function (response) {
-                            var self = this;
-
-                            var serviceUrl = urlBuilder.createUrl(
+                    .fail(failHandler)
+                    .done(function (response) {
+                        var
+                            self = this,
+                            storageFailHandler = this.buildFailHandler(self),
+                            serviceUrl = urlBuilder.createUrl(
                                 '/orders/:order_id/omise-offsite',
-                                {
-                                    order_id: response
-                                }
-                            );
+                                { order_id: response }
+                            )
+                        ;
 
-                            storage.get(serviceUrl, false)
-                                .fail(
-                                    function (response) {
-                                        errorProcessor.process(response, self.messageContainer);
-                                        fullScreenLoader.stopLoader();
-                                        self.isPlaceOrderActionAllowed(true);
-                                    }
-                                )
-                                .done(
-                                    function (response) {
-                                        if (response) {
-                                            $.mage.redirect(response.authorize_uri);
-                                        } else {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
-                                        }
-                                    }
-                                );
-                        }
-                    );
+                        storage.get(serviceUrl, false)
+                            .fail(storageFailHandler)
+                            .done(function (response) {
+                                if (response) {
+                                    $.mage.redirect(response.authorize_uri);
+                                } else {
+                                    storageFailHandler(response);
+                                }
+                            });
+                    });
 
                 return true;
             }

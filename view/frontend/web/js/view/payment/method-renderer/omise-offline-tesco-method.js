@@ -36,23 +36,17 @@ define(
              */
             placeOrder: function(data, event) {
                 var self = this;
+                var failHandler = this.buildFailHandler(self);
 
                 if (event) {
                     event.preventDefault();
                 }
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function() {
-                            redirectOnSuccessAction.execute();
-                        }
-                    );
+                    .fail(failHandler)
+                    ).done(function() {
+                        redirectOnSuccessAction.execute();
+                    });
 
                 return true;
             }
