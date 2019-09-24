@@ -44,7 +44,7 @@ define(
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
-                    ).done(function() {
+                    .done(function() {
                         redirectOnSuccessAction.execute();
                     });
 
