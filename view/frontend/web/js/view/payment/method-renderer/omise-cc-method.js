@@ -206,7 +206,7 @@ define(
                 }
 
                 var card = this.omiseCard();
-                if ( card ) {
+                if (card) {
                     this.processOrderWithCard(card);
                     return true;
                 }

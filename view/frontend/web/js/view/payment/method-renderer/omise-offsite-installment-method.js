@@ -75,13 +75,13 @@ define(
              * @return {integer}
              */
             getInstallmentMinimum: function (id) {
-                switch (id) {
-                    case 'kbank': return 500;
-                    case 'bbl': return 500;
-                    case 'bay': return 300;
-                    case 'first_choice': return 300;
-                    case 'ktc': return 300;
-                }
+                return {
+                    'kbank'         : 500,
+                    'bbl'           : 500,
+                    'bay'           : 300,
+                    'first_choice'  : 300,
+                    'ktc'           : 300
+                }[id];
             },
 
             /**
@@ -93,13 +93,13 @@ define(
              * @return {float}
              */
             getInstallmentInterestRate: function (id) {
-                switch (id) {
-                    case 'kbank': return 0.0065;
-                    case 'bbl': return 0.008;
-                    case 'bay': return 0.008;
-                    case 'first_choice': return 0.013;
-                    case 'ktc': return 0.008;
-                }
+                return {
+                    'kbank'         : 0.0065,
+                    'bbl'           : 0.008,
+                    'bay'           : 0.008,
+                    'first_choice'  : 0.013,
+                    'ktc'           : 0.008
+                }[id];
             },
 
             /**

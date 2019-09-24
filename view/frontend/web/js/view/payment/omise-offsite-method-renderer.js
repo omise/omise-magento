@@ -5,13 +5,15 @@ define(
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/model/url-builder',
         'mage/storage',
+        'jquery'
     ],
     function (
         Base,
         errorProcessor,
         fullScreenLoader,
         urlBuilder,
-        storage
+        storage,
+        $
     ) {
         'use strict';
 
@@ -27,7 +29,8 @@ define(
              */
             placeOrder: function (data, event) {
                 var self = this;
-                var failHandler = this.buildFailHandler(self);
+                var buildFailHandler = this.buildFailHandler;
+                var failHandler = buildFailHandler(self);
 
                 if (event) {
                     event.preventDefault();
@@ -38,7 +41,7 @@ define(
                     .done(function (response) {
                         var
                             self = this,
-                            storageFailHandler = this.buildFailHandler(self),
+                            storageFailHandler = buildFailHandler(self),
                             serviceUrl = urlBuilder.createUrl(
                                 RETURN_URL,
                                 { order_id: response }

@@ -41,10 +41,11 @@ define(
              * @return {Object}
              */
             getData: function () {
+                let phoneNumber = this.trueMoneyPhoneNumber();
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'truemoney_phone_number': this.trueMoneyPhoneNumber() && this.trueMoneyPhoneNumber() !== '' ? this.trueMoneyPhoneNumber() : quote.billingAddress().telephone,
+                        'truemoney_phone_number': phoneNumber && phoneNumber !== '' ? phoneNumber : quote.billingAddress().telephone,
                     }
                 };
             },
