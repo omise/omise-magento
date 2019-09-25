@@ -53,7 +53,7 @@ The table below is the settings for the module and the description for each sett
 
 | Setting             | Description                                                                                                             |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |                                                                            
-| Sandbox             | If selected, all transactions will be performed in TEST mode and TEST keys will be used                                 |
+| Test Mode             | If selected, all transactions will be performed in TEST mode and TEST keys will be used                                 |
 | Public key for test | Your TEST public key can be found in your Dashboard.                                                                    |
 | Secret key for test | Your TEST secret key can be found in your Dashboard.                                                                    |
 | Public key for live | Your LIVE public key can be found in your Dashboard.                                                                    |
@@ -61,11 +61,11 @@ The table below is the settings for the module and the description for each sett
 | Webhook for endpoint | Read-only url to enable post order payment notifications. See [Webhooks](https://www.omise.co/api-webhooks) article.      |
 
 
-- To enable `sandbox` mode, select the setting for `Sandbox` to `Yes`.
+- To enable `test mode`, select the setting for `Test Mode` to `Yes`.
 
 **Note:**
 
-If the setting for `Sandbox` is set to `Yes`, the keys for TEST will be used. If the setting for `Sandbox` is set to `No`, the keys for LIVE will be used.
+If the setting for `Test Mode` is set to `Yes`, the keys for TEST will be used. If the setting for `Test Mode` is set to `No`, the keys for LIVE will be used.
 
 **Credit Card Solution**  
 Available options:

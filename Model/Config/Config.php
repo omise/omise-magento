@@ -41,13 +41,13 @@ class Config
     }
 
     /**
-     * Check if Omise's sandbox mode enable or not
+     * Check if Omise's test mode enable or not
      *
      * @return bool
      */
-    public function isSandboxEnabled()
+    public function isTestModeEnabled()
     {
-        if ($this->getValue('sandbox_status')) {
+        if ($this->getValue('testmode_status')) {
             return true;
         }
 
@@ -61,7 +61,7 @@ class Config
      */
     public function getPublicKey()
     {
-        if ($this->isSandboxEnabled()) {
+        if ($this->isTestModeEnabled()) {
             return $this->getTestPublicKey();
         }
 
@@ -95,7 +95,7 @@ class Config
      */
     public function getSecretKey()
     {
-        if ($this->isSandboxEnabled()) {
+        if ($this->isTestModeEnabled()) {
             return $this->getTestSecretKey();
         }
 

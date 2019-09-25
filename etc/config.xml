@@ -10,7 +10,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
         <payment>
 
             <omise>
-                <sandbox_status>0</sandbox_status>
+                <testmode_status>0</testmode_status>
                 <model>OmiseAdapter</model>
             </omise>
 

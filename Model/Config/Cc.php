@@ -11,7 +11,7 @@ class Cc extends Config
     const CODE = 'omise_cc';
 
     /**
-     * Check if Omise's sandbox mode enable or not
+     * Check if test mode is enabled or not
      *
      * @return bool
      */
