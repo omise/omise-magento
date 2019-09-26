@@ -160,54 +160,23 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function (data, event) {
+            placeOrder: function(data, event) {
                 var self = this;
 
                 if (event) {
                     event.preventDefault();
                 }
 
-                if (! this.validate()) {
-                    return false;
-                }
-
                 self.getPlaceOrderDeferredObject()
                     .fail(
-                        function (response) {
+                        function(response) {
                             errorProcessor.process(response, self.messageContainer);
                             fullScreenLoader.stopLoader();
                             self.isPlaceOrderActionAllowed(true);
                         }
                     ).done(
-                        function (response) {
-                            var self = this;
-
-                            var serviceUrl = urlBuilder.createUrl(
-                                '/orders/:order_id/omise-offsite',
-                                {
-                                    order_id: response
-                                }
-                            );
-
-                            storage.get(serviceUrl, false)
-                                .fail(
-                                    function (response) {
-                                        errorProcessor.process(response, self.messageContainer);
-                                        fullScreenLoader.stopLoader();
-                                        self.isPlaceOrderActionAllowed(true);
-                                    }
-                                )
-                                .done(
-                                    function (response) {
-                                        if (response) {
-                                            $.mage.redirect(response.authorize_uri);
-                                        } else {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
-                                        }
-                                    }
-                                );
+                        function() {
+                            redirectOnSuccessAction.execute();
                         }
                     );
 
