@@ -41,7 +41,7 @@
                                                                         <item name="omise_offsite_truemoney" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
-                                                                        <item name="omise_offsite_conveniencestore" xsi:type="array">
+                                                                        <item name="omise_offline_conveniencestore" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
                                                                     </item>

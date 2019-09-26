@@ -8,5 +8,5 @@ class Conveniencestore extends Config
     /**
      * @var string
      */
-    const CODE = 'omise_offsite_conveniencestore';
+    const CODE = 'omise_offline_conveniencestore';
 }

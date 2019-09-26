@@ -41,7 +41,7 @@ define(
              * @return {string}
              */
             getCode: function () {
-                return 'omise_offsite_conveniencestore';
+                return 'omise_offline_conveniencestore';
             },
 
             /**

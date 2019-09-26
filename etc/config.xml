@@ -74,7 +74,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_truemoney>
 
-            <omise_offsite_conveniencestore>
+            <omise_offline_conveniencestore>
                 <active>0</active>
                 <title>Convenience Store</title>
                 <model>OmiseConveniencestoreAdapter</model>
@@ -84,7 +84,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
-            </omise_offsite_conveniencestore>
+            </omise_offline_conveniencestore>
 
             <omise_offline_tesco>
                 <active>0</active>
