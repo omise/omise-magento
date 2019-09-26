@@ -30,7 +30,7 @@ define(
 
         return Component.extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-conveniencestore-form'
+                template: 'Omise_Payment/payment/offline-conveniencestore-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
