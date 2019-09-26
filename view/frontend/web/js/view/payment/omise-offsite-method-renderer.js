@@ -17,8 +17,6 @@ define(
     ) {
         'use strict';
 
-        const RETURN_URL = '/orders/:order_id/omise-offsite';
-
         return Object.assign({}, Base, {
 
             /**
@@ -30,6 +28,7 @@ define(
             placeOrder: function (data, event) {
                 var self = this;
                 var buildFailHandler = this.buildFailHandler;
+                var return_url = this.OFFSITE_RETURN_URL;
                 var failHandler = buildFailHandler(self);
 
                 if (event) {
@@ -43,7 +42,7 @@ define(
                             self = this,
                             storageFailHandler = buildFailHandler(self),
                             serviceUrl = urlBuilder.createUrl(
-                                RETURN_URL,
+                                return_url,
                                 { order_id: response }
                             )
                         ;

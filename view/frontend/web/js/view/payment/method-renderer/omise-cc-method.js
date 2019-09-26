@@ -165,7 +165,7 @@ define(
                             .done(function(response) {
                                 if (self.isThreeDSecureEnabled()) {
                                     var serviceUrl = urlBuilder.createUrl(
-                                        '/orders/:order_id/omise-offsite',
+                                        self.OFFSITE_RETURN_URL,
                                         { order_id: response }
                                     );
 
@@ -251,7 +251,7 @@ define(
                     .done(function(response) {
                         if (self.isThreeDSecureEnabled()) {
                             var serviceUrl = urlBuilder.createUrl(
-                                '/orders/:order_id/omise-offsite',
+                                self.OFFSITE_RETURN_URL,
                                 { order_id: response }
                             );
 

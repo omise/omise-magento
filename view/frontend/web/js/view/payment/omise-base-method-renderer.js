@@ -11,6 +11,8 @@ define(
 
         return {
 
+            OFFSITE_RETURN_URL: '/orders/:order_id/omise-offsite',
+
             /**
              * Get payment method code
              *
