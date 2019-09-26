@@ -18,10 +18,12 @@ define(
             'offline-tesco'
         ];
 
+        alert('hello');
+
         METHOD_RENDERERS.forEach(rendererName => {
             rendererList.push({
                 type: 'omise_' + rendererName.replace(/-/g, '_'),
-                component: 'Omise_Payment/js/view/payments/method-renderer/omise-' + rendererName + '-method'
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-' + rendererName + '-method'
             });  
         });
 
