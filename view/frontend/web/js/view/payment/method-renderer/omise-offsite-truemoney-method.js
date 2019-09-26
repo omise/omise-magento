@@ -45,7 +45,7 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'truemoney_phone_number': phoneNumber && phoneNumber !== '' ? phoneNumber : quote.billingAddress().telephone,
+                        'truemoney_phone_number': phoneNumber && phoneNumber !== '' ? phoneNumber : this.getCustomerSavedPhoneNumber()
                     }
                 };
             },
@@ -56,7 +56,8 @@ define(
              * @return {string}
              */
             getCustomerSavedPhoneNumber: function () {
-                return quote.billingAddress().telephone;
+                let q = quote && quote.billingAddress();
+                return q ? q.telephone : '';
             }
 
         });
