@@ -18,8 +18,6 @@ define(
             'offline-tesco'
         ];
 
-        alert('hello');
-
         METHOD_RENDERERS.forEach(rendererName => {
             rendererList.push({
                 type: 'omise_' + rendererName.replace(/-/g, '_'),
