@@ -14,8 +14,7 @@ define(
         Component,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote,
-        errorProcessor
+        quote
     ) {
         'use strict';
 
