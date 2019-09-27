@@ -6,11 +6,15 @@ use Magento\Payment\Gateway\Response\HandlerInterface;
 
 class PaymentDetailsHandler implements HandlerInterface
 {
+    private $log;
+    public function __construct(\PSR\LoggerInterface\Log $log) {
+        $this->log = $log;
+    }
     /**
      * @param string $url URL to Tesco Barcode generated in Omise Backend
      * @return string Barcode in SVG format
      */
-    private function downloadTescoBarcode($url) 
+    private function downloadTescoBarcode($url)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -31,11 +35,16 @@ class PaymentDetailsHandler implements HandlerInterface
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
         $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
-        
-        if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
-            $barcode = $this->downloadTescoBarcode($response['charge']->source['references']['barcode']);
-            $payment->setAdditionalInformation('barcode', $barcode);
+        $this->log->debug ('payment details - subject handler', ['response'=> $response['charge']]);
+
+        switch ($response['charge']->source['type']) {
+            case 'bill_payment_tesco_lotus':
+                $barcode = $this->downloadTescoBarcode($response['charge']->source['references']['barcode']);
+                $payment->setAdditionalInformation('barcode', $barcode);
+                break;
+            case 'econtext':
+                $payment->setAdditionalInformation('payment_link', $response['charge']['authorize_uri']);
+                break;
         }
     }
 }
-
