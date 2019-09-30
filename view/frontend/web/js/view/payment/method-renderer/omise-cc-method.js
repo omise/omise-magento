@@ -244,7 +244,7 @@ define(
                 return fields.map(f=>$(prefix+f).valid()).every(valid=>valid);
             },
 
-            processOrderWithCard: function (id) {
+            processOrderWithCard: function () {
                 var self = this;
                 var failHandler = this.buildFailHandler(self);
 

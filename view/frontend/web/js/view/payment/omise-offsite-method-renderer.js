@@ -26,10 +26,12 @@ define(
              * @return {boolean}
              */
             placeOrder: function (data, event) {
-                var self = this;
-                var buildFailHandler = this.buildFailHandler;
-                var return_url = this.OFFSITE_RETURN_URL;
-                var failHandler = buildFailHandler(self);
+                var
+                    self = this,
+                    buildFailHandler = this.buildFailHandler,
+                    return_url = this.OFFSITE_RETURN_URL,
+                    failHandler = buildFailHandler(self)
+                ;
 
                 if (event) {
                     event.preventDefault();
