@@ -27,7 +27,7 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/omise-cc-form',
+                template: 'Omise_Payment/payment/omise-cc-form'
             },
 
             redirectAfterPlaceOrder: true,
