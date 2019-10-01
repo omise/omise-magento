@@ -1,16 +1,12 @@
 define(
     [
         'Omise_Payment/js/view/payment/omise-offline-method-renderer',
-        'Magento_Checkout/js/model/error-processor',
-        'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/model/url-builder',
         'mage/storage',
         'jquery'
     ],
     function (
         Base,
-        errorProcessor,
-        fullScreenLoader,
         urlBuilder,
         storage,
         $
