@@ -164,11 +164,11 @@ define(
                         self.omiseCardToken(response.id);
                         self.getPlaceOrderDeferredObject()
                             .fail(failHandler)
-                            .done(function(response) {
+                            .done(function(order_id) {
                                 if (self.isThreeDSecureEnabled()) {
                                     var serviceUrl = urlBuilder.createUrl(
                                         self.OFFSITE_RETURN_URL,
-                                        { order_id: response }
+                                        { order_id }
                                     );
 
                                     storage.get(serviceUrl, false)
@@ -250,11 +250,11 @@ define(
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
-                    .done(function(response) {
+                    .done(function(order_id) {
                         if (self.isThreeDSecureEnabled()) {
                             var serviceUrl = urlBuilder.createUrl(
                                 self.OFFSITE_RETURN_URL,
-                                { order_id: response }
+                                { order_id }
                             );
 
                             storage.get(serviceUrl, false)

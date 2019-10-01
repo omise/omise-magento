@@ -35,13 +35,13 @@ define(
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
-                    .done(function (response) {
+                    .done(function (order_id) {
                         var
                             self = this,
                             storageFailHandler = buildFailHandler(self),
                             serviceUrl = urlBuilder.createUrl(
                                 return_url,
-                                { order_id: response }
+                                { order_id }
                             )
                         ;
 
