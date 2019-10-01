@@ -2,12 +2,11 @@ define(
     [
         'jquery',
         'ko',
-        'mage/storage',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
+        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
         'Magento_Customer/js/view/customer',
-        'Magento_Checkout/js/model/url-builder',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Catalog/js/price-utils',
         'mage/validation',
@@ -15,12 +14,11 @@ define(
     function (
         $,
         ko,
-        storage,
         Component,
         fullScreenLoader,
+        redirectOnSuccessAction,
         quote,
         customer,
-        urlBuilder,
         errorProcessor,
         priceUtils
     ) {
