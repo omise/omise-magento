@@ -34,14 +34,13 @@ define(
              * @return {boolean}
              */
             placeOrder: function(data, event) {
-                var self = this;
-                var failHandler = this.buildFailHandler(self);
+                var failHandler = this.buildFailHandler(this);
 
                 if (event) {
                     event.preventDefault();
                 }
 
-                self.getPlaceOrderDeferredObject()
+                this.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function() {
                         redirectOnSuccessAction.execute();
