@@ -1,7 +1,7 @@
 <?php
 namespace Omise\Payment\Block\Checkout\Onepage\Success;
 
-class TescoAdditionalInformation extends \Magento\Framework\View\Element\Template
+class ConveniencestoreAdditionalInformation extends \Magento\Framework\View\Element\Template
 {
     /**
      * @var \Magento\Checkout\Model\Session
