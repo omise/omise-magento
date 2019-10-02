@@ -35,7 +35,6 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_cc',
-            active: true,
 
             /**
              * Get a checkout form data

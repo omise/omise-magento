@@ -20,7 +20,8 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_alipay'
+            code: 'omise_offsite_alipay',
+            restrictedToCurrencies: ['thb']
 
         });
     }

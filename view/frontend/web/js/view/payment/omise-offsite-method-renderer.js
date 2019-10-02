@@ -1,6 +1,6 @@
 define(
     [
-        'Omise_Payment/js/view/payment/omise-offline-method-renderer',
+        'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Checkout/js/model/url-builder',
         'mage/storage',
         'jquery'

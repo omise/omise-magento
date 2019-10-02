@@ -28,7 +28,30 @@ define(
              * @return {boolean}
              */
             isActive: function() {
-                return this.active;
+                if (this.restrictedToCurrencies && this.restrictedToCurrencies.length) {
+                    let orderCurrency = this.getOrderCurrency();
+                    return (this.getStoreCurrency() == orderCurrency) && this.restrictedToCurrencies.includes(orderCurrency);
+                } else {
+                    return true;
+                }
+            },
+
+            /**
+             * Get order currency
+             *
+             * @return {string}
+             */
+            getOrderCurrency: function () {
+                return window.checkoutConfig.quoteData.quote_currency_code.toLowerCase();
+            },
+
+            /**
+             * Get store currency
+             *
+             * @return {string}
+             */
+            getStoreCurrency: function () {
+                return window.checkoutConfig.quoteData.store_currency_code.toLowerCase();
             },
 
             /**

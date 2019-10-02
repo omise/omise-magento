@@ -24,6 +24,7 @@ define(
             },
 
             code: 'omise_offsite_installment',
+            restrictedToCurrencies: ['thb'],
 
             /**
              * Initiate observable fields

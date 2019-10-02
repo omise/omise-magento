@@ -21,6 +21,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_internetbanking',
+            restrictedToCurrencies: ['thb'],
 
             /**
              * Initiate observable fields

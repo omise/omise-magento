@@ -1,7 +1,7 @@
 define(
     [
         'ko',
-        'Omise_Payment/js/view/payment/omise-offline-method-renderer',
+        'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
@@ -26,6 +26,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offline_tesco',
+            restrictedToCurrencies: ['thb'],
 
             /**
              * Hook the placeOrder function.
