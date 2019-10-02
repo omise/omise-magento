@@ -37,9 +37,7 @@ define(
             placeOrder: function(data, event) {
                 var failHandler = this.buildFailHandler(this);
 
-                if (event) {
-                    event.preventDefault();
-                }
+                event && event.preventDefault();
 
                 this.getPlaceOrderDeferredObject()
                     .fail(failHandler)

@@ -29,9 +29,7 @@ define(
                     failHandler = buildFailHandler(self)
                 ;
 
-                if (event) {
-                    event.preventDefault();
-                }
+                event && event.preventDefault();
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)

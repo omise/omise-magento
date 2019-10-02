@@ -197,9 +197,7 @@ define(
              * @return {boolean}
              */
             placeOrder: function(data, event) {
-                if (event) {
-                    event.preventDefault();
-                }
+                event && event.preventDefault();
 
                 if (typeof Omise === 'undefined') {
                     alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
