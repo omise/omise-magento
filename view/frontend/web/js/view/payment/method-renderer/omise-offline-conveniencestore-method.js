@@ -100,7 +100,7 @@ define(
             },
 
             /**
-             * Get customer phone number saved in profile
+             * Get customer name saved in profile
              *
              * @return {string}
              */
