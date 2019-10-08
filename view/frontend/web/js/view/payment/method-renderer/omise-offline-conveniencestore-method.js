@@ -24,7 +24,7 @@ define(
     ) {
         'use strict';
 
-        const convStoreMinimumPurchaseAmount = 150;
+        const convStoreMinimumPurchaseAmount = 200;
 
         return Component.extend({
             defaults: {
