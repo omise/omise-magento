@@ -1,7 +1,9 @@
 <?php
 namespace Omise\Payment\Gateway\Response;
+
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
+
 class PaymentDetailsHandler implements HandlerInterface
 {
     /**
@@ -14,8 +16,10 @@ class PaymentDetailsHandler implements HandlerInterface
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
         return curl_exec($ch);
     }
+
     /**
      * @inheritdoc
      */
@@ -23,6 +27,7 @@ class PaymentDetailsHandler implements HandlerInterface
     {
         $payment = SubjectReader::readPayment($handlingSubject);
         $payment = $payment->getPayment();
+
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
         $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
@@ -33,3 +38,4 @@ class PaymentDetailsHandler implements HandlerInterface
         }
     }
 }
+

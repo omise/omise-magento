@@ -17,6 +17,7 @@ use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
 {
+
     /**
      * @var string
      */
