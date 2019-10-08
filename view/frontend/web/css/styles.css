@@ -96,16 +96,11 @@
     background: url('../images/kbank.svg')rgb(247, 226, 226);
 }
 
-#omise_offsite_truemoneyphoneNumber {
-    width: 225px;
-    margin-bottom:18px;
-}
-
-#omise_offline_conveniencestorephoneNumber {
+#omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorephoneNumber {
     width: 225px;
 }
 
-#omise_offline_conveniencestoreemail {
-    width: 225px;
-    margin-bottom:18px;
+#omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail {
+    margin-bottom: 18px;
 }
+
