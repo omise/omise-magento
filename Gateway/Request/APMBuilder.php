@@ -4,16 +4,18 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
+
 use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Config\Conveniencestore;
+
+use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
-use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
 {
