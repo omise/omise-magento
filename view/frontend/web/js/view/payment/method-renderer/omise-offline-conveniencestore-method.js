@@ -138,8 +138,8 @@ define(
             validate: function () {
                 $('#' + this.getCode() + 'Form').validation();
 
-                var isEmailValid       = $('#' + this.getCode() + 'email').valid();
-                var isPhoneNumberValid = $('#' + this.getCode() + 'phoneNumber').valid();
+                var isEmailValid       = $('#' + this.getCode() + 'Email').valid();
+                var isPhoneNumberValid = $('#' + this.getCode() + 'PhoneNumber').valid();
 
                 return isEmailValid && isPhoneNumberValid;
             },
@@ -155,6 +155,10 @@ define(
 
                 if (event) {
                     event.preventDefault();
+                }
+
+                if (! this.validate()) {
+                    return false;
                 }
 
                 self.getPlaceOrderDeferredObject()
