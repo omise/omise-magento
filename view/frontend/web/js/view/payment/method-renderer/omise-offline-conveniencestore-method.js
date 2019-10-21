@@ -138,10 +138,11 @@ define(
             validate: function () {
                 $('#' + this.getCode() + 'Form').validation();
 
-                var isEmailValid       = $('#' + this.getCode() + 'Email').valid();
-                var isPhoneNumberValid = $('#' + this.getCode() + 'PhoneNumber').valid();
+                var isCustomerNameValid = $('#' + this.getCode() + 'CustomerName').valid();
+                var isEmailValid        = $('#' + this.getCode() + 'Email').valid();
+                var isPhoneNumberValid  = $('#' + this.getCode() + 'PhoneNumber').valid();
 
-                return isEmailValid && isPhoneNumberValid;
+                return isPhoneNumberValid && isCustomerNameValid && isEmailValid;
             },
 
             /**
