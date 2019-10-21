@@ -96,7 +96,7 @@
     background: url('../images/kbank.svg')rgb(247, 226, 226);
 }
 
-#omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorephoneNumber {
+#omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorephoneNumber, #omise_offline_conveniencestorecustomerName {
     width: 225px;
 }
 

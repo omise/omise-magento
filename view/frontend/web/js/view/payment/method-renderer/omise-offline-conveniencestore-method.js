@@ -62,7 +62,7 @@ define(
                     'additional_data': {
                         'conv_store_phone_number': this.convenienceStorePhoneNumber(),
                         'conv_store_email': this.convenienceStoreEmail(),
-                        'conv_store_customer_name': this.getConvenienceStoreCustomersName()
+                        'conv_store_customer_name': this.convenienceStoreCustomersName()
                     }
                 };
             },
@@ -76,7 +76,8 @@ define(
                 this._super()
                     .observe([
                         'convenienceStorePhoneNumber',
-                        'convenienceStoreEmail'
+                        'convenienceStoreEmail',
+                        'convenienceStoreCustomersName'
                     ]);
                 return this;
             },
@@ -97,15 +98,6 @@ define(
              */
             getTotal: function () {
                 return + window.checkoutConfig.totalsData.grand_total;
-            },
-
-            /**
-             * Get customer name saved in profile
-             *
-             * @return {string}
-             */
-            getConvenienceStoreCustomersName: function() {
-                return customer().customer().fullname;
             },
 
             /**
