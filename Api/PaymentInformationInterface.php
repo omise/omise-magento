@@ -15,6 +15,6 @@ interface PaymentInformationInterface
      *
      * @return Object
      */
-    public function info($order_id);
+    public function paymentInfo($order_id);
 
 }
