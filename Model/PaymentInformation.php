@@ -66,4 +66,14 @@ class PaymentInformation implements PaymentInformationInterface
 
         throw new PaymentException(__('Cannot retrieve a payment detail from the request, please contact our support if you have any questions'));
     }
+
+    /**
+     * @param  int $order_id
+     *
+     * @return Omise\Payment\Api\Data\PaymentInterface
+     */
+    public function info($order_id)
+    {
+        throw new PaymentException(__('Cannot retrieve a payment detail from the request, please contact our support if you have any questions'));
+    }
 }

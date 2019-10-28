@@ -9,4 +9,12 @@ interface PaymentInformationInterface
      * @return Omise\Payment\Api\Data\PaymentInterface
      */
     public function offsite($order_id);
+
+    /**
+     * @param  int $order_id
+     *
+     * @return Object
+     */
+    public function info($order_id);
+
 }

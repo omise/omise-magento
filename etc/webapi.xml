@@ -6,4 +6,10 @@
             <resource ref="anonymous" />
         </resources>
     </route>
+    <route method="GET" url="/V1/orders/:order_id/payment-status">
+        <service class="Omise\Payment\Api\PaymentInformationInterface" method="status"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>
