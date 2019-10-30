@@ -29,8 +29,8 @@ class PaymentInformation implements PaymentInformationInterface
 
     public function __construct(Session $session, PaymentInterfaceFactory $data_factory, OrderRepositoryInterface $order_repository)
     {
-        $this->session           = $session;
-        $this->data_factory      = $data_factory;
+        $this->session = $session;
+        $this->data_factory = $data_factory;
         $this->_order_repository = $order_repository;
     }
 
@@ -80,12 +80,11 @@ class PaymentInformation implements PaymentInformationInterface
      */
     public function paymentInfo($order_id)
     {
-        $order = $this->_order_repository->get(66);
+        $order = $this->_order_repository->get($order_id);
 
         if (!$order) {
             return false;
         }
-
-        return $order->getPayment()->getState() === \Magento\Sales\Model\Order::STATE_PAYMENT_REVIEW;
+        return $order->getStatus() === \Magento\Sales\Model\Order::STATE_PROCESSING;
     }
 }
