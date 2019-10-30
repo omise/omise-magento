@@ -5,9 +5,10 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\Exception\AuthorizationException;
 use Magento\Framework\Exception\PaymentException;
 use Magento\Framework\Exception\SessionException;
-use Omise\Payment\Api\PaymentInformationInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Omise\Payment\Api\Data\PaymentInterface;
 use Omise\Payment\Api\Data\PaymentInterfaceFactory;
+use Omise\Payment\Api\PaymentInformationInterface;
 
 class PaymentInformation implements PaymentInformationInterface
 {
@@ -21,11 +22,16 @@ class PaymentInformation implements PaymentInformationInterface
      */
     private $data_factory;
 
+    /**
+     * @var Magento\Sales\Api\OrderRepositoryInterface
+     */
+    private $_order_repository;
 
-    public function __construct(Session $session, PaymentInterfaceFactory $data_factory)
+    public function __construct(Session $session, PaymentInterfaceFactory $data_factory, OrderRepositoryInterface $order_repository)
     {
-        $this->session      = $session;
-        $this->data_factory = $data_factory;
+        $this->session           = $session;
+        $this->data_factory      = $data_factory;
+        $this->_order_repository = $order_repository;
     }
 
     /**
@@ -38,7 +44,7 @@ class PaymentInformation implements PaymentInformationInterface
         // Note, $order->getId(); will return a string, not int.
         $order = $this->session->getLastRealOrder();
 
-        if (! $order->getId()) {
+        if (!$order->getId()) {
             throw new SessionException(__('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
         }
 
@@ -74,6 +80,12 @@ class PaymentInformation implements PaymentInformationInterface
      */
     public function paymentInfo($order_id)
     {
-        throw new PaymentException(__("order ID $order_id"));
+        $order = $this->_order_repository->get(66);
+
+        if (!$order) {
+            return false;
+        }
+
+        return $order->getPayment()->getState() === \Magento\Sales\Model\Order::STATE_PAYMENT_REVIEW;
     }
 }
