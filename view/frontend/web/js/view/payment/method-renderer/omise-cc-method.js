@@ -8,8 +8,7 @@ define(
         'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/url-builder'
+        'Magento_Checkout/js/model/quote'
     ],
     function (
         ko,
@@ -20,8 +19,7 @@ define(
         validator,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote,
-        urlBuilder
+        quote
     ) {
         'use strict';
 
@@ -165,11 +163,7 @@ define(
                             .fail(failHandler)
                             .done(function(order_id) {
                                 if (self.isThreeDSecureEnabled()) {
-                                    var serviceUrl = urlBuilder.createUrl(
-                                        self.OFFSITE_RETURN_URL,
-                                        { order_id }
-                                    );
-
+                                    var serviceUrl = self.getMagentoReturnUrl(order_id);
                                     storage.get(serviceUrl, false)
                                         .fail(failHandler)
                                         .done(function (response) {
@@ -249,11 +243,7 @@ define(
                     .fail(failHandler)
                     .done(function(order_id) {
                         if (self.isThreeDSecureEnabled()) {
-                            var serviceUrl = urlBuilder.createUrl(
-                                self.OFFSITE_RETURN_URL,
-                                { order_id }
-                            );
-
+                            var serviceUrl = self.getMagentoReturnUrl(order_id);
                             storage.get(serviceUrl, false)
                                 .fail(failHandler)
                                 .done(function (response) {

@@ -1,13 +1,11 @@
 define(
     [
         'Omise_Payment/js/view/payment/omise-base-method-renderer',
-        'Magento_Checkout/js/model/url-builder',
         'mage/storage',
         'jquery'
     ],
     function (
         Base,
-        urlBuilder,
         storage,
         $
     ) {
@@ -25,7 +23,6 @@ define(
                 var
                     self = this,
                     buildFailHandler = this.buildFailHandler,
-                    return_url = this.OFFSITE_RETURN_URL,
                     failHandler = buildFailHandler(self)
                 ;
 
@@ -35,14 +32,9 @@ define(
                     .fail(failHandler)
                     .done(function (order_id) {
                         var
-                            self = this,
-                            storageFailHandler = buildFailHandler(self),
-                            serviceUrl = urlBuilder.createUrl(
-                                return_url,
-                                { order_id }
-                            )
+                            storageFailHandler = buildFailHandler(this),
+                            serviceUrl = self.getMagentoReturnUrl(order_id)
                         ;
-
                         storage.get(serviceUrl, false)
                             .fail(storageFailHandler)
                             .done(function (response) {

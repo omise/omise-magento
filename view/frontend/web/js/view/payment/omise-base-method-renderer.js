@@ -1,17 +1,31 @@
 define(
     [
         'Magento_Checkout/js/model/error-processor',
-        'Magento_Checkout/js/model/full-screen-loader'
+        'Magento_Checkout/js/model/full-screen-loader',
+        'Magento_Checkout/js/model/url-builder'
     ],
     function (
         errorProcessor,
-        fullScreenLoader
+        fullScreenLoader,
+        urlBuilder
     ) {
         'use strict';
 
+        const OFFSITE_RETURN_URL = '/orders/:order_id/omise-offsite';
+
         return {
 
-            OFFSITE_RETURN_URL: '/orders/:order_id/omise-offsite',
+            /**
+             * Get return URL for Magento (based on order id)
+             *
+             * @return {string}
+             */
+            getMagentoReturnUrl: function (order_id) {
+                return urlBuilder.createUrl(
+                    OFFSITE_RETURN_URL,
+                    { order_id }
+                );
+            },
 
             /**
              * Get payment method code
