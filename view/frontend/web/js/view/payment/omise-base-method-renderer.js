@@ -11,7 +11,7 @@ define(
     ) {
         'use strict';
 
-        const OFFSITE_RETURN_URL = '/orders/:order_id/omise-offsite';
+        const RETURN_URL = '/orders/:order_id/omise-offsite';
 
         return {
 
@@ -22,7 +22,7 @@ define(
              */
             getMagentoReturnUrl: function (order_id) {
                 return urlBuilder.createUrl(
-                    OFFSITE_RETURN_URL,
+                    RETURN_URL,
                     { order_id }
                 );
             },
