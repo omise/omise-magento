@@ -1,33 +1,29 @@
 define(
     [
         'ko',
+        'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Payment/js/view/payment/cc-form',
         'mage/storage',
-        'mage/translate',
         'jquery',
         'Magento_Payment/js/model/credit-card-validation/validator',
-        'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/url-builder'
+        'Magento_Checkout/js/model/quote'
     ],
     function (
         ko,
+        Base,
         Component,
         storage,
-        $t,
         $,
         validator,
-        errorProcessor,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote,
-        urlBuilder
+        quote
     ) {
         'use strict';
 
-        return Component.extend({
+        return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/omise-cc-form'
             },
@@ -36,14 +32,7 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            /**
-             * Get payment method code
-             *
-             * @return {string}
-             */
-            getCode: function() {
-                return 'omise_cc';
-            },
+            code: 'omise_cc',
 
             /**
              * Get a checkout form data
@@ -92,34 +81,12 @@ define(
             },
 
             /**
-             * Is method available to display
-             *
-             * @return {boolean}
-             */
-            isActive: function() {
-                return true;
-            },
-
-            /**
-             * Checks if sandbox is turned on
-             *
-             * @return {boolean}
-             */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
-            },
-
-            /**
              * Is 3-D Secure config enabled
              *
              * @return {boolean}
              */
             isThreeDSecureEnabled: function() {
-                if (window.checkoutConfig.payment.omise_cc.offsitePayment) {
-                    return true;
-                }
-
-                return false;
+                return window.checkoutConfig.payment.omise_cc.offsitePayment;
             },
 
             /**
@@ -132,8 +99,8 @@ define(
             /**
              * @return {boolean}
              */
-            isCustomerHasCard: function() {
-                return this.getCustomerCards().length;
+            hasSavedCards: function() {
+                return !!this.getCustomerCards().length;
             },
 
             /**
@@ -174,8 +141,9 @@ define(
              *
              * @return {void}
              */
-            generateTokenAndPerformPlaceOrderAction: function(data) {
+            generateTokenAndPerformPlaceOrderAction: function() {
                 var self = this;
+                var failHandler = this.buildFailHandler(self);
 
                 this.startPerformingPlaceOrderAction();
 
@@ -192,46 +160,23 @@ define(
                     if (statusCode === 200) {
                         self.omiseCardToken(response.id);
                         self.getPlaceOrderDeferredObject()
-                            .fail(
-                                function(response) {
-                                    errorProcessor.process(response, self.messageContainer);
-                                    fullScreenLoader.stopLoader();
-                                    self.isPlaceOrderActionAllowed(true);
-                                }
-                            ).done(
-                                function(response) {
-                                    if (self.isThreeDSecureEnabled()) {
-                                        var serviceUrl = urlBuilder.createUrl(
-                                            '/orders/:order_id/omise-offsite',
-                                            {
-                                                order_id: response
+                            .fail(failHandler)
+                            .done(function(order_id) {
+                                if (self.isThreeDSecureEnabled()) {
+                                    var serviceUrl = self.getMagentoReturnUrl(order_id);
+                                    storage.get(serviceUrl, false)
+                                        .fail(failHandler)
+                                        .done(function (response) {
+                                            if (response) {
+                                                $.mage.redirect(response.authorize_uri);
+                                            } else {
+                                                failHandler(response);
                                             }
-                                        );
-
-                                        storage.get(serviceUrl, false)
-                                            .fail(
-                                                function (response) {
-                                                    errorProcessor.process(response, self.messageContainer);
-                                                    fullScreenLoader.stopLoader();
-                                                    self.isPlaceOrderActionAllowed(true);
-                                                }
-                                            )
-                                            .done(
-                                                function (response) {
-                                                    if (response) {
-                                                        $.mage.redirect(response.authorize_uri);
-                                                    } else {
-                                                        errorProcessor.process(response, self.messageContainer);
-                                                        fullScreenLoader.stopLoader();
-                                                        self.isPlaceOrderActionAllowed(true);
-                                                    }
-                                                }
-                                            );
-                                    } else if (self.redirectAfterPlaceOrder) {
-                                        redirectOnSuccessAction.execute();
-                                    }
+                                        });
+                                } else if (self.redirectAfterPlaceOrder) {
+                                    redirectOnSuccessAction.execute();
                                 }
-                            );
+                            });
                     } else {
                         alert(response.message);
                         self.stopPerformingPlaceOrderAction();
@@ -246,17 +191,15 @@ define(
              * @return {boolean}
              */
             placeOrder: function(data, event) {
-                if (event) {
-                    event.preventDefault();
-                }
+                event && event.preventDefault();
 
                 if (typeof Omise === 'undefined') {
-                    alert($t('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
+                    alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
                     return false;
                 }
 
                 var card = this.omiseCard();
-                if ( card ) {
+                if (card) {
                     this.processOrderWithCard(card);
                     return true;
                 }
@@ -265,7 +208,7 @@ define(
                     return false;
                 }
 
-                this.generateTokenAndPerformPlaceOrderAction(data);
+                this.generateTokenAndPerformPlaceOrderAction();
 
                 return true;
             },
@@ -277,69 +220,43 @@ define(
              * @return {boolean}
              */
             validate: function () {
-                $('#' + this.getCode() + 'Form').validation();
-                
-                var isCardNumberValid          = $('#' + this.getCode() + 'CardNumber').valid();
-                var isCardHolderNameValid      = $('#' + this.getCode() + 'CardHolderName').valid();
-                var isCardExpirationMonthValid = $('#' + this.getCode() + 'CardExpirationMonth').valid();
-                var isCardExpirationYearValid  = $('#' + this.getCode() + 'CardExpirationYear').valid();
-                var isCardSecurityCodeValid    = $('#' + this.getCode() + 'CardSecurityCode').valid();
+                var
+                    prefix = '#' + this.getCode(),
+                    fields = [
+                        'CardNumber',
+                        'CardHolderName',
+                        'CardExpirationMonth',
+                        'CardExpirationYear',
+                        'CardSecurityCode'
+                    ]
+                ;
 
-                if (isCardNumberValid
-                    && isCardHolderNameValid
-                    && isCardExpirationMonthValid
-                    && isCardExpirationYearValid
-                    && isCardSecurityCodeValid) {
-                    return true;
-                }
-
-                return false;
+                $(prefix + 'Form').validation();
+                return fields.map(f=>$(prefix+f).valid()).every(valid=>valid);
             },
 
-            processOrderWithCard: function (id) {
+            processOrderWithCard: function () {
                 var self = this;
+                var failHandler = this.buildFailHandler(self);
 
                 self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function(response) {
-                            if (self.isThreeDSecureEnabled()) {
-                                var serviceUrl = urlBuilder.createUrl(
-                                    '/orders/:order_id/omise-offsite',
-                                    {
-                                        order_id: response
+                    .fail(failHandler)
+                    .done(function(order_id) {
+                        if (self.isThreeDSecureEnabled()) {
+                            var serviceUrl = self.getMagentoReturnUrl(order_id);
+                            storage.get(serviceUrl, false)
+                                .fail(failHandler)
+                                .done(function (response) {
+                                    if (response) {
+                                        $.mage.redirect(response.authorize_uri);
+                                    } else {
+                                        failHandler(response);
                                     }
-                                );
-
-                                storage.get(serviceUrl, false)
-                                    .fail(
-                                        function (response) {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
-                                        }
-                                    )
-                                    .done(
-                                        function (response) {
-                                            if (response) {
-                                                $.mage.redirect(response.authorize_uri);
-                                            } else {
-                                                errorProcessor.process(response, self.messageContainer);
-                                                fullScreenLoader.stopLoader();
-                                                self.isPlaceOrderActionAllowed(true);
-                                            }
-                                        }
-                                    );
-                            } else if (self.redirectAfterPlaceOrder) {
-                                redirectOnSuccessAction.execute();
-                            }
+                                });
+                        } else if (self.redirectAfterPlaceOrder) {
+                            redirectOnSuccessAction.execute();
                         }
-                    );
+                    });
             }
         });
     }

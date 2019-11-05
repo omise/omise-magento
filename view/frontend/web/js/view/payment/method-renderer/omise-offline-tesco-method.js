@@ -1,6 +1,7 @@
 define(
     [
         'ko',
+        'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
@@ -9,65 +10,23 @@ define(
     ],
     function (
         ko,
+        Base,
         Component,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote,
-        errorProcessor
+        quote
     ) {
         'use strict';
 
-        return Component.extend({
+        return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offline-tesco-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            /**
-             * Get payment method code
-             *
-             * @return {string}
-             */
-            getCode: function() {
-                return 'omise_offline_tesco';
-            },
-
-            /**
-             * Is method available to display
-             *
-             * @return {boolean}
-             */
-            isActive: function() {
-                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
-            },
-
-            /**
-             * Checks if sandbox is turned on
-             *
-             * @return {boolean}
-             */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
-            },
-
-            /**
-             * Get order currency
-             *
-             * @return {string}
-             */
-            getOrderCurrency: function () {
-                return window.checkoutConfig.quoteData.quote_currency_code;
-            },
-
-            /**
-             * Get store currency
-             *
-             * @return {string}
-             */
-            getStoreCurrency: function () {
-                return window.checkoutConfig.quoteData.store_currency_code;
-            },
+            code: 'omise_offline_tesco',
+            restrictedToCurrencies: ['thb'],
 
             /**
              * Hook the placeOrder function.
@@ -76,24 +35,15 @@ define(
              * @return {boolean}
              */
             placeOrder: function(data, event) {
-                var self = this;
+                var failHandler = this.buildFailHandler(this);
 
-                if (event) {
-                    event.preventDefault();
-                }
+                event && event.preventDefault();
 
-                self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function() {
-                            redirectOnSuccessAction.execute();
-                        }
-                    );
+                this.getPlaceOrderDeferredObject()
+                    .fail(failHandler)
+                    .done(function() {
+                        redirectOnSuccessAction.execute();
+                    });
 
                 return true;
             }
