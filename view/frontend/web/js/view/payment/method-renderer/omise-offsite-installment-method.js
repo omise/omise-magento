@@ -46,27 +46,6 @@ define(
             },
 
             /**
-             * Format Price
-             * 
-             * @param {float} amount - Amount to be formatted
-             * @return {string}
-             */
-            getFormattedAmount: function (amount) {
-                return priceUtils.formatPrice(amount, quote.getPriceFormat());
-            },
-
-            /**
-             * Get formatted message about installment value limitation
-             *
-             * NOTE: this value should be taken directly from capability object when it is fully implemented.
-             *
-             * @return {string}
-             */
-            getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
-            },
-
-            /**
              * Get Installment minimum
              * this function respects info from: https://www.omise.co/installment-payment
              *
@@ -211,16 +190,6 @@ define(
                     );
                 }
             },
-
-            /**
-             * Check if order value meets minimum requirement
-             *
-             * @return {boolean}
-             */
-            orderValueTooLow: function () {
-                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT;
-            }
-
         });
     }
 );

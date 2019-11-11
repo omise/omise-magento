@@ -21,8 +21,6 @@ define(
     ) {
         'use strict';
 
-        const CONVENIENCESTORE_MIN_PURCHASE_AMOUNT = 200;
-
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offline-conveniencestore-form'
@@ -33,44 +31,6 @@ define(
             code: 'omise_offline_conveniencestore',
             restrictedToCurrencies: ['jpy'],
 
-            /**
-             * Format Price
-             * 
-             * @param {float} amount - Amount to be formatted
-             * @return {string}
-             */
-            getFormattedAmount: function (amount) {
-                return priceUtils.formatPrice(amount, quote.getPriceFormat());
-            },
-
-            /**
-             * Get formatted message about installment value limitation
-             *
-             * NOTE: this value should be taken directly from capability object when it is fully implemented.
-             *
-             * @return {string}
-             */
-            getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(CONVENIENCESTORE_MIN_PURCHASE_AMOUNT));
-            },
-
-            /**
-             * Check if order value meets minimum requirement
-             *
-             * @return {boolean}
-             */
-            orderValueTooLow: function () {
-                return this.getTotal() < CONVENIENCESTORE_MIN_PURCHASE_AMOUNT;
-            },
-
-            /**
-             * Get total amount of an order
-             *
-             * @return {integer}
-             */
-            getTotal: function () {
-                return + window.checkoutConfig.totalsData.grand_total;
-            },
 
             /**
              * Hook the placeOrder function.

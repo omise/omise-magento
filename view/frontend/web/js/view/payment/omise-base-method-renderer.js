@@ -1,19 +1,63 @@
 define(
     [
+        'jquery',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Checkout/js/model/full-screen-loader',
-        'Magento_Checkout/js/model/url-builder'
+        'Magento_Checkout/js/model/url-builder',
+        'Magento_Checkout/js/model/quote',
+        'Magento_Catalog/js/price-utils'
     ],
     function (
+        $,
         errorProcessor,
         fullScreenLoader,
-        urlBuilder
+        urlBuilder,
+        quote,
+        priceUtils
     ) {
         'use strict';
 
         const RETURN_URL = '/orders/:order_id/omise-offsite';
 
         return {
+            /**
+             * Format Price
+             * 
+             * @param {float} amount - Amount to be formatted
+             * @return {string}
+             */
+            getFormattedAmount: function (amount) {
+                return priceUtils.formatPrice(amount, quote.getPriceFormat());
+            },
+
+            /**
+             * Get formatted message about installment value limitation
+             *
+             * NOTE: this value should be taken directly from capability object when it is fully implemented.
+             *
+             * @return {string}
+             */
+            getMinimumOrderText: function (amount) {
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(amount));
+            },
+
+            /**
+             * Check if order value meets minimum requirement
+             *
+             * @return {boolean}
+             */
+            orderValueTooLow: function (value) {
+                return this.getTotal() < value;
+            },
+
+            /**
+             * Get total amount of an order
+             *
+             * @return {integer}
+             */
+            getTotal: function () {
+                return + window.checkoutConfig.totalsData.grand_total;
+            },
 
             /**
              * Get return URL for Magento (based on order id)
