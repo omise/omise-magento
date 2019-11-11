@@ -1,20 +1,23 @@
 define(
     [
+        'jquery',
         'ko',
         'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/error-processor'
+        'Magento_Catalog/js/price-utils'
     ],
     function (
+        $,
         ko,
         Base,
         Component,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote
+        quote,
+        priceUtils
     ) {
         'use strict';
 
@@ -29,6 +32,27 @@ define(
 
             code: 'omise_offline_conveniencestore',
             restrictedToCurrencies: ['jpy'],
+
+            /**
+             * Format Price
+             * 
+             * @param {float} amount - Amount to be formatted
+             * @return {string}
+             */
+            getFormattedAmount: function (amount) {
+                return priceUtils.formatPrice(amount, quote.getPriceFormat());
+            },
+
+            /**
+             * Get formatted message about installment value limitation
+             *
+             * NOTE: this value should be taken directly from capability object when it is fully implemented.
+             *
+             * @return {string}
+             */
+            getMinimumOrderText: function () {
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(CONVENIENCESTORE_MIN_PURCHASE_AMOUNT));
+            },
 
             /**
              * Check if order value meets minimum requirement
