@@ -1,94 +1,42 @@
 define(
     [
-        'jquery',
         'ko',
+        'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
-        'Magento_Customer/js/view/customer',
-        'Magento_Checkout/js/model/error-processor',
-        'Magento_Catalog/js/price-utils',
-        'mage/validation',
+        'Magento_Checkout/js/model/error-processor'
     ],
     function (
-        $,
         ko,
+        Base,
         Component,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote,
-        customer,
-        errorProcessor,
-        priceUtils
+        quote
     ) {
         'use strict';
 
-        const convStoreMinimumPurchaseAmount = 200;
+        const CONVENIENCESTORE_MIN_PURCHASE_AMOUNT = 200;
 
-        return Component.extend({
+        return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offline-conveniencestore-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            /**
-             * Get payment method code
-             *
-             * @return {string}
-             */
-            getCode: function () {
-                return 'omise_offline_conveniencestore';
-            },
+            code: 'omise_offline_conveniencestore',
+            restrictedToCurrencies: ['jpy'],
 
             /**
-             * Is method available to display
+             * Check if order value meets minimum requirement
              *
              * @return {boolean}
              */
-            isActive: function () {
-                return true;
-            },
-
-            /**
-             * Get a checkout form data
-             *
-             * @return {Object}
-             */
-            getData: function () {
-                return {
-                    'method': this.item.method,
-                    'additional_data': {
-                        'conv_store_phone_number': this.convenienceStorePhoneNumber(),
-                        'conv_store_email': this.convenienceStoreEmail(),
-                        'conv_store_customer_name': this.convenienceStoreCustomersName()
-                    }
-                };
-            },
-
-            /**
-             * Initiate observable fields
-             *
-             * @return this
-             */
-            initObservable: function () {
-                this._super()
-                    .observe([
-                        'convenienceStorePhoneNumber',
-                        'convenienceStoreEmail',
-                        'convenienceStoreCustomersName'
-                    ]);
-                return this;
-            },
-
-            /**
-             * Checks if sandbox is turned on
-             *
-             * @return {boolean}
-             */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
+            orderValueTooLow: function () {
+                return this.getTotal() < CONVENIENCESTORE_MIN_PURCHASE_AMOUNT;
             },
 
             /**
@@ -101,82 +49,53 @@ define(
             },
 
             /**
-             * Format Price
-             * 
-             * @param {float} amount - Amount to be formatted
-             * @return {string}
-             */
-            getFormattedAmount: function (amount) {
-                return priceUtils.formatPrice(amount, quote.getPriceFormat());
-            },
-
-            /* Get formatted message about installment value limitation
-            *
-            * NOTE: this value should be taken directly from capability object when it is fully implemented.
-            *
-            * @return {string}
-            */
-            getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(convStoreMinimumPurchaseAmount));
-            },
-
-            /**
-             * Check if order value meets minimum requirement
-             *
-             * @return {boolean}
-             */
-            orderValueTooLow: function () {
-                return this.getTotal() < convStoreMinimumPurchaseAmount;
-            },
-
-            /**
-             * Hook the validate function.
-             * Original source: validate(); @ module-checkout/view/frontend/web/js/view/payment/default.js
-             *
-             * @return {boolean}
-             */
-            validate: function () {
-                $('#' + this.getCode() + 'Form').validation();
-
-                var isCustomerNameValid = $('#' + this.getCode() + 'CustomerName').valid();
-                var isEmailValid        = $('#' + this.getCode() + 'Email').valid();
-                var isPhoneNumberValid  = $('#' + this.getCode() + 'PhoneNumber').valid();
-
-                return isPhoneNumberValid && isCustomerNameValid && isEmailValid;
-            },
-
-            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
              * @return {boolean}
              */
             placeOrder: function(data, event) {
-                var self = this;
+                var failHandler = this.buildFailHandler(this);
 
-                if (event) {
-                    event.preventDefault();
-                }
+                event && event.preventDefault();
 
-                if (! this.validate()) {
-                    return false;
-                }
-
-                self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function(response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function() {
-                            redirectOnSuccessAction.execute();
-                        }
-                    );
+                this.getPlaceOrderDeferredObject()
+                    .fail(failHandler)
+                    .done(function() {
+                        redirectOnSuccessAction.execute();
+                    });
 
                 return true;
-            }
+            },
+            /**
+            * Get a checkout form data
+            *
+            * @return {Object}
+            */
+            getData: function () {
+                return {
+                    'method': this.item.method,
+                    'additional_data': {
+                        'conv_store_phone_number': this.convenienceStorePhoneNumber(),
+                        'conv_store_email': this.convenienceStoreEmail(),
+                        'conv_store_customer_name': this.convenienceStoreCustomersName()
+                    }
+                };
+            },
+            /**
+             * Initiate observable fields
+             *
+             * @return this
+             */
+            initObservable: function () {
+                this._super()
+                .observe([
+                    'convenienceStorePhoneNumber',
+                    'convenienceStoreEmail',
+                    'convenienceStoreCustomersName'
+                ]);
+            return this;
+            },
         });
     }
 );
