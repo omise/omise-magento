@@ -4,16 +4,12 @@ define(
         'ko',
         'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/model/quote',
-        'Magento_Catalog/js/price-utils'
     ],
     function (
         $,
         ko,
         Base,
-        Component,
-        quote,
-        priceUtils
+        Component
     ) {
         'use strict';
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 3000;
@@ -25,6 +21,7 @@ define(
 
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
+            restrictedToAmount: 3000,
 
             /**
              * Initiate observable fields
