@@ -1,23 +1,17 @@
 define(
     [
-        'jquery',
         'ko',
         'Omise_Payment/js/view/payment/omise-base-method-renderer',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote',
-        'Magento_Catalog/js/price-utils'
+        'Magento_Checkout/js/model/quote'
     ],
     function (
-        $,
         ko,
         Base,
         Component,
-        fullScreenLoader,
         redirectOnSuccessAction,
-        quote,
-        priceUtils
+        quote
     ) {
         'use strict';
 
@@ -30,7 +24,6 @@ define(
 
             code: 'omise_offline_conveniencestore',
             restrictedToCurrencies: ['jpy'],
-
 
             /**
              * Hook the placeOrder function.
@@ -51,6 +44,7 @@ define(
 
                 return true;
             },
+
             /**
             * Get a checkout form data
             *
@@ -66,6 +60,7 @@ define(
                     }
                 };
             },
+
             /**
              * Initiate observable fields
              *
