@@ -69,6 +69,7 @@
                     " />
             </div>
         </form>
+
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() -->
@@ -85,7 +86,11 @@
                 <button class="action primary checkout" type="submit"
                     disabled="disabled"
                     data-bind="
-                        click: placeOrder,
+                        click: function (data, event) {
+                            if (validate()) {
+                                placeOrder(data, event);
+                            }
+                        },
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
                         enable: (getCode() == isChecked())">

@@ -1,16 +1,16 @@
 define(
     [
         'ko',
-        'Omise_Payment/js/view/payment/omise-base-method-renderer',
+        'jquery',
+        'Omise_Payment/js/view/payment/omise-offline-placeorder',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote'
     ],
     function (
         ko,
+        $,
         Base,
         Component,
-        redirectOnSuccessAction,
         quote
     ) {
         'use strict';
@@ -24,26 +24,6 @@ define(
 
             code: 'omise_offline_conveniencestore',
             restrictedToCurrencies: ['jpy'],
-
-            /**
-             * Hook the placeOrder function.
-             * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
-             *
-             * @return {boolean}
-             */
-            placeOrder: function (data, event) {
-                var failHandler = this.buildFailHandler(this);
-
-                event && event.preventDefault();
-
-                this.getPlaceOrderDeferredObject()
-                    .fail(failHandler)
-                    .done(function () {
-                        redirectOnSuccessAction.execute();
-                    });
-
-                return true;
-            },
 
             /**
             * Get a checkout form data
@@ -68,11 +48,6 @@ define(
              * @return {boolean}
              */
             validate: function () {
-                /**
-                 * Initiate observable fields
-                 *
-                 * @return this
-                 */
                 $('#' + this.getCode() + 'Form').validation();
 
                 var isCustomerNameValid = $('#' + this.getCode() + 'CustomerName').valid();
@@ -82,6 +57,11 @@ define(
                 return isPhoneNumberValid && isCustomerNameValid && isEmailValid;
             },
 
+            /**
+             * Initiate observable fields
+             *
+             * @return this
+             */
             initObservable: function () {
                 this._super()
                     .observe([
