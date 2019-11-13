@@ -37,8 +37,8 @@ define(
              *
              * @return {string}
              */
-            getMinimumOrderText: function (amount) {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(amount));
+            getMinimumOrderText: function () {
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(this.restrictedToMinimum));
             },
 
             /**
@@ -46,8 +46,8 @@ define(
              *
              * @return {boolean}
              */
-            orderValueTooLow: function (value) {
-                return this.getTotal() < value;
+            orderValueTooLow: function () {
+                return this.getTotal() < this.restrictedToMinimum;
             },
 
             /**

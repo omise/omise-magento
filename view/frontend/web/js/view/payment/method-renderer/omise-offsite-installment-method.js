@@ -21,7 +21,7 @@ define(
 
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
-            restrictedToAmount: 3000,
+            restrictedToMinimum: 3000,
 
             /**
              * Initiate observable fields

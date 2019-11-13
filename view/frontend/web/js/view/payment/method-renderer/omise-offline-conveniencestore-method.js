@@ -24,6 +24,7 @@ define(
 
             code: 'omise_offline_conveniencestore',
             restrictedToCurrencies: ['jpy'],
+            restrictedToMinimum: 200,
 
             /**
             * Get a checkout form data
