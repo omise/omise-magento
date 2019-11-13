@@ -31,14 +31,14 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function(data, event) {
+            placeOrder: function (data, event) {
                 var failHandler = this.buildFailHandler(this);
 
                 event && event.preventDefault();
 
                 this.getPlaceOrderDeferredObject()
                     .fail(failHandler)
-                    .done(function() {
+                    .done(function () {
                         redirectOnSuccessAction.execute();
                     });
 
@@ -62,10 +62,26 @@ define(
             },
 
             /**
-             * Initiate observable fields
+             * Hook the validate function.
+             * Original source: validate(); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
-             * @return this
+             * @return {boolean}
              */
+            validate: function () {
+                /**
+                 * Initiate observable fields
+                 *
+                 * @return this
+                 */
+                $('#' + this.getCode() + 'Form').validation();
+
+                var isCustomerNameValid = $('#' + this.getCode() + 'CustomerName').valid();
+                var isEmailValid = $('#' + this.getCode() + 'Email').valid();
+                var isPhoneNumberValid = $('#' + this.getCode() + 'PhoneNumber').valid();
+
+                return isPhoneNumberValid && isCustomerNameValid && isEmailValid;
+            },
+
             initObservable: function () {
                 this._super()
                     .observe([
