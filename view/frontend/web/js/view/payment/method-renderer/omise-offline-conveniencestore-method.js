@@ -68,12 +68,12 @@ define(
              */
             initObservable: function () {
                 this._super()
-                .observe([
-                    'convenienceStorePhoneNumber',
-                    'convenienceStoreEmail',
-                    'convenienceStoreCustomersName'
-                ]);
-            return this;
+                    .observe([
+                        'convenienceStorePhoneNumber',
+                        'convenienceStoreEmail',
+                        'convenienceStoreCustomersName'
+                    ]);
+                return this;
             },
         });
     }
