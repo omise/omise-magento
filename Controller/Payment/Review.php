@@ -6,7 +6,7 @@
 
 namespace Omise\Payment\Controller\Payment;
 
-class Status extends \Magento\Framework\App\Action\Action
+class Review extends \Magento\Framework\App\Action\Action
 {
 	protected $_pageFactory;
 
