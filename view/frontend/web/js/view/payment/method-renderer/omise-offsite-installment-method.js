@@ -2,43 +2,29 @@ define(
     [
         'jquery',
         'ko',
-        'mage/storage',
+        'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/url-builder',
-        'Magento_Checkout/js/model/error-processor',
-        'Magento_Catalog/js/price-utils',
+        'Magento_Catalog/js/price-utils'
     ],
     function (
         $,
         ko,
-        storage,
+        Base,
         Component,
-        fullScreenLoader,
         quote,
-        urlBuilder,
-        errorProcessor,
-        priceUtils,
+        priceUtils
     ) {
         'use strict';
-        const installmentMinimumPurchaseAmount = 3000;
+        const INSTALLMENT_MIN_PURCHASE_AMOUNT = 3000;
 
-        return Component.extend({
+        return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
 
-            isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
-            /**
-             * Get payment method code
-             *
-             * @return {string}
-             */
-            getCode: function () {
-                return 'omise_offsite_installment';
-            },
+            code: 'omise_offsite_installment',
+            restrictedToCurrencies: ['thb'],
 
             /**
              * Initiate observable fields
@@ -100,7 +86,7 @@ define(
              * @return {string}
              */
             getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(installmentMinimumPurchaseAmount));
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
             },
 
             /**
@@ -113,13 +99,13 @@ define(
              * @return {integer}
              */
             getInstallmentMinimum: function (id) {
-                switch (id) {
-                    case 'kbank': return 500;
-                    case 'bbl': return 500;
-                    case 'bay': return 300;
-                    case 'first_choice': return 300;
-                    case 'ktc': return 300;
-                }
+                return {
+                    'kbank'         : 500,
+                    'bbl'           : 500,
+                    'bay'           : 300,
+                    'first_choice'  : 300,
+                    'ktc'           : 300
+                }[id];
             },
 
             /**
@@ -131,13 +117,13 @@ define(
              * @return {float}
              */
             getInstallmentInterestRate: function (id) {
-                switch (id) {
-                    case 'kbank': return 0.0065;
-                    case 'bbl': return 0.008;
-                    case 'bay': return 0.008;
-                    case 'first_choice': return 0.013;
-                    case 'ktc': return 0.008;
-                }
+                return {
+                    'kbank'         : 0.0065,
+                    'bbl'           : 0.008,
+                    'bay'           : 0.008,
+                    'first_choice'  : 0.013,
+                    'ktc'           : 0.008
+                }[id];
             },
 
             /**
@@ -215,24 +201,6 @@ define(
             },
 
             /**
-             * Is method available to display
-             *
-             * @return {boolean}
-             */
-            isActive: function () {
-                return this.getOrderCurrency().toLowerCase() === 'thb' && this.getStoreCurrency().toLowerCase() === 'thb';
-            },
-
-            /**
-             * Checks if sandbox is turned on
-             *
-             * @return {boolean}
-             */
-            isSandboxOn: function () {
-                return window.checkoutConfig.isOmiseSandboxOn;
-            },
-
-            /**
              * Returns Installment Terms
              * @param {string} id - Bank id
              * @return {array}
@@ -268,87 +236,14 @@ define(
             },
 
             /**
-             * Get order currency
-             *
-             * @return {string}
-             */
-            getOrderCurrency: function () {
-                return window.checkoutConfig.quoteData.quote_currency_code;
-            },
-
-            /**
-             * Get store currency
-             *
-             * @return {string}
-             */
-            getStoreCurrency: function () {
-                return window.checkoutConfig.quoteData.store_currency_code;
-            },
-
-            /**
              * Check if order value meets minimum requirement
              *
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return this.getTotal() < installmentMinimumPurchaseAmount;
-            },
-
-            /**
-             * Hook the placeOrder function.
-             * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
-             *
-             * @return {boolean}
-             */
-            placeOrder: function (data, event) {
-                var self = this;
-
-                if (event) {
-                    event.preventDefault();
-                }
-
-                self.getPlaceOrderDeferredObject()
-                    .fail(
-                        function (response) {
-                            errorProcessor.process(response, self.messageContainer);
-                            fullScreenLoader.stopLoader();
-                            self.isPlaceOrderActionAllowed(true);
-                        }
-                    ).done(
-                        function (response) {
-                            var self = this;
-
-                            var serviceUrl = urlBuilder.createUrl(
-                                '/orders/:order_id/omise-offsite',
-                                {
-                                    order_id: response
-                                }
-                            );
-
-                            storage.get(serviceUrl, false)
-                                .fail(
-                                    function (response) {
-                                        errorProcessor.process(response, self.messageContainer);
-                                        fullScreenLoader.stopLoader();
-                                        self.isPlaceOrderActionAllowed(true);
-                                    }
-                                )
-                                .done(
-                                    function (response) {
-                                        if (response) {
-                                            $.mage.redirect(response.authorize_uri);
-                                        } else {
-                                            errorProcessor.process(response, self.messageContainer);
-                                            fullScreenLoader.stopLoader();
-                                            self.isPlaceOrderActionAllowed(true);
-                                        }
-                                    }
-                                );
-                        }
-                    );
-
-                return true;
+                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT;
             }
+
         });
     }
 );

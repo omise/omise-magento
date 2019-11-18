@@ -4,11 +4,15 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
+
 use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Truemoney;
+
+use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
@@ -35,6 +39,16 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const SOURCE_PHONE_NUMBER = 'phone_number';
+
+    /**
+     * @var string
+     */
+    const SOURCE_NAME = 'name';
+
+    /**
+     * @var string
+     */
+    const SOURCE_EMAIL = 'email';
 
     /**
      * @var string
@@ -93,6 +107,14 @@ class APMBuilder implements BuilderInterface
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE         => 'truemoney',
                     self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(TruemoneyDataAssignObserver::PHONE_NUMBER),
+                ];
+                break;
+            case Conveniencestore::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE         => 'econtext',
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::PHONE_NUMBER),
+                    self::SOURCE_EMAIL        => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::EMAIL),
+                    self::SOURCE_NAME         => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::CUSTOMER_NAME)
                 ];
                 break;
         }
