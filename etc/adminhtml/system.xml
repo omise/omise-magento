@@ -144,6 +144,21 @@
                         </field>
                     </group>
                 </group>
+                <group id="omise_offline_conveniencestore" translate="label" sortOrder="290" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Convenience Store Payment</label>
+                    <comment>Enables customers to easily pay using Convenience Store method (only available in Japan).</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Convenience Store Payment Solution.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offline_conveniencestore/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="310" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offline_conveniencestore/title</config_path>
+                    </field>
+                </group>
             </group>
         </section>
     </system>
