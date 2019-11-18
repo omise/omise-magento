@@ -1,1 +1,38 @@
-<h3>Payment is being verified</h3>
+<script type="text/javascript">// <![CDATA[
+require([
+        'jquery',
+        'Magento_Ui/js/modal/confirm',
+        'Magento_Checkout/js/model/url-builder'
+    ],
+    function($, urlBuilder) {
+        const ORDER_STATUS_URL = 'rest/V1/orders/:order_id/payment-status/';
+
+        $('.forward-button').on('click', function(event){
+            event.preventDefault();
+            url = return urlBuilder.createUrl(
+                ORDER_STATUS_URL,
+                    { order_id }
+                );
+            $.get(urlBuilder, function() {
+                //location.reload();
+            });
+        });
+        return {
+            /**
+             * Get return URL for Magento (based on order id)
+             *
+             * @return {string}
+             */
+            getOrderStatusUrl: function (order_id) {
+                return urlBuilder.createUrl(
+                    RETURN_URL,
+                    { order_id }
+                );
+            },
+        }
+    }
+);
+// ]]></script>
+<?php
+    echo $block->getLastOrderId()
+?>
