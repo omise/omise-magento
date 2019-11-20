@@ -20,7 +20,6 @@ class Offsite extends Action
      * @var string
      */
     const PATH_CART           = 'checkout/cart';
-    const PATH_SUCCESS        = 'checkout/onepage/success';
     const PATH_PAYMENT_REVIEW = 'omise/payment/review';
 
     /**
