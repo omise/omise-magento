@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <referenceContainer name="content">
-        <block class="Omise\Payment\Block\Payment\Review" name="omise_payment_status" template="Omise_Payment::payment_review.phtml" 
-            cacheable="false"/>
-    </referenceContainer>
-</page>
