@@ -1,38 +1,24 @@
-<script type="text/javascript">// <![CDATA[
-require([
-        'jquery',
-        'Magento_Ui/js/modal/confirm',
-        'Magento_Checkout/js/model/url-builder'
-    ],
-    function($, urlBuilder) {
-        const ORDER_STATUS_URL = 'rest/V1/orders/:order_id/payment-status/';
+<div id="omise-confirm-info">
+    <div id="omise-loader-box"></div><span class="omise-confirm-text" data-bind="i18n: 'Please wait, your payment is being verified'"></span>
+</div>
 
-        $('.forward-button').on('click', function(event){
-            event.preventDefault();
-            url = return urlBuilder.createUrl(
-                ORDER_STATUS_URL,
-                    { order_id }
-                );
-            $.get(urlBuilder, function() {
-                //location.reload();
-            });
-        });
-        return {
-            /**
-             * Get return URL for Magento (based on order id)
-             *
-             * @return {string}
-             */
-            getOrderStatusUrl: function (order_id) {
-                return urlBuilder.createUrl(
-                    RETURN_URL,
-                    { order_id }
-                );
-            },
-        }
-    }
-);
-// ]]></script>
-<?php
-    echo $block->getLastOrderId()
-?>
+<div id="payment-confirmed" style="display: none">
+    Payment successful
+</div>
+
+<script>
+    var require = window.top.require;
+    require(['jquery'], function ($, redirectOnSuccess) {
+        'use strict';
+        var confirmInterval = setInterval(function() {
+            $.get('<?= $block->getCheckPaymentStatusUrl(); ?>', data => {
+                        if (data===true) {
+                            $('#payment-confirmed').show()
+                            $('#omise-confirm-info').hide();
+                            clearInterval(confirmInterval);
+                        }
+                    });
+                return;
+        }, 1000);
+    });
+</script>
