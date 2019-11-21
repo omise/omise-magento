@@ -73,7 +73,7 @@ class APMBuilder implements BuilderInterface
     public function build(array $buildSubject)
     {
         $paymentInfo = [
-            self::RETURN_URI => $this->url->getUrl('omise/callback/offsitex', [
+            self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
                 '_secure' => true
             ])
         ];
