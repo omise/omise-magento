@@ -12,13 +12,13 @@
         'use strict';
         var confirmInterval = setInterval(function() {
             $.get('<?= $block->getCheckPaymentStatusUrl(); ?>', data => {
-                        if (data===true) {
-                            $('#payment-confirmed').show()
-                            $('#omise-confirm-info').hide();
-                            clearInterval(confirmInterval);
-                        }
-                    });
-                return;
+                if (data===true) {
+                    $('#payment-confirmed').show()
+                    $('#omise-confirm-info').hide();
+                    clearInterval(confirmInterval);
+                }
+            });
+            return;
         }, 1000);
     });
 </script>
