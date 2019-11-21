@@ -1,0 +1,20 @@
+#omise-loader-box {
+    background: url('../images/loader-1.gif');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height:70px;
+    width: 70px;
+    display: inline-block;
+    vertical-align: middle;
+
+}
+
+.omise-confirm-text {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+#omise-confirm-info {
+    padding-top: 5px;
+    padding-bottom:5px;
+}
