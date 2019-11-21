@@ -19,8 +19,8 @@ class Offsite extends Action
     /**
      * @var string
      */
-    const PATH_CART           = 'checkout/cart';
-    const PATH_PAYMENT_REVIEW = 'omise/payment/review';
+    const PATH_CART    = 'checkout/cart';
+    const PATH_SUCCESS = 'checkout/onepage/success';
 
     /**
      * @var \Magento\Checkout\Model\Session
@@ -68,7 +68,7 @@ class Offsite extends Action
         }
 
         if ($order->getState() === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_PAYMENT_REVIEW);
+            return $this->redirect(self::PATH_SUCCESS);
         }
 
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
@@ -155,11 +155,11 @@ class Offsite extends Action
                 );
 
                 $order->save();
-                return $this->redirect(self::PATH_PAYMENT_REVIEW);
+                return $this->redirect(self::PATH_SUCCESS);
             }
 
             // Update order state and status.
-            $order->setState(Order::STATE_PAYMENT_REVIEW);
+            $order->setState(Order::PATH_SUCCESS);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PAYMENT_REVIEW));
 
             // Add transaction.
@@ -174,7 +174,7 @@ class Offsite extends Action
 
             // TODO: Should redirect users to a page that tell users that
             //       their payment is in review instead of success page.
-            return $this->redirect(self::PATH_PAYMENT_REVIEW);
+            return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
 
