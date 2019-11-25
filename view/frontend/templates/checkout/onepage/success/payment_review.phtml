@@ -2,15 +2,16 @@
     <div id="omise-loader-box"></div><span class="omise-confirm-text" data-bind="i18n: 'Please wait, your payment is being verified'"></span>
 </div>
 
-<div id="payment-confirmed" style="display: none">
+<div id="omise-payment-confirmed" style="display: none">
     Payment successful
 </div>
-
 <script>
     var require = window.top.require;
     require(['jquery'], function ($, redirectOnSuccess) {
         'use strict';
+
         var confirmInterval = setInterval(function() {
+            counter ++;
             $.get('<?= $block->getCheckPaymentStatusUrl(); ?>', data => {
                 if (data===true) {
                     $('#payment-confirmed').show()
@@ -18,7 +19,6 @@
                     clearInterval(confirmInterval);
                 }
             });
-            return;
         }, 1000);
     });
 </script>
