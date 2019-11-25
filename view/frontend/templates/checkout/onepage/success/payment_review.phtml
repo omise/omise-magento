@@ -7,13 +7,10 @@
         </div>
 
 <div id="omise-confirm-info">
-    <div id="omise-loader-box"></div><span class="omise-confirm-text" data-bind="i18n: 'Please wait, your payment is being verified'"></span>
+    <div id="omise-loader-box"></div><span class="omise-confirm-text"><?= __('Please wait, your payment is being verified') ?></span>
 </div>
 
-<div id="omise-payment-confirmed" style="display: none">
-    Payment Confirmed
-</div>
-
+<div id="omise-payment-confirmed" style="display: none"><?= __('Payment confirmed!')?></div>
 <script>
     var require = window.top.require;
     require(['jquery'], function ($, redirectOnSuccess) {
