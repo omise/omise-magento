@@ -39,7 +39,12 @@ class PaymentReview extends \Magento\Framework\View\Element\Template
         return $this->_urlBuilder->getBaseUrl() . "rest/V1/orders/$orderId/payment-status";
     }
 
-    public function getReorderUrl() {
-        return;
+    /**
+     * @param object $order
+     * @return string
+     */
+    public function getReorderUrl()
+    {
+        return $this->getUrl('omise/order/reorder');
     }
 }

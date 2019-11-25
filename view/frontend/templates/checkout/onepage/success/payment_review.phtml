@@ -1,33 +1,38 @@
 <div id="omise-reorder" class="page messages">
-            <div role="alert" class="messages">
-                <div class="message-warning warning message">
-                    <span><?=__('Payment confirmation takes more time than expected. If you cancelled your payment, you can reorder by clicking this button');?></span><button onclick="location.href='<?= $block->getReorderUrl() ?>" type="button" class="action secondary" ><?=__('Reorder');?></button>
-                </div>
-            </div>
+    <div role="alert" class="messages">
+        <div class="message-warning warning message">
+            <span><?= __('Payment confirmation takes more time than expected. If you cancelled your payment, you can reorder by clicking this button'); ?>
+            </span><a href="#" data-post='<?php /* @escapeNotVerified */
+                echo $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)->getPostData($block->getReorderUrl())?>' class="action order"><span><?=/* @escapeNotVerified */__('Reorder') ?></span></a>
         </div>
+    </div>
+</div>
 
 <div id="omise-confirm-info">
     <div id="omise-loader-box"></div><span class="omise-confirm-text"><?= __('Please wait, your payment is being verified') ?></span>
 </div>
 
-<div id="omise-payment-confirmed" style="display: none"><?= __('Payment confirmed!')?></div>
+<div id="omise-payment-confirmed" style="display: none"><?= __('Payment confirmed!') ?></div>
+
 <script>
     var require = window.top.require;
     require(['jquery'], function ($, redirectOnSuccess) {
         'use strict';
-        counter = 0;
+
+        var counter = 0;
+
         var confirmInterval = setInterval(function() {
             if (++counter === 5) {
-                $('#omise-reorder"').show();
+                $('#omise-reorder').show();
             }
 
             $.get('<?=$block->getCheckPaymentStatusUrl();?>', data => {
                 if (data === true) {
-                    $('#omise-payment-confirmed').show()
+                    clearInterval(confirmInterval);
+
+                    $('#omise-payment-confirmed').show();
                     $('#omise-confirm-info').hide();
                     $('#omise-reorder"').hide();
-
-                    clearInterval(confirmInterval);
                 }
             });
         }, 1000);
