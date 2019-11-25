@@ -1,7 +1,7 @@
 <div id="omise-reorder" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
-                    <span><?=__('Your payment takes more time than expected. If you cancelled your payment, you can reorder by clicking this button');?></span><button class="action secondary" ><?=__('Reorder');?></button>
+                    <span><?=__('Payment confirmation takes more time than expected. If you cancelled your payment, you can reorder by clicking this button');?></span><button onclick="location.href='<?= $block->getReorderUrl() ?>" type="button" class="action secondary" ><?=__('Reorder');?></button>
                 </div>
             </div>
         </div>
@@ -11,9 +11,8 @@
 </div>
 
 <div id="omise-payment-confirmed" style="display: none">
-    Payment successful
+    Payment Confirmed
 </div>
-
 
 <script>
     var require = window.top.require;
