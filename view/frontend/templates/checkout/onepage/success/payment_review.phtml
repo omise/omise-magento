@@ -11,10 +11,9 @@
         'use strict';
 
         var confirmInterval = setInterval(function() {
-            counter ++;
             $.get('<?= $block->getCheckPaymentStatusUrl(); ?>', data => {
-                if (data===true) {
-                    $('#payment-confirmed').show()
+                if (data === true) {
+                    $('#omise-payment-confirmed').show()
                     $('#omise-confirm-info').hide();
                     clearInterval(confirmInterval);
                 }
