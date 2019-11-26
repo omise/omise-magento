@@ -3,10 +3,10 @@ namespace Omise\Payment\Model\Config;
 
 use Omise\Payment\Model\Config\Config;
 
-class Citipay extends Config
+class Citipoints extends Config
 {
     /**
      * @var string
      */
-    const CODE = 'omise_offsite_citipay';
+    const CODE = 'omise_offsite_citipoints';
 }
