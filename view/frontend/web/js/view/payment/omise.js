@@ -15,7 +15,8 @@ define(
             'offsite-alipay',
             'offsite-installment',
             'offsite-truemoney',
-            'offline-tesco'
+            'offsite-truepoints',
+            'offline-tesco',
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {
