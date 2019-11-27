@@ -15,7 +15,7 @@ define(
             'offsite-alipay',
             'offsite-installment',
             'offsite-truemoney',
-            'offsite-truepoints',
+            'offsite-citipoints',
             'offline-tesco',
         ];
 
