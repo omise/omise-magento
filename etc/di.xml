@@ -171,7 +171,7 @@
     <!--  Citi Points payment solution-->
     <virtualType name="OmiseCitipointsAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipay::CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Citipoints::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMCitipointsValueHandlerPool</argument>
