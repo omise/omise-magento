@@ -147,7 +147,6 @@ class Offsite extends Action
                     case Citipoints::CODE:
                         $dispPaymentMethod = "Citi Points";
                         break;
-    
                 }
                 
                 // Add transaction.

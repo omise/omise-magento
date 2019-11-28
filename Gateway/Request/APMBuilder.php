@@ -123,7 +123,6 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_TYPE => 'points_citi'
                 ];
                 break;
-    
         }
 
         return $paymentInfo;

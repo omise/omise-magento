@@ -22,7 +22,6 @@ define(
 
             code: 'omise_offsite_alipay',
             restrictedToCurrencies: ['thb']
-
         });
     }
 );
