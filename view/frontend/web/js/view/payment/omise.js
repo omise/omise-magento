@@ -16,7 +16,7 @@ define(
             'offsite-installment',
             'offsite-truemoney',
             'offsite-citipoints',
-            'offline-tesco',
+            'offline-tesco'
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {
