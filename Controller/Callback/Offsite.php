@@ -159,7 +159,7 @@ class Offsite extends Action
             }
 
             // Update order state and status.
-            $order->setState(Order::PATH_SUCCESS);
+            $order->setState(Order::STATE_PAYMENT_REVIEW);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PAYMENT_REVIEW));
 
             // Add transaction.
