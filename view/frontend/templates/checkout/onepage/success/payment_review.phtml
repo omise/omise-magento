@@ -12,7 +12,13 @@
     <div id="omise-loader-box"></div><span class="omise-confirm-text"><?= __('Please wait, your payment is being verified') ?></span>
 </div>
 
-<div id="omise-payment-confirmed" style="display: none"><?= __('Payment confirmed!') ?></div>
+<div id="omise-payment-confirmed" class="page messages">
+    <div role="alert" class="messages">
+        <div class="message-success success message">
+            <span> <?= __('Payment confirmed!') ?></span>
+        </div>
+    </div>
+</div>
 
 <script>
     var require = window.top.require;

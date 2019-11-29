@@ -19,6 +19,6 @@
     padding-bottom:5px;
 }
 
-#omise-reorder {
+#omise-reorder, #omise-payment-confirmed {
     display: none
 }
