@@ -39,11 +39,11 @@
                 </field>
 
                 <group id="omise_cc" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Credit Card Solution</label>
+                    <label>Enable Credit Card Payments</label>
                     <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Omise Credit Card Solution.</comment>
+                        <label>Enabled?</label>
+                        <comment>Enable Omise Credit Card Payments.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc/active</config_path>
                     </field>
@@ -65,10 +65,10 @@
                     </field>
                 </group>
                 <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Internet Banking Solution</label>
+                    <label>Enable Internet Banking Payments</label>
                     <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
+                        <label>Enabled?</label>
                         <comment>Enable Omise Internet Banking Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_internetbanking/active</config_path>
@@ -80,10 +80,10 @@
                     </field>
                 </group>
                 <group id="omise_offsite_alipay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Alipay Solution</label>
+                    <label>Enable Alipay Payments</label>
                     <comment>Enables customers to pay using Alipay method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
+                        <label>Enabled?</label>
                         <comment>Enable Alipay Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_alipay/active</config_path>
@@ -95,11 +95,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_citipoints" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Citi Points Solution</label>
-                    <comment>Enables customers to pay using Citi Points method</comment>
+                    <label>Enable Pay with Citi Points Payments</label>
+                    <comment>Enables customers to pay using Citi Points.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Citi Points Payment Solution.</comment>
+                        <label>Enabled?</label>
+                        <comment>Enable Pay with Citi Points Payments</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_citipoints/active</config_path>
                     </field>
@@ -110,11 +110,11 @@
                     </field>
                 </group>
                 <group id="omise_offline_tesco" translate="label" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Tesco Bill Payment Solution</label>
+                    <label>Enable Tesco Bill Payment</label>
                     <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Tesco Bill Payment Solution.</comment>
+                        <label>Enabled?</label>
+                        <comment>Enable Tesco Bill Payment.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_tesco/active</config_path>
                     </field>
@@ -125,10 +125,10 @@
                     </field>
                 </group>
                 <group id="omise_offsite_installment" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Installment Solution</label>
+                    <label>Enable Installment Payments</label>
                     <comment>Enables customers to pay using Installment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
+                        <label>Enabled?</label>
                         <comment>Enable Installment Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_installment/active</config_path>
@@ -140,10 +140,10 @@
                     </field>
                 </group>
                 <group id="omise_offsite_truemoney" translate="label" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable True Money Solution</label>
+                    <label>Enable True Money Payments</label>
                     <comment>Enables customers to pay using True Money method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
+                        <label>Enabled?</label>
                         <comment>Enable True Money Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_truemoney/active</config_path>
@@ -155,10 +155,10 @@
                     </field>
                 </group>
                 <group id="omise_offline_conveniencestore" translate="label" sortOrder="290" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Convenience Store Payment</label>
+                    <label>Enable Convenience Store Payments</label>
                     <comment>Enables customers to easily pay using Convenience Store method (only available in Japan).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
+                        <label>Enabled?</label>
                         <comment>Enable Convenience Store Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_conveniencestore/active</config_path>
