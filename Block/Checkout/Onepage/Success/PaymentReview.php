@@ -38,4 +38,20 @@ class PaymentReview extends \Magento\Framework\View\Element\Template
 
         return $this->_urlBuilder->getBaseUrl() . "rest/V1/orders/$orderId/payment-status";
     }
+
+    /**
+    * Return HTML code with payment confirmation 
+    *
+    * @return string
+    */
+   protected function _toHtml()
+   {
+       $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
+       $paymentType = isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : null;
+       if (in_array($paymentType, [null, 'econtext', 'bill_payment_tesco_lotus'])) {
+           return;
+       }
+       
+       return parent::_toHtml();
+   }
 }
