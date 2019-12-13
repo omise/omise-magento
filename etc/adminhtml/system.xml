@@ -95,11 +95,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_citipoints" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Citi Points Solution</label>
-                    <comment>Enables customers to pay using Citi Points method</comment>
+                    <label>Enable Pay with Citi Points Solution</label>
+                    <comment>Enables customers to pay using Pay with Citi Points method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Citi Points Payment Solution.</comment>
+                        <comment>Enable Pay with Citi Points Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_citipoints/active</config_path>
                     </field>
