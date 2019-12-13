@@ -134,7 +134,7 @@
                         </omise_offsite_internet_banking>
 
                         <omise_offsite_citipoints type="group">
-                            <label>Citipoints</label>
+                            <label>Pay With Citipoints</label>
                             <comment>Accepting payments through citipoints.</comment>
                             <sort_order>709</sort_order>
                             <show_in_default>1</show_in_default>
