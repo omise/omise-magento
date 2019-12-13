@@ -134,8 +134,8 @@
                         </omise_offsite_internet_banking>
 
                         <omise_offsite_citipoints type="group">
-                            <label>Pay With Citipoints</label>
-                            <comment>Accepting payments through citipoints.</comment>
+                            <label>City Pay with Points</label>
+                            <comment>Accepting payments through Citi Reward Points.</comment>
                             <sort_order>709</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

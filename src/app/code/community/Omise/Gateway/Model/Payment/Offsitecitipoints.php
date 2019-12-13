@@ -28,7 +28,7 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
 
     /**
      * Check method for processing with base currency
-     * Note that Citipoints can only be used with Omise Thailand account and 'THB' currency
+     * Note that Citi Reward Points can only be used with Omise Thailand account and 'THB' currency
      *
      * @param  string $currencyCode
      *
@@ -62,7 +62,7 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
                 Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER,
                 $invoice,
                 false,
-                Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise Citipoints payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise Citi Reward Points payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );
 
         $order->addRelatedObject($invoice);
@@ -93,7 +93,7 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
             array(
                 'amount'       => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'     => $order->getBaseCurrencyCode(),
-                'description'  => 'Processing payment with Citipoints. Magento order ID: ' . $order->getIncrementId(),
+                'description'  => 'Processing payment with Citi Reward Points. Magento order ID: ' . $order->getIncrementId(),
                 'source[type]' => 'points_citi',
                 'return_uri'   => $this->getCallbackUri(),
                 'metadata'     => array(

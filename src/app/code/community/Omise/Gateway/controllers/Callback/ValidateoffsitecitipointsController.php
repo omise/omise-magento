@@ -8,7 +8,7 @@ class Omise_Gateway_Callback_ValidateoffsitecitipointsController extends Omise_G
 
         if (! $payment = $order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
-                $this->__('Citipoints validation failed, we cannot retrieve your payment information. Please contact our support team to confirm the payment.')
+                $this->__('Citi Reward Points validation failed, we cannot retrieve your payment information. Please contact our support team to confirm the payment.')
             );
 
             $this->_redirect('checkout/cart');
@@ -29,7 +29,7 @@ class Omise_Gateway_Callback_ValidateoffsitecitipointsController extends Omise_G
             $order->markAsAwaitPayment(
                 $payment->getLastTransId(),
                 Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
-                Mage::helper('omise_gateway')->__('The payment is in progress.<br/>Due to the way Citipoints works, this might take a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the payment manually once the result has been updated (you can check at Omise Dashboard).')
+                Mage::helper('omise_gateway')->__('The payment is in progress.<br/>Due to the way Citi Reward Point works, this might take a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the payment manually once the result has been updated (you can check at Omise Dashboard).')
             );
             Mage::getSingleton('checkout/session')->addNotice(Mage::helper('omise_gateway')->__('Please note - the payment process is still ongoing. Once it is complete, you will receive the order confirmation.'));
             return $this->_redirect('checkout/onepage/success');
