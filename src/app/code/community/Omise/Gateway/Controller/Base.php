@@ -1,6 +1,54 @@
 <?php
 abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_Action
 {
+    /**
+     * @var string
+     */
+    protected $title;
+    /**
+     * @var string
+     */
+    protected $message;
+    /**
+     * @var string
+     */
+    protected $transId;
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
+
+    /**
+     * constructor
+     */
     protected function _construct()
     {
         $omise = Mage::getModel('omise_gateway/omise');
@@ -15,5 +63,99 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
         $id = $this->getRequest()->getParam('order_id') ? $this->getRequest()->getParam('order_id') : null;
 
         return Mage::getModel('omise_gateway/order')->getOrder($id);
+    }
+
+    /**
+     * @return Mage_Core_Controller_Varien_Action|void
+     * @throws Mage_Core_Exception
+     */
+    protected function validate() {
+        $order = $this->_getOrder();
+        if (! $payment = $order->getPayment()) {
+            Mage::getSingleton('core/session')->addError(
+                $this->__($this->getTitle().' validation failed, we cannot retrieve your payment information. 
+                Please contact our support team to confirm the payment.'
+                )
+            );
+            $this->_redirect('checkout/cart');
+            return;
+        }
+
+        $charge = Mage::getModel('omise_gateway/api_charge')->find(
+            $payment->getMethodInstance()->getInfoInstance()->getAdditionalInformation('omise_charge_id')
+        );
+
+        if ($charge instanceof Omise_Gateway_Model_Api_Error) {
+            Mage::getSingleton('core/session')->addError($charge->getMessage());
+            return $this->_redirect('checkout/cart');
+        }
+        $this->transId = $payment->getLastTransId();
+        return $this->checkPaymentStatusAndUpdateOrder($charge, $order);
+    }
+
+    /**
+     * Checks payment status from $charge and updates order status accordingly.
+     * @param Omise_Gateway_Model_Api_Charge $charge
+     * @param Omise_Gateway_Model_Order $order
+     * @return Mage_Core_Controller_Varien_Action
+     */
+    protected function checkPaymentStatusAndUpdateOrder($charge, $order) {
+        if ($charge->isAwaitPayment()) {
+            return $this->paymentAwaiting($order);
+        }
+        if ($charge->isSuccessful()) {
+            return $this->paymentSuccessful($order);
+        }
+        $order->markAsFailed(
+            $this->transId,
+            $this->__('The payment was invalid, %s (%s)', $charge->failure_message, $charge->failure_code)
+        );
+        return $this->_redirect('checkout/cart');
+    }
+
+    /**
+     * If payment is awaiting to capture then updating order status as 'payment_review'
+     * @param Omise_Gateway_Model_Order $order
+     * @return Mage_Core_Controller_Varien_Action
+     */
+    protected function paymentAwaiting($order) {
+        $order->markAsAwaitPayment(
+            $this->transId,
+            Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
+            Mage::helper('omise_gateway')->__(
+                (empty($this->getMessage()))
+                    ? 'The payment is in progress.<br/>Due to the way '.$this->getTitle().' works, this might take 
+                        a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the payment manually 
+                        once the result has been updated (you can check at Omise Dashboard).'
+                    : $this->getMessage(),
+                $this->getTitle()
+            )
+        );
+        Mage::getSingleton('checkout/session')
+            ->addNotice(Mage::helper('omise_gateway')
+                ->__('Please note - the payment process is still ongoing. Once it is complete, you will receive the 
+                order confirmation.')
+            );
+        return $this->_redirect('checkout/onepage/success');
+    }
+
+    /**
+     * If payment has capture successfully then update order status as 'processing'
+     * @param Omise_Gateway_Model_Order $order
+     * @return Mage_Core_Controller_Varien_Action
+     */
+    protected function paymentSuccessful($order) {
+        $invoice = $order->getInvoice($this->transId);
+        // Make sure to avoid marking invoice paid more than once
+        if (!$order->isInvoicePaid($this->transId)) $order->markAsPaid(
+            $this->transId,
+            Mage_Sales_Model_Order::STATE_PROCESSING,
+            Mage::helper('omise_gateway')
+                ->__('An amount of %s has been paid online.',
+                    $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                )
+        );
+        $order->sendNewOrderEmail();
+        return $this->_redirect('checkout/onepage/success');
     }
 }

@@ -99,14 +99,6 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
         $this->_callbackUrl = $callbackUrl;
     }
 
-//    /**
-//     * @return string
-//     */
-//    public function getCode()
-//    {
-//        return $this->_code;
-//    }
-
     /**
      * @return string
      */
@@ -128,7 +120,7 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
      */
     public function initialize($payment_action, $state_object)
     {
-        $title =  Mage::getConfig()->getNode('default/payment/'.$this->_code);
+        $title =  (string)Mage::getConfig()->getNode('default/payment/'.$this->getCode().'/title');
         $payment = $this->getInfoInstance();
         $order   = $payment->getOrder();
 
