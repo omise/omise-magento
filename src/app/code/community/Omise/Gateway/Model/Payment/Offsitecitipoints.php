@@ -30,7 +30,7 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
                 'amount'       => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
                 'currency'     => $order->getBaseCurrencyCode(),
                 'description'  => 'Processing payment with Citi Reward Points. Magento order ID: ' . $order->getIncrementId(),
-                'source[type]' => 'points_citi',
+                'source'       => array('type' => 'points_citi'),
                 'return_uri'   => $this->getCallbackUri(),
                 'metadata'     => array(
                     'order_id' => $order->getIncrementId()
