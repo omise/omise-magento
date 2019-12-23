@@ -5,14 +5,26 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
      * @var string
      */
     protected $title;
+
     /**
      * @var string
      */
     protected $message;
+
     /**
      * @var string
      */
     protected $transId;
+
+    /**
+     * @var Omise_Gateway_Model_Order
+     */
+    protected $order;
+
+    /**
+     * @var string
+     */
+    protected $awaitingOrderStatus;
 
     /**
      * @return string
@@ -47,16 +59,33 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     }
 
     /**
+     * @return string
+     */
+    public function getAwaitingOrderStatus()
+    {
+        return $this->awaitingOrderStatus;
+    }
+
+    /**
+     * @param string $awaitingOrderStatus
+     */
+    public function setAwaitingOrderStatus($awaitingOrderStatus)
+    {
+        $this->awaitingOrderStatus = $awaitingOrderStatus;
+    }
+
+    /**
      * constructor
      */
     protected function _construct()
     {
         $omise = Mage::getModel('omise_gateway/omise');
         $omise->initNecessaryConstant();
+        $this->setAwaitingOrderStatus(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
     }
 
     /**
-     * @return \Omise_Gateway_Model_Order
+     * @return Omise_Gateway_Model_Order
      */
     protected function _getOrder()
     {
@@ -70,8 +99,9 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
      * @throws Mage_Core_Exception
      */
     protected function validate() {
-        $order = $this->_getOrder();
-        if (! $payment = $order->getPayment()) {
+        if(!isset($this->order))
+            $this->order = $this->_getOrder();
+        if (! $payment = $this->order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
                 $this->__($this->getTitle().' validation failed, we cannot retrieve your payment information. 
                 Please contact our support team to confirm the payment.'
@@ -90,7 +120,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
             return $this->_redirect('checkout/cart');
         }
         $this->transId = $payment->getLastTransId();
-        return $this->checkPaymentStatusAndUpdateOrder($charge, $order);
+        return $this->checkPaymentStatusAndUpdateOrder($charge, $this->order);
     }
 
     /**
@@ -114,14 +144,15 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     }
 
     /**
-     * If payment is awaiting to capture then updating order status as 'payment_review'
+     * If payment is awaiting to capture then updating order status as 'payment_review'. In case of 3-D secured payment,
+     * it will be 'processing'.
      * @param Omise_Gateway_Model_Order $order
      * @return Mage_Core_Controller_Varien_Action
      */
     protected function paymentAwaiting($order) {
         $order->markAsAwaitPayment(
             $this->transId,
-            Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
+            $this->getAwaitingOrderStatus(),
             Mage::helper('omise_gateway')->__(
                 (empty($this->getMessage()))
                     ? 'The payment is in progress.<br/>Due to the way '.$this->getTitle().' works, this might take 
@@ -131,11 +162,13 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
                 $this->getTitle()
             )
         );
-        Mage::getSingleton('checkout/session')
-            ->addNotice(Mage::helper('omise_gateway')
-                ->__('Please note - the payment process is still ongoing. Once it is complete, you will receive the 
+        if($this->getAwaitingOrderStatus() != Mage_Sales_Model_Order::STATE_PROCESSING) {
+            Mage::getSingleton('checkout/session')
+                ->addNotice(Mage::helper('omise_gateway')
+                    ->__('Please note - the payment process is still ongoing. Once it is complete, you will receive the 
                 order confirmation.')
-            );
+                );
+        }
         return $this->_redirect('checkout/onepage/success');
     }
 

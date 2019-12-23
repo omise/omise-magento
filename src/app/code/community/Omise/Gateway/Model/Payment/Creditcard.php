@@ -205,25 +205,10 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     public function capture_manual(Varien_Object $payment, $charge_id)
     {
         $charge = Mage::getModel('omise_gateway/api_charge')->find($charge_id);
-
-        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
-            Mage::throwException(
-                Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
-                )
-            );
-        }
-
+        $message = 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.';
+        $this->validateCharge($charge, $message);
         $charge->capture();
-
-        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
-            Mage::throwException(
-                Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
-                )
-            );
-        }
-
+        $this->validateCharge($charge, $message);
         if ($charge->isFailed()) {
             Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
         }
@@ -301,6 +286,21 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         }
 
         return $result;
+    }
+
+    /**
+     * @param $charge Omise_Gateway_Model_Api_Charge
+     * @param $message string
+     * @throws Mage_Core_Exception
+     */
+    public function validateCharge($charge, $message) {
+        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
+            Mage::throwException(
+                Mage::helper('payment')->__(
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : $message
+                )
+            );
+        }
     }
 
     /**
