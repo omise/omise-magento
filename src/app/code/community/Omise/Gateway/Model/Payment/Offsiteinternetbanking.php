@@ -1,17 +1,40 @@
 <?php
 class Omise_Gateway_Model_Payment_Offsiteinternetbanking extends Omise_Gateway_Model_Payment_Base_Payment
 {
-    public function __construct()
-    {
-        $this->setCode('omise_offsite_internet_banking');
-        $this->setFormBlockType('omise_gateway/form_offsiteinternetbankingpayment');
-        $this->setInfoBlockType('omise_gateway/info_internetbanking');
-        $this->setIsGateway(true);
-        $this->setCanReviewPayment(true);
-        $this->setIsInitializeNeeded(true);
-        $this->setCallbackUrl('omise/callback_validateoffsiteinternetbanking');
-        parent::__construct();
-    }
+
+    /**
+     * @var string
+     */
+    protected $_code = 'omise_offsite_internet_banking';
+
+    /**
+     * @var string
+     */
+    protected $_formBlockType = 'omise_gateway/form_offsiteinternetbankingpayment';
+
+    /**
+     * @var string
+     */
+    protected $_infoBlockType = 'payment/info';
+
+    /**
+     * @var string
+     */
+    protected $_callbackUrl = 'omise/callback_validateoffsiteinternetbanking';
+
+    /**
+     * @var array
+     */
+    protected $_currencies = array('THB');
+
+    /**
+     * Payment Method features
+     *
+     * @var bool
+     */
+    protected $_isGateway          = true;
+    protected $_canReviewPayment   = true;
+    protected $_isInitializeNeeded = true;
 
     /**
      * @param  Varien_Object $payment

@@ -8,7 +8,6 @@ class Omise_Gateway_Callback_ValidateoffsiteinternetbankingController extends Om
      */
     public function indexAction()
     {
-        $this->getTitle(self::PAYMENT_TITLE);
         $this->setMessage('The payment is in progress.<br/>Due to the bank\'s processing, this might take a few seconds or up-to an hour. Please click "Accept" or "Deny" to complete the payment manually once the result has been updated (you can check at Omise Dashboard).');
         return $this->validate();
     }

@@ -4,11 +4,6 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     /**
      * @var string
      */
-    protected $title;
-
-    /**
-     * @var string
-     */
     protected $message;
 
     /**
@@ -29,22 +24,6 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     /**
      * @return string
      */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
     public function getMessage()
     {
         return $this->message;
@@ -59,29 +38,13 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     }
 
     /**
-     * @return string
-     */
-    public function getAwaitingOrderStatus()
-    {
-        return $this->awaitingOrderStatus;
-    }
-
-    /**
-     * @param string $awaitingOrderStatus
-     */
-    public function setAwaitingOrderStatus($awaitingOrderStatus)
-    {
-        $this->awaitingOrderStatus = $awaitingOrderStatus;
-    }
-
-    /**
      * constructor
      */
     protected function _construct()
     {
         $omise = Mage::getModel('omise_gateway/omise');
         $omise->initNecessaryConstant();
-        $this->setAwaitingOrderStatus(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
+        $this->awaitingOrderStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
     }
 
     /**
@@ -103,8 +66,8 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
             $this->order = $this->_getOrder();
         if (! $payment = $this->order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
-                $this->__($this->getTitle().' validation failed, we cannot retrieve your payment information. 
-                Please contact our support team to confirm the payment.'
+                $this->__('%s validation failed, we cannot retrieve your payment information. 
+                Please contact our support team to confirm the payment.', self::PAYMENT_TITLE
                 )
             );
             $this->_redirect('checkout/cart');
@@ -155,11 +118,11 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
             $this->getAwaitingOrderStatus(),
             Mage::helper('omise_gateway')->__(
                 (empty($this->getMessage()))
-                    ? 'The payment is in progress.<br/>Due to the way '.$this->getTitle().' works, this might take 
+                    ? 'The payment is in progress.<br/>Due to the way %s works, this might take 
                         a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the payment manually 
                         once the result has been updated (you can check at Omise Dashboard).'
                     : $this->getMessage(),
-                $this->getTitle()
+                self::PAYMENT_TITLE
             )
         );
         if($this->getAwaitingOrderStatus() != Mage_Sales_Model_Order::STATE_PROCESSING) {

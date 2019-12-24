@@ -5,9 +5,8 @@ class Omise_Gateway_Callback_ValidatethreedsecureController extends Omise_Gatewa
     public function indexAction()
     {
         $this->order = $this->_getOrder();
-        $this->setTitle(self::PAYMENT_TITLE);
         $this->setMessage(Mage::helper('omise_gateway')->__('Authorized amount of %s.', $this->order->getBaseCurrency()->formatTxt($this->order->getBaseTotalDue())));
-        $this->setAwaitingOrderStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
+        $this->awaitingOrderStatus = Mage_Sales_Model_Order::STATE_PROCESSING;
         return $this->validate();
     }
 }

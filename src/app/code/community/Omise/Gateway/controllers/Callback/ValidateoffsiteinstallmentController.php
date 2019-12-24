@@ -8,7 +8,6 @@ class Omise_Gateway_Callback_ValidateoffsiteinstallmentController extends Omise_
      */
     public function indexAction()
     {
-        $this->getTitle(self::PAYMENT_TITLE);
         $this->setMessage('The payment has not been confirmed yet.<br/>It may take up to 24 hours to confirm your payment. In case of any questions please don’t hesitate to contact us.');
         return $this->validate();
     }

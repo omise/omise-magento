@@ -1,19 +1,37 @@
 <?php
 class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment_Base_Payment
 {
+
+    /**
+     * @var string
+     */
+    protected $_code = 'omise_gateway';
+
+    /**
+     * @var string
+     */
+    protected $_formBlockType = 'omise_gateway/form_cc';
+
+    /**
+     * @var string
+     */
+    protected $_infoBlockType = 'payment/info_cc';
+
+    /**
+     * @var string
+     */
+    protected $_callbackUrl = 'omise/callback_validatethreedsecure';
+
+    /**
+     * Payment Method features
+     *
+     * @var bool
+     */
+    protected $_isGateway        = true;
     protected $_canAuthorize     = true;
     protected $_canCapture       = true;
     protected $_canRefund        = true;
-    public function __construct()
-    {
-        $this->setCode('omise_gateway');
-        $this->setFormBlockType('omise_gateway/form_cc');
-        $this->setInfoBlockType('payment/info_cc');
-        $this->setIsGateway(true);
-        $this->setCanReviewPayment(true);
-        $this->setCallbackUrl('omise/callback_validatethreedsecure');
-        parent::__construct();
-    }
+    protected $_canReviewPayment = true;
 
     /**
      * flag if we need to run payment initialize while order place

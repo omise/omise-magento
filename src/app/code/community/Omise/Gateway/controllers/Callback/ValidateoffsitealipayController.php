@@ -8,7 +8,6 @@ class Omise_Gateway_Callback_ValidateoffsitealipayController extends Omise_Gatew
      */
     public function indexAction()
     {
-        $this->getTitle(self::PAYMENT_TITLE);
         return $this->validate();
     }
 }

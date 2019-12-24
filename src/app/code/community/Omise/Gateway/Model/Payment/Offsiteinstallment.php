@@ -1,18 +1,40 @@
 <?php
 class Omise_Gateway_Model_Payment_Offsiteinstallment extends Omise_Gateway_Model_Payment_Base_Payment
 {
-    public function __construct()
-    {
-        $this->setCode('omise_offsite_installment');
-        $this->setFormBlockType('omise_gateway/form_offsiteinstallment');
-        $this->setInfoBlockType('omise_gateway/info_installment');
-        $this->setIsGateway(true);
-        $this->setCanReviewPayment(true);
-        $this->setIsInitializeNeeded(true);
-        $this->setCallbackUrl('omise/callback_validateoffsiteinstallment');
-        parent::__construct();
-    }
 
+    /**
+     * @var string
+     */
+    protected $_code = 'omise_offsite_installment';
+
+    /**
+     * @var string
+     */
+    protected $_formBlockType = 'omise_gateway/form_offsiteinstallment';
+
+    /**
+     * @var string
+     */
+    protected $_infoBlockType = 'omise_gateway/info_installment';
+
+    /**
+     * @var string
+     */
+    protected $_callbackUrl = 'omise/callback_validateoffsiteinstallment';
+
+    /**
+     * @var array
+     */
+    protected $_currencies = array('THB');
+
+    /**
+    * Payment Method features
+    *
+    * @var bool
+    */
+    protected $_isGateway          = true;
+    protected $_canReviewPayment   = true;
+    protected $_isInitializeNeeded = true;
     /**
      * Get an array of installment backends suitable for this transaction
      *
