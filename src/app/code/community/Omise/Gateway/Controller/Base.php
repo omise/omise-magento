@@ -66,7 +66,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
             $this->order = $this->_getOrder();
         if (! $payment = $this->order->getPayment()) {
             Mage::getSingleton('core/session')->addError(
-                $this->__('%s validation failed, we cannot retrieve your payment information. 
+                $this->__('%1 validation failed, we cannot retrieve your payment information. 
                 Please contact our support team to confirm the payment.', self::PAYMENT_TITLE
                 )
             );
@@ -101,7 +101,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
         }
         $order->markAsFailed(
             $this->transId,
-            $this->__('The payment was invalid, %s (%s)', $charge->failure_message, $charge->failure_code)
+            $this->__('The payment was invalid, %1 (%2)', $charge->failure_message, $charge->failure_code)
         );
         return $this->_redirect('checkout/cart');
     }
@@ -118,9 +118,8 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
             $this->getAwaitingOrderStatus(),
             Mage::helper('omise_gateway')->__(
                 (empty($this->getMessage()))
-                    ? 'The payment is in progress.<br/>Due to the way %s works, this might take 
-                        a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the payment manually 
-                        once the result has been updated (you can check at Omise Dashboard).'
+                    ? 'The payment is in progress.<br/>Due to the way %1 works, this might take 
+                        a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the transaction process'
                     : $this->getMessage(),
                 self::PAYMENT_TITLE
             )
@@ -147,7 +146,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
             $this->transId,
             Mage_Sales_Model_Order::STATE_PROCESSING,
             Mage::helper('omise_gateway')
-                ->__('An amount of %s has been paid online.',
+                ->__('An amount of %1 has been paid online.',
                     $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                 )
         );
