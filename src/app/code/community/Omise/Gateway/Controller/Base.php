@@ -19,7 +19,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     /**
      * @var string
      */
-    protected $awaitingOrderStatus;
+    protected $awaitingOrderStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
 
     /**
      * @return string
@@ -44,7 +44,6 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
     {
         $omise = Mage::getModel('omise_gateway/omise');
         $omise->initNecessaryConstant();
-        $this->awaitingOrderStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
     }
 
     /**
@@ -52,7 +51,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
      */
     protected function _getOrder()
     {
-        $id = $this->getRequest()->getParam('order_id') ? $this->getRequest()->getParam('order_id') : null;
+        $id = $this->getRequest()->getParam('order_id') ?: null;
 
         return Mage::getModel('omise_gateway/order')->getOrder($id);
     }

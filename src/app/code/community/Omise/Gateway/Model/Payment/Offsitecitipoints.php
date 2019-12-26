@@ -1,7 +1,7 @@
 <?php
 
 
-class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_Payment_Base_Payment {
+class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_Payment_SimpleOffsite_Payment {
 
     /**
      * @var string
@@ -29,6 +29,11 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
     protected $_currencies = array('THB');
 
     /**
+     * @var string
+     */
+    protected $_type = 'points_citi';
+
+    /**
      * Payment Method features
      *
      * @var bool
@@ -45,32 +50,6 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
      */
     public function process(Varien_Object $payment, $amount)
     {
-        $order = $payment->getOrder();
-
-        return parent::_process(
-            $payment,
-            array(
-                'amount'       => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
-                'currency'     => $order->getBaseCurrencyCode(),
-                'description'  => 'Processing payment with Citi Reward Points. Magento order ID: ' . $order->getIncrementId(),
-                'source'       => array('type' => 'points_citi'),
-                'return_uri'   => $this->getCallbackUri(),
-                'metadata'     => array(
-                    'order_id' => $order->getIncrementId()
-                )
-            )
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see app/code/core/Mage/Payment/Model/Method/Abstract.php
-     */
-    public function assignData($data)
-    {
-        parent::assignData($data);
-
-        $this->getInfoInstance()->setAdditionalInformation('offsite', $data->getData('offsite'));
+        return parent::process($payment, $amount, $this->_type);
     }
 }

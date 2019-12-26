@@ -10,7 +10,6 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
      */
     public function initialize($payment_action, $state_object)
     {
-        $title =  (string)Mage::getConfig()->getNode('default/payment/'.$this->getCode().'/title');
         $payment = $this->getInfoInstance();
         $order   = $payment->getOrder();
 
@@ -26,7 +25,7 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
                 Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER,
                 $invoice,
                 false,
-                Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise '.$title.' payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                Mage::helper('omise_gateway')->__('Processing an amount of %s via Omise '.$this->getPaymentTitle().' payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
             );
 
         $order->addRelatedObject($invoice);
@@ -53,8 +52,8 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
     {
         if(isset($this->_currencies))
             return (
-                in_array(strtoupper($currencyCode), $this->_currencies)
-                && in_array(strtoupper(Mage::app()->getStore()->getCurrentCurrencyCode()), $this->_currencies)
+                in_array($currencyCode, $this->_currencies)
+                && in_array(Mage::app()->getStore()->getCurrentCurrencyCode(), $this->_currencies)
             );
         else
             return true;
@@ -84,5 +83,12 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
                 '_query'  => $params
             )
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPaymentTitle() {
+        return (string)Mage::getConfig()->getNode('default/payment/'.$this->getCode().'/title');
     }
 }
