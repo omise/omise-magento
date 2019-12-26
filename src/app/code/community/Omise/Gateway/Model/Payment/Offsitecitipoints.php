@@ -41,15 +41,4 @@ class Omise_Gateway_Model_Payment_Offsitecitipoints extends Omise_Gateway_Model_
     protected $_isGateway          = true;
     protected $_canReviewPayment   = true;
     protected $_isInitializeNeeded = true;
-
-    /**
-     * @param  Varien_Object $payment
-     * @param  float         $amount
-     *
-     * @return Omise_Gateway_Model_Api_Charge
-     */
-    public function process(Varien_Object $payment, $amount)
-    {
-        return parent::process($payment, $amount, $this->_type);
-    }
 }

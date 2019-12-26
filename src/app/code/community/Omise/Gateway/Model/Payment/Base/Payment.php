@@ -86,6 +86,7 @@ class Omise_Gateway_Model_Payment_Base_Payment extends Omise_Gateway_Model_Payme
     }
 
     /**
+     * Returns payment method title from config.xml
      * @return string
      */
     protected function getPaymentTitle() {
