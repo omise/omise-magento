@@ -1,6 +1,7 @@
 <?php
-class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
+class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment_Base_Payment
 {
+
     /**
      * @var string
      */
@@ -17,6 +18,11 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     protected $_infoBlockType = 'payment/info_cc';
 
     /**
+     * @var string
+     */
+    protected $_callbackUrl = 'omise/callback_validatethreedsecure';
+
+    /**
      * Payment Method features
      *
      * @var bool
@@ -26,7 +32,6 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     protected $_canCapture       = true;
     protected $_canRefund        = true;
     protected $_canReviewPayment = true;
-
 
     /**
      * flag if we need to run payment initialize while order place
@@ -58,13 +63,13 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 $charge = $this->processPayment($payment, $order->getBaseTotalDue());
 
                 $payment->setIsTransactionClosed(false)
-                        ->setIsTransactionPending(true)
-                        ->addTransaction(
-                            Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
-                            null,
-                            false,
-                            Mage::helper('omise_gateway')->__('Authorizing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($order->getBaseTotalDue()))
-                        );
+                    ->setIsTransactionPending(true)
+                    ->addTransaction(
+                        Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+                        null,
+                        false,
+                        Mage::helper('omise_gateway')->__('Authorizing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($order->getBaseTotalDue()))
+                    );
                 break;
 
             case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE:
@@ -73,14 +78,14 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 $charge = $this->processPayment($payment, $invoice->getBaseGrandTotal());
 
                 $payment->setCreatedInvoice($invoice)
-                        ->setIsTransactionClosed(false)
-                        ->setIsTransactionPending(true)
-                        ->addTransaction(
-                            Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
-                            $invoice,
-                            false,
-                            Mage::helper('omise_gateway')->__('Capturing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
-                        );
+                    ->setIsTransactionClosed(false)
+                    ->setIsTransactionPending(true)
+                    ->addTransaction(
+                        Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+                        $invoice,
+                        false,
+                        Mage::helper('omise_gateway')->__('Capturing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+                    );
                 $order->addRelatedObject($invoice);
                 break;
 
@@ -123,7 +128,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 'description' => 'Charge a card from Magento with the order id: ' . $order->getIncrementId(),
                 'capture'     => $this->isAutoCapture() ? true : false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
-                'return_uri'  => $this->getThreeDSecureCallbackUri(),
+                'return_uri'  => $this->getCallbackUri(),
                 'metadata'    => array(
                     'order_id' => $order->getIncrementId()
                 )
@@ -152,7 +157,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 'description' => 'Charge a card from Magento with the order id: ' . $order->getIncrementId(),
                 'capture'     => false,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
-                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null),
+                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getCallbackUri() : null),
                 'metadata'    => array(
                     'order_id' => $order->getIncrementId()
                 )
@@ -193,7 +198,7 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 'description' => 'Charge a card from Magento with the order id: ' . $order->getIncrementId(),
                 'capture'     => true,
                 'card'        => $payment->getAdditionalInformation('omise_token'),
-                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getThreeDSecureCallbackUri() : null),
+                'return_uri'  => ($this->isThreeDSecureNeeded() ? $this->getCallbackUri() : null),
                 'metadata'    => array(
                     'order_id' => $order->getIncrementId()
                 )
@@ -218,25 +223,10 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     public function capture_manual(Varien_Object $payment, $charge_id)
     {
         $charge = Mage::getModel('omise_gateway/api_charge')->find($charge_id);
-
-        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
-            Mage::throwException(
-                Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
-                )
-            );
-        }
-
+        $message = 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.';
+        $this->validateCharge($charge, $message);
         $charge->capture();
-
-        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
-            Mage::throwException(
-                Mage::helper('payment')->__(
-                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : 'Payment failed. Please note that your payment and order might (or might not) have already been processed. Please contact our support team to confirm your payment before attempting to resubmit.'
-                )
-            );
-        }
-
+        $this->validateCharge($charge, $message);
         if ($charge->isFailed()) {
             Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
         }
@@ -317,17 +307,18 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @see app/code/core/Mage/Sales/Model/Quote/Payment.php
+     * @param $charge Omise_Gateway_Model_Api_Charge
+     * @param $message string
+     * @throws Mage_Core_Exception
      */
-    public function getOrderPlaceRedirectUrl()
-    {
-        if ($this->isThreeDSecureNeeded()) {
-            return Mage::getSingleton('checkout/session')->getOmiseAuthorizeUri();
+    public function validateCharge($charge, $message) {
+        if (! $charge instanceof Omise_Gateway_Model_Api_Charge) {
+            Mage::throwException(
+                Mage::helper('payment')->__(
+                    ($charge instanceof Omise_Gateway_Model_Api_Error) ? $charge->getMessage() : $message
+                )
+            );
         }
-
-        return '';
     }
 
     /**
@@ -336,22 +327,6 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
     public function isThreeDSecureNeeded()
     {
         return Mage::getStoreConfig('payment/omise_gateway/threedsecure') ? true : false;
-    }
-
-    /**
-     * @param  array $params
-     *
-     * @return string
-     */
-    public function getThreeDSecureCallbackUri($params = array())
-    {
-        return Mage::getUrl(
-            'omise/callback_validatethreedsecure',
-            array(
-                '_secure' => Mage::app()->getStore()->isCurrentlySecure(),
-                '_query'  => $params
-            )
-        );
     }
 
     /**
