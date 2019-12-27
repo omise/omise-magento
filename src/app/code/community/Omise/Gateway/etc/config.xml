@@ -180,6 +180,13 @@
                 <title>Internet banking</title>
             </omise_offsite_internet_banking>
 
+            <omise_offsite_citipoints>
+                <active>0</active>
+                <payment_action>order</payment_action>
+                <model>omise_gateway/payment_offsitecitipoints</model>
+                <title>Citi Pay with Points</title>
+            </omise_offsite_citipoints>
+
             <omise_offsite_alipay>
                 <active>0</active>
                 <payment_action>order</payment_action>
