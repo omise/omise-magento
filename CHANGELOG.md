@@ -1,4 +1,12 @@
 # CHANGELOG
+### [v1.19 _(Jan 7, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.19)
+
+#### 🚀 Enhancements
+
+- Adding citipoints method for payment (PR [#233](https://github.com/omise/omise-magento/pull/233))
+- Refactoring duplicated code in Model and Callback controller classes (PR [#234](https://github.com/omise/omise-magento/pull/234))
+
+---
 
 ### [v1.18 _(Sep 9, 2019)_](https://github.com/omise/omise-magento/releases/tag/v1.18)
 
