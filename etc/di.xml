@@ -169,35 +169,35 @@
     <!-- /Value Handler -->
 
     <!--  Citi Points payment solution-->
-    <virtualType name="OmiseCitipointsAdapter" type="Magento\Payment\Model\Method\Adapter">
+    <virtualType name="OmisePointscitiAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Citipoints::CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Pointsciti::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
-            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMCitipointsValueHandlerPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMPointscitiValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
         </arguments>
     </virtualType>
 
     <!-- Citi Points :: Value Handler Pool -->
-    <virtualType name="OmiseAPMCitipointsValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+    <virtualType name="OmiseAPMPointscitiValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
-                <item name="default" xsi:type="string">OmiseAPMCitipointsConfigValueHandler</item>
+                <item name="default" xsi:type="string">OmiseAPMPointscitiConfigValueHandler</item>
             </argument>
         </arguments>
     </virtualType>
     
-    <virtualType name="OmiseAPMCitipointsConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+    <virtualType name="OmiseAPMPointscitiConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
-            <argument name="configInterface" xsi:type="object">OmiseAPMCitipointsConfig</argument>
+            <argument name="configInterface" xsi:type="object">OmiseAPMPointscitiConfig</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="OmiseAPMCitipointsConfig" type="Magento\Payment\Gateway\Config\Config">
+    <virtualType name="OmiseAPMPointscitiConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Citipoints::CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Pointsciti::CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
