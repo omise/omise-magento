@@ -155,8 +155,8 @@
                     </field>
                 </group>
                 <group id="omise_offline_conveniencestore" translate="label" sortOrder="290" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Convenience Store Method</label>
-                    <comment>Enables customers to easily pay using Convenience Store method (only available in Japan).</comment>
+                    <label>Enable Convenience Store Payments</label>
+                    <comment>Enables customers to easily pay using Convenience Store payment (only available in Japan).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enabled?</label>
                         <comment>Enable Convenience Store Method.</comment>
