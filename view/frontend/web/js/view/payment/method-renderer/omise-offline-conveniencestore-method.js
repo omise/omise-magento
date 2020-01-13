@@ -27,10 +27,10 @@ define(
             restrictedToMinimum: 200,
 
             /**
-            * Get a checkout form data
-            *
-            * @return {Object}
-            */
+             * Get a checkout form data
+             *
+             * @return {Object}
+             */
             getData: function () {
                 return {
                     'method': this.item.method,
