@@ -12,4 +12,4 @@
 "Payment cancelled by payer.", "決済がキャンセルされました。"
 "Payment rejected by card issuer.", "決済がカード発行者によって拒否されました。"
 "Card stolen or lost.", "このカードは紛失/盗難が報告されています"
-"Payer did not take action before charge expiration.", "有効期限前にアクションが取られませんでした。"
+"Payer did not take action before charge expiration.", "有効期限前に操作がありませんでした。"
