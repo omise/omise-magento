@@ -10,7 +10,7 @@
             <input id="<?php echo $_code; ?>_phone_number" type="text"
                 name="payment[phone_number]"
                 title="<?php echo $this->__('Phone Number'); ?>"
-                value="<?php echo $this->escapeHtml($this->getInfoData('phone_number')); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseTruePhoneNumber()); ?>"
                 maxlength="10"
                 class="input-text required-entry validate-length maximum-length-10 minimum-length-10 validate-digits" />
         </div>
