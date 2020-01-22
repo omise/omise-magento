@@ -33,7 +33,8 @@ class Omise_Gateway_Block_Form_Offsitetruemoney extends Mage_Payment_Block_Form
      * Returns billing phone number from current quote
      * @return string
      */
-    public function getOmiseTruePhoneNumber() {
+    public function getOmiseTruePhoneNumber()
+    {
         $phoneNumber = Mage::getSingleton('checkout/session')
             ->getQuote()
             ->getBillingAddress()

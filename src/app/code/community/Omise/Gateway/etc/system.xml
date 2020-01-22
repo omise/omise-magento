@@ -198,7 +198,7 @@
 
                         <omise_offsite_truemoney type="group">
                             <label>True Money</label>
-                            <comment>Enables customers to pay using True Money method.</comment>
+                            <comment>Enables customers to pay using True Money.</comment>
                             <sort_order>730</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
