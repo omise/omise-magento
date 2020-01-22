@@ -1,7 +1,7 @@
 define(
     [
         'ko',
-        'Omise_Payment/js/view/payment/omise-offsite-placeorder',
+        'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/quote',
     ],
@@ -15,12 +15,12 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-alipay-form'
+                template: 'Omise_Payment/payment/offsite-pointsciti-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_alipay',
+            code: 'omise_offsite_pointsciti',
             restrictedToCurrencies: ['thb']
         });
     }
