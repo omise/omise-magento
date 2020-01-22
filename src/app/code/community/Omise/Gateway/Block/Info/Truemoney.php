@@ -13,8 +13,7 @@ class Omise_Gateway_Block_Info_Truemoney extends Mage_Payment_Block_Info
      */
     protected function _prepareSpecificInformation($transport = null)
     {
-        if (null !== $this->_paymentSpecificInformation)
-        {
+        if (null !== $this->_paymentSpecificInformation) {
             return $this->_paymentSpecificInformation;
         }
         $transport = parent::_prepareSpecificInformation($transport);
