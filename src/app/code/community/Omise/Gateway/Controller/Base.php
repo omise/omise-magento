@@ -109,6 +109,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
      * If payment is awaiting to capture then updating order status as 'payment_review'. In case of 3-D secured payment,
      * it will be 'processing'.
      * @param Omise_Gateway_Model_Order $order
+     * @param Omise_Gateway_Model_Api_Charge $charge
      * @return Mage_Core_Controller_Varien_Action
      */
     protected function paymentAwaiting($order, $charge) {
