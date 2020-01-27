@@ -15,12 +15,12 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-citipoints-form'
+                template: 'Omise_Payment/payment/offsite-pointsciti-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_citipoints',
+            code: 'omise_offsite_pointsciti',
             restrictedToCurrencies: ['thb']
         });
     }
