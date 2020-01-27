@@ -93,7 +93,7 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
      */
     protected function checkPaymentStatusAndUpdateOrder($charge, $order) {
         if ($charge->isAwaitCapture() || $charge->isAwaitPayment()) {
-            return $this->paymentAwaiting($order);
+            return $this->paymentAwaiting($order, $charge);
         }
         if ($charge->isSuccessful()) {
             return $this->paymentSuccessful($order);
@@ -111,7 +111,9 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
      * @param Omise_Gateway_Model_Order $order
      * @return Mage_Core_Controller_Varien_Action
      */
-    protected function paymentAwaiting($order) {
+    protected function paymentAwaiting($order, $charge) {
+        if($charge->isUnauthorized() && $order->getStatus() != Mage_Sales_Model_Order::STATE_CANCELED)
+            return $this->cancelOrder($order, $charge);
         $message = (empty($this->getMessage()))
             ? 'The payment is in progress.<br/>Due to the way %s works, this might take a few seconds or up to an hour. Please click "Accept" or "Deny" to complete the transaction process'
             : $this->getMessage();
@@ -148,5 +150,73 @@ abstract class Omise_Gateway_Controller_Base extends Mage_Core_Controller_Front_
         );
         $order->sendNewOrderEmail();
         return $this->_redirect('checkout/onepage/success');
+    }
+
+    /**
+     * If charge is created and is unauthorized then cancel the order, activate quote. 
+     * @param Omise_Gateway_Model_Order $order
+     * @param Omise_Gateway_Model_Api_Charge $charge
+     * @return Mage_Core_Controller_Varien_Action
+     */
+    protected function cancelOrder($order, $charge) {
+        $session = Mage::getSingleton('checkout/session');
+        if ($session->getLastRealOrderId()) {
+            $cart = Mage::getSingleton('checkout/cart');
+            $incrementId = $session->getLastRealOrderId();
+            if (empty($incrementId)) {
+                $session->addError($this->__('Your payment failed, Please try again later'));
+                $this->_redirect('checkout/cart');
+                return;
+            }
+            $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
+            $session->getQuote()->setIsActive(false)->save();
+            $session->clear();
+            $this->_cancelOrder($order, $session);
+            $this->restoreCart($order, $cart, $session);
+        }
+        $this->_redirect('checkout/cart');
+    }
+
+    /**
+     * Cancels the order and clears checkout session.
+     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Checkout_Model_Session $session
+     * @return void
+     */
+    protected function _cancelOrder($order, $session) {
+        try {
+            $order->setActionFlag(Mage_Sales_Model_Order::ACTION_FLAG_CANCEL, true);
+            $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true, 'Cancelled order as payment transaction has been cancelled.');
+            $order->setStatus(Mage_Sales_Model_Order::STATE_CANCELED);
+            $order->cancel()->save();
+            $session->unsLastQuoteId()
+            ->unsLastSuccessQuoteId()
+            ->unsLastOrderId()
+            ->unsLastRealOrderId();
+        } catch (Mage_Core_Exception $e) {
+            Mage::logException($e);
+        }
+    }
+
+    /**
+     * Set all items from $order to $cart.
+     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Checkout_Model_Cart $cart
+     * @param Mage_Checkout_Model_Session $session
+     * @return void
+     */
+    protected function restoreCart($order, $cart, $session) {
+        $items = $order->getItemsCollection();
+        foreach ($items as $item) {
+            try {
+                $cart->addOrderItem($item);
+            } catch (Mage_Core_Exception $e) {
+                $session->addError($this->__($e->getMessage()));
+                Mage::logException($e);
+                continue;
+            }
+        }
+        $cart->save();
+        $session->addNotice($this->__('Cancelled payment transaction.'));
     }
 }
