@@ -81,7 +81,7 @@
                 </group>
                 <group id="omise_offsite_alipay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Alipay Payments</label>
-                    <comment>Enables customers to pay using Alipay</comment>
+                    <comment>Enables customers to pay using Alipay.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enabled?</label>
                         <comment>Enable Alipay Payments.</comment>
@@ -96,7 +96,7 @@
                 </group>
                 <group id="omise_offsite_citipoints" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable payment with Citi Points</label>
-                    <comment>Enables customers to pay using Citi Points</comment>
+                    <comment>Enables customers to pay using Citi Points.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enabled?</label>
                         <comment>Enable payment with Citi Points.</comment>
@@ -126,7 +126,7 @@
                 </group>
                 <group id="omise_offsite_installment" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Installment Payments</label>
-                    <comment>Enables customers to pay in installments</comment>
+                    <comment>Enables customers to pay in installments.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enabled?</label>
                         <comment>Enable Installment Payments.</comment>
@@ -141,7 +141,7 @@
                 </group>
                 <group id="omise_offsite_truemoney" translate="label" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable True Money Payments</label>
-                    <comment>Enables customers to pay using True Money</comment>
+                    <comment>Enables customers to pay using True Money.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enabled?</label>
                         <comment>Enable True Money Payment.</comment>
