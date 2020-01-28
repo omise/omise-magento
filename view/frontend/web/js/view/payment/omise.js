@@ -15,6 +15,7 @@ define(
             'offsite-alipay',
             'offsite-installment',
             'offsite-truemoney',
+            'offsite-pointsciti',
             'offline-tesco'
         ];
 
@@ -22,7 +23,7 @@ define(
             rendererList.push({
                 type: 'omise_' + rendererName.replace(/-/g, '_'),
                 component: 'Omise_Payment/js/view/payment/method-renderer/omise-' + rendererName + '-method'
-            });  
+            });
         });
 
         rendererList.push(
