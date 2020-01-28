@@ -40,11 +40,26 @@ class PaymentReview extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param object $order
      * @return string
      */
     public function getReorderUrl()
     {
         return $this->getUrl('omise/order/reorder');
     }
+
+    /**
+    * Return HTML code with payment confirmation 
+    *
+    * @return string
+    */
+   protected function _toHtml()
+   {
+       $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
+       $paymentType = isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : null;
+       if (in_array($paymentType, [null, 'econtext', 'bill_payment_tesco_lotus'])) {
+           return;
+       }
+       
+       return parent::_toHtml();
+   }
 }
