@@ -216,6 +216,27 @@
                                 </active>
                             </fields>
                         </omise_offsite_truemoney>
+
+                        <omise_offsite_tesco type="group">
+                            <label>Tesco Bill Payment</label>
+                            <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
+                            <sort_order>740</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_model>omise_gateway/adminhtml_system_config_fieldset_payment</frontend_model>
+                            <fields>
+                                <active translate="label">
+                                    <label>Enabled</label>
+                                    <frontend_type>select</frontend_type>
+                                    <source_model>adminhtml/system_config_source_yesno</source_model>
+                                    <sort_order>1</sort_order>
+                                    <show_in_default>1</show_in_default>
+                                    <show_in_website>1</show_in_website>
+                                    <show_in_store>0</show_in_store>
+                                </active>
+                            </fields>
+                        </omise_offsite_tesco>
                     </fields>
                 </omise_payment>
             </groups>

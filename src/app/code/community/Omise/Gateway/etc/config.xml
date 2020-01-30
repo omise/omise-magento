@@ -210,6 +210,13 @@
                 <title>True Money</title>
             </omise_offsite_truemoney>
 
+            <omise_offsite_tesco>
+                <active>0</active>
+                <payment_action>authorize</payment_action>
+                <model>omise_gateway/payment_offsitetesco</model>
+                <title>Bill Payment: Tesco</title>
+            </omise_offsite_tesco>
+
         </payment>
     </default>
 </config>

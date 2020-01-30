@@ -1,0 +1,97 @@
+<?php 
+class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payment_SimpleOffsite_Payment {
+    /**
+     * @var string
+     */
+    protected $_code = 'omise_offsite_tesco';
+
+    /**
+     * @var string
+     */
+    protected $_formBlockType = 'omise_gateway/form_default';
+
+    /**
+     * @var string
+     */
+    protected $_infoBlockType = 'payment/info';
+
+    /**
+     * @var string
+     */
+    protected $_callbackUrl = 'omise/callback_validateoffsitetesco';
+
+    /**
+     * @var array
+     */
+    protected $_currencies = array('THB');
+
+    /**
+     * @var string
+     */
+    protected $_type = 'bill_payment_tesco_lotus';
+
+    /**
+     * Payment Method features
+     *
+     * @var bool
+     */
+    protected $_isGateway          = true;
+    protected $_canReviewPayment   = true;
+    protected $_isInitializeNeeded = true;
+
+    /**
+     * Instantiate state and set it to state object
+     *
+     * @param string        $payment_action
+     * @param Varien_Object $state_object
+     */
+    public function initialize($payment_action, $state_object)
+    {
+        $payment = $this->getInfoInstance();
+        $order   = $payment->getOrder();
+        $invoice = $order->prepareInvoice()->register();
+        $charge = $this->processPayment($payment, $invoice->getBaseGrandTotal());
+        $payment->setCreatedInvoice($invoice)
+            ->setIsTransactionClosed(false)
+            ->setIsTransactionPending(true)
+            ->addTransaction(
+                Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+                $invoice,
+                false,
+                Mage::helper('omise_gateway')->__('Capturing an amount of %s via Omise 3-D Secure payment.', $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()))
+            );
+        $order->addRelatedObject($invoice);
+        if ($charge->isAwaitPayment() || $charge->isAwaitCapture() || $charge->isSuccessful()) {
+            $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+            $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+            $state_object->setIsNotified(false);
+            return;
+        }
+        $this->_suspectToBeFailed($payment);
+    }
+
+    /**
+     * @param Varien_Object $payment
+     * @param float $amount 
+     *
+     * @return Omise_Gateway_Model_Api_Charge
+     * @throws Mage_Core_Exception
+     */
+    public function processPayment(Varien_Object $payment, $amount) {
+        $order = $payment->getOrder();
+
+        return parent::_process(
+            $payment,
+            array(
+                'amount'      => $this->getAmountInSubunits($amount, $order->getBaseCurrencyCode()),
+                'currency'    => $order->getBaseCurrencyCode(),
+                'description' => 'Processing payment with '.$this->getPaymentTitle().'. Magento order ID: ' . $order->getIncrementId(),
+                'source'      => array('type' => $this->_type),
+                'return_uri'  => $this->getCallbackUri(),
+                'metadata'    => array(
+                    'order_id' => $order->getIncrementId()
+                )
+            )
+        );
+    }
+}
