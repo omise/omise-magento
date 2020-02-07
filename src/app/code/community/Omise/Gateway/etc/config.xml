@@ -117,6 +117,15 @@
             </omise>
         </payment>
 
+        <template>
+            <email>
+                <omise_gateway_email_tesco_orderconfirmation translate="label" module="omise_gateway">
+                    <label>Tesco Order Confirmation</label>
+                    <file>omise/tesco_order_confirmation.html</file>
+                    <type>html</type>
+                </omise_gateway_email_tesco_orderconfirmation>
+            </email>
+        </template>
     </global>
 
     <!--

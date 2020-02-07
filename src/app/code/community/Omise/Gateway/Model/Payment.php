@@ -64,7 +64,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
             Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
         }
 
-        if ($charge->isAwaitPayment()) {
+        if ($charge->isAwaitPayment() && $this->_type != "bill_payment_tesco_lotus") {
             $this->_setRedirectFlow($payment, $charge);
         }
 

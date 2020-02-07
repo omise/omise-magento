@@ -134,4 +134,92 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
         return $isTestMode ? 'omise/gateway/js/testmode.js' : '';
     }
 
+    /**
+     * Returns last checked out order in session.
+     * @return Mage_Sales_Model_Order
+     */
+    public function getLastCheckedoutOrder()
+    {
+        $orderId = Mage::getModel('checkout/session')->getLastRealOrderId();
+        return Mage::getModel('sales/order')->loadByIncrementId($orderId);
+    }
+
+    /**
+     * Convert a given SVG Bill Payment Tesco's barcode to HTML format.
+     *
+     * Note that the SVG barcode contains with the following structure:
+     *
+     * <?xml version="1.0" encoding="UTF-8"?>
+     * <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="515px" height="90px" viewBox="0 0 515 90" version="1.1" preserveAspectRatio="none">
+     *   <title>** reference number **</title>
+     *   <g id="canvas">
+     *     <rect x="0" y="0" width="515px" height="90px" fill="#fff" />
+     *     <g id="barcode" fill="#000">
+     *       <rect x="20" y="20" width="2px" height="50px" />
+     *       ... (repeat <rect> node for displaying barcode) ...
+     *       <rect x="493" y="20" width="2px" height="50px" />
+     *     </g>
+     *   </g>
+     * </svg>
+     *
+     * The following code in this method is to read all <rect> nodes' attributes under the <g id="barcode"></g>
+     * in order to replicate the barcode in HTML <div></div> element.
+     *
+     * @param  string $barcode_svg
+     *
+     * @return string  of a generated Bill Payment Tesco's barcode in HTML format.
+     */
+    public function tescoBarcodeSvgToHtml( $charge )
+    {
+        $source = $charge->source;
+        $barcode_url = $source['references']['barcode'];
+        $barcode_svg = file_get_contents($barcode_url);
+        $xml       = new SimpleXMLElement( $barcode_svg );
+        $xhtml     = new DOMDocument();
+        $prevX     = 0;
+        $prevWidth = 0;
+
+        $div_wrapper = $xhtml->createElement( 'div' );
+        $div_wrapper->setAttribute( 'class', 'omise-billpayment-tesco-barcode' );
+
+        // Read data from all <rect> nodes.
+        foreach ( $xml->g->g->children() as $rect ) {
+            $attributes = $rect->attributes();
+            $width      = $attributes['width'];
+            $margin     = ( $attributes['x'] - $prevX - $prevWidth ) . 'px';
+
+            // Set HTML attributes based on <rect> node's attributes.
+            $div_rect = $xhtml->createElement( 'div' );
+            $div_rect->setAttribute( 'style', "float: left; position: relative; height: 50px; border-left: $width solid #000000; width: 0; margin-left: $margin" );
+            $div_wrapper->appendChild( $div_rect );
+
+            $prevX     = $attributes['x'];
+            $prevWidth = $attributes['width'];
+        }
+
+        $xhtml->appendChild( $div_wrapper );
+
+        // Add an empty <div></div> element to clear those floating elements.
+        $div = $xhtml->createElement( 'div' );
+        $div->setAttribute( 'style', 'clear:both' );
+        $xhtml->appendChild( $div );
+
+        return $xhtml->saveXML( null, LIBXML_NOEMPTYTAG );
+    }
+    /**
+     * returns reference code for barcode.
+     * @param Omise_Gateway_Model_Api_Charge $charge
+     * @return string
+     */
+    public function generateTescoReference($charge)
+    {
+        $source = $charge->source;
+        return sprintf(
+            '| &nbsp; %1$s &nbsp; 00 &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s',
+            $source['references']['omise_tax_id'],
+            $source['references']['reference_number_1'],
+            $source['references']['reference_number_2'],
+            $charge->amount
+        );
+    }
 }
