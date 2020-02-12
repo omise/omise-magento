@@ -147,9 +147,12 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
             $email = $order->getCustomerEmail();
             $customerName = $order->getCustomerName();
         }
+        $dateTime = new DateTime();
+        $dateTime->setTimeZone(new DateTimeZone(Mage::app()->getStore()->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE)));
+        
         return array(
             'orderid' => $order->getIncrementId(),
-            'valid' => $time." (".Mage::app()->getStore()->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE)." Timezone)",
+            'valid' => $time." ".$dateTime->format('T'),
             'amount'=> number_format($order->getGrandTotal(), 2) . ' ' . $order->getOrderCurrencyCode(),
             'barcode' => $barcode,
             'barcode_ref' => $barcode_ref,
