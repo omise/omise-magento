@@ -107,6 +107,31 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
      * @return void
      */
     protected function sendOrderConfirmationEmail($order, $charge) {
+        $data = $this->getEmailData($order, $charge);
+        $storeId=Mage::app()->getStore()->getId();
+        $emailInfo = Mage::getModel('core/email_info');
+        $emailInfo->addTo((string) $data['customerEmail'], (string) $data['customerName']);
+        $mailer = Mage::getModel('core/email_template_mailer');
+        $mailer->addEmailInfo($emailInfo);
+        $mailer->setSender(
+            array(
+                'email'=>(string) Mage::getStoreConfig('trans_email/ident_general/email'),
+                'name'=> (string) Mage::getStoreConfig('trans_email/ident_general/name')
+            )
+        );
+        $mailer->setStoreId($storeId);
+        $mailer->setTemplateId((string) 'omise_gateway_email_tesco_orderconfirmation');
+        $mailer->setTemplateParams($data);
+        $mailer->send();
+    }
+    /**
+     * Returns data related to order which has to set in Order confirmation email.
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @param Omise_Gateway_Model_Api_Charge $charge
+     * @return array
+     */
+    protected function getEmailData($order, $charge) {
         $barcode = Mage::helper('omise_gateway')->tescoBarcodeSvgToHtml($charge);
         $barcode_ref = Mage::helper('omise_gateway')->generateTescoReference($charge);
         $store = Mage::app()->getStore();
@@ -114,13 +139,23 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
             Mage::app()->getStore($store)->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE)
         );
         $time = date('d-m-Y H:i:s', strtotime($charge->expires_at));
-        $data = array(
+        $billingAddress = $order->getBillingAddress();
+        if ($billingAddress->getEmail()) {
+            $email = $billingAddress->getEmail();
+            $customerName = $billingAddress->getFirstname()." ".$billingAddress->getLastname();
+        } else {
+            $email = $order->getCustomerEmail();
+            $customerName = $order->getCustomerName();
+        }
+        return array(
             'orderid' => $order->getIncrementId(),
             'valid' => $time,
             'amount'=> number_format($order->getGrandTotal(), 2) . ' ' . $order->getOrderCurrencyCode(),
             'barcode' => $barcode,
             'barcode_ref' => $barcode_ref,
-            'storename' => Mage::app()->getStore()->getFrontendName()
+            'storename' => Mage::app()->getStore()->getFrontendName(),
+            'customerName' => $customerName,
+            'customerEmail' => $email
         );
 
         $storeId=Mage::app()->getStore()->getId();
