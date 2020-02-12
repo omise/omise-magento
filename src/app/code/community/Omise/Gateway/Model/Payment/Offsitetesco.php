@@ -149,7 +149,7 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
         }
         return array(
             'orderid' => $order->getIncrementId(),
-            'valid' => $time,
+            'valid' => $time." (".Mage::app()->getStore()->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE)." Timezone)",
             'amount'=> number_format($order->getGrandTotal(), 2) . ' ' . $order->getOrderCurrencyCode(),
             'barcode' => $barcode,
             'barcode_ref' => $barcode_ref,
@@ -157,17 +157,5 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
             'customerName' => $customerName,
             'customerEmail' => $email
         );
-
-        $storeId=Mage::app()->getStore()->getId();
-        $emailInfo = Mage::getModel('core/email_info');
-        $emailInfo->addTo((string)'mayur@omise.co',(string) 'Mayur Kathale');
-
-        $mailer = Mage::getModel('core/email_template_mailer');
-        $mailer->addEmailInfo($emailInfo);
-        $mailer->setSender(array('email'=>(string) 'mayur.kathale@gmail.com','name'=> (string)'Mayur Kathale'));
-        $mailer->setStoreId($storeId);
-        $mailer->setTemplateId((string) 'omise_gateway_email_tesco_orderconfirmation');
-        $mailer->setTemplateParams($data);
-        $mailer->send();
     }
 }
