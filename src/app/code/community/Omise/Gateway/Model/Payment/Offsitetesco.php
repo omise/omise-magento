@@ -135,9 +135,8 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
         $barcode = Mage::helper('omise_gateway')->tescoBarcodeSvgToHtml($charge);
         $barcode_ref = Mage::helper('omise_gateway')->generateTescoReference($charge);
         $store = Mage::app()->getStore();
-        date_default_timezone_set(
-            Mage::app()->getStore($store)->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE)
-        );
+        $mageTimezone = Mage::app()->getStore($store)->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE);
+        date_default_timezone_set($mageTimezone);
         $time = date('d-m-Y H:i:s', strtotime($charge->expires_at));
         $billingAddress = $order->getBillingAddress();
         if ($billingAddress->getEmail()) {
@@ -148,7 +147,7 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
             $customerName = $order->getCustomerName();
         }
         $dateTime = new DateTime();
-        $dateTime->setTimeZone(new DateTimeZone(Mage::app()->getStore()->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE)));
+        $dateTime->setTimeZone(new DateTimeZone($mageTimezone));
         
         return array(
             'orderid' => $order->getIncrementId(),
