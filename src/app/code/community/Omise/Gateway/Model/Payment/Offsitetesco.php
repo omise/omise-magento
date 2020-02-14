@@ -38,6 +38,7 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
     protected $_isGateway          = true;
     protected $_canReviewPayment   = true;
     protected $_isInitializeNeeded = true;
+    protected $_allowRedirect      = false;
 
     /**
      * Instantiate state and set it to state object

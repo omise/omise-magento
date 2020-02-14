@@ -177,7 +177,7 @@
     /** END reset elements. **/
 
     .omise-billpayment-tesco-print-detail ul li {
-        padding: .65 0em;
+        padding: .65 0;
     }
 
     .omise-billpayment-tesco-print-order-overview {
