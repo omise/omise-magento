@@ -36,6 +36,11 @@ class PaymentDetailsHandler implements HandlerInterface
             $barcode = $this->downloadTescoBarcode($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
         }
+
+        if ($response['charge']->source['type'] === 'paynow') {
+            $barcode = $this->downloadTescoBarcode($response['charge']->source['references']['barcode']);
+            $payment->setAdditionalInformation('barcode', $barcode);
+        }
     }
 }
 
