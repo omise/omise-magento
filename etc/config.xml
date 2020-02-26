@@ -50,7 +50,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_alipay>
 
-            <omise_offsite_paynow>
+            <omise_offline_paynow>
                 <active>0</active>
                 <title>Pay Now</title>
                 <model>OmisePaynowAdapter</model>
@@ -60,7 +60,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
-            </omise_offsite_paynow>
+            </omise_offline_paynow>
 
             <omise_offsite_installment>
                 <active>0</active>

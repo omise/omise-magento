@@ -8,5 +8,5 @@ class Paynow extends Config
     /**
      * @var string
      */
-    const CODE = 'omise_offsite_paynow';
+    const CODE = 'omise_offline_paynow';
 }
