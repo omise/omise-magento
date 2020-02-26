@@ -12,6 +12,7 @@ use Omise\Payment\Model\Api\Charge;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Truemoney;
 
 class Offsite extends Action
@@ -84,7 +85,7 @@ class Offsite extends Action
         }
         
         $paymentMethod = $payment->getMethod();
-        if (! in_array($paymentMethod, [Alipay::CODE, Internetbanking::CODE, Installment::CODE, Truemoney::CODE])) {
+        if (! in_array($paymentMethod, [Alipay::CODE, Internetbanking::CODE, Installment::CODE, Truemoney::CODE, Paynow::CODE])) {
             $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
@@ -142,6 +143,9 @@ class Offsite extends Action
                         break;
                     case Truemoney::CODE:
                         $dispPaymentMethod = "True Money";
+                        break;
+                    case Truemoney::CODE:
+                        $dispPaymentMethod = "Paynow";
                         break;
                 }
                 
