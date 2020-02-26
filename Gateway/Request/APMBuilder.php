@@ -119,15 +119,14 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_NAME         => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::CUSTOMER_NAME)
                 ];
                 break;
-<<<<<<< HEAD
             case Paynow::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'paynow'
-=======
+                ];
+                break;
             case Pointsciti::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'points_citi'
->>>>>>> master
                 ];
                 break;
         }
