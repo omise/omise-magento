@@ -10,6 +10,7 @@ use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Truemoney;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
@@ -115,6 +116,11 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::PHONE_NUMBER),
                     self::SOURCE_EMAIL        => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::EMAIL),
                     self::SOURCE_NAME         => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::CUSTOMER_NAME)
+                ];
+                break;
+            case Paynow::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'paynow'
                 ];
                 break;
         }
