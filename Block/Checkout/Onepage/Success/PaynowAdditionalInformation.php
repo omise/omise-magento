@@ -7,7 +7,7 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
      * @var \Magento\Checkout\Model\Session
      */
     protected $_checkoutSession;
-    private $log;
+
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -16,12 +16,10 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \PSR\Log\LoggerInterface $log,
         array $data = []
     ) {
         $this->_checkoutSession = $checkoutSession;
         parent::__construct($context, $data);
-        $this->log = $log;
     }
 
     /**
@@ -37,11 +35,10 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
         }
         $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
 
-
         $this->log->debug('from payment', ['log'=>$paymentData]);
 
         $this->addData([
-            'paynow_barcode' => $paymentData['additional_information']['barcode'],
+            'paynow_qrcode' => $paymentData['additional_information']['qr_code_encoded'],
             'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
         ]);
         
