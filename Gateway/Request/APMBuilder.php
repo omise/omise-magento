@@ -7,6 +7,7 @@ use Magento\Payment\Gateway\Request\BuilderInterface;
 
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Tesco;
@@ -118,9 +119,15 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_NAME         => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::CUSTOMER_NAME)
                 ];
                 break;
+<<<<<<< HEAD
             case Paynow::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'paynow'
+=======
+            case Pointsciti::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'points_citi'
+>>>>>>> master
                 ];
                 break;
         }

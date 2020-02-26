@@ -16,14 +16,15 @@ define(
             'offsite-installment',
             'offsite-truemoney',
             'offline-tesco',
-            'offline-paynow'
+            'offline-paynow',
+            'offsite-pointsciti'
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {
             rendererList.push({
                 type: 'omise_' + rendererName.replace(/-/g, '_'),
                 component: 'Omise_Payment/js/view/payment/method-renderer/omise-' + rendererName + '-method'
-            });  
+            });
         });
 
         rendererList.push(
