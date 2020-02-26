@@ -35,8 +35,6 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
         }
         $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
 
-        $this->log->debug('from payment', ['log'=>$paymentData]);
-
         $this->addData([
             'paynow_qrcode' => $paymentData['additional_information']['qr_code_encoded'],
             'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
