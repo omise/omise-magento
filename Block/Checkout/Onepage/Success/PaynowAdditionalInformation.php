@@ -23,7 +23,7 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
     }
 
     /**
-     * paynow lotus payment infromation
+     * Adding PayNow Payment Information
      *
      * @return string
      */

@@ -145,7 +145,7 @@ class Offsite extends Action
                         $dispPaymentMethod = "True Money";
                         break;
                     case Truemoney::CODE:
-                        $dispPaymentMethod = "Paynow";
+                        $dispPaymentMethod = "PayNow";
                         break;
                 }
                 

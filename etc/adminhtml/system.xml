@@ -155,11 +155,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_paynow" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Paynow Solution</label>
-                    <comment>Enables customers to pay using Paynow method</comment>
+                    <label>Enable PayNow Solution</label>
+                    <comment>Enables customers to pay using PayNow method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Paynow Payment Solution.</comment>
+                        <comment>Enable PayNow Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_paynow/active</config_path>
                     </field>
