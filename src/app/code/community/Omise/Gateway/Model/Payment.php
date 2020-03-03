@@ -64,7 +64,7 @@ abstract class Omise_Gateway_Model_Payment extends Mage_Payment_Model_Method_Abs
             Mage::throwException(Mage::helper('payment')->__($charge->failure_message));
         }
 
-        if ($charge->isAwaitPayment()) {
+        if ($charge->isAwaitPayment() && !isset($this->_allowRedirect)) {
             $this->_setRedirectFlow($payment, $charge);
         }
 

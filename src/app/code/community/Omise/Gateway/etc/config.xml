@@ -117,6 +117,15 @@
             </omise>
         </payment>
 
+        <template>
+            <email>
+                <omise_gateway_email_tesco_orderconfirmation translate="label" module="omise_gateway">
+                    <label>Tesco Order Confirmation</label>
+                    <file>omise/tesco_order_confirmation.html</file>
+                    <type>html</type>
+                </omise_gateway_email_tesco_orderconfirmation>
+            </email>
+        </template>
     </global>
 
     <!--
@@ -209,6 +218,13 @@
                 <model>omise_gateway/payment_offsitetruemoney</model>
                 <title>True Money</title>
             </omise_offsite_truemoney>
+
+            <omise_offsite_tesco>
+                <active>0</active>
+                <payment_action>authorize</payment_action>
+                <model>omise_gateway/payment_offsitetesco</model>
+                <title>Bill Payment: Tesco</title>
+            </omise_offsite_tesco>
 
         </payment>
     </default>

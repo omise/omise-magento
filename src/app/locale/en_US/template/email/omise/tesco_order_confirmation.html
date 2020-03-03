@@ -1,0 +1,19 @@
+<!--@subject {{var storename}} - Tesco Lotus Payment  @-->
+{{template config_path="design/email/header"}}
+<div>
+    <p>
+        Thank you for your order.</p>
+        This is your Tesco Lotus payment code. Please print and bring it to any Tesco
+        Lotus store within the next 24 hours to complete the payment. After that time your order will be automatically
+        canceled.<br/>
+        Order ID: <strong>{{var orderid}}</strong><br/>
+        Valid until: <strong>{{var valid}}</strong><br/>
+        Amount to pay: <strong>{{var amount}}</strong><br/>
+        <i>Extra fees may apply for the payment.</i>
+    </p>
+    <p style="margin: 50px auto; min-width: 600px; display: block;">
+        <div>{{var barcode}}</div>
+        <div style="margin-left: 20px;">{{var barcode_ref}}</div>
+    </p>
+</div>
+{{template config_path="design/email/footer"}}
