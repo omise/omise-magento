@@ -170,11 +170,11 @@
                     </field>
                 </group>
                 <group id="omise_offline_paynow" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable PayNow Solution</label>
-                    <comment>Enables customers to pay using PayNow method</comment>
+                    <label>Enable PayNow QR Payment Solution</label>
+                    <comment>Enables customers to pay using PayNow QR Payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable PayNow Payment Solution.</comment>
+                        <comment>Enable PayNow QR Payment Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_paynow/active</config_path>
                     </field>
