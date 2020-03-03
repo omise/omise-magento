@@ -4,7 +4,7 @@
 #### 🚀 Enhancements
 
 - Adding True money payment method (PR [#236](https://github.com/omise/omise-magento/pull/236))
-- Implementing new payment method - Tesco Bill Payment (PR [#239](https://github.com/omise/omise-magento/pull/239))s
+- Implementing new payment method - Tesco Bill Payment (PR [#239](https://github.com/omise/omise-magento/pull/239))
 
 ---
 ### [v1.19 _(Jan 7, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.19)
