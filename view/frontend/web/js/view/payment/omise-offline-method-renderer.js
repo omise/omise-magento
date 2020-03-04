@@ -30,8 +30,6 @@ define(
 
                 return true;
             }
-
         });
-
     }
 );
