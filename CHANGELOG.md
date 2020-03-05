@@ -1,5 +1,5 @@
 # CHANGELOG
-### [v1.20 _(Mar 4, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.20)
+### [v1.20 _(Mar 5, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.20)
 
 #### 🚀 Enhancements
 
