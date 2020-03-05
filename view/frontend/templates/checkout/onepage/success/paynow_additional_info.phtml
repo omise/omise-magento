@@ -1,0 +1,5 @@
+
+<p><?= __('PayNow QR Code.'); ?></p>
+<p style="margin:.5rem 0"><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
+<div><img src="data:image/png;base64, <?= $block->getPaynowQrcode() ?>" /></div>
+<p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?= __('Print')?></button></p>

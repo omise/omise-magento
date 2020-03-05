@@ -18,13 +18,13 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offline-tesco-form'
+                template: 'Omise_Payment/payment/offline-paynow-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offline_tesco',
-            restrictedToCurrencies: ['thb'],
+            code: 'omise_offline_paynow',
+            restrictedToCurrencies: ['sgd'],
         });
     }
 );

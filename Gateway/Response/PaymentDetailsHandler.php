@@ -10,7 +10,7 @@ class PaymentDetailsHandler implements HandlerInterface
      * @param string $url URL to Tesco Barcode generated in Omise Backend
      * @return string Barcode in SVG format
      */
-    private function downloadTescoBarcode($url) 
+    private function downloadPaymentFile($url) 
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -33,8 +33,13 @@ class PaymentDetailsHandler implements HandlerInterface
         $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
         
         if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
-            $barcode = $this->downloadTescoBarcode($response['charge']->source['references']['barcode']);
+            $barcode = $this->downloadPaymentFile($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
+        }
+
+        if ($response['charge']->source['type'] === 'paynow') {
+            $qrCodeImage = $this->downloadPaymentFile($response['charge']->source['scannable_code']['image']['download_uri']);
+            $payment->setAdditionalInformation('qr_code_encoded', base64_encode($qrCodeImage));
         }
     }
 }
