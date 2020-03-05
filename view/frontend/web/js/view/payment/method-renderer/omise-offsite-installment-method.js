@@ -2,7 +2,7 @@ define(
     [
         'jquery',
         'ko',
-        'Omise_Payment/js/view/payment/omise-offsite-placeorder',
+        'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
         'Magento_Checkout/js/view/payment/default',
     ],
     function (
