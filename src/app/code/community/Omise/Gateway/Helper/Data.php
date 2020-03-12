@@ -180,7 +180,7 @@ class Omise_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
         $prevWidth = 0;
 
         $div_wrapper = $xhtml->createElement( 'div' );
-        $div_wrapper->setAttribute( 'class', 'omise-billpayment-tesco-barcode' );
+        $div_wrapper->setAttribute( 'class', 'omise-barcode' );
 
         // Read data from all <rect> nodes.
         foreach ( $xml->g->g->children() as $rect ) {

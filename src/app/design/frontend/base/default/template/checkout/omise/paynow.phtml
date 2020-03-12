@@ -7,21 +7,15 @@
 <?php if ($order):?>
 <?php
     $charge = $this->getCharge();
-    $barcode_html = $this->tescoBarcodeSvgToHtml($charge);
-    $barcode_ref_number = $this->generateTescoReference($charge);
+    $barcode_html = $charge->source['scannable_code']['image']['download_uri'];
 ?>
 <p><?php echo $this->__( 'Your order # is :'.$order->getIncrementId()); ?></p>
-<p><?php echo $this->__( 'To complete payment, print the code below and bring it to 
-make payment in any Tesco Lotus Store. Code is valid for the next <b>24 hours only</b>. 
-After that time your order will be canceled.'); ?></p>
+
 <div class="omise omise-details">
-    <p><?php echo $this->__( 'Use this barcode to pay at Tesco Lotus.'); ?></p>
+    <p><?php echo $this->__('Scan the QR code to pay.'); ?></p>
     <div class="omise-barcode-wrapper">
-        <?php echo $barcode_html; ?>
+        <img src="<?php echo $barcode_html; ?>"/>
     </div>
-    <small class="omise-reference-number">
-        <?php echo $barcode_ref_number; ?>
-    </small>
     <div class="omise-print-button">
         <button onClick="window.print()" class="button button-primary">Print barcode</button>
     </div>
@@ -65,14 +59,10 @@ After that time your order will be canceled.'); ?></p>
         </div>
     <?php endif; ?>
 
-    <p class="omise-print-barcode-message"><?php echo $this->__( 'Use this barcode to pay at Tesco Lotus.'); ?></p>
+    <p class="omise-print-barcode-message"><?php echo $this->__('Scan the QR code to pay.'); ?></p>
 
     <div class="omise-print-barcode-wrapper">
-        <?php echo $barcode_html; ?>
-    </div>
-
-    <div class="omise-print-reference-number">
-        <small><?php echo $barcode_ref_number; ?></small>
+        <img src="<?php echo $barcode_html; ?>"/>
     </div>
 </div>
 
@@ -89,4 +79,4 @@ After that time your order will be canceled.'); ?></p>
 
 <div class="buttons-set">
     <button type="button" class="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Continue Shopping')) ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
-</div>  
+</div>

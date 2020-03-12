@@ -124,6 +124,11 @@
                     <file>omise/tesco_order_confirmation.html</file>
                     <type>html</type>
                 </omise_gateway_email_tesco_orderconfirmation>
+                <omise_gateway_email_paynow_orderconfirmation translate="label" module="omise_gateway">
+                    <label>PayNow Order Confirmation</label>
+                    <file>omise/paynow_order_confirmation.html</file>
+                    <type>html</type>
+                </omise_gateway_email_paynow_orderconfirmation>
             </email>
         </template>
     </global>
@@ -225,6 +230,13 @@
                 <model>omise_gateway/payment_offsitetesco</model>
                 <title>Bill Payment: Tesco</title>
             </omise_offsite_tesco>
+
+            <omise_offsite_paynow>
+                <active>0</active>
+                <payment_action>authorize</payment_action>
+                <model>omise_gateway/payment_offsitepaynow</model>
+                <title>PayNow QR Payment</title>
+            </omise_offsite_paynow>
 
         </payment>
     </default>

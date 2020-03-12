@@ -27,4 +27,19 @@
             <block type="omise_gateway/checkout_tesco" name="omise.checkout.success" template="checkout/omise/success.phtml"/>
         </reference>
     </omise_gateway_checkout_tesco_index>
+    <omise_gateway_checkout_paynow_index translate="label">
+        <label>Omise Checkout Success</label>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>omise/gateway/css/style.css</name>
+            </action>
+        </reference>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="omise_gateway/checkout_tesco" name="omise.checkout.success" template="checkout/omise/paynow.phtml"/>
+        </reference>
+    </omise_gateway_checkout_paynow_index>
 </layout>
