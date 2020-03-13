@@ -24,7 +24,7 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="content">
-            <block type="omise_gateway/checkout_tesco" name="omise.checkout.success" template="checkout/omise/success.phtml"/>
+            <block type="omise_gateway/checkout_tesco" name="omise.checkout.success" template="checkout/omise/tesco.phtml"/>
         </reference>
     </omise_gateway_checkout_tesco_index>
     <omise_gateway_checkout_paynow_index translate="label">

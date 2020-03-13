@@ -1,9 +1,5 @@
 <?php
-class Omise_Gateway_Checkout_PaynowController extends Mage_Core_Controller_Front_Action
+class Omise_Gateway_Checkout_PaynowController extends Omise_Gateway_Controller_BaseBarcode
 {
-    public function indexAction()
-    {
-        $this->loadLayout();
-        return $this->renderLayout();
-    }
+    
 }

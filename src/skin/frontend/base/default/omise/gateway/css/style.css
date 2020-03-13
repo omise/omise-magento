@@ -119,7 +119,7 @@
 
 /** Tesco Bill Payment : Thank you page **/
 .omise-details {
-	margin: 4em 0em;
+	margin: 4em 0;
 	text-align: center;
 }
 .omise-barcode {

@@ -1,7 +1,7 @@
 <?php
 class Omise_Gateway_Callback_ValidateoffsitetescoController extends Omise_Gateway_Controller_Base
 {
-    const PAYMENT_TITLE = 'Bill Payment: Tesco';
+    const PAYMENT_TITLE = 'Tesco Bill Payment';
     /**
      * @return Mage_Core_Controller_Varien_Action|void
      * @throws Mage_Core_Exception
