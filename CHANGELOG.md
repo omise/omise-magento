@@ -1,4 +1,12 @@
 # CHANGELOG
+### [v1.21 _(Mar 16, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.21)
+
+#### 🚀 Enhancements
+
+- Implementing new payment method - Paynow QR payment (Available in Singapore only) (PR [#243](https://github.com/omise/omise-magento/pull/243))
+
+---
+# CHANGELOG
 ### [v1.20 _(Mar 5, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.20)
 
 #### 🚀 Enhancements
