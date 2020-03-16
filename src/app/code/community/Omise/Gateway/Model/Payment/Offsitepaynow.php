@@ -1,9 +1,11 @@
-<?php 
-class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payment_BarcodeOffsite_Payment {
+<?php
+class Omise_Gateway_Model_Payment_Offsitepaynow extends Omise_Gateway_Model_Payment_BarcodeOffsite_Payment
+{
+
     /**
      * @var string
      */
-    protected $_code = 'omise_offsite_tesco';
+    protected $_code = 'omise_offsite_paynow';
 
     /**
      * @var string
@@ -18,27 +20,27 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
     /**
      * @var string
      */
-    protected $_callbackUrl = 'omise/callback_validateoffsitetesco';
+    protected $_callbackUrl = 'omise/callback_validateoffsitepaynow';
 
     /**
      * @var array
      */
-    protected $_currencies = array('THB');
+    protected $_currencies = array('SGD');
 
     /**
      * @var string
      */
-    protected $_type = 'bill_payment_tesco_lotus';
+    protected $_type = 'paynow';
 
     /**
      * @var string
      */
-    protected $_successUrl = 'omise/checkout_tesco';
+    protected $_successUrl = 'omise/checkout_paynow';
 
     /**
      * @var string
      */
-    protected $_emailTemplateId ='omise_gateway_email_tesco_orderconfirmation';
+    protected $_emailTemplateId ='omise_gateway_email_paynow_orderconfirmation';
 
     /**
      * Payment Method features

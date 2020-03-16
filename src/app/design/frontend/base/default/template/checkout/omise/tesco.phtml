@@ -14,70 +14,70 @@
 <p><?php echo $this->__( 'To complete payment, print the code below and bring it to 
 make payment in any Tesco Lotus Store. Code is valid for the next <b>24 hours only</b>. 
 After that time your order will be canceled.'); ?></p>
-<div class="omise omise-billpayment-tesco-details">
+<div class="omise omise-details">
     <p><?php echo $this->__( 'Use this barcode to pay at Tesco Lotus.'); ?></p>
-    <div class="omise-billpayment-tesco-barcode-wrapper">
+    <div class="omise-barcode-wrapper">
         <?php echo $barcode_html; ?>
     </div>
-    <small class="omise-billpayment-tesco-reference-number">
+    <small class="omise-reference-number">
         <?php echo $barcode_ref_number; ?>
     </small>
-    <div class="omise-billpayment-tesco-print-button">
+    <div class="omise-print-button">
         <button onClick="window.print()" class="button button-primary">Print barcode</button>
     </div>
 </div>
 
 <!-- Display for printing only. -->
 <!-- Hidden by assets/css/omise-billpayment-print.css. -->
-<div class="omise-billpayment-tesco-print-detail">
+<div class="omise-print-detail">
     <div>
         <h2><?php echo $this->__( 'Thank you. Your order has been received.'); ?></h2>
     </div>
 
-    <div class="omise-billpayment-tesco-print-order-overview">
-        <div class="omise-billpayment-tesco-print-order-overview-item">
+    <div class="omise-print-order-overview">
+        <div class="omise-print-order-overview-item">
             <?php echo $this->__( 'Order number'); ?> :
             <br/><strong><?php echo $order->getIncrementId(); ?></strong>
         </div>
 
-        <div class="omise-billpayment-tesco-print-order-overview-item">
+        <div class="omise-print-order-overview-item">
             <?php echo $this->__('Date'); ?> :
             <br/><strong><?php echo Mage::helper('core')->formatDate( $order->getCreatedAt(),'medium', false ); ?></strong>
         </div>
 
         <?php if ( $order->getBillingAddress() ) : ?>
-            <div class="omise-billpayment-tesco-print-order-overview-item">
+            <div class="omise-print-order-overview-item">
                 <?php echo $this->__( 'Email'); ?> :
                 <br/><strong><?php echo $this->escapeHtml($order->getBillingAddress()->getEmail()); ?></strong>
             </div>
         <?php endif; ?>
 
-        <div class="omise-billpayment-tesco-print-order-overview-item">
+        <div class="omise-print-order-overview-item">
             <?php echo $this->__('Total'); ?> :
             <br/><strong><?php echo $order->getGrandTotal(); ?></strong>
         </div>
     </div>
 
     <?php if ( $paymentTitle = $order->getPayment()->getMethodInstance()->getTitle() ) : ?>
-        <div class="omise-billpayment-tesco-print-order-payment-method">
+        <div class="omise-print-order-payment-method">
             <?php echo $this->__( 'Payment method'); ?> :
             <br/><strong><?php echo $this->escapeHtml($paymentTitle); ?></strong>
         </div>
     <?php endif; ?>
 
-    <p class="omise-billpayment-tesco-print-barcode-message"><?php echo $this->__( 'Use this barcode to pay at Tesco Lotus.'); ?></p>
+    <p class="omise-print-barcode-message"><?php echo $this->__( 'Use this barcode to pay at Tesco Lotus.'); ?></p>
 
-    <div class="omise-billpayment-tesco-print-barcode-wrapper">
+    <div class="omise-print-barcode-wrapper">
         <?php echo $barcode_html; ?>
     </div>
 
-    <div class="omise-billpayment-tesco-print-reference-number">
+    <div class="omise-print-reference-number">
         <small><?php echo $barcode_ref_number; ?></small>
     </div>
 </div>
 
 <script type="text/javascript">
-    let omise_billpayment_print_detail        = document.getElementsByClassName( 'omise-billpayment-tesco-print-detail' );
+    let omise_billpayment_print_detail        = document.getElementsByClassName( 'omise-print-detail' );
     let cloned_omise_billpayment_print_detail = omise_billpayment_print_detail[0].cloneNode( true );
 
     document.body.appendChild( cloned_omise_billpayment_print_detail );

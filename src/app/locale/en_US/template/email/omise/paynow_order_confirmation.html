@@ -1,0 +1,17 @@
+<!--@subject {{var storename}} - PayNow QR Payment  @-->
+{{template config_path="design/email/header"}}
+<div>
+    <p>
+        Thank you for your order.
+        This is your PayNow QR code. Please scan and complete payment 
+        within the next 24 hours. After that time your order will be automatically
+        canceled.<br/>
+        Order ID: <strong>{{var orderid}}</strong><br/>
+        Valid until: <strong>{{var valid}}</strong><br/>
+        Amount to pay: <strong>{{var amount}}</strong><br/>
+    </p>
+    <p style="margin: 50px auto; min-width: 600px; display: block;">
+        <img src="{{var barcode}}"></div>
+    </p>
+</div>
+{{template config_path="design/email/footer"}}

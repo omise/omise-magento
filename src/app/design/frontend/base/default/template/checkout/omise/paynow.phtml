@@ -1,0 +1,82 @@
+<div class="page-title">
+    <h1><?php echo $this->__('Order Received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+<?php $order = Mage::helper('omise_gateway')->getLastCheckedoutOrder(); ?>
+<?php if ($order):?>
+<?php
+    $charge = $this->getCharge();
+    $barcode_html = $charge->source['scannable_code']['image']['download_uri'];
+?>
+<p><?php echo $this->__( 'Your order # is :'.$order->getIncrementId()); ?></p>
+
+<div class="omise omise-details">
+    <p><?php echo $this->__('Scan the QR code to pay.'); ?></p>
+    <div class="omise-barcode-wrapper">
+        <img src="<?php echo $barcode_html; ?>"/>
+    </div>
+    <div class="omise-print-button">
+        <button onClick="window.print()" class="button button-primary">Print barcode</button>
+    </div>
+</div>
+
+<!-- Display for printing only. -->
+<!-- Hidden by assets/css/omise-billpayment-print.css. -->
+<div class="omise-print-detail">
+    <div>
+        <h2><?php echo $this->__( 'Thank you. Your order has been received.'); ?></h2>
+    </div>
+
+    <div class="omise-print-order-overview">
+        <div class="omise-print-order-overview-item">
+            <?php echo $this->__( 'Order number'); ?> :
+            <br/><strong><?php echo $order->getIncrementId(); ?></strong>
+        </div>
+
+        <div class="omise-print-order-overview-item">
+            <?php echo $this->__('Date'); ?> :
+            <br/><strong><?php echo Mage::helper('core')->formatDate( $order->getCreatedAt(),'medium', false ); ?></strong>
+        </div>
+
+        <?php if ( $order->getBillingAddress() ) : ?>
+            <div class="omise-print-order-overview-item">
+                <?php echo $this->__( 'Email'); ?> :
+                <br/><strong><?php echo $this->escapeHtml($order->getBillingAddress()->getEmail()); ?></strong>
+            </div>
+        <?php endif; ?>
+
+        <div class="omise-print-order-overview-item">
+            <?php echo $this->__('Total'); ?> :
+            <br/><strong><?php echo $order->getGrandTotal(); ?></strong>
+        </div>
+    </div>
+
+    <?php if ( $paymentTitle = $order->getPayment()->getMethodInstance()->getTitle() ) : ?>
+        <div class="omise-print-order-payment-method">
+            <?php echo $this->__( 'Payment method'); ?> :
+            <br/><strong><?php echo $this->escapeHtml($paymentTitle); ?></strong>
+        </div>
+    <?php endif; ?>
+
+    <p class="omise-print-barcode-message"><?php echo $this->__('Scan the QR code to pay.'); ?></p>
+
+    <div class="omise-print-barcode-wrapper">
+        <img src="<?php echo $barcode_html; ?>"/>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let omise_billpayment_print_detail        = document.getElementsByClassName( 'omise-print-detail' );
+    let cloned_omise_billpayment_print_detail = omise_billpayment_print_detail[0].cloneNode( true );
+
+    document.body.appendChild( cloned_omise_billpayment_print_detail );
+
+    omise_billpayment_print_detail[0].parentNode.removeChild( omise_billpayment_print_detail[0] );
+</script>
+
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Continue Shopping')) ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
