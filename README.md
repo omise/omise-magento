@@ -118,6 +118,30 @@ Available options:
 | Enable/Disable | Enables or disables 'True Money Payment method'|
 | Title |Payment Title displayed during checkout |
 
+**Citi Pay With Points Payment Solution**  
+Available options:
+
+| Setting             | Description  |
+| ------------ | --------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'True Money Payment method'|
+| Title |Payment Title displayed during checkout |
+
+**PayNow Payment Solution (Available only for Singaporean customers)**  
+Available options:
+
+| Setting             | Description  |
+| ------------ | --------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'PayNow Payment method'|
+| Title |Payment Title displayed during checkout |
+
+**Convenience Store Payment Solution (Available only for Japanese customers)**  
+Available options:
+
+| Setting             | Description  |
+| ------------ | --------------------------------- |                                                                            
+| Enable/Disable | Enables or disables 'Convenience Store Payment method'|
+| Title |Payment Title displayed during checkout |
+
 ## Contributing
 
 Thanks for your interest in contributing to Omise Magento. We're looking forward to hearing your thoughts and willing to review your changes.
