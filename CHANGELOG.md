@@ -45,8 +45,6 @@
 #### 🚀 Enhancements
 
 - True Money Payment Method Implementation (PR [#211](https://github.com/omise/omise-magento/pull/211))
-
-#### 🚀 Enhancements
 - Changed in composer omise-php requirement to version 2.11.1 (PR [#177](https://github.com/omise/omise-magento/pull/177))
 
 #### 👾 Bug Fixes
