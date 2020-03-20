@@ -1,15 +1,14 @@
 # CHANGELOG
 
-### [v2.10 _(Mar 19, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.10)
+### [v2.10 _(Mar 20, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.10)
 
 
 #### ✨ Highlights
 
-- Adding Support for PayNow Payment Method (available only for Singapre customers) (PR [#218](https://github.com/omise/omise-magento/pull/218))
 - Convenience Store Payment Support (available only for Singapre customers) (PR [#224](https://github.com/omise/omise-magento/pull/224))
 - Plugin Japaniese translation (PR [#226](https://github.com/omise/omise-magento/pull/226))
 - Citi Points Payment Implementation (PR [#231](https://github.com/omise/omise-magento/pull/231))
-- PayNow Payment Implementation (PR [#240](https://github.com/omise/omise-magento/pull/240))
+- PayNow QR Payment Implementation (PR [#240](https://github.com/omise/omise-magento/pull/240))
 
 #### 🚀 Enhancements
 
