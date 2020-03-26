@@ -53,7 +53,7 @@ class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Bloc
     {
         $phoneNumber = $this->getBillingAddress()->getTelephone();
         return (isset($phoneNumber)) ? $phoneNumber : '';
-     }
+    }
 
      /**
      * Returns billing email address from current quote
@@ -63,7 +63,7 @@ class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Bloc
     {
         $email = $this->getBillingAddress()->getEmail();
         return (isset($email)) ? $email : '';
-     }
+    }
 
      /**
      * Returns billing email address from current quote
@@ -73,5 +73,5 @@ class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Bloc
     {
             $name = substr($this->getBillingAddress()->getFirstname(), 0, 10);
         return (isset($name)) ? $name : '';
-     }
+    }
 }
