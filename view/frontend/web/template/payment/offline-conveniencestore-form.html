@@ -20,6 +20,13 @@
                 </div>
             </div>
         </div>
+        <div data-bind="visible: !isActive()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <div data-bind="i18n: 'Option available for orders in JPY only'"></div>
+                </div>
+            </div>
+        </div>
         <div data-bind="visible: isActive() && orderValueTooLow()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
@@ -68,6 +75,7 @@
                     " />
             </div>
         </form>
+
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() -->
@@ -84,7 +92,11 @@
                 <button class="action primary checkout" type="submit"
                     disabled="disabled"
                     data-bind="
-                        click: placeOrder,
+                        click: function (data, event) {
+                            if (validate()) {
+                                placeOrder(data, event);
+                            }
+                        },
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
                         enable: (getCode() == isChecked())">

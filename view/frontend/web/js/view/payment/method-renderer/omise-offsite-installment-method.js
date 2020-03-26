@@ -2,18 +2,14 @@ define(
     [
         'jquery',
         'ko',
-        'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
+        'Omise_Payment/js/view/payment/omise-offsite-placeorder',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/model/quote',
-        'Magento_Catalog/js/price-utils'
     ],
     function (
         $,
         ko,
         Base,
-        Component,
-        quote,
-        priceUtils
+        Component
     ) {
         'use strict';
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 3000;
@@ -25,6 +21,7 @@ define(
 
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
+            restrictedToMinimum: 3000,
 
             /**
              * Initiate observable fields
@@ -43,27 +40,6 @@ define(
                     ]);
 
                 return this;
-            },
-
-            /**
-             * Format Price
-             * 
-             * @param {float} amount - Amount to be formatted
-             * @return {string}
-             */
-            getFormattedAmount: function (amount) {
-                return priceUtils.formatPrice(amount, quote.getPriceFormat());
-            },
-
-            /**
-             * Get formatted message about installment value limitation
-             *
-             * NOTE: this value should be taken directly from capability object when it is fully implemented.
-             *
-             * @return {string}
-             */
-            getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
             },
 
             /**
@@ -211,16 +187,6 @@ define(
                     );
                 }
             },
-
-            /**
-             * Check if order value meets minimum requirement
-             *
-             * @return {boolean}
-             */
-            orderValueTooLow: function () {
-                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT;
-            }
-
         });
     }
 );

@@ -13,3 +13,4 @@
 "Payment rejected by card issuer.", "決済がカード発行者によって拒否されました。"
 "Card stolen or lost.", "このカードは紛失/盗難が報告されています"
 "Payer did not take action before charge expiration.", "有効期限前に操作がありませんでした。"
+"Option available for orders in JPY only", "日本円での注文のみ利用可能なオプション"

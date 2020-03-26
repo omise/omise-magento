@@ -12,7 +12,6 @@ define(
         'use strict';
 
         return Object.assign({}, Base, {
-
             /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
