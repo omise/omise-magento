@@ -238,6 +238,13 @@
                 <title>PayNow QR Payment</title>
             </omise_offsite_paynow>
 
+            <omise_offsite_conveniencestore>
+                <active>0</active>
+                <payment_action>order</payment_action>
+                <model>omise_gateway/payment_offsiteconveniencestore </model>
+                <title>Convenience Store</title>
+            </omise_offsite_conveniencestore>
+
         </payment>
     </default>
 </config>

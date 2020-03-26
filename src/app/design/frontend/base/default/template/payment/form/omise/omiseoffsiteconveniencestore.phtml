@@ -1,0 +1,43 @@
+<?php $_code = $this->getMethodCode(); ?>
+
+<ul id="payment_form_<?php echo $_code; ?>" class="form-list" style="display:none;">
+    <li>
+        <label for="<?php echo $_code; ?>_name" class="required">
+            <em>*</em><?php echo $this->__('Name'); ?>
+        </label>
+        <div class="input-box">
+            <input id="<?php echo $_code; ?>_name" type="text"
+                name="payment[name]"
+                title="<?php echo $this->__('Name'); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStoreCustomerName()); ?>"
+                maxlength="10"
+                class="input-text required-entry validate-length maximum-length-10" />
+        </div>
+    </li>
+    <li>
+        <label for="<?php echo $_code; ?>_phone_number" class="required">
+            <em>*</em><?php echo $this->__('Phone Number'); ?>
+        </label>
+        <div class="input-box">
+            <input id="<?php echo $_code; ?>_phone_number" type="text"
+                name="payment[phone_number]"
+                title="<?php echo $this->__('Phone Number'); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStorePhoneNumber()); ?>"
+                maxlength="10"
+                class="input-text required-entry validate-length maximum-length-10 minimum-length-10 validate-digits" />
+        </div>
+    </li>
+    <li>
+        <label for="<?php echo $_code; ?>_email" class="required">
+            <em>*</em><?php echo $this->__('Email'); ?>
+        </label>
+        <div class="input-box">
+            <input id="<?php echo $_code; ?>_email" type="text"
+                name="payment[email]"
+                title="<?php echo $this->__('Email'); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStoreEmail()); ?>"
+                maxlength="10"
+                class="input-text required-entry validate-email" />
+        </div>
+    </li>
+</ul>
