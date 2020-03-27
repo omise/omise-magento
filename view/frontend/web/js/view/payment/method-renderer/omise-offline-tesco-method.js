@@ -5,7 +5,6 @@ define(
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/error-processor'
     ],
     function (
         ko,
