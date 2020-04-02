@@ -32,7 +32,7 @@ class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Bloc
     }
 
     /**
-     * Undocumented function
+     * Returns billing address stored in checkout session. 
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Bloc
     }
 
      /**
-     * Returns billing email address from current quote
+     * Returns billing customer name from current quote
      * @return string
      */
     public function getOmiseConvenienceStoreCustomerName()

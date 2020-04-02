@@ -23,8 +23,8 @@
                 name="payment[phone_number]"
                 title="<?php echo $this->__('Phone Number'); ?>"
                 value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStorePhoneNumber()); ?>"
-                maxlength="10"
-                class="input-text required-entry validate-length maximum-length-10 minimum-length-10 validate-digits" />
+                maxlength="11"
+                class="input-text required-entry validate-length maximum-length-11 minimum-length-10 validate-digits" />
         </div>
     </li>
     <li>
@@ -36,8 +36,13 @@
                 name="payment[email]"
                 title="<?php echo $this->__('Email'); ?>"
                 value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStoreEmail()); ?>"
-                maxlength="10"
-                class="input-text required-entry validate-email" />
+                maxlength="50"
+                class="input-text required-entry validate-email validate-email-plussign validate-length maximum-length-50 minimum-length-6" />
         </div>
     </li>
 </ul>
+<script type="text/javascript">
+    Validation.add('validate-email-plussign', 'Please enter a valid email address.', function(v) {
+        return !(/[+]/g.test(v));
+    })
+</script>
