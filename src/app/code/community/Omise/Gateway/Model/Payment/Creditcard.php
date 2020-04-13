@@ -74,12 +74,13 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
 
             case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE:
                 $invoice = $order->prepareInvoice()->register();
-                $invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_PAID)->save();
                 $charge = $this->processPayment($payment, $invoice->getBaseGrandTotal());
-
+                if($charge->isSuccessful()) {
+                    $invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_PAID)->save();
+                }
                 $payment->setCreatedInvoice($invoice)
-                    ->setIsTransactionClosed(true)
-                    ->setIsTransactionPending(false)
+                    ->setIsTransactionClosed(false)
+                    ->setIsTransactionPending(true)
                     ->addTransaction(
                         Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
                         $invoice,
@@ -99,13 +100,11 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 break;
         }
 
-        if ($charge->isAwaitPayment() || $charge->isAwaitCapture()) {
-            $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
-            $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
-            $state_object->setIsNotified(false);
-            return;
-        } else {
-            $state_object->setState(Mage_Sales_Model_Order::STATE_PROCESSING);
+        if ($charge->isAwaitPayment() || $charge->isAwaitCapture() || $charge->isSuccessful()) {
+            if($payment_action != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE) {
+                $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+                $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+            }
             $state_object->setIsNotified(false);
             return;
         }
