@@ -37,12 +37,12 @@
                 title="<?php echo $this->__('Email'); ?>"
                 value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStoreEmail()); ?>"
                 maxlength="50"
-                class="input-text required-entry validate-email validate-email-plussign validate-length maximum-length-50 minimum-length-6" />
+                class="input-text required-entry validate-omise-email validate-length maximum-length-50 minimum-length-6" />
         </div>
     </li>
 </ul>
 <script type="text/javascript">
-    Validation.add('validate-email-plussign', 'Please enter a valid email address.', function(v) {
+    Validation.add('validate-omise-email', 'Please enter a valid email address.', function(v) {
         return Validation.get('IsEmpty').test(v) || /^([a-z0-9]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i.test(v)
     })
 </script>
