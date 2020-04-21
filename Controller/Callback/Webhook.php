@@ -2,11 +2,14 @@
 
 namespace Omise\Payment\Controller\Callback;
 
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Omise\Payment\Model\Event;
 
-class Webhook extends Action
+class Webhook extends Action implements CsrfAwareActionInterface
 {
     /**
      * @var \Omise\Payment\Model\Event
@@ -22,6 +25,24 @@ class Webhook extends Action
         $this->event = $event;
 
         parent::__construct($context);
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @return InvalidRequestException|null
+     */
+    public function createCsrfValidationException(RequestInterface $request): ? InvalidRequestException
+    {
+        return null;
+    }
+    
+    /**
+     * @param RequestInterface $request
+     * @return boolean|null
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
     }
 
     /**
