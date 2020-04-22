@@ -1,5 +1,6 @@
 <?php
 namespace Omise\Payment\Plugin;
+use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 
 class CsrfValidatorSkip
 {
@@ -19,7 +20,7 @@ class CsrfValidatorSkip
         $request,
         $action
     ) {
-        if ($request->getModuleName() == 'omise' && strpos($this->urlInterface->getCurrentUrl(), 'omise/callback/webhook')) {
+        if ($request->getModuleName() == 'omise' && strpos($this->urlInterface->getCurrentUrl(), Webhook::URI)) {
             return;
         }
         $proceed($request, $action);
