@@ -1,5 +1,10 @@
 <p align="center"><a href='https://www.omise.co'><img src='https://cloud.githubusercontent.com/assets/2154669/26388730/437207e4-4080-11e7-9955-2cd36bb3120f.png' height='160'></a></p>
 
+:warning: Magento 1 end-of-life (EOL) is [30 June 2020](https://magento.com/blog/magento-news/supporting-magento-1-through-june-2020).
+We urge all merchants still using Magento 1 to upgrade to Magento 2 and install our [Magento 2 plugin](https://www.omise.co/magento-2).
+
+---
+
 **Omise Magento** is the official payment extension which provides support for Omise payment gateway for store builders working on the Magento platform.
 
 ## Supported Versions
