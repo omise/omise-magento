@@ -76,8 +76,8 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
                 $invoice = $order->prepareInvoice()->register();
                 $charge = $this->processPayment($payment, $invoice->getBaseGrandTotal());
                 if($charge->isSuccessful()) {
-                    $invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_PAID)->save();
-                    $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PROCESSING));
+                    $invoice->pay();
+                    $state_object->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
                 }
                 $payment->setCreatedInvoice($invoice)
                     ->setIsTransactionClosed(false)
