@@ -139,7 +139,7 @@ define(
              * @return {integer}
              */
             getTotal: function () {
-                return parseInt(window.checkoutConfig.quoteData.grand_total);
+                return + parseInt(window.checkoutConfig.quoteData.grand_total);
             },
 
             /**
