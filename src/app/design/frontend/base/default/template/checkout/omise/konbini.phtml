@@ -1,0 +1,19 @@
+<div class="page-title">
+    <h1><?php echo $this->__('Order Received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+<?php $order = Mage::helper('omise_gateway')->getLastCheckedoutOrder(); ?>
+<?php if ($order):?>
+<?php
+    $charge = $this->getCharge();
+?>
+<p><?php echo $this->__( 'Your order # is :'.$order->getIncrementId()); ?></p>
+<p><?= $this->escapeHtml(__('Amount to pay')) ?>: <strong><?= $order->getGrandTotal() ?></b></strong></p>
+<p><?= __('Please follow the link to find '); ?> 
+    <a href="#" onclick="window.open('<?= $charge->authorize_uri ?>','_blank')"><?= __('payment instructions'); ?></a>.
+</p>
+<?php endif; ?>
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Continue Shopping')) ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>

@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Block_Checkout_Tesco extends Mage_Checkout_Block_Onepage_Success
+class Omise_Gateway_Block_Checkout_Offline extends Mage_Checkout_Block_Onepage_Success
 {
     /**
      * Calls OmiseCharge api to retrieve charge by charge ID, returns false if charge not found.

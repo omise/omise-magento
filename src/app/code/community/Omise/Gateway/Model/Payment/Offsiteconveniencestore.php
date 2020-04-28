@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteconveniencestore extends Omise_Gateway_Model_Payment_SimpleOffsite_Payment
+class Omise_Gateway_Model_Payment_Offsiteconveniencestore extends Omise_Gateway_Model_Payment_Offline_Payment
 {
 
     /**
@@ -33,6 +33,11 @@ class Omise_Gateway_Model_Payment_Offsiteconveniencestore extends Omise_Gateway_
     protected $_type = 'econtext';
 
     /**
+     * @var string
+     */
+    protected $_successUrl = 'omise/checkout_konbini';
+
+    /**
      * Payment Method features
      *
      * @var bool
@@ -40,6 +45,8 @@ class Omise_Gateway_Model_Payment_Offsiteconveniencestore extends Omise_Gateway_
     protected $_isGateway          = true;
     protected $_canReviewPayment   = true;
     protected $_isInitializeNeeded = true;
+    protected $_canRefund          = true;
+    protected $_sendCodebyEmail    = false;
 
     /**
      * @param Varien_Object $payment

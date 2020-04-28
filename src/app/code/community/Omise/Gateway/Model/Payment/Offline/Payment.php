@@ -1,7 +1,10 @@
 <?php
 
 
-class Omise_Gateway_Model_Payment_BarcodeOffsite_Payment extends Omise_Gateway_Model_Payment_SimpleOffsite_Payment {
+class Omise_Gateway_Model_Payment_Offline_Payment extends Omise_Gateway_Model_Payment_SimpleOffsite_Payment {
+
+    protected $_allowRedirect      = false;
+    protected $_sendCodebyEmail      = true;
     /**
      * Instantiate state and set it to state object
      *
@@ -27,8 +30,10 @@ class Omise_Gateway_Model_Payment_BarcodeOffsite_Payment extends Omise_Gateway_M
             $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
             $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
             if($charge->isAwaitPayment() ) {
-                $state_object->setIsNotified(true);
-                $this->sendOrderConfirmationEmail($order, $charge);
+                if($this->_sendCodebyEmail) {
+                    $state_object->setIsNotified(true);
+                    $this->sendOrderConfirmationEmail($order, $charge);
+                }
                 $payment->setIsTransactionPending(true);
                 Mage::getSingleton('checkout/session')->setOmiseAuthorizeUri(Mage::getUrl($this->_successUrl, array()));
             }

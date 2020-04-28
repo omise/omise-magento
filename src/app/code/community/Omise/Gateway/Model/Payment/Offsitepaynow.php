@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsitepaynow extends Omise_Gateway_Model_Payment_BarcodeOffsite_Payment
+class Omise_Gateway_Model_Payment_Offsitepaynow extends Omise_Gateway_Model_Payment_Offline_Payment
 {
 
     /**
@@ -50,5 +50,4 @@ class Omise_Gateway_Model_Payment_Offsitepaynow extends Omise_Gateway_Model_Paym
     protected $_isGateway          = true;
     protected $_canReviewPayment   = true;
     protected $_isInitializeNeeded = true;
-    protected $_allowRedirect      = false;
 }
