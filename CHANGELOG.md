@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### [v2.11 _(May 07, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.11)
+
+
+#### 👾 Bug Fixes
+
+- Fixing wrong calculation of installment amount per month showing (PR [#250](https://github.com/omise/omise-magento/pull/250 ))
+- Fix webhook to support http POST requests (PR [#254](https://github.com/omise/omise-magento/pull/254))
+- Order success page is broken after order checkout (PR [#255](https://github.com/omise/omise-magento/pull/255))
+
+
 ### [v2.10 _(Mar 20, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.10)
 
 
