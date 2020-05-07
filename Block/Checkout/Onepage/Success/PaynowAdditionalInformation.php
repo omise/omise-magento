@@ -30,7 +30,7 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
     protected function _toHtml()
     {
         $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
-        if (isset($paymentData['additional_information']['payment_type']) || $paymentData['additional_information']['payment_type'] === 'paynow') {
+        if (isset($paymentData['additional_information']['payment_type']) && $paymentData['additional_information']['payment_type'] === 'paynow') {
             $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
             $this->addData([
                 'paynow_qrcode' => $paymentData['additional_information']['qr_code_encoded'],
