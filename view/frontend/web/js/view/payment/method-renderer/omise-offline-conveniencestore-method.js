@@ -97,7 +97,7 @@ define(
              * @return {integer}
              */
             getTotal: function () {
-                return + window.checkoutConfig.totalsData.grand_total;
+                return + window.checkoutConfig.quoteData.grand_total;
             },
 
             /**
