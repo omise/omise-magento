@@ -31,7 +31,7 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
     {
         $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
         if (!isset($paymentData['additional_information']['payment_type']) || $paymentData['additional_information']['payment_type'] !== 'paynow') {
-            //return;
+            return;
         }
         $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
 
