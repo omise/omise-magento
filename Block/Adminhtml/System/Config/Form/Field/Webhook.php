@@ -10,6 +10,11 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 class Webhook extends Field
 {
     /**
+     * URL for omise webhook.
+     */
+    const URI = 'omise/callback/webhook';
+
+    /**
      * @var \Magento\Framework\Url
      */
     protected $urlHelper;
@@ -35,6 +40,6 @@ class Webhook extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        return $this->urlHelper->getRouteUrl('omise/callback/webhook', ['_secure' => true]);
+        return $this->urlHelper->getRouteUrl(self::URI, ['_secure' => true]);
     }
 }
