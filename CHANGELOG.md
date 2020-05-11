@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [v2.11 _(May 08, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.11)
+## [v2.11 _(May 11, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.11)
 
 ### 👾 Bug Fixes
 
