@@ -36,8 +36,7 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
                 'paynow_qrcode' => $paymentData['additional_information']['qr_code_encoded'],
                 'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
             ]);
+            return parent::_toHtml();
         }
-        
-        return parent::_toHtml();
     }
 }
