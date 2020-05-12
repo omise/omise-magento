@@ -9,7 +9,7 @@
             <input id="<?php echo $_code; ?>_name" type="text"
                 name="payment[name]"
                 title="<?php echo $this->__('Name'); ?>"
-                value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStoreCustomerName()); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseKonbiniCustomerName()); ?>"
                 maxlength="10"
                 class="input-text required-entry validate-length maximum-length-10" />
         </div>
@@ -22,7 +22,7 @@
             <input id="<?php echo $_code; ?>_phone_number" type="text"
                 name="payment[phone_number]"
                 title="<?php echo $this->__('Phone Number'); ?>"
-                value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStorePhoneNumber()); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseKonbiniPhoneNumber()); ?>"
                 maxlength="11"
                 class="input-text required-entry validate-length maximum-length-11 minimum-length-10 validate-digits" />
         </div>
@@ -35,7 +35,7 @@
             <input id="<?php echo $_code; ?>_email" type="text"
                 name="payment[email]"
                 title="<?php echo $this->__('Email'); ?>"
-                value="<?php echo $this->escapeHtml($this->getOmiseConvenienceStoreEmail()); ?>"
+                value="<?php echo $this->escapeHtml($this->getOmiseKonbiniEmail()); ?>"
                 maxlength="50"
                 class="input-text required-entry validate-omise-email validate-length maximum-length-50 minimum-length-6" />
         </div>

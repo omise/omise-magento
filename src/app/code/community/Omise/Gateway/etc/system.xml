@@ -217,7 +217,7 @@
                             </fields>
                         </omise_offsite_truemoney>
 
-                        <omise_offsite_tesco type="group">
+                        <omise_offline_tesco type="group">
                             <label>Tesco Bill Payment</label>
                             <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
                             <sort_order>740</sort_order>
@@ -236,8 +236,8 @@
                                     <show_in_store>0</show_in_store>
                                 </active>
                             </fields>
-                        </omise_offsite_tesco>
-                        <omise_offsite_paynow type="group">
+                        </omise_offline_tesco>
+                        <omise_offline_paynow type="group">
                             <label>PayNow QR Payment</label>
                             <comment>Enables customers to pay using PayNow QR Payment method.</comment>
                             <sort_order>750</sort_order>
@@ -256,10 +256,10 @@
                                     <show_in_store>0</show_in_store>
                                 </active>
                             </fields>
-                        </omise_offsite_paynow>
-                        <omise_offsite_conveniencestore type="group">
-                            <label>Convenience Store Payment</label>
-                            <comment>Enables customers to easily pay using Convenience Store method (only available in Japan).</comment>
+                        </omise_offline_paynow>
+                        <omise_offline_konbini type="group">
+                            <label>Konbini Payment</label>
+                            <comment>Enables customers to easily pay at Konbini store. (only available in Japan).</comment>
                             <sort_order>750</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -276,7 +276,7 @@
                                     <show_in_store>0</show_in_store>
                                 </active>
                             </fields>
-                        </omise_offsite_conveniencestore>
+                        </omise_offline_konbini>
                     </fields>
                 </omise_payment>
             </groups>

@@ -238,12 +238,12 @@
                 <title>PayNow QR Payment</title>
             </omise_offline_paynow>
 
-            <omise_offline_conveniencestore>
+            <omise_offline_konbini>
                 <active>0</active>
                 <payment_action>order</payment_action>
                 <model>omise_gateway/payment_offlinekonbini </model>
                 <title>Convenience Store</title>
-            </omise_offline_conveniencestore>
+            </omise_offline_konbini>
 
         </payment>
     </default>
