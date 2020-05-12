@@ -49,7 +49,7 @@ class Omise_Gateway_Block_Form_Offlinekonbini extends Mage_Payment_Block_Form
      * Returns billing phone number from current quote
      * @return string
      */
-    public function getOmiseConvenienceStorePhoneNumber()
+    public function getOmiseKonbiniPhoneNumber()
     {
         $phoneNumber = $this->getBillingAddress()->getTelephone();
         return (isset($phoneNumber)) ? $phoneNumber : '';
@@ -59,7 +59,7 @@ class Omise_Gateway_Block_Form_Offlinekonbini extends Mage_Payment_Block_Form
      * Returns billing email address from current quote
      * @return string
      */
-    public function getOmiseConvenienceStoreEmail()
+    public function getOmiseKonbiniEmail()
     {
         $email = $this->getBillingAddress()->getEmail();
         return (isset($email)) ? $email : '';
@@ -69,7 +69,7 @@ class Omise_Gateway_Block_Form_Offlinekonbini extends Mage_Payment_Block_Form
      * Returns billing customer name from current quote
      * @return string
      */
-    public function getOmiseConvenienceStoreCustomerName()
+    public function getOmiseKonbiniCustomerName()
     {
             $name = substr($this->getBillingAddress()->getFirstname(), 0, 10);
         return (isset($name)) ? $name : '';

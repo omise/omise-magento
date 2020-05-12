@@ -242,7 +242,7 @@
                 <active>0</active>
                 <payment_action>order</payment_action>
                 <model>omise_gateway/payment_offlinekonbini </model>
-                <title>Convenience Store</title>
+                <title>Konbini Payment</title>
             </omise_offline_konbini>
 
         </payment>

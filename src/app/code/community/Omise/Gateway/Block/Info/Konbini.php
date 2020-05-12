@@ -1,11 +1,11 @@
 <?php
 /**
- * Convenience store  payment info
+ * Konbini store  payment info
  */
 class Omise_Gateway_Block_Info_Konbini extends Mage_Payment_Block_Info
 {
     /**
-     * Prepare convenience store related payment info
+     * Prepare Konbini store related payment info
      *
      * @param Varien_Object|array $transport
      * @return Varien_Object
