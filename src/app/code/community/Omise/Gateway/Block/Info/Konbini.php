@@ -2,7 +2,7 @@
 /**
  * Convenience store  payment info
  */
-class Omise_Gateway_Block_Info_Conveniencestore extends Mage_Payment_Block_Info
+class Omise_Gateway_Block_Info_Konbini extends Mage_Payment_Block_Info
 {
     /**
      * Prepare convenience store related payment info

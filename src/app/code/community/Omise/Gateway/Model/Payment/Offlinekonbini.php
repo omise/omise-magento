@@ -1,26 +1,26 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsiteconveniencestore extends Omise_Gateway_Model_Payment_Offline_Payment
+class Omise_Gateway_Model_Payment_Offlinekonbini extends Omise_Gateway_Model_Payment_Offline_Payment
 {
 
     /**
      * @var string
      */
-    protected $_code = 'omise_offsite_conveniencestore';
+    protected $_code = 'omise_offline_konbini';
 
     /**
      * @var string
      */
-    protected $_formBlockType = 'omise_gateway/form_offsiteconveniencestore';
+    protected $_formBlockType = 'omise_gateway/form_offlinekonbini';
 
     /**
      * @var string
      */
-    protected $_infoBlockType = 'omise_gateway/info_conveniencestore';
+    protected $_infoBlockType = 'omise_gateway/info_konbini';
 
     /**
      * @var string
      */
-    protected $_callbackUrl = 'omise/callback_validateoffsiteconveniencestore';
+    protected $_callbackUrl = 'omise/callback_validateofflinekonbini';
 
     /**
      * @var array

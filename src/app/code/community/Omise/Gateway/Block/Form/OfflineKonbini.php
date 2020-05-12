@@ -1,5 +1,5 @@
 <?php
-class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Block_Form
+class Omise_Gateway_Block_Form_Offlinekonbini extends Mage_Payment_Block_Form
 {
     private $billingAddress;
     
@@ -13,7 +13,7 @@ class Omise_Gateway_Block_Form_Offsiteconveniencestore extends Mage_Payment_Bloc
      */
     protected function _prepareLayout()
     {
-        $this->setTemplate('payment/form/omise/omiseoffsiteconveniencestore.phtml');
+        $this->setTemplate('payment/form/omise/omiseofflinekonbini.phtml');
         return $this;
     }
 

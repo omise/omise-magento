@@ -1,11 +1,11 @@
 <?php
-class Omise_Gateway_Model_Payment_Offsitepaynow extends Omise_Gateway_Model_Payment_Offline_Payment
+class Omise_Gateway_Model_Payment_Offlinepaynow extends Omise_Gateway_Model_Payment_Offline_Payment
 {
 
     /**
      * @var string
      */
-    protected $_code = 'omise_offsite_paynow';
+    protected $_code = 'omise_offline_paynow';
 
     /**
      * @var string
@@ -20,7 +20,7 @@ class Omise_Gateway_Model_Payment_Offsitepaynow extends Omise_Gateway_Model_Paym
     /**
      * @var string
      */
-    protected $_callbackUrl = 'omise/callback_validateoffsitepaynow';
+    protected $_callbackUrl = 'omise/callback_validateofflinepaynow';
 
     /**
      * @var array

@@ -224,26 +224,26 @@
                 <title>True Money</title>
             </omise_offsite_truemoney>
 
-            <omise_offsite_tesco>
+            <omise_offline_tesco>
                 <active>0</active>
                 <payment_action>authorize</payment_action>
-                <model>omise_gateway/payment_offsitetesco</model>
+                <model>omise_gateway/payment_offlinetesco</model>
                 <title>Bill Payment: Tesco</title>
-            </omise_offsite_tesco>
+            </omise_offline_tesco>
 
-            <omise_offsite_paynow>
+            <omise_offline_paynow>
                 <active>0</active>
                 <payment_action>authorize</payment_action>
-                <model>omise_gateway/payment_offsitepaynow</model>
+                <model>omise_gateway/payment_offlinepaynow</model>
                 <title>PayNow QR Payment</title>
-            </omise_offsite_paynow>
+            </omise_offline_paynow>
 
-            <omise_offsite_conveniencestore>
+            <omise_offline_conveniencestore>
                 <active>0</active>
                 <payment_action>order</payment_action>
-                <model>omise_gateway/payment_offsiteconveniencestore </model>
+                <model>omise_gateway/payment_offlinekonbini </model>
                 <title>Convenience Store</title>
-            </omise_offsite_conveniencestore>
+            </omise_offline_conveniencestore>
 
         </payment>
     </default>

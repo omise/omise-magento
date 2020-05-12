@@ -1,9 +1,9 @@
 <?php 
-class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payment_Offline_Payment {
+class Omise_Gateway_Model_Payment_Offlinetesco extends Omise_Gateway_Model_Payment_Offline_Payment {
     /**
      * @var string
      */
-    protected $_code = 'omise_offsite_tesco';
+    protected $_code = 'omise_offline_tesco';
 
     /**
      * @var string
@@ -18,7 +18,7 @@ class Omise_Gateway_Model_Payment_Offsitetesco extends Omise_Gateway_Model_Payme
     /**
      * @var string
      */
-    protected $_callbackUrl = 'omise/callback_validateoffsitetesco';
+    protected $_callbackUrl = 'omise/callback_validatelinetesco';
 
     /**
      * @var array
