@@ -27,11 +27,12 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
      *
      * @var bool
      */
-    protected $_isGateway        = true;
-    protected $_canAuthorize     = true;
-    protected $_canCapture       = true;
-    protected $_canRefund        = true;
-    protected $_canReviewPayment = true;
+    protected $_isGateway               = true;
+    protected $_canAuthorize            = true;
+    protected $_canCapture              = true;
+    protected $_canRefund               = true;
+    protected $_canRefundInvoicePartial = true;
+    protected $_canReviewPayment        = true;
 
     /**
      * flag if we need to run payment initialize while order place
