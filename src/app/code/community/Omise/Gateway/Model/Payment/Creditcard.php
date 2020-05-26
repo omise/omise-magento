@@ -75,9 +75,11 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
 
             case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE:
                 $invoice = $order->prepareInvoice()->register();
-
                 $charge = $this->processPayment($payment, $invoice->getBaseGrandTotal());
-
+                if($charge->isSuccessful()) {
+                    $invoice->pay();
+                    $state_object->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
+                }
                 $payment->setCreatedInvoice($invoice)
                     ->setIsTransactionClosed(false)
                     ->setIsTransactionPending(true)
@@ -101,10 +103,11 @@ class Omise_Gateway_Model_Payment_Creditcard extends Omise_Gateway_Model_Payment
         }
 
         if ($charge->isAwaitPayment() || $charge->isAwaitCapture() || $charge->isSuccessful()) {
-            $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
-            $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+            if($payment_action != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE) {
+                $state_object->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+                $state_object->setStatus($order->getConfig()->getStateDefaultStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT));
+            }
             $state_object->setIsNotified(false);
-
             return;
         }
 
