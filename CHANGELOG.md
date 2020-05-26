@@ -1,4 +1,16 @@
 # CHANGELOG
+### [v1.22 _(May 27, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.22)
+
+#### 🚀 Enhancements
+
+- Enable partial refunds for Credit card payments. (PR [#258](https://github.com/omise/omise-magento/pull/258))
+
+#### 👾 Bug Fixes
+
+- Fixing invoice status issue after CC payment. PR [#249](https://github.com/omise/omise-magento/pull/249))
+
+---
+# CHANGELOG
 ### [v1.21 _(Mar 16, 2020)_](https://github.com/omise/omise-magento/releases/tag/v1.21)
 
 #### 🚀 Enhancements
