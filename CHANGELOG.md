@@ -7,7 +7,7 @@
 
 ### 👾 Bug Fixes
 
-- Fixing invoice status issue after CC payment. PR [#249](https://github.com/omise/omise-magento/pull/249))
+- Fixing invoice status issue after card payment. PR [#249](https://github.com/omise/omise-magento/pull/249))
 
 ---
 
