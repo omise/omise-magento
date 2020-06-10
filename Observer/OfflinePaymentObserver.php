@@ -4,7 +4,7 @@ namespace Omise\Payment\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
 
-class TescoPaymentObserver implements ObserverInterface
+class OfflinePaymentObserver implements ObserverInterface
 {
     /**
     * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -21,14 +21,34 @@ class TescoPaymentObserver implements ObserverInterface
     */
     private $_helper;
 
+    /**
+     * @var \Omise\Payment\Model\Api\Charge
+     */
+    protected $charge;
+    /**
+     * @var \Magento\Framework\View\Asset\Repository
+     */
+    protected $_assetRepo;
+
+    /**
+     * @param \Omise\Payment\Helper\OmiseHelper $helper
+     * @param \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Framework\View\Asset\Repository $assetRepo
+     * @param \Omise\Payment\Model\Api\Charge $charge
+     */
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\View\Asset\Repository $assetRepo,
+        \Omise\Payment\Model\Api\Charge  $charge
     ) {
         $this->_scopeConfig      = $scopeConfig;
         $this->_helper           = $helper;
         $this->_transportBuilder = $transportBuilder;
+        $this->_assetRepo = $assetRepo;
+        $this->charge  = $charge;
     }
 
     /**
@@ -39,32 +59,42 @@ class TescoPaymentObserver implements ObserverInterface
     {
         $order   = $observer->getEvent()->getOrder();
         $payment = $order->getPayment();
-
-        if ($payment->getAdditionalData('payment_type') !== 'bill_payment_tesco_lotus') {
-            return $this;
+        $emailData     = new \Magento\Framework\DataObject();
+        switch($payment->getAdditionalInformation('payment_type')) {
+            case 'bill_payment_tesco_lotus':
+                // make sure timezone is Thailand.
+                date_default_timezone_set("Asia/Bangkok");
+                $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalInformation('barcode'));
+                $emailTemplate = 'send_email_tesco_template';
+                break;
+            case 'paynow':
+                $charge_id = $payment->getAdditionalInformation('charge_id');
+                $charge = $this->charge->find($charge_id);
+                date_default_timezone_set("Asia/Singapore");
+                $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
+                $emailTemplate = 'send_email_paynow_template';
+                $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/supportedbanks.png')]);
+                break;
+            default:
+                return $this;
         }
-
         $paymentData   = $payment->getData();
 
         $amount        = number_format($paymentData['amount_ordered'], 2) . ' ' . $order->getOrderCurrency()->getCurrencyCode();
-        $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalData('barcode'));
         $storeName     = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
         $orderId       = $order->getIncrementId();
 
-        // make sure timezone is Thailand.
-        date_default_timezone_set("Asia/Bangkok");
-
         // get DateTime deadline that is in next 24 hours.
-        $validUntil    = date("d-m-Y H:i:s" , time() + 24 * 60 * 60) . ' ICT';
+        $validUntil    = date("d-m-Y H:i:s" , time() + 24 * 60 * 60);
 
-        $emailData     = new \Magento\Framework\DataObject();
+        
         $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'valid' => $validUntil]);
 
         // build and send email
         $transport = $this->_transportBuilder
-            ->setTemplateIdentifier('send_email_tesco_template')
+            ->setTemplateIdentifier($emailTemplate)
             ->setTemplateOptions([
                 'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
                 'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
@@ -74,7 +104,7 @@ class TescoPaymentObserver implements ObserverInterface
                 'name'  => $storeName,
                 'email' => $storeEmail,
             ])
-            ->addTo(['email' => $customerEmail], \Magento\Store\Model\ScopeInterface::SCOPE_STORE)
+            ->addTo([$customerEmail])
             ->getTransport();
         
         $transport->sendMessage();

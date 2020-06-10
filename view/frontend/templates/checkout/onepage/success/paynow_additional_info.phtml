@@ -1,5 +1,7 @@
-
-<p><?= __('PayNow QR Code.'); ?></p>
-<p style="margin:.5rem 0"><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
+<p><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
+<p style="margin:.5rem 0"><?= __('PayNow QR Code.'); ?></p>
 <div><img src="data:image/png;base64, <?= $block->getPaynowQrcode() ?>" /></div>
 <p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?= __('Print')?></button></p>
+<p><strong><i>Note:</i></strong> On your bank app, you will see the payee as <strong>“Omise Payment SG Pte. Ltd“</strong>. Omise is our authorized payment processor to accept PayNow on our behalf.</p>
+<p><strong><i>Supported Banks:</i></strong></p>
+<p style="max-width:420px"><img src="<?php echo $this->getViewFileUrl('Omise_Payment::images/supportedbanks.png'); ?>" /></p>
