@@ -66,30 +66,28 @@ class OfflinePaymentObserver implements ObserverInterface
                 date_default_timezone_set("Asia/Bangkok");
                 $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalInformation('barcode'));
                 $emailTemplate = 'send_email_tesco_template';
+                // get DateTime deadline that is in next 24 hours.
+                $validUntil    = date("d-m-Y H:i:s" , time() + 24 * 60 * 60);
                 break;
             case 'paynow':
                 $charge_id = $payment->getAdditionalInformation('charge_id');
                 $charge = $this->charge->find($charge_id);
+                // make sure timezone is Singapore.
                 date_default_timezone_set("Asia/Singapore");
                 $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
                 $emailTemplate = 'send_email_paynow_template';
                 $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/supportedbanks.png')]);
+                $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
                 break;
             default:
                 return $this;
         }
         $paymentData   = $payment->getData();
-
         $amount        = number_format($paymentData['amount_ordered'], 2) . ' ' . $order->getOrderCurrency()->getCurrencyCode();
         $storeName     = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
         $orderId       = $order->getIncrementId();
-
-        // get DateTime deadline that is in next 24 hours.
-        $validUntil    = date("d-m-Y H:i:s" , time() + 24 * 60 * 60);
-
-        
         $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'valid' => $validUntil]);
 
         // build and send email
@@ -104,7 +102,7 @@ class OfflinePaymentObserver implements ObserverInterface
                 'name'  => $storeName,
                 'email' => $storeEmail,
             ])
-            ->addTo([$customerEmail])
+            ->addTo($customerEmail)
             ->getTransport();
         
         $transport->sendMessage();
