@@ -263,16 +263,14 @@ define(
                 var selectedBillingAddress = quote.billingAddress();
                 var address = {
                     state          : selectedBillingAddress.region,
-                    postal_code: selectedBillingAddress.postcode,
-                    phone_number: selectedBillingAddress.telephone,
-                    country: selectedBillingAddress.countryId,
-                    city: selectedBillingAddress.city
+                    postal_code    : selectedBillingAddress.postcode,
+                    phone_number   : selectedBillingAddress.telephone,
+                    country        : selectedBillingAddress.countryId,
+                    city           : selectedBillingAddress.city
                 }
-                if(selectedBillingAddress.street.length) {
-                    address.street1 = selectedBillingAddress.street[0]
-                    if(selectedBillingAddress.street[1]) {
-                        address.street2 = selectedBillingAddress.street[1]
-                    }
+                address.street1 = selectedBillingAddress.street[0]
+                if(selectedBillingAddress.street[1]) {
+                    address.street2 = selectedBillingAddress.street[1]
                 }
                 return address
             }
