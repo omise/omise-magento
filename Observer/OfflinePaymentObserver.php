@@ -60,6 +60,8 @@ class OfflinePaymentObserver implements ObserverInterface
         $order   = $observer->getEvent()->getOrder();
         $payment = $order->getPayment();
         $emailData     = new \Magento\Framework\DataObject();
+        $charge_id = $payment->getAdditionalInformation('charge_id');
+        $charge = $this->charge->find($charge_id);
         switch($payment->getAdditionalInformation('payment_type')) {
             case 'bill_payment_tesco_lotus':
                 // make sure timezone is Thailand.
@@ -67,11 +69,9 @@ class OfflinePaymentObserver implements ObserverInterface
                 $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalInformation('barcode'));
                 $emailTemplate = 'send_email_tesco_template';
                 // get DateTime deadline that is in next 24 hours.
-                $validUntil    = date("d-m-Y H:i:s" , time() + 24 * 60 * 60);
+                $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
                 break;
             case 'paynow':
-                $charge_id = $payment->getAdditionalInformation('charge_id');
-                $charge = $this->charge->find($charge_id);
                 // make sure timezone is Singapore.
                 date_default_timezone_set("Asia/Singapore");
                 $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
