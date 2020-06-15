@@ -68,7 +68,6 @@ class OfflinePaymentObserver implements ObserverInterface
                 date_default_timezone_set("Asia/Bangkok");
                 $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalInformation('barcode'));
                 $emailTemplate = 'send_email_tesco_template';
-                // get DateTime deadline that is in next 24 hours.
                 $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
                 break;
             case 'paynow':
