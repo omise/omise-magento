@@ -37,7 +37,7 @@ class PaymentDetailsHandler implements HandlerInterface
             $payment->setAdditionalInformation('barcode', $barcode);
         }
 
-        if ($response['charge']->source['type'] === 'paynow') {
+        if ($response['charge']->source['type'] === 'paynow' || $response['charge']->source['type'] === 'promptpay') {
             $qrCodeImage = $this->downloadPaymentFile($response['charge']->source['scannable_code']['image']['download_uri']);
             $payment->setAdditionalInformation('qr_code_encoded', base64_encode($qrCodeImage));
         }

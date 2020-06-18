@@ -4,4 +4,6 @@
     module="Omise_Payment" area="frontend"/>
 <template id="send_email_paynow_template" label="Email Form" file="paynow_template.html" type="html" 
     module="Omise_Payment" area="frontend"/>
+<template id="send_email_promptpay_template" label="Email Form" file="promptpay_template.html" type="html" 
+    module="Omise_Payment" area="frontend"/>
 </config>

@@ -1,0 +1,17 @@
+<!--@subject {{trans "PromptPay QR Payment"}}  @-->
+{{template config_path="design/email/header_template"}}
+<div>
+    <p>
+        {{trans "%thankyou" thankyou="Thank you for your order."}}</p>
+        {{trans "%message" message="You are now one step away from completing the order! Please use your bank app to scan the PromptPay QR code below and complete payment by "}}<strong>{{var data.valid|raw}}</strong>.
+        {{trans "%message" message=" After that your order will be automatically cancelled."}}<br/>
+        {{trans "%orderid" orderid="Order ID:"}} <strong>{{var data.orderId|raw}}</strong><br/>
+        {{trans "%amounttopay" amounttopay="Amount to pay:"}} <strong>{{var data.amount|raw}}</strong><br/>
+        <i>{{trans "%extrafees" extrafees="Extra fees may apply for the payment."}}</i>
+    </p>
+    <p style="margin: 50px auto; min-width: 600px; display: block;">
+        <div>{{var data.barcode|raw}}</div>
+    </p>
+    <p style="margin-top: 50px"><i>{{var data.storename|raw}}</i></p>
+</div>
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,5 @@
+<?php if($block->getPaymentType() == 'paynow'): ?>
+<p><strong><i>Note:</i></strong> On your bank app, you will see the payee as <strong>“Omise Payment SG Pte. Ltd“</strong>. Omise is our authorized payment processor to accept PayNow on our behalf.</p>
+<p><strong><i>Supported Banks:</i></strong></p>
+<p style="max-width:420px"><img src="<?php echo $this->getViewFileUrl('Omise_Payment::images/supportedbanks.png'); ?>" /></p>
+<?php endif; ?>

@@ -1,6 +1,6 @@
-<?php if($block->getPaymentType() === 'paynow') : ?>
+<?php if($block->getPaymentType() === 'promptpay') : ?>
 <p><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
-<p style="margin:.5rem 0"><?= __('PayNow QR Code.'); ?></p>
+<p style="margin:.5rem 0"><?= __('PromptPay QR Code.'); ?></p>
 <div><img src="data:image/png;base64, <?= $block->getQrcode() ?>" /></div>
 <p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?= __('Print')?></button></p>
 <?php endif; ?>

@@ -236,6 +236,41 @@
     </virtualType>
     <!-- /Value Handler -->
 
+    <!--  Promptpay payment solution-->
+    <virtualType name="OmisePromptpayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Promptpay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMPromptpayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Promptpay :: Value Handler Pool -->
+    <virtualType name="OmiseAPMPromptpayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMPromptpayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMPromptpayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMPromptpayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMPromptpayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Promptpay::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Promptpay ::Value Handler Pool-->
+    <!-- /Promptpay payment solution-->
+
     <!--  Convenience Store payment solution-->
     <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>

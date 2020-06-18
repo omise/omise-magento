@@ -1,7 +1,7 @@
 <?php
 namespace Omise\Payment\Block\Checkout\Onepage\Success;
 
-class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Template
+class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Template
 {
     /**
      * @var \Magento\Checkout\Model\Session
@@ -29,14 +29,32 @@ class PaynowAdditionalInformation extends \Magento\Framework\View\Element\Templa
      */
     protected function _toHtml()
     {
-        $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
-        if (isset($paymentData['additional_information']['payment_type']) && $paymentData['additional_information']['payment_type'] === 'paynow') {
+        $paymentData = $this->getPaymentData();
+        $paymentType = $this->getPaymentType();
+        if ($paymentType
+            && (
+                $paymentType === 'paynow' 
+                || $paymentType === 'promptpay'
+                )
+            ) {
             $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
             $this->addData([
-                'paynow_qrcode' => $paymentData['additional_information']['qr_code_encoded'],
+                'qrcode' => $paymentData['additional_information']['qr_code_encoded'],
                 'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
             ]);
             return parent::_toHtml();
         }
+    }
+
+    /**
+     * @return boolean|string
+     */
+    public function getPaymentType() {
+        $paymentData = $this->getPaymentData();
+        return isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : false ;
+    }
+
+    public function getPaymentData() {
+        return $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
     }
 }

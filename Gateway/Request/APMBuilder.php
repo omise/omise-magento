@@ -12,6 +12,7 @@ use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Paynow;
+use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Truemoney;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
@@ -124,6 +125,11 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_TYPE => 'paynow'
                 ];
                 break;
+            case Promptpay::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'promptpay'
+                ];
+                    break;
             case Pointsciti::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'points_citi'
