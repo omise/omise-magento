@@ -129,7 +129,7 @@ class APMBuilder implements BuilderInterface
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'promptpay'
                 ];
-                    break;
+                break;
             case Pointsciti::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'points_citi'
