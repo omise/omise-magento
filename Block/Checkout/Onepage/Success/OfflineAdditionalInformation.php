@@ -31,12 +31,7 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
     {
         $paymentData = $this->getPaymentData();
         $paymentType = $this->getPaymentType();
-        if ($paymentType
-            && (
-                $paymentType === 'paynow' 
-                || $paymentType === 'promptpay'
-                )
-            ) {
+        if ($paymentType && ($paymentType === 'paynow' || $paymentType === 'promptpay')) {
             $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
             $this->addData([
                 'qrcode' => $paymentData['additional_information']['qr_code_encoded'],
