@@ -75,7 +75,7 @@ class OfflinePaymentObserver implements ObserverInterface
                 date_default_timezone_set("Asia/Singapore");
                 $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
                 $emailTemplate = 'send_email_paynow_template';
-                $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/supportedbanks.png')]);
+                $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/paynow_supportedbanks.png')]);
                 $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
                 break;
             default:
