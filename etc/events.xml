@@ -20,6 +20,6 @@
     </event>
 
     <event name="sales_order_place_after">
-        <observer name="omise_end_order" instance="Omise\Payment\Observer\TescoPaymentObserver" />
+        <observer name="omise_end_order" instance="Omise\Payment\Observer\OfflinePaymentObserver" />
     </event>
 </config>
