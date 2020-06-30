@@ -1,0 +1,21 @@
+<div id="omise-confirm-info">
+    <div id="omise-loader-box"></div><span class="omise-confirm-text"><?= __('Please wait, your payment is being verified') ?></span>
+</div>
+
+<div id="omise-payment-confirmed" style="display: none"><?= __('Payment confirmed!')?></div>
+<script>
+    var require = window.top.require;
+    require(['jquery'], function ($, redirectOnSuccess) {
+        'use strict';
+
+        var confirmInterval = setInterval(function() {
+            $.get('<?= $block->getCheckPaymentStatusUrl(); ?>', data => {
+                if (data === true) {
+                    $('#omise-payment-confirmed').show()
+                    $('#omise-confirm-info').hide();
+                    clearInterval(confirmInterval);
+                }
+            });
+        }, 1000);
+    });
+</script>
