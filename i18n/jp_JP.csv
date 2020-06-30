@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 "Convenience Store", "コンビニ決済"
+=======
+"Convenience Store", "コンビニエンスストア"
+>>>>>>> 41acf77... Added JP translations
 "Option available only for orders in JPY","このオプションは、日本円でのご利用時のみご設定いただけます"
 "Print", "印刷"
 "Minimum order value is %amount", "最低金額: %amount 円"
@@ -11,5 +15,10 @@
 "Security code invalid or card did not pass preauthorization.", "セキュリティコードに誤りがあるか、事前オーソリに失敗しました。"
 "Payment cancelled by payer.", "決済がキャンセルされました。"
 "Payment rejected by card issuer.", "決済がカード発行者によって拒否されました。"
+<<<<<<< HEAD
 "Card stolen or lost.", "このカードは紛失/盗難が報告されています"
 "Payer did not take action before charge expiration.", "有効期限前に操作がありませんでした。"
+=======
+"Card stolen or lost.", "Card stolen or lost."
+"Payer did not take action before charge expiration.", "有効期限前にアクションが取られませんでした。"
+>>>>>>> 41acf77... Added JP translations
