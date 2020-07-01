@@ -44,12 +44,14 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
     /**
      * @return boolean|string
      */
-    public function getPaymentType() {
+    public function getPaymentType() 
+    {
         $paymentData = $this->getPaymentData();
         return isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : false ;
     }
 
-    public function getPaymentData() {
+    public function getPaymentData() 
+    {
         return $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
     }
 }
