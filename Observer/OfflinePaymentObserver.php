@@ -94,7 +94,7 @@ class OfflinePaymentObserver implements ObserverInterface
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
         $orderId       = $order->getIncrementId();
-        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'valid' => $validUntil]);
+        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'validUntil' => $validUntil]);
 
         // build and send email
         $transport = $this->_transportBuilder

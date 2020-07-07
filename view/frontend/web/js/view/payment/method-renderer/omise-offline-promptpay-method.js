@@ -3,15 +3,12 @@ define(
         'ko',
         'Omise_Payment/js/view/payment/omise-offline-method-renderer',
         'Magento_Checkout/js/view/payment/default',
-        'Magento_Checkout/js/model/full-screen-loader',
-        'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/model/error-processor'
+        'Magento_Checkout/js/model/quote'
     ],
     function (
         ko,
         Base,
         Component,
-        fullScreenLoader,
         quote
     ) {
         'use strict';

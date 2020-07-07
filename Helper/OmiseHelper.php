@@ -111,4 +111,12 @@ class OmiseHelper extends AbstractHelper
         }
         return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
     }
+    /**
+     * Checks if $paymentType is QR payment. This method returns true for QR payment method or else false.
+     * @param string $paymentType
+     * @return boolean
+     */
+    public function isQRCodePayment($paymentType) {
+        return ($paymentType === 'paynow' || $paymentType === 'promptpay');
+    }
 }

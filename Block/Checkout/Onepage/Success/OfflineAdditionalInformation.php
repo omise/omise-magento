@@ -9,16 +9,24 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
     protected $_checkoutSession;
 
     /**
+     * $var \Omise\Payment\Helper\OmiseHelper
+     */
+    protected $_helper;
+
+    /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Omise\Payment\Helper\OmiseHelper $helper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
+        \Omise\Payment\Helper\OmiseHelper $helper,
         array $data = []
     ) {
         $this->_checkoutSession = $checkoutSession;
+        $this->_helper = $helper;
         parent::__construct($context, $data);
     }
 
@@ -31,7 +39,7 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
     {
         $paymentData = $this->getPaymentData();
         $paymentType = $this->getPaymentType();
-        if ($paymentType && ($paymentType === 'paynow' || $paymentType === 'promptpay')) {
+        if ($paymentType && $this->_helper->isQRCodePayment($paymentType)) {
             $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
             $this->addData([
                 'qrcode' => $paymentData['additional_information']['qr_code_encoded'],
