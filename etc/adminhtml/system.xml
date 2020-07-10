@@ -69,7 +69,7 @@
                     <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Omise Internet Banking Solution.</comment>
+                        <comment>Enable Omise Internet Banking payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_internetbanking/active</config_path>
                     </field>
@@ -84,7 +84,7 @@
                     <comment>Enables customers to pay using Alipay method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Alipay Payment Solution.</comment>
+                        <comment>Enable Alipay payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_alipay/active</config_path>
                     </field>
@@ -114,7 +114,7 @@
                     <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Tesco Bill Payment Solution.</comment>
+                        <comment>Enable Tesco Bill payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_tesco/active</config_path>
                     </field>
@@ -129,7 +129,7 @@
                     <comment>Enables customers to pay using Installment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Installment Payment Solution.</comment>
+                        <comment>Enable Installment payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_installment/active</config_path>
                     </field>
@@ -144,7 +144,7 @@
                     <comment>Enables customers to pay using True Money method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable True Money Payment Solution.</comment>
+                        <comment>Enable True Money payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_truemoney/active</config_path>
                     </field>
@@ -171,10 +171,10 @@
                 </group>
                 <group id="omise_offline_paynow" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable PayNow QR Payment Solution</label>
-                    <comment>Enables customers to pay using PayNow QR Payment method</comment>
+                    <comment>Enables customers to pay using PayNow QR payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable PayNow QR Payment Solution.</comment>
+                        <comment>Enable PayNow QR payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_paynow/active</config_path>
                     </field>
@@ -186,10 +186,10 @@
                 </group>
                 <group id="omise_offline_promptpay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable PromptPay Payment Solution</label>
-                    <comment>Enables customers to pay using PromptPay Payment method</comment>
+                    <comment>Enables customers to pay using PromptPay payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable PromptPay Payment Solution.</comment>
+                        <comment>Enable PromptPay payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_promptpay/active</config_path>
                     </field>
