@@ -76,14 +76,14 @@ class OfflinePaymentObserver implements ObserverInterface
                 $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
                 $emailTemplate = 'send_email_paynow_template';
                 $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/paynow_supportedbanks.png')]);
-                $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
+                $validUntil    = date("d-m-Y H:i:s" , strtotime(date("Y-m-d 23:59:59")));
                 break;
             case 'promptpay':
                 // make sure timezone is Thailand.
                 date_default_timezone_set("Asia/Bangkok");
                 $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
                 $emailTemplate = 'send_email_promptpay_template';
-                $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
+                $validUntil    = date("d-m-Y H:i:s" , strtotime('+1 day'));
                 break;
             default:
                 return $this;
