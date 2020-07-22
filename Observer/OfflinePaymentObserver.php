@@ -76,7 +76,7 @@ class OfflinePaymentObserver implements ObserverInterface
                 $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
                 $emailTemplate = 'send_email_paynow_template';
                 $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/paynow_supportedbanks.png')]);
-                $validUntil    = date("d-m-Y H:i:s" , strtotime(date("Y-m-d 23:59:59")));
+                $validUntil = $this->getPaynowChargeExpiryTime();
                 break;
             case 'promptpay':
                 // make sure timezone is Thailand.
@@ -114,5 +114,19 @@ class OfflinePaymentObserver implements ObserverInterface
         $transport->sendMessage();
 
         return $this;
+    }
+
+    /**
+     * calculates expiry time for paynow charge
+     * @return string
+     */
+    private function getPaynowChargeExpiryTime() {
+        $limit = date("d-m-Y")." 22:59:59";
+        $now = date("d-m-Y H:i:s");
+        if(strtotime($now) > strtotime($limit)) {
+            return date("d-m-Y" , strtotime("+1 day"))." 23:59:59";
+        } else {
+            return date("d-m-Y H:i:s" , strtotime(date("Y-m-d 23:59:59")));
+        }
     }
 }
