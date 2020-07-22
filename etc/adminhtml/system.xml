@@ -69,7 +69,7 @@
                     <comment>Enables customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Omise Internet Banking payment method.</comment>
+                        <comment>Enable Internet Banking payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_internetbanking/active</config_path>
                     </field>
