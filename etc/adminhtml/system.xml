@@ -185,7 +185,7 @@
                     </field>
                 </group>
                 <group id="omise_offline_promptpay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable PromptPay Payment Solution</label>
+                    <label>Enable PromptPay payment method</label>
                     <comment>Enables customers to pay using PromptPay payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
