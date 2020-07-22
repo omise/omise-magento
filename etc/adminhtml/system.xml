@@ -114,7 +114,7 @@
                     <comment>Enable customers to pay for products in Tesco Lotus Stores.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Tesco Bill payment method.</comment>
+                        <comment>Enable Tesco Lotus Bill Payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offline_tesco/active</config_path>
                     </field>
