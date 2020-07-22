@@ -144,7 +144,7 @@
                     <comment>Enables customers to pay using True Money method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="270" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable True Money payment method.</comment>
+                        <comment>Enable TrueMoney Wallet payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_truemoney/active</config_path>
                     </field>
