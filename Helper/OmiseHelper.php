@@ -5,6 +5,8 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use SimpleXMLElement;
 use DOMDocument;
+use Exception;
+use OmiseCharge;
 
 class OmiseHelper extends AbstractHelper
 {
@@ -153,6 +155,16 @@ class OmiseHelper extends AbstractHelper
     {
         if($this->isOrderOmisePayment($order)) {
             return $order->getPayment()->getAdditionalInformation('charge_id');
+        }
+    }
+
+    public function is3DSecureEnabled($charge)
+    {
+        $authorizeUri = $charge->authorize_uri;
+        if($charge->status === "pending" && !$charge->authorized && !$charge->paid && !empty($authorizeUri)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -6,9 +6,23 @@ use Magento\Payment\Gateway\Validator\AbstractValidator;
 use Omise\Payment\Gateway\Validator\Message\Invalid as ErrorInvalid;
 use Omise\Payment\Gateway\Validator\Message\ResponseInvalid as ErrorResponseInvalid;
 use Omise\Payment\Model\Api\Charge;
+use Magento\Payment\Gateway\Validator\ResultInterfaceFactory;
 
 class CommandResponseValidator extends AbstractValidator
 {
+
+    /**
+     * CurrencyValidator constructor.
+     *
+     * @param ResultInterfaceFactory $resultFactory
+     * @param ConfigInterface        $config
+     * @param Data                   $coreHelper
+     */
+    public function __construct(
+        ResultInterfaceFactory $resultFactory
+    ) {
+        parent::__construct($resultFactory);
+    }
     /**
      * Performs domain-related validation for business object
      *

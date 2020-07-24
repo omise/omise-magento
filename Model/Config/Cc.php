@@ -15,12 +15,12 @@ class Cc extends Config
      *
      * @return bool
      */
-    public function is3DSecureEnabled()
-    {
-        if ($this->getValue('3ds', self::CODE)) {
-            return true;
-        }
+    // public function is3DSecureEnabled()
+    // {
+    //     if ($this->getValue('3ds', self::CODE)) {
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 }
