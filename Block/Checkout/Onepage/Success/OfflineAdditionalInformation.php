@@ -14,6 +14,11 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
     protected $_helper;
 
     /**
+     * @var string
+     */
+    protected $paymentType;
+
+    /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Omise\Payment\Helper\OmiseHelper $helper
@@ -37,29 +42,26 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
      */
     protected function _toHtml()
     {
-        $paymentData = $this->getPaymentData();
-        $paymentType = $this->getPaymentType();
-        if ($paymentType && $this->_helper->isQRCodePayment($paymentType)) {
-            $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
-            $this->addData([
-                'qrcode' => $paymentData['additional_information']['qr_code_encoded'],
-                'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
-            ]);
+        $order       = $this->_checkoutSession->getLastRealOrder();
+        $paymentData = $order->getPayment()->getData();
+        $this->paymentType = isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : null;
+        if ($this->paymentType && $this->_helper->isQRCodePayment($this->paymentType)) {
+            $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
+            $data['order_amount'] = number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency;
+            if($this->paymentType == 'bill_payment_tesco_lotus') { 
+                $data['offline_code'] = $paymentData['additional_information']['barcode'];
+            } else {
+                $data['offline_code'] = $paymentData['additional_information']['qr_code_encoded'];
+            }
+            $this->addData($data);
             return parent::_toHtml();
         }
     }
-
     /**
-     * @return boolean|string
+     * returns payment method type.
+     * @return string
      */
-    public function getPaymentType() 
-    {
-        $paymentData = $this->getPaymentData();
-        return isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : false ;
-    }
-
-    public function getPaymentData() 
-    {
-        return $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
+    public function getPaymentType() {
+        return $this->paymentType;
     }
 }

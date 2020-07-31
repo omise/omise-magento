@@ -34,8 +34,6 @@ class PaymentDetailsHandler implements HandlerInterface
         return curl_exec($ch);
     }
     
-
-
     /**
      * @inheritdoc
      */

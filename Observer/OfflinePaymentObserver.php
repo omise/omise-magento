@@ -121,12 +121,7 @@ class OfflinePaymentObserver implements ObserverInterface
      * @return string
      */
     private function getPaynowChargeExpiryTime() {
-        $limit = date("d-m-Y")." 22:59:59";
-        $now = date("d-m-Y H:i:s");
-        if(strtotime($now) > strtotime($limit)) {
-            return date("d-m-Y" , strtotime("+1 day"))." 23:59:59";
-        } else {
-            return date("d-m-Y H:i:s" , strtotime(date("Y-m-d 23:59:59")));
-        }
+        $timestamp = time() > strtotime('tomorrow - 1seconds') ? strtotime('tomorrow + 1day - 1second') : strtotime('tomorrow - 1seconds');
+        return date("d-m-Y H:i:s" , $timestamp);
     }
 }

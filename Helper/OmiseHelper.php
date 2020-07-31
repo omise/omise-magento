@@ -117,6 +117,6 @@ class OmiseHelper extends AbstractHelper
      * @return boolean
      */
     public function isQRCodePayment($paymentType) {
-        return ($paymentType === 'paynow' || $paymentType === 'promptpay');
+        return ($paymentType === 'paynow' || $paymentType === 'promptpay' || $paymentType === 'bill_payment_tesco_lotus');
     }
 }

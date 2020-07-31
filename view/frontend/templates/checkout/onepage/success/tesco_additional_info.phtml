@@ -1,5 +1,7 @@
-
+<?php if($block->getPaymentType() === 'bill_payment_tesco_lotus') : ?>
 <p><?= __('To finish payment, print the code below and bring it to make payment in any Tesco Lotus Store. Code is valid for the next <b>24 hours only</b>. After that time your order will be canceled.'); ?></p>
 <p style="margin:.5rem 0"><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
-<div><?= $block->getTescoBarcodeSvg() ?></div>
+<div><?= $block->getOfflineCode() ?></div>
 <p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?= __('Print')?></button></p>
+<?php endif; ?>
+

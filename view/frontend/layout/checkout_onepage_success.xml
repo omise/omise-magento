@@ -2,15 +2,15 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="order.success.additional.info">
-            <block class="Omise\Payment\Block\Checkout\Onepage\Success\TescoAdditionalInformation" name="onepage.success.tesco" 
+            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.tesco" 
                 template="Omise_Payment::checkout/onepage/success/tesco_additional_info.phtml"/>
-            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.paynow" 
+            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.paynow" after="onepage.success.tesco"
                 template="Omise_Payment::checkout/onepage/success/paynow_additional_info.phtml"/>
-            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.promptpay" 
+            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.promptpay" after="onepage.success.paynow"
                 template="Omise_Payment::checkout/onepage/success/promptpay_additional_info.phtml"/>
-            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.paynow.note" 
+            <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.paynow.note" after="onepage.success.promptpay"
                 template="Omise_Payment::checkout/onepage/success/paynow_additional_info_note.phtml"/>
-            <block class="Omise\Payment\Block\Checkout\Onepage\Success\ConveniencestoreAdditionalInformation" name="onepage.success.conv_store" 
+            <block class="Omise\Payment\Block\Checkout\Onepage\Success\ConveniencestoreAdditionalInformation" name="onepage.success.conv_store" after="onepage.success.paynow.note"
                 template="Omise_Payment::checkout/onepage/success/conv_store_additional_info.phtml"/>
         </referenceContainer>
     </body>
