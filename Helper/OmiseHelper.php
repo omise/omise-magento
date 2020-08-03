@@ -112,7 +112,7 @@ class OmiseHelper extends AbstractHelper
         return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
     }
     /**
-     * Checks if $paymentType is QR payment. This method returns true for QR payment method or else false.
+     * Checks if $paymentType is offline payment. This method returns true for offline payment method or else false.
      * @param string $paymentType
      * @return boolean
      */
