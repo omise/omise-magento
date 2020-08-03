@@ -45,7 +45,7 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
         $order       = $this->_checkoutSession->getLastRealOrder();
         $paymentData = $order->getPayment()->getData();
         $this->paymentType = isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : null;
-        if ($this->paymentType && $this->_helper->isQRCodePayment($this->paymentType)) {
+        if ($this->paymentType && $this->_helper->isOfflinePayment($this->paymentType)) {
             $orderCurrency = $order->getOrderCurrency()->getCurrencyCode();
             $data['order_amount'] = number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency;
             if($this->paymentType == 'bill_payment_tesco_lotus') { 
