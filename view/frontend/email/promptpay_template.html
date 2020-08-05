@@ -3,14 +3,11 @@
 <div>
     <p>
         {{trans "%thankyou" thankyou="Thank you for your order."}}</p>
-        {{trans "%message" message="You are now one step away from completing the order! Please use your bank app to scan the PromptPay QR code below and complete payment by "}}<strong>{{var data.validUntil|raw}}</strong>.
+        {{trans "%message" message="You are now one step away from completing the order! Please use your bank app to scan the PromptPay QR code"}} <a href="{{var data.barcode}}" target="_blank">{{trans "%message" message="here"}}</a> {{trans "%message" message="and complete payment by "}}<strong>{{var data.validUntil|raw}}</strong>.
         {{trans "%message" message=" After that your order will be automatically canceled."}}<br/>
         {{trans "%orderid" orderid="Order ID:"}} <strong>{{var data.orderId|raw}}</strong><br/>
         {{trans "%amounttopay" amounttopay="Amount to pay:"}} <strong>{{var data.amount|raw}}</strong><br/>
         <i>{{trans "%extrafees" extrafees="Extra fees may apply for the payment."}}</i>
-    </p>
-    <p style="margin: 50px auto; min-width: 600px; display: block;">
-        <div>{{var data.barcode|raw}}</div>
     </p>
     <p style="margin-top: 50px"><i>{{var data.storename|raw}}</i></p>
 </div>

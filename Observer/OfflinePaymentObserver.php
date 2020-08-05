@@ -66,14 +66,14 @@ class OfflinePaymentObserver implements ObserverInterface
             case 'bill_payment_tesco_lotus':
                 // make sure timezone is Thailand.
                 date_default_timezone_set("Asia/Bangkok");
-                $barcodeHtml   = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalInformation('barcode'));
+                $codeTemplate  = $this->_helper->convertTescoSVGCodeToHTML($payment->getAdditionalInformation('barcode'));
                 $emailTemplate = 'send_email_tesco_template';
                 $validUntil    = date("d-m-Y H:i:s" , strtotime($charge->expires_at));
                 break;
             case 'paynow':
                 // make sure timezone is Singapore.
                 date_default_timezone_set("Asia/Singapore");
-                $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
+                $codeTemplate   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
                 $emailTemplate = 'send_email_paynow_template';
                 $emailData->setData(['banksUrl' => $this->_assetRepo->getUrl('Omise_Payment::images/paynow_supportedbanks.png')]);
                 $validUntil = $this->getPaynowChargeExpiryTime();
@@ -81,7 +81,7 @@ class OfflinePaymentObserver implements ObserverInterface
             case 'promptpay':
                 // make sure timezone is Thailand.
                 date_default_timezone_set("Asia/Bangkok");
-                $barcodeHtml   = "<img src= '".$charge->source['scannable_code']['image']['download_uri']."'/>";
+                $codeTemplate   = $charge->source['scannable_code']['image']['download_uri'];
                 $emailTemplate = 'send_email_promptpay_template';
                 $validUntil    = date("d-m-Y H:i:s" , strtotime('+1 day'));
                 break;
@@ -94,7 +94,7 @@ class OfflinePaymentObserver implements ObserverInterface
         $storeEmail    = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $customerEmail = $order->getCustomerEmail();
         $orderId       = $order->getIncrementId();
-        $emailData->setData(['barcode' => $barcodeHtml, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'validUntil' => $validUntil]);
+        $emailData->setData(['barcode' => $codeTemplate, 'amount' => $amount, 'storename' => $storeName, 'orderId' => $orderId, 'validUntil' => $validUntil]);
 
         // build and send email
         $transport = $this->_transportBuilder
