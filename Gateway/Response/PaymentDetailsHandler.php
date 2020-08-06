@@ -45,13 +45,14 @@ class PaymentDetailsHandler implements HandlerInterface
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
         $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
-        
-        if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
+        $paymentType = $response['charge']->source['type'];
+        if ($paymentType === 'bill_payment_tesco_lotus') {
             $barcode = $this->downloadPaymentFile($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
+            return;
         }
 
-        if ($this->_helper->isOfflinePayment($response['charge']->source['type'])) {
+        if ($this->_helper->isOfflinePayment($paymentType)) {
             $qrCodeImage = $this->downloadPaymentFile($response['charge']->source['scannable_code']['image']['download_uri']);
             $payment->setAdditionalInformation('qr_code_encoded', base64_encode($qrCodeImage));
         }
