@@ -3,6 +3,7 @@ namespace Omise\Payment\Gateway\Response;
 
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 
 class PaymentDetailsHandler implements HandlerInterface
 {
@@ -11,13 +12,29 @@ class PaymentDetailsHandler implements HandlerInterface
      */
      protected $_helper;
 
+    /**
+     * @var Omise\Payment\Model\Config\Config
+     */
+     protected $_config;
+
+     /**
+      * @var \Magento\Framework\Filesystem
+      */
+     protected $_filesystem;
+
      /**
      * @param \Omise\Payment\Helper\OmiseHelper $helper
+     * @param \Omise\Payment\Model\Config\Config $config
+     * @param \Magento\Framework\Filesystem $filesystem $filesystem
      */
     public function __construct(
-        \Omise\Payment\Helper\OmiseHelper $helper
+        \Omise\Payment\Helper\OmiseHelper $helper,
+        \Omise\Payment\Model\Config\Config $config,
+        \Magento\Framework\Filesystem $filesystem
     ) {
         $this->_helper = $helper;
+        $this->_config = $config;
+        $this->_filesystem = $filesystem;
     }
 
     /**
@@ -32,6 +49,27 @@ class PaymentDetailsHandler implements HandlerInterface
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         return curl_exec($ch);
+    }
+
+    /**
+     * saves QR code in the media directory of magento.
+     * returns file path.
+     * @param \Magento\Payment\Gateway\Data\PaymentDataObject $paymentType
+     * @param string $qrCodeImage
+     * @return string
+     */
+    private function saveQr($paymentType, $qrCodeImage)
+    {
+        $filename = \Omise\Payment\Model\Config\Config::MEDIA_STORAGE_LOCATION;
+        $filename .= uniqid($paymentType."_");
+        if($this->_config->isSandboxEnabled()) {
+            $filename .= ".png";
+        } else {
+            $filename .= ".svg";
+        }
+        $fs = $this->_filesystem->getDirectoryWrite(DirectoryList::MEDIA);
+        $fs->writeFile($filename, $qrCodeImage);
+        return $filename;
     }
     
     /**
@@ -55,7 +93,10 @@ class PaymentDetailsHandler implements HandlerInterface
         if ($this->_helper->isOfflinePayment($paymentType)) {
             $qrCodeImage = $this->downloadPaymentFile($response['charge']->source['scannable_code']['image']['download_uri']);
             $payment->setAdditionalInformation('qr_code_encoded', base64_encode($qrCodeImage));
+            if($paymentType == 'promptpay') {
+                $filename = $this->saveQr($paymentType, $qrCodeImage);
+                $payment->setAdditionalInformation('qr_code', $filename);
+            }
         }
     }
 }
-

@@ -25,10 +25,16 @@ class OfflinePaymentObserver implements ObserverInterface
      * @var \Omise\Payment\Model\Api\Charge
      */
     protected $charge;
+
     /**
      * @var \Magento\Framework\View\Asset\Repository
      */
     protected $_assetRepo;
+
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    protected $_storeManager;
 
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $helper
@@ -36,19 +42,22 @@ class OfflinePaymentObserver implements ObserverInterface
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
      * @param \Omise\Payment\Model\Api\Charge $charge
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\View\Asset\Repository $assetRepo,
-        \Omise\Payment\Model\Api\Charge  $charge
+        \Omise\Payment\Model\Api\Charge  $charge,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->_scopeConfig      = $scopeConfig;
         $this->_helper           = $helper;
         $this->_transportBuilder = $transportBuilder;
         $this->_assetRepo = $assetRepo;
         $this->charge  = $charge;
+        $this->_storeManager = $storeManager;
     }
 
     /**
@@ -81,7 +90,7 @@ class OfflinePaymentObserver implements ObserverInterface
             case 'promptpay':
                 // make sure timezone is Thailand.
                 date_default_timezone_set("Asia/Bangkok");
-                $codeTemplate   = $charge->source['scannable_code']['image']['download_uri'];
+                $codeTemplate   = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB)."omise/payment/displayqr/orderId/".$order->getIncrementId();
                 $emailTemplate = 'send_email_promptpay_template';
                 $validUntil    = date("d-m-Y H:i:s" , strtotime('+1 day'));
                 break;
