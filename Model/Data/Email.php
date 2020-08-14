@@ -29,6 +29,11 @@ class Email
     protected $_storeManager;
 
     /**
+     * @var \Omise\Payment\Helper\OmiseHelper
+     */
+    protected $_helper;
+
+    /**
      * @var string
      */
     private $storeName;
@@ -37,19 +42,22 @@ class Email
      * @var string
      */
     private $emailTemplate;
+    
 
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Omise\Payment\Model\Api\Charge  $charge,
         \Magento\Framework\View\Asset\Repository $assetRepo,
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Omise\Payment\Helper\OmiseHelper $helper
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->_charge      = $charge;
         $this->_assetRepo = $assetRepo;
         $this->_transportBuilder = $transportBuilder;
         $this->_storeManager = $storeManager;
+        $this->_helper           = $helper;
     }
 
     /**
@@ -57,18 +65,19 @@ class Email
      * @return void
      */
     public function sendEmail($order) {
-        $this->storeName = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        $emailData       = $this->getEmailData($order);
-        $transport       = $this->_transportBuilder
+        $this->storeName  = $this->_scopeConfig->getValue('trans_email/ident_sales/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $this->storeEmail = $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $emailData        = $this->getEmailData($order);
+        $transport        = $this->_transportBuilder
             ->setTemplateIdentifier($this->emailTemplate)
             ->setTemplateOptions([
                 'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
+                'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID
             ])
             ->setTemplateVars(['data' => $emailData])
             ->setFrom([
                 'name'  => $this->storeName,
-                'email' => $this->_scopeConfig->getValue('trans_email/ident_sales/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);,
+                'email' => $this->storeEmail
             ])
             ->addTo($order->getCustomerEmail())
             ->getTransport();
