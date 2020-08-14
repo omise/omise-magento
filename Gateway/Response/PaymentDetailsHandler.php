@@ -73,7 +73,7 @@ class PaymentDetailsHandler implements HandlerInterface
             return;
         }
 
-        if ($this->_helper->isOfflinePayment($paymentType)) {
+        if ($this->_helper->isPayableByImageCode($paymentType)) {
             $this->setPaymentFileData($response['charge']->source['scannable_code']['image']['download_uri']);
             $payment->setAdditionalInformation('qr_code_encoded', base64_encode($this->imageData));
             $payment->setAdditionalInformation('qr_data_type', $this->imageType);

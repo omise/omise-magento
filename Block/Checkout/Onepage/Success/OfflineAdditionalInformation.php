@@ -37,7 +37,6 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
 
     /**
      * Adding PayNow Payment Information
-     *
      * @return string
      */
     protected function _toHtml()
@@ -45,7 +44,7 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
         $order       = $this->getOrder();
         $paymentData = $order->getPayment()->getData();
         $this->paymentType = isset($paymentData['additional_information']['payment_type']) ? $paymentData['additional_information']['payment_type'] : null;
-        if ($this->paymentType && $this->_helper->isOfflinePayment($this->paymentType)) {
+        if ($this->paymentType && $this->_helper->isPayableByImageCode($this->paymentType)) {
             $data = $this->setPaymentData($order, $paymentData);
             return parent::_toHtml();
         }
