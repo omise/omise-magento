@@ -13,11 +13,6 @@ class PaymentDetailsHandler implements HandlerInterface
     protected $_helper;
 
     /**
-     * @var Omise\Payment\Model\Config\Config
-     */
-    protected $_config;
-
-    /**
      * @var \Magento\Framework\Filesystem
      */
     protected $_filesystem;
@@ -34,16 +29,13 @@ class PaymentDetailsHandler implements HandlerInterface
 
      /**
      * @param \Omise\Payment\Helper\OmiseHelper $helper
-     * @param \Omise\Payment\Model\Config\Config $config
      * @param \Magento\Framework\Filesystem $filesystem $filesystem
      */
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
-        \Omise\Payment\Model\Config\Config $config,
         \Magento\Framework\Filesystem $filesystem
     ) {
         $this->_helper = $helper;
-        $this->_config = $config;
         $this->_filesystem = $filesystem;
     }
 
