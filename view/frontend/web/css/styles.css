@@ -104,3 +104,6 @@
     margin-bottom: 18px;
 }
 
+#img_payment_code {
+    max-width: 320px;
+}

@@ -78,7 +78,7 @@ class OfflineAdditionalInformation extends \Magento\Framework\View\Element\Templ
             $data['offline_code'] = $paymentData['additional_information']['barcode'];
         } else if($this->paymentType == 'promptpay') {
             $data['offline_code'] = $paymentData['additional_information']['qr_code_encoded'];
-            $data['qr_code'] = $paymentData['additional_information']['qr_code'];
+            $data['qr_data_type'] = $paymentData['additional_information']['qr_data_type'];
         } else{
             $data['offline_code'] = $paymentData['additional_information']['qr_code_encoded'];
         }

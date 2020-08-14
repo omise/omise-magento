@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Omise_Payment::css/styles.css" />
+    </head>
     <body>
         <referenceContainer name="order.success.additional.info">
             <block class="Omise\Payment\Block\Checkout\Onepage\Success\OfflineAdditionalInformation" name="onepage.success.tesco"

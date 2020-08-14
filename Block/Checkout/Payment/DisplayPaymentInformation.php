@@ -60,8 +60,4 @@ class DisplayPaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\Su
     public function getOrder() {
         return $this->_order->loadByIncrementId($this->_request->getParam('orderId'));
     }
-
-    public function getMediaUrl() {
-        return $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
-    }
 }
