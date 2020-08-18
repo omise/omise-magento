@@ -16,8 +16,6 @@ class Config
      */
     const MODULE_NAME = 'Omise_Payment';
 
-    const MEDIA_STORAGE_LOCATION = "/omise/qr/";
-
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
