@@ -31,10 +31,10 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
         array $data = []
     ) {
         $this->_checkoutSession = $checkoutSession;
-        $this->_helper = $helper;
-        $this->order       = $this->getOrder();
-        $this->paymentData = $this->order->getPayment()->getData();
-        $this->paymentType = $this->getPaymentAdditionalInformation('payment_type');
+        $this->_helper          = $helper;
+        $this->order            = $this->getOrder();
+        $this->paymentData      = $this->order->getPayment()->getData();
+        $this->paymentType      = $this->getPaymentAdditionalInformation('payment_type');
         parent::__construct($context, $data);
     }
 

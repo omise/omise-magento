@@ -6,13 +6,13 @@ use Magento\Framework\Event\Observer;
 
 class OfflinePaymentObserver implements ObserverInterface
 {
-    
-    
     /**
-    * @var  \Omise\Payment\Helper\OmiseHelper
+    * @var \Omise\Payment\Helper\OmiseHelper
     */
     private $_helper;
-
+    /**
+     * @var \Omise\Payment\Model\Data\Email
+     */
     private $_email;
 
     /**
@@ -21,7 +21,7 @@ class OfflinePaymentObserver implements ObserverInterface
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Omise\Payment\Model\Data\Email $email
-    ) {
+        ) {
         $this->_helper           = $helper;
         $this->_email           = $email;
     }

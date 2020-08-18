@@ -269,7 +269,6 @@
         </arguments>
     </virtualType>
     <!-- /Promptpay ::Value Handler Pool-->
-    <!-- /Promptpay payment solution-->
 
     <!--  Convenience Store payment solution-->
     <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">

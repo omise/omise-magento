@@ -13,8 +13,7 @@ class PromptpayAdditionalInformation extends AdditionalInformation
             return;
         }
         $data['order_amount'] = $this->getOrderAmount();
-        $data['offline_code'] = $this->getPaymentAdditionalInformation('qr_code_encoded');
-        $data['qr_data_type'] = $this->getPaymentAdditionalInformation('qr_data_type');
+        $data['image_code'] = $this->getPaymentAdditionalInformation('qr_code_encoded');
         $this->addData($data);
         return parent::_toHtml();
     }

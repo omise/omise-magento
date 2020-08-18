@@ -1,7 +1,7 @@
 <?php
 namespace Omise\Payment\Block\Checkout\Payment;
 
-class DisplayPaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\Success\AdditionalInformation
+class CompletePaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\Success\AdditionalInformation
 {
     /**
      * @var \Magento\Checkout\Model\Session
@@ -69,8 +69,7 @@ class DisplayPaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\Su
     {
         $this->order = $this->getOrder();
         $data['order_amount'] = $this->getOrderAmount();
-        $data['offline_code'] = $this->getPaymentAdditionalInformation('qr_code_encoded');
-        $data['qr_data_type'] = $this->getPaymentAdditionalInformation('qr_data_type');
+        $data['image_code'] = $this->getPaymentAdditionalInformation('qr_code_encoded');
         $this->addData($data);
         return parent::_toHtml();
     }

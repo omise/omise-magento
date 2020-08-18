@@ -1,9 +1,8 @@
 <?php
 namespace Omise\Payment\Controller\Payment;
 
-class Displayqr extends \Magento\Framework\App\Action\Action
+class Complete extends \Magento\Framework\App\Action\Action
 {
-    
     /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $pageFactory

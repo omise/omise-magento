@@ -5,8 +5,8 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Omise\Payment\Block\Checkout\Payment\DisplayPaymentInformation" name="displayqr"
-                template="Omise_Payment::displayqr.phtml" cacheable="false"/>
+            <block class="Omise\Payment\Block\Checkout\Payment\CompletePaymentInformation" name="completePayment"
+                template="Omise_Payment::complete_payment.phtml" cacheable="false"/>
         </referenceContainer>
     </body>
 </page>

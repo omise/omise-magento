@@ -52,11 +52,11 @@ class Email
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Omise\Payment\Helper\OmiseHelper $helper
     ) {
-        $this->_scopeConfig = $scopeConfig;
-        $this->_charge      = $charge;
-        $this->_assetRepo = $assetRepo;
+        $this->_scopeConfig      = $scopeConfig;
+        $this->_charge           = $charge;
+        $this->_assetRepo        = $assetRepo;
         $this->_transportBuilder = $transportBuilder;
-        $this->_storeManager = $storeManager;
+        $this->_storeManager     = $storeManager;
         $this->_helper           = $helper;
     }
 
@@ -111,7 +111,7 @@ class Email
             case 'promptpay':
                 // make sure timezone is Thailand.
                 date_default_timezone_set("Asia/Bangkok");
-                $emailData->addData(['barcode' => $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB)."omise/payment/displayqr/orderId/".$order->getIncrementId()]);
+                $emailData->addData(['barcode' => $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB)."omise/payment/complete/orderId/".$order->getIncrementId()]);
                 $emailData->addData(['validUntil' => date("d-m-Y H:i:s" , strtotime('+1 day'))]);
                 $this->emailTemplate = 'send_email_promptpay_template';
                 break;

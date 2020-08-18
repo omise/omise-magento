@@ -1,5 +1,0 @@
-<?php $image = "data:".$block->getQrDataType().";base64, ".$block->getOfflineCode(); ?>
-<p><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
-<p style="margin:.5rem 0"><?= __('PromptPay QR Code.'); ?></p>
-<div><img id="img_payment_code" src="<?= $image ?>" /></div>
-<p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?= __('Print')?></button></p>
