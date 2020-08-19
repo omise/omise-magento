@@ -16,7 +16,7 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
     /**
      * @var string
      */
-    protected $paymentType;
+    private $paymentType;
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context

@@ -13,7 +13,7 @@ class PaynowAdditionalInformation extends AdditionalInformation
             return;
         }
         $data['order_amount'] = $this->getOrderAmount();
-        $data['image_code'] = $this->getPaymentAdditionalInformation('qr_code_encoded');
+        $data['image_code'] = $this->getPaymentAdditionalInformation('image_code');
         $this->addData($data);
         return parent::_toHtml();
     }

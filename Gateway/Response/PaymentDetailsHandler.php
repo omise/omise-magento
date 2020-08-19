@@ -52,7 +52,7 @@ class PaymentDetailsHandler implements HandlerInterface
         }
 
         if ($this->_helper->isPayableByImageCode($response['charge']->source['type'])) {
-            $payment->setAdditionalInformation('qr_code_encoded', $response['charge']->source['scannable_code']['image']['download_uri']);
+            $payment->setAdditionalInformation('image_code', $response['charge']->source['scannable_code']['image']['download_uri']);
         }
     }
 }
