@@ -9,29 +9,26 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
     protected $_checkoutSession;
 
     /**
-     * $var \Omise\Payment\Helper\OmiseHelper
+     * @var string
      */
-    protected $_helper;
+    protected $paymentType;
 
     /**
      * @var string
      */
-    private $paymentType;
+    protected $paymentData;   
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Omise\Payment\Helper\OmiseHelper $helper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Omise\Payment\Helper\OmiseHelper $helper,
         array $data = []
     ) {
         $this->_checkoutSession = $checkoutSession;
-        $this->_helper          = $helper;
         $this->order            = $this->getOrder();
         $this->paymentData      = $this->order->getPayment()->getData();
         $this->paymentType      = $this->getPaymentAdditionalInformation('payment_type');

@@ -9,11 +9,6 @@ class CompletePaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\S
     protected $_checkoutSession;
 
     /**
-     * $var \Omise\Payment\Helper\OmiseHelper
-     */
-    protected $_helper;
-
-    /**
      * @var \Magento\Framework\App\Request\Http
      */
     protected $_request;
@@ -26,7 +21,6 @@ class CompletePaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\S
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Omise\Payment\Helper\OmiseHelper $helper
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @param array $data
@@ -34,16 +28,14 @@ class CompletePaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\S
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Omise\Payment\Helper\OmiseHelper $helper,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Sales\Api\Data\OrderInterface $order,
         array $data = []
     ) {
         $this->_checkoutSession = $checkoutSession;
-        $this->_helper = $helper;
         $this->_request = $request;
         $this->_order = $order;
-        parent::__construct($context, $checkoutSession, $helper, $data);
+        parent::__construct($context, $checkoutSession, $data);
     }
 
     /**
