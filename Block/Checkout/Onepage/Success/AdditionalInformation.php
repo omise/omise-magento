@@ -38,7 +38,8 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
     /**
      * @return \Magento\Sales\Model\Order
      */
-    protected function getOrder() {
+    protected function getOrder()
+    {
         return $this->_checkoutSession->getLastRealOrder();
     }
 
@@ -46,7 +47,8 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
      * returns payment method type.
      * @return string
      */
-    public function getPaymentType() {
+    public function getPaymentType()
+    {
         return $this->paymentType;
     }
     /**
@@ -54,7 +56,8 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
      * @param string $key
      * @return string|null
      */
-    protected function getPaymentAdditionalInformation($key) {
+    protected function getPaymentAdditionalInformation($key)
+    {
         return isset($this->paymentData['additional_information'][$key]) ? $this->paymentData['additional_information'][$key] : NULL;
     }
 
@@ -62,7 +65,8 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
      * returns order amount along with order currency
      * @return string
      */
-    protected function getOrderAmount() {
+    protected function getOrderAmount()
+    {
         return number_format($this->paymentData['amount_ordered'], 2) .' '.$this->order->getOrderCurrency()->getCurrencyCode();
     }
 }
