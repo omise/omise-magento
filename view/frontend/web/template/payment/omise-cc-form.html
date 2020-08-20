@@ -48,7 +48,7 @@
                     <!-- ko foreach: getCustomerCards() -->
                         <li style="list-style: none; margin-bottom: 2rem;">
                             <input name="payment[omise_card]" type="radio"
-                                data-bind="attr: {id: 'Card' + value}, checked: $parent.omiseCard, value: value"/>
+                                data-bind="attr: {id: 'Card' + value}, checked: $parent.omiseCard, event: {change : $parent.chargeWithSavedCard}, value: value"/>
 
                             <label data-bind="attr: {for: 'Card' + value}"><!-- ko  text: label --><!-- /ko --></label>
 
