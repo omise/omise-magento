@@ -4,7 +4,7 @@ namespace Omise\Payment\Block\Checkout\Onepage\Success;
 class PromptpayAdditionalInformation extends AdditionalInformation
 {
     /**
-     * Adding PayNow Payment Information
+     * Adding PromptPay Payment Information
      * @return string
      */
     protected function _toHtml()
