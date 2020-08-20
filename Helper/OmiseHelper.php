@@ -111,4 +111,13 @@ class OmiseHelper extends AbstractHelper
         }
         return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
     }
+    
+    /**
+     * This method checks and return TRUE if $paymentType is offline payment which is payable by image code otherwise returns false.
+     * @param string $paymentType
+     * @return boolean
+     */
+    public function isPayableByImageCode($paymentType) {
+        return ($paymentType === 'paynow' || $paymentType === 'promptpay' || $paymentType === 'bill_payment_tesco_lotus');
+    }
 }

@@ -1,4 +1,4 @@
-<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}, visible: isActive()">
     <div class="payment-method-title field choice">
         <input type="radio"
                name="payment[method]"
@@ -18,13 +18,6 @@
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
                     <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank" href="https://www.omise.co/what-are-test-keys-and-live-keys"><span data-bind="i18n: 'more info'"></span></a>)
-                </div>
-            </div>
-        </div>
-        <div data-bind="visible: !isActive()" class="page messages">
-            <div role="alert" class="messages">
-                <div class="message-warning warning message">
-                    <div data-bind="i18n: 'Option available only for orders in THB'"></div>
                 </div>
             </div>
         </div>

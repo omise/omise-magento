@@ -2,6 +2,7 @@ define(
     [
         'jquery',
         'ko',
+        'Omise_Payment/js/view/payment/omise-offline-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
@@ -14,6 +15,7 @@ define(
     function (
         $,
         ko,
+        Base,
         Component,
         fullScreenLoader,
         redirectOnSuccessAction,
@@ -26,30 +28,14 @@ define(
 
         const convStoreMinimumPurchaseAmount = 200;
 
-        return Component.extend({
+        return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offline-conveniencestore-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
-            /**
-             * Get payment method code
-             *
-             * @return {string}
-             */
-            getCode: function () {
-                return 'omise_offline_conveniencestore';
-            },
-
-            /**
-             * Is method available to display
-             *
-             * @return {boolean}
-             */
-            isActive: function () {
-                return true;
-            },
+            restrictedToCurrencies: ['jpy'],
+            code: 'omise_offline_conveniencestore',
 
             /**
              * Get a checkout form data

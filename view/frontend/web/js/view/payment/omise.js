@@ -17,6 +17,7 @@ define(
             'offsite-truemoney',
             'offline-tesco',
             'offline-paynow',
+            'offline-promptpay',
             'offsite-pointsciti'
         ];
 

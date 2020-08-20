@@ -1,15 +1,15 @@
 <?php
 namespace Omise\Payment\Block\Checkout\Onepage\Success;
 
-class PaynowAdditionalInformation extends AdditionalInformation
+class PromptpayAdditionalInformation extends AdditionalInformation
 {
     /**
-     * Adding PayNow Payment Information
+     * Adding PromptPay Payment Information
      * @return string
      */
     protected function _toHtml()
     {
-        if($this->getPaymentType() !== 'paynow') {
+        if($this->getPaymentType() !== 'promptpay') {
             return;
         }
         $data['order_amount'] = $this->getOrderAmount();

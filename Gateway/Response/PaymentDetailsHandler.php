@@ -7,6 +7,20 @@ use Magento\Payment\Gateway\Response\HandlerInterface;
 class PaymentDetailsHandler implements HandlerInterface
 {
     /**
+     * $var \Omise\Payment\Helper\OmiseHelper
+     */
+     protected $_helper;
+
+     /**
+     * @param \Omise\Payment\Helper\OmiseHelper $helper
+     */
+    public function __construct(
+        \Omise\Payment\Helper\OmiseHelper $helper
+    ) {
+        $this->_helper = $helper;
+    }
+
+    /**
      * @param string $url URL to Tesco Barcode generated in Omise Backend
      * @return string Barcode in SVG format
      */
@@ -19,7 +33,7 @@ class PaymentDetailsHandler implements HandlerInterface
 
         return curl_exec($ch);
     }
-
+    
     /**
      * @inheritdoc
      */
@@ -37,10 +51,8 @@ class PaymentDetailsHandler implements HandlerInterface
             $payment->setAdditionalInformation('barcode', $barcode);
         }
 
-        if ($response['charge']->source['type'] === 'paynow') {
-            $qrCodeImage = $this->downloadPaymentFile($response['charge']->source['scannable_code']['image']['download_uri']);
-            $payment->setAdditionalInformation('qr_code_encoded', base64_encode($qrCodeImage));
+        if ($this->_helper->isPayableByImageCode($response['charge']->source['type'])) {
+            $payment->setAdditionalInformation('image_code', $response['charge']->source['scannable_code']['image']['download_uri']);
         }
     }
 }
-

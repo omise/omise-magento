@@ -1,45 +1,20 @@
 <?php
 namespace Omise\Payment\Block\Checkout\Onepage\Success;
 
-class TescoAdditionalInformation extends \Magento\Framework\View\Element\Template
+class TescoAdditionalInformation extends AdditionalInformation
 {
     /**
-     * @var \Magento\Checkout\Model\Session
-     */
-    protected $_checkoutSession;
-
-    /**
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param array $data
-     */
-    public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        array $data = []
-    ) {
-        $this->_checkoutSession = $checkoutSession;
-        parent::__construct($context, $data);
-    }
-
-    /**
-     * Return HTML code with tesco lotus payment infromation
-     *
+     * Adding PayNow Payment Information
      * @return string
      */
     protected function _toHtml()
     {
-        $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
-        if (!isset($paymentData['additional_information']['payment_type']) || $paymentData['additional_information']['payment_type'] !== 'bill_payment_tesco_lotus') {
+        if($this->getPaymentType() !== 'bill_payment_tesco_lotus') {
             return;
         }
-        $orderCurrency = $this->_checkoutSession->getLastRealOrder()->getOrderCurrency()->getCurrencyCode();
-
-        $this->addData([
-            'tesco_barcode_svg' => $paymentData['additional_information']['barcode'],
-            'order_amount' => number_format($paymentData['amount_ordered'], 2) .' '.$orderCurrency
-        ]);
-        
+        $data['order_amount'] = $this->getOrderAmount();
+        $data['offline_code'] = $this->getPaymentAdditionalInformation('barcode');
+        $this->addData($data);
         return parent::_toHtml();
     }
 }
