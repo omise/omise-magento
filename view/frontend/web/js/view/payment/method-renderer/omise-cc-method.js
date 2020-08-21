@@ -119,6 +119,13 @@ define(
             },
 
             /**
+             * @return {bool}
+             */
+            chargeWithSavedCard: function(){
+                $('#payment_form_omise_cc').css({display: 'none'});
+            },
+
+            /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */
