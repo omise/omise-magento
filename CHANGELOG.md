@@ -1,13 +1,12 @@
 # CHANGELOG
 
-## [v2.12 _(Aug 24, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.12)
+## [v2.12 _(Aug 25, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.12)
 
 ### ✨ Highlights
 - Implemented new payment method - PromptPay, hiding payment methods which are not supported by currency, hardcode charge expiry date. (PR [#264](https://github.com/omise/omise-magento/pull/264))
 
 ### 🚀 Enhancements
 - Updated content on PayNow order success page and adding support to send Paynow QR code via email. (PR [#260](https://github.com/omise/omise-magento/pull/260))
-- Adding billing address details to card information while creating token. (PR [#261](https://github.com/omise/omise-magento/pull/261))
 - Hiding input card details form on selecting payment with saved card. (PR [#265](https://github.com/omise/omise-magento/pull/265))
 
 
