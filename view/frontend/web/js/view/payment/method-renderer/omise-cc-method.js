@@ -161,7 +161,7 @@ define(
                     expiration_year  : this.omiseCardExpirationYear(),
                     security_code    : this.omiseCardSecurityCode()
                 };
-                Object.assign(card, this.getSelectedTokenBillingAddress());
+
                 Omise.setPublicKey(this.getPublicKey());
                 Omise.createToken('card', card, function(statusCode, response) {
                     if (statusCode === 200) {
@@ -264,22 +264,6 @@ define(
                             redirectOnSuccessAction.execute();
                         }
                     });
-            },
-
-            getSelectedTokenBillingAddress: function() {
-                var selectedBillingAddress = quote.billingAddress();
-                var address = {
-                    state          : selectedBillingAddress.region,
-                    postal_code    : selectedBillingAddress.postcode,
-                    phone_number   : selectedBillingAddress.telephone,
-                    country        : selectedBillingAddress.countryId,
-                    city           : selectedBillingAddress.city
-                }
-                address.street1 = selectedBillingAddress.street[0]
-                if(selectedBillingAddress.street[1]) {
-                    address.street2 = selectedBillingAddress.street[1]
-                }
-                return address
             }
         });
     }
