@@ -41,17 +41,18 @@ class PaymentDetailsHandler implements HandlerInterface
     {
         $payment = SubjectReader::readPayment($handlingSubject);
         $payment = $payment->getPayment();
+        $paymentType = isset($response['charge']->source['type']) ? $response['charge']->source['type'] : null;
 
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
-        $payment->setAdditionalInformation('payment_type', $response['charge']->source['type']);
+        $payment->setAdditionalInformation('payment_type', $paymentType);
         
-        if ($response['charge']->source['type'] === 'bill_payment_tesco_lotus') {
+        if ($paymentType === 'bill_payment_tesco_lotus') {
             $barcode = $this->downloadPaymentFile($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
         }
 
-        if ($this->_helper->isPayableByImageCode($response['charge']->source['type'])) {
+        if ($this->_helper->isPayableByImageCode($paymentType)) {
             $payment->setAdditionalInformation('image_code', $response['charge']->source['scannable_code']['image']['download_uri']);
         }
     }
