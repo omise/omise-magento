@@ -72,7 +72,7 @@ class Email
             ->setTemplateIdentifier($this->emailTemplate)
             ->setTemplateOptions([
                 'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
-                'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID
+                'store' => $this->_storeManager->getStore()->getId()
             ])
             ->setTemplateVars(['data' => $emailData])
             ->setFrom([
