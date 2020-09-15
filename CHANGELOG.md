@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [v2.13 _(Sep 15, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.13)
+
+### 👾 Bug Fixes
+- Fixing issue for header and footer information in email containing payment QR, Barcodes for multi-store setup. (PR [#269](https://github.com/omise/omise-magento/pull/260))
+- Card payment throws error while checkout for PHP 7.4 version. (PR [#268](https://github.com/omise/omise-magento/pull/268))
+
+
 ## [v2.12 _(Aug 25, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.12)
 
 ### ✨ Highlights
