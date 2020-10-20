@@ -63,6 +63,20 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc/3ds</config_path>
                     </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="181" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_cc/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="182" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_cc/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
                 </group>
                 <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Internet Banking Payment</label>
@@ -77,6 +91,20 @@
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_internetbanking/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="151" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_internetbanking/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="152" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_internetbanking/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
                     </field>
                 </group>
                 <group id="omise_offsite_alipay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -93,6 +121,18 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_alipay/title</config_path>
                     </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="181" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="182" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
                 </group>
                 <group id="omise_offsite_pointsciti" translate="label" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Citi Pay with Points</label>
@@ -107,6 +147,20 @@
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_pointsciti/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="211" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_pointsciti/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="212" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_pointsciti/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
                     </field>
                 </group>
                 <group id="omise_offline_tesco" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -123,6 +177,20 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offline_tesco/title</config_path>
                     </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="241" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offline_tesco/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offline_tesco/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
                 </group>
                 <group id="omise_offsite_installment" translate="label" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Installment Payment</label>
@@ -137,6 +205,20 @@
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_installment/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="271" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_installment/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="272" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_installment/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
                     </field>
                 </group>
                 <group id="omise_offsite_truemoney" translate="label" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -153,6 +235,20 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_truemoney/title</config_path>
                     </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="301" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_truemoney/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="302" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_truemoney/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
                 </group>
                 <group id="omise_offline_conveniencestore" translate="label" sortOrder="310" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Convenience Store Payment</label>
@@ -167,6 +263,20 @@
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offline_conveniencestore/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="331" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offline_conveniencestore/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="332" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offline_conveniencestore/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
                     </field>
                 </group>
                 <group id="omise_offline_paynow" translate="label" sortOrder="340" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -183,6 +293,18 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offline_paynow/title</config_path>
                     </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="361" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="362" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
                 </group>
                 <group id="omise_offline_promptpay" translate="label" sortOrder="370" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable PromptPay QR Payment</label>
@@ -197,6 +319,20 @@
                         <label>Title</label>
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offline_promptpay/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="391" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offline_promptpay/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="392" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offline_promptpay/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
                     </field>
                 </group>
             </group>
