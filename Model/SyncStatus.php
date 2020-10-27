@@ -6,7 +6,8 @@ use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Magento\Sales\Model\Order;
 
-class SyncStatus {
+class SyncStatus
+{
     const STATUS_SUCCESSFUL = 'successful';
     const STATUS_FAILED     = 'failed';
     const STATUS_PENDING    = 'pending';
@@ -38,7 +39,8 @@ class SyncStatus {
      * @param Order $order
      * @return void
      */
-    private function cancelOrderInvoice($order) {
+    private function cancelOrderInvoice($order)
+    {
         if ($order->hasInvoices()) {
             $invoice = $order->getInvoiceCollection()->getLastItem();
             $invoice->cancel();
@@ -51,7 +53,8 @@ class SyncStatus {
      * @return void
      * @throws LocalizedException
      */
-    public function sync($order) {
+    public function sync($order)
+    {
         $chargeId = $this->helper->getOrderChargeId($order);
         if($chargeId) {
             $charge = \OmiseCharge::retrieve($chargeId, $this->config->getPublicKey(), $this->config->getSecretKey());
