@@ -8,9 +8,9 @@ use Magento\Sales\Model\Order;
 
 class SyncStatus {
     const STATUS_SUCCESSFUL = 'successful';
-	const STATUS_FAILED     = 'failed';
-	const STATUS_PENDING    = 'pending';
-	const STATUS_EXPIRED    = 'expired';
+    const STATUS_FAILED     = 'failed';
+    const STATUS_PENDING    = 'pending';
+    const STATUS_EXPIRED    = 'expired';
     const STATUS_REVERSED   = 'reversed';
     /**
      * @var Helper
