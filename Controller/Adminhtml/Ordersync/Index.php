@@ -111,7 +111,7 @@ class Index extends \Magento\Backend\App\Action
         if ($order) {
             try {
                 $this->syncStatus->sync($order);
-                $this->messageManager->addSuccessMessage(__('Order status has been updated by maunal sync.'));
+                $this->messageManager->addSuccessMessage(__('Order status has been updated by manual sync.'));
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
