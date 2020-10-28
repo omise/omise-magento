@@ -76,8 +76,7 @@ class SyncStatus
                 break;
                 case self::STATUS_FAILED:
                     $this->cancelOrderInvoice($order);
-                    $order->addStatusHistoryComment(__('Omise: Payment failed.<br/>%1 (code: %2) (manual sync).', $charge['failure_message'], $charge['failure_code']));
-                    $order->registerCancellation(__('Payment failed. ' . ucfirst($charge['failure_message']) . ', please contact our support if you have any questions.'))
+                    $order->registerCancellation(__('Omise: Payment failed.<br/>%1 (code: %2) (manual sync).', $charge['failure_message'], $charge['failure_code']))
                       ->save();
                     $order->save();
                 break;
@@ -91,10 +90,8 @@ class SyncStatus
                 break;
                 case self::STATUS_EXPIRED:
                     $this->cancelOrderInvoice($order);
-                    $order->registerCancellation(__('Payment trasaction has been expired.'))
+                    $order->registerCancellation(__('Omise: Payment expired. (manual sync).'))
                       ->save();
-                    $order->addStatusHistoryComment(__('Omise: Payment expired. (manual sync).'));
-                    $order->save();
                 break;
                 case self::STATUS_REVERSED:
                     $order->addStatusHistoryComment(__('Omise: Payment reversed. (manual sync).'));
