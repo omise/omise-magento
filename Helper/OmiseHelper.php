@@ -117,7 +117,42 @@ class OmiseHelper extends AbstractHelper
      * @param string $paymentType
      * @return boolean
      */
-    public function isPayableByImageCode($paymentType) {
+    public function isPayableByImageCode($paymentType)
+    {
         return ($paymentType === 'paynow' || $paymentType === 'promptpay' || $paymentType === 'bill_payment_tesco_lotus');
+    }
+
+    /**
+     * Check order payment processed using Omise payment methods.
+     * @param \Magento\Sales\Model\Order $order
+     * @return boolean
+     */
+    public function isOrderOmisePayment($order)
+    {
+        $payment = $order->getPayment();
+        $method = $payment->getMethodInstance();
+        $methodCode = $method->getCode();
+        return strpos($methodCode, "omise") > -1;
+    }
+
+    /**
+     * Function to add extra filter in future according to order status.
+     * @param \Magento\Sales\Model\Order $order
+     * @return boolean
+     */
+    public function canOrderStatusAutoSync($order)
+    {
+        return $this->isOrderOmisePayment($order);
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @return void|string
+     */
+    public function getOrderChargeId($order)
+    {
+        if($this->isOrderOmisePayment($order)) {
+            return $order->getPayment()->getAdditionalInformation('charge_id');
+        }
     }
 }
