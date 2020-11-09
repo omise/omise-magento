@@ -264,7 +264,16 @@ define(
                             redirectOnSuccessAction.execute();
                         }
                     });
-            }
+            },
+
+            saveCardBin: function(data, event) {
+                var self = this;
+                var obj = {
+                    'method': self.item.method,
+                    'bin'   : self.omiseCardNumber()
+                };
+            },
+
         });
     }
 );

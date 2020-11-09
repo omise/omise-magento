@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Omise_Payment::add_promotion" title="Omise Promotions" module="Omise_Payment" sortOrder="100" resource="Omise_Payment::promotion" parent="Magento_CatalogRule::promo" action="omise/promotion"/>
+    </menu>
+</config>

@@ -75,7 +75,8 @@
                                autocomplete: off,
                                id: getCode() + 'CardNumber',
                                'data-container': getCode() + '-cc-number',
-                               'data-validate': JSON.stringify({'validate-cc-number':'#' + getCode() + 'CardNumber'})
+                               'data-validate': JSON.stringify({'validate-cc-number':'#' + getCode() + 'CardNumber'}),
+                               event: {blur: $parent.saveCardBin.bind($parent)}
                                },
                                value: omiseCardNumber"/>
                     </div>

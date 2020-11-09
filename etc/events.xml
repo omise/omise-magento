@@ -22,4 +22,8 @@
     <event name="sales_order_place_after">
         <observer name="omise_end_order" instance="Omise\Payment\Observer\OfflinePaymentObserver" />
     </event>
+
+    <event name="salesrule_rule_condition_combine">
+        <observer name="omise_salesrule_rule_condition_combine" instance="Omise\Payment\Observer\SalesRuleAddConditionObserver" />
+    </event>
 </config>
