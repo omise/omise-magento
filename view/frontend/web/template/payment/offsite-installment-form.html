@@ -73,7 +73,7 @@
                                         valueAllowUnset: true,
                                         value: installmentTermsKTC,
                                         visible: omiseOffsite() === 'installment_ktc',
-                                        optionsCaption: 'Choose number of montly payments'"></select>
+                                        optionsCaption: 'Choose number of monthly payments'"></select>
                     </li>
 
                     <!-- First Choice -->
@@ -105,7 +105,7 @@
                                         valueAllowUnset: true,
                                         value: installmentTermsFC,
                                         visible: omiseOffsite() === 'installment_first_choice',
-                                        optionsCaption: 'Choose number of montly payments'"></select>
+                                        optionsCaption: 'Choose number of monthly payments'"></select>
                     </li>
 
                     <!-- KBank -->
@@ -137,7 +137,7 @@
                                         valueAllowUnset: true,
                                         value: installmentTermsKBank,
                                         visible: omiseOffsite() === 'installment_kbank',
-                                        optionsCaption: 'Choose number of montly payments'"></select>
+                                        optionsCaption: 'Choose number of monthly payments'"></select>
 
                     </li>
 
@@ -170,10 +170,11 @@
                                         valueAllowUnset:true,
                                         value: installmentTermsBBL,
                                         visible: omiseOffsite() === 'installment_bbl',
-                                        optionsCaption: 'Choose number of montly payments'"></select>
+                                        optionsCaption: 'Choose number of monthly payments'"></select>
                     </li>
-                     <!-- BAY -->
-                     <li class="items">
+
+                    <!-- BAY -->
+                    <li class="items">
                         <input type="radio" name="offsite" value="installment_bay" data-bind="
                             attr: {
                                 id: getCode() + '_bay'
@@ -201,7 +202,39 @@
                                         valueAllowUnset:true,
                                         value: installmentTermsBAY,
                                         visible: omiseOffsite() === 'installment_bay',
-                                        optionsCaption: 'Choose number of montly payments'"></select>
+                                        optionsCaption: 'Choose number of monthly payments'"></select>
+                    </li>
+
+                    <!-- SCB -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="installment_scb" data-bind="
+                            attr: {
+                                id: getCode() + '_scb'
+                            },
+                            checked: omiseOffsite,
+                            click: function(data, event) { 
+                                resetTerms();
+                                return true;
+                            };" />
+                        <label for="omise_offsite_installment_scb">
+                            <div class="omise-logo-wrapper scb">
+                                <img class="scb" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Siam Commercial Bank'"></span>
+                            </div>
+                        </label>
+                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('scb'),
+                                        optionsText: function (item) {
+                                            return item.label
+                                        },
+                                        optionsValue: function (item) {
+                                            return item.key
+                                        },
+                                        valueAllowUnset:true,
+                                        value: installmentTermsSCB,
+                                        visible: omiseOffsite() === 'installment_scb',
+                                        optionsCaption: 'Choose number of monthly payments'"></select>
                     </li>
                 </ul>
             </fieldset>

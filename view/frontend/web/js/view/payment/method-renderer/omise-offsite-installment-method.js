@@ -40,6 +40,7 @@ define(
                         'installmentTermsKBank',
                         'installmentTermsBBL',
                         'installmentTermsBAY',
+                        'installmentTermsSCB',
                     ]);
 
                 return this;
@@ -81,7 +82,8 @@ define(
                     'bbl'           : 500,
                     'bay'           : 300,
                     'first_choice'  : 300,
-                    'ktc'           : 300
+                    'ktc'           : 300,
+                    'scb'           : 500
                 }[id];
             },
 
@@ -99,7 +101,8 @@ define(
                     'bbl'           : 0.008,
                     'bay'           : 0.008,
                     'first_choice'  : 0.013,
-                    'ktc'           : 0.008
+                    'ktc'           : 0.008,
+                    'scb'           : 0.0074
                 }[id];
             },
 
@@ -148,7 +151,7 @@ define(
              * @return {string|null}
              */
             getTerms: function () {
-                return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY();
+                return this.installmentTermsBBL() || this.installmentTermsKBank() || this.installmentTermsFC() || this.installmentTermsKTC() || this.installmentTermsBAY() || this.installmentTermsSCB();
             },
 
             /**
@@ -160,6 +163,7 @@ define(
                 this.installmentTermsFC(null);
                 this.installmentTermsKTC(null);
                 this.installmentTermsBAY(null);
+                this.installmentTermsSCB(null);
             },
 
             /**
