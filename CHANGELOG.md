@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v2.14 _(Nov 10, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.14)
+
+### 🚀 Enhancements
+- Adding support for SCB Installments. (PR [#273](https://github.com/omise/omise-magento/pull/273))
+- Adding configuration to restrict payment method from specific countries. (PR [#274](https://github.com/omise/omise-magento/pull/274))
+- Implementing manual sync for omise payment methods. (PR [#275](https://github.com/omise/omise-magento/pull/275))
+- Adding billing address information to card payment charge token. (PR [#277](https://github.com/omise/omise-magento/pull/277))
+
+
 ## [v2.13 _(Sep 15, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.13)
 
 ### 👾 Bug Fixes
