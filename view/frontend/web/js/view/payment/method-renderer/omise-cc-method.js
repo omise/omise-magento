@@ -34,6 +34,8 @@ define(
 
             code: 'omise_cc',
 
+            billingAddressCountries: ["US", "GB", "CA"],
+
             /**
              * Get a checkout form data
              *
@@ -161,7 +163,10 @@ define(
                     expiration_year  : this.omiseCardExpirationYear(),
                     security_code    : this.omiseCardSecurityCode()
                 };
-
+                var selectedBillingAddress = quote.billingAddress();
+                if(self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                    Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress));
+                }
                 Omise.setPublicKey(this.getPublicKey());
                 Omise.createToken('card', card, function(statusCode, response) {
                     if (statusCode === 200) {
@@ -264,6 +269,21 @@ define(
                             redirectOnSuccessAction.execute();
                         }
                     });
+            },
+
+            getSelectedTokenBillingAddress: function(selectedBillingAddress) {
+                var address = {
+                    state          : selectedBillingAddress.region,
+                    postal_code    : selectedBillingAddress.postcode,
+                    phone_number   : selectedBillingAddress.telephone,
+                    country        : selectedBillingAddress.countryId,
+                    city           : selectedBillingAddress.city
+                }
+                address.street1 = selectedBillingAddress.street[0]
+                if(selectedBillingAddress.street[1]) {
+                    address.street2 = selectedBillingAddress.street[1]
+                }
+                return address
             }
         });
     }
