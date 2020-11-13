@@ -688,7 +688,7 @@
     <type name="Omise\Payment\Model\Rule\Condition\OmiseCardCondition">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="form_name" xsi:type="string">sales_rule_form</item>
+                <item name="form_name" xsi:type="string">omise_promotion_form</item>
             </argument>
         </arguments>
     </type>
