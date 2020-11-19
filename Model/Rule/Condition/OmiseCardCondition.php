@@ -47,26 +47,6 @@ class OmiseCardCondition extends \Magento\Rule\Model\Condition\AbstractCondition
     public function getValueSelectOptions()
     {
         if (!$this->hasData('value_select_options')) {
-            // switch ($this->getAttribute()) {
-            //     case 'country_id':
-            //         $options = $this->_directoryCountry->toOptionArray();
-            //         break;
-
-            //     case 'region_id':
-            //         $options = $this->_directoryAllregion->toOptionArray();
-            //         break;
-
-            //     case 'shipping_method':
-            //         $options = $this->_shippingAllmethods->toOptionArray();
-            //         break;
-
-            //     case 'payment_method':
-            //         $options = $this->_paymentAllmethods->toOptionArray();
-            //         break;
-
-            //     default:
-            //         $options = [];
-            // }
             $this->setData('value_select_options', array('some' => 'Some'));
         }
         return $this->getData('value_select_options');
