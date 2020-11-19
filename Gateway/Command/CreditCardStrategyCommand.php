@@ -18,9 +18,7 @@ class CreditCardStrategyCommand implements CommandInterface
      * @var string
      */
     const ACTION_AUTHORIZE                     = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE;
-    //const ACTION_AUTHORIZE_THREEDSECURE        = self::ACTION_AUTHORIZE . '_3ds';
     const ACTION_AUTHORIZE_CAPTURE             = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE;
-    //const ACTION_AUTHORIZE_CAPTURETHREEDSECURE = self::ACTION_AUTHORIZE_CAPTURE . '_3ds';
 
     /**
      * @var string
@@ -82,12 +80,14 @@ class CreditCardStrategyCommand implements CommandInterface
         switch ($this->getPaymentAction($commandSubject)) {
             case self::ACTION_AUTHORIZE:
                 $message = $this->commandPool->get(self::COMMAND_AUTHORIZE)->execute($commandSubject);
+                //$transaction = $payment->addTransaction(Transaction::TYPE_AUTH);
                 //$paymentObject = $payment->authorize(true, $baseTotalDue);
                 //$payment->setAmountAuthorized($totalDue);
                 break;
 
             case self::ACTION_AUTHORIZE_CAPTURE:
                 $message = $this->commandPool->get(self::COMMAND_AUTHORIZE_CAPTURE)->execute($commandSubject);
+                //$transaction = $payment->addTransaction(Transaction::TYPE_CAPTURE);
                 //$payment->setAmountAuthorized($totalDue);
                 //$payment->setBaseAmountAuthorized($baseTotalDue);
                 //$payment->capture(null);
@@ -97,9 +97,9 @@ class CreditCardStrategyCommand implements CommandInterface
                 throw new CommandException(__('TODO : Rewrite error message'));
                 break;
         }
-        $transaction = $payment->addTransaction(Transaction::TYPE_AUTH);
-        $message = $payment->prependMessage($message);
-        $payment->addTransactionCommentsToOrder($transaction, $message);
+        //$transaction = $payment->addTransaction(Transaction::TYPE_AUTH);
+        //$message = $payment->prependMessage($message);
+        //$payment->addTransactionCommentsToOrder($transaction, $message);
         $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
         $is3dsecured = $this->helper->is3DSecureEnabled($charge);
         if (! $is3dsecured) {
