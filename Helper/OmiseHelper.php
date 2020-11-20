@@ -156,6 +156,11 @@ class OmiseHelper extends AbstractHelper
         }
     }
 
+    /**
+     * Checks if 3d secured setting enabled from charge data.
+     * @param \Omise\Payment\Model\Api\Charge $charge
+     * @return boolean
+     */
     public function is3DSecureEnabled($charge)
     {
         $authorizeUri = $charge->authorize_uri;
