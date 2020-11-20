@@ -103,8 +103,6 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote implement
                 ->setValue(1) // 1 == FOUND
                 ->setAggregator('any'); // match ALL conditions
 
-            $model->getConditions()->addCondition($item_found);
-
             foreach ($data['card_bin'] as $bin) {
                 $conditions = $this->_objectManager->create('Omise\Payment\Model\Rule\Condition\OmiseCardCondition')
                     ->setType('Omise\Payment\Model\Rule\Condition\OmiseCardCondition')
@@ -114,6 +112,8 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote implement
                 $item_found->addCondition($conditions);
             }
 
+            $model->getConditions()->addCondition($item_found);
+            
             $validateResult = $model->validateData(new \Magento\Framework\DataObject($model->getData()));
             if ($validateResult !== true) {
                 foreach ($validateResult as $errorMessage) {
@@ -123,7 +123,7 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote implement
             }
 
             $model->save();
-
+            die();
             $this->messageManager->addSuccessMessage(__('Cart rule has been saved.'));
             if ($this->getRequest()->getParam('back')) {
                 $this->_redirect('sales_rule/*/edit', ['id' => $model->getId()]);
