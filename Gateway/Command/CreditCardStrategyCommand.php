@@ -8,7 +8,6 @@ use Magento\Payment\Gateway\Helper\ContextHelper;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Sales\Model\Order;
 use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\Api\Charge;
 use Magento\Sales\Model\Order\Payment\Transaction;
 
@@ -18,23 +17,26 @@ class CreditCardStrategyCommand implements CommandInterface
      * @var string
      */
     const ACTION_AUTHORIZE                     = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE;
+
+    /**
+     * @var string
+     */
     const ACTION_AUTHORIZE_CAPTURE             = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE;
 
     /**
      * @var string
      */
-    const COMMAND_AUTHORIZE       = 'authorize';
-    const COMMAND_AUTHORIZE_CAPTURE = 'capture';
+    const COMMAND_AUTHORIZE       = 'charge_authorize';
+    
+    /**
+     * @var string
+     */
+    const COMMAND_AUTHORIZE_CAPTURE = 'charge_capture';
 
     /**
      * @var CommandPoolInterface
      */
     private $commandPool;
-
-    /**
-     * @var Config
-     */
-    private $config;
 
     /**
      * @var OmiseHelper
@@ -48,18 +50,15 @@ class CreditCardStrategyCommand implements CommandInterface
 
     /**
      * @param CommandPoolInterface $commandPool
-     * @param Config $config
      * @param OmiseHelper $helper
      * @param Charge $charge
      */
     public function __construct(
         CommandPoolInterface $commandPool,
-        Config               $config,
         OmiseHelper          $helper,
         Charge               $charge
     ) {
         $this->commandPool = $commandPool;
-        $this->config      = $config;
         $this->helper      = $helper;
         $this->charge  = $charge;
     }
@@ -74,36 +73,46 @@ class CreditCardStrategyCommand implements CommandInterface
         ContextHelper::assertOrderPayment($payment);
 
         $order             = $payment->getOrder();
-        $totalDue          = $order->getTotalDue();
-        $baseTotalDue      = $order->getBaseTotalDue();
-
-        switch ($this->getPaymentAction($commandSubject)) {
+        $paymentAction     = $this->getPaymentAction($commandSubject);
+        switch ($paymentAction) {
             case self::ACTION_AUTHORIZE:
-                $message = $this->commandPool->get(self::COMMAND_AUTHORIZE)->execute($commandSubject);
-                //$transaction = $payment->addTransaction(Transaction::TYPE_AUTH);
-                //$paymentObject = $payment->authorize(true, $baseTotalDue);
-                //$payment->setAmountAuthorized($totalDue);
+                $this->commandPool->get(self::COMMAND_AUTHORIZE)->execute($commandSubject);
                 break;
 
             case self::ACTION_AUTHORIZE_CAPTURE:
-                $message = $this->commandPool->get(self::COMMAND_AUTHORIZE_CAPTURE)->execute($commandSubject);
-                //$transaction = $payment->addTransaction(Transaction::TYPE_CAPTURE);
-                //$payment->setAmountAuthorized($totalDue);
-                //$payment->setBaseAmountAuthorized($baseTotalDue);
-                //$payment->capture(null);
+                $this->commandPool->get(self::COMMAND_AUTHORIZE_CAPTURE)->execute($commandSubject);
                 break;
 
             default:
-                throw new CommandException(__('TODO : Rewrite error message'));
+                throw new CommandException(__('Unable to resolve payment_action type.'));
                 break;
         }
-        //$transaction = $payment->addTransaction(Transaction::TYPE_AUTH);
-        //$message = $payment->prependMessage($message);
-        //$payment->addTransactionCommentsToOrder($transaction, $message);
+
         $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
         $is3dsecured = $this->helper->is3DSecureEnabled($charge);
         if (! $is3dsecured) {
             $payment->setAdditionalInformation('charge_authorize_uri', "");
+            $invoice = $order->getInvoiceCollection()->getLastItem();
+            if($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
+                $invoice->setTransactionId($charge->transaction)->pay();
+                $payment->addTransactionCommentsToOrder(
+                    $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
+                    __(
+                        'Captured amount of %1 online via Omise Payment Gateway.',
+                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                    )
+                );
+            } else {
+                $payment->addTransactionCommentsToOrder(
+                    $payment->addTransaction(Transaction::TYPE_AUTH),
+                    $payment->prependMessage(
+                        __(
+                            'Authorized amount of %1 via Omise Payment Gateway.',
+                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                        )
+                    )
+                );
+            }
             $this->updateOrderState(
                 $commandSubject,
                 ($order->getState() ? $order->getState() : Order::STATE_PROCESSING),

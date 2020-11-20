@@ -513,10 +513,10 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="initialize" xsi:type="string">OmiseCreditCardInitializeCommand</item>
-                <!-- <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item> -->
-                <item name="authorize" xsi:type="string">OmiseAuthorizeThreeDSecureCommand</item>
-                <!-- <item name="capture" xsi:type="string">OmiseCaptureCommand</item> -->
-                <item name="capture" xsi:type="string">OmiseCaptureThreeDSecureCommand</item>
+                <item name="authorize" xsi:type="string">OmiseAuthorizeCommand</item>
+                <item name="charge_authorize" xsi:type="string">OmiseAuthorizeThreeDSecureCommand</item>
+                <item name="capture" xsi:type="string">OmiseCaptureCommand</item>
+                <item name="charge_capture" xsi:type="string">OmiseCaptureThreeDSecureCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -535,7 +535,6 @@
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMAuthorizeResponseHandler</argument>
-            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
             <argument name="errorMessageMapper" xsi:type="object">Omise\Payment\Gateway\ErrorMapper\VirtualErrorMessageMapper</argument>
         </arguments>
     </virtualType>
