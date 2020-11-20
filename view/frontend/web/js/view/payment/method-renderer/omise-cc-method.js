@@ -174,24 +174,20 @@ define(
                         self.getPlaceOrderDeferredObject()
                             .fail(failHandler)
                             .done(function(order_id) {
-                                //if (self.isThreeDSecureEnabled()) {
-                                    var serviceUrl = self.getMagentoReturnUrl(order_id);
-                                    storage.get(serviceUrl, false)
-                                        .fail(failHandler)
-                                        .done(function (response) {
-                                            if (response) {
-                                                if(self.isThreeDSecureEnabled(response))
-                                                    $.mage.redirect(response.authorize_uri);
-                                                else if (self.redirectAfterPlaceOrder) {
-                                                    redirectOnSuccessAction.execute();
-                                                }
-                                            } else {
-                                                failHandler(response);
+                                var serviceUrl = self.getMagentoReturnUrl(order_id);
+                                storage.get(serviceUrl, false)
+                                    .fail(failHandler)
+                                    .done(function (response) {
+                                        if (response) {
+                                            if(self.isThreeDSecureEnabled(response))
+                                                $.mage.redirect(response.authorize_uri);
+                                            else if (self.redirectAfterPlaceOrder) {
+                                                redirectOnSuccessAction.execute();
                                             }
-                                        });
-                                /*} else if (self.redirectAfterPlaceOrder) {
-                                    redirectOnSuccessAction.execute();
-                                }*/
+                                        } else {
+                                            failHandler(response);
+                                        }
+                                    });
                             });
                     } else {
                         alert(response.message);

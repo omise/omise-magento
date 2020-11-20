@@ -48,7 +48,6 @@ class CcConfigProvider implements ConfigProviderInterface
                 ],
                 OmiseCcConfig::CODE => [
                     'publicKey'          => $this->omiseCcConfig->getPublicKey(),
-                    //'offsitePayment'     => $this->omiseCcConfig->is3DSecureEnabled(),
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                 ],

@@ -5,8 +5,6 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use SimpleXMLElement;
 use DOMDocument;
-use Exception;
-use OmiseCharge;
 
 class OmiseHelper extends AbstractHelper
 {
