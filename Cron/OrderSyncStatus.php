@@ -20,6 +20,10 @@ class OrderSyncStatus
 
     private $orderRepository;
 
+    private $recordIndex = 0;
+
+    private $pageCounter = 1;
+
     private $refreshCounter = 1;
 
     protected $timezone;
@@ -50,7 +54,12 @@ class OrderSyncStatus
      */
     public function execute()
     {
-        $orderIds = $this->getOrderIds();
+        $this->sync();
+        return $this;
+    }
+
+    private function sync($) {
+        $orderIds    = $this->getOrderIds();
         //$date = $this->timezone->formatDateTime();
         $date = strtotime("now");
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/cron_new.log');
@@ -66,7 +75,6 @@ class OrderSyncStatus
                 //$this->updateOrderStatus($expiryDate);;
             }
         }
-        return $this;
     }
 
     /**
