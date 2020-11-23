@@ -60,7 +60,7 @@ class CreditCardStrategyCommand implements CommandInterface
     ) {
         $this->commandPool = $commandPool;
         $this->helper      = $helper;
-        $this->charge  = $charge;
+        $this->charge      = $charge;
     }
 
     /**
@@ -91,7 +91,6 @@ class CreditCardStrategyCommand implements CommandInterface
         $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
         $is3dsecured = $this->helper->is3DSecureEnabled($charge);
         if (! $is3dsecured) {
-            $payment->setAdditionalInformation('charge_authorize_uri', "");
             $invoice = $order->getInvoiceCollection()->getLastItem();
             if($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
                 $invoice->setTransactionId($charge->transaction)->pay();

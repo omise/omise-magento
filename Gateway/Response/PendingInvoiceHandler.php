@@ -17,7 +17,6 @@ class PendingInvoiceHandler implements HandlerInterface
     /**
      * @param OmiseHelper $helper
      */
-    
     public function __construct(OmiseHelper $helper)
     {
         $this->helper = $helper;
