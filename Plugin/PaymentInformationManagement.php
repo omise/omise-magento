@@ -91,7 +91,7 @@ class PaymentInformationManagement
     public function beforeSavePaymentInformation(
         \Magento\Checkout\Model\PaymentInformationManagement $subject,
         $cartId,
-        \Magento\Payment\Model\Info $paymentMethod,
+        \Magento\Quote\Api\Data\PaymentInterface $paymentMethod,
         \Magento\Quote\Api\Data\AddressInterface $billingAddress = null
     ) {
 
