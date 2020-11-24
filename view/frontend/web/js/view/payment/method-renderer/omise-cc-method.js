@@ -26,6 +26,7 @@ define(
         'use strict';
 
         return Component.extend(Base).extend({
+            
             defaults: {
                 template: 'Omise_Payment/payment/omise-cc-form'
             },
@@ -267,10 +268,12 @@ define(
                         }
                     });
             },
+
             saveCardBin: function () {
+                console.log(quote);
                 const ccnum = this.omiseCardNumber();
-                if (bin && bin.length >= 6) {
-                    setPaymentInformation(this.messageContainer, { method: this.item.method, additional_data: { bin: ccnum.substring(0, 6)}});
+                if (ccnum && ccnum.length >= 6) {
+                    setPaymentInformation(this.messageContainer, { method: this.item.method, additional_data: { omise_card_bin: ccnum.substring(0, 6) } });
                 }
             },
 

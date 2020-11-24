@@ -48,7 +48,7 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote implement
         DataPersistorInterface $dataPersistor = null
     ) {
         $this->log = $log;
-        $this->log->debug("this is from logger");
+        //$this->log->debug("this is from logger");
         parent::__construct($context, $coreRegistry, $fileFactory, $dateFilter);
         $this->timezone =  $timezone ?? \Magento\Framework\App\ObjectManager::getInstance()->get(
             TimezoneInterface::class
@@ -77,7 +77,7 @@ class Save extends \Magento\SalesRule\Controller\Adminhtml\Promo\Quote implement
 
         try {
             $data = json_decode(base64_decode($data['promo_code']), true);
-            $this->log->debug('requested params', $data);
+            //$this->log->debug('requested params', $data);
 
             if (!$data) {
                 throw new \Magento\Framework\Exception\LocalizedException(__('Unable to decode promotion code'));

@@ -3,6 +3,12 @@
     <preference for="Omise\Payment\Api\Data\PaymentInterface" type="Omise\Payment\Model\Data\Payment" />
     <preference for="Omise\Payment\Api\PaymentInformationInterface" type="Omise\Payment\Model\PaymentInformation" />
 
+
+
+    <type name="Magento\Checkout\Model\PaymentInformationManagement">
+        <plugin name="execute_commit_callbacks" type="Omise\Payment\Plugin\PaymentInformationManagement" />
+    </type>
+
     <!-- Internet Banking payment solution -->
     <virtualType name="OmiseInternetbankingAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>

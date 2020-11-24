@@ -17,6 +17,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
     const REMEMBER_CARD = 'omise_save_card';
     const CUSTOMER      = 'customer';
     const CHARGE_ID     = 'charge_id';
+    const BIN           = 'omise_card_bin';
 
     /**
      * @var array
@@ -57,6 +58,7 @@ class CreditCardDataObserver extends AbstractDataAssignObserver
         if (! is_array($additionalData)) {
             return;
         }
+
 
         $this->maybeUseExistingCard($additionalData);
         $this->maybeSaveCustomerCard($additionalData);
