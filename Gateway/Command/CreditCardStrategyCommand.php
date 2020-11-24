@@ -92,6 +92,7 @@ class CreditCardStrategyCommand implements CommandInterface
         $is3dsecured = $this->helper->is3DSecureEnabled($charge);
         if (! $is3dsecured) {
             $invoice = $order->getInvoiceCollection()->getLastItem();
+            $payment->setAdditionalInformation('charge_authorize_uri', "");
             if($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
                 $invoice->setTransactionId($charge->transaction)->pay();
                 $payment->addTransactionCommentsToOrder(
