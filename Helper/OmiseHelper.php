@@ -155,4 +155,19 @@ class OmiseHelper extends AbstractHelper
             return $order->getPayment()->getAdditionalInformation('charge_id');
         }
     }
+
+    /**
+     * Checks if 3d secured setting enabled from charge data.
+     * @param \Omise\Payment\Model\Api\Charge $charge
+     * @return boolean
+     */
+    public function is3DSecureEnabled($charge)
+    {
+        $authorizeUri = $charge->authorize_uri;
+        if($charge->status === "pending" && !$charge->authorized && !$charge->paid && !empty($authorizeUri)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

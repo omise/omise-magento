@@ -87,8 +87,8 @@ define(
              *
              * @return {boolean}
              */
-            isThreeDSecureEnabled: function() {
-                return window.checkoutConfig.payment.omise_cc.offsitePayment;
+            isThreeDSecureEnabled: function(response) {
+                return !(response.authorize_uri === "") ;
             },
 
             /**
@@ -174,20 +174,20 @@ define(
                         self.getPlaceOrderDeferredObject()
                             .fail(failHandler)
                             .done(function(order_id) {
-                                if (self.isThreeDSecureEnabled()) {
-                                    var serviceUrl = self.getMagentoReturnUrl(order_id);
-                                    storage.get(serviceUrl, false)
-                                        .fail(failHandler)
-                                        .done(function (response) {
-                                            if (response) {
+                                var serviceUrl = self.getMagentoReturnUrl(order_id);
+                                storage.get(serviceUrl, false)
+                                    .fail(failHandler)
+                                    .done(function (response) {
+                                        if (response) {
+                                            if(self.isThreeDSecureEnabled(response))
                                                 $.mage.redirect(response.authorize_uri);
-                                            } else {
-                                                failHandler(response);
+                                            else if (self.redirectAfterPlaceOrder) {
+                                                redirectOnSuccessAction.execute();
                                             }
-                                        });
-                                } else if (self.redirectAfterPlaceOrder) {
-                                    redirectOnSuccessAction.execute();
-                                }
+                                        } else {
+                                            failHandler(response);
+                                        }
+                                    });
                             });
                     } else {
                         alert(response.message);
@@ -254,20 +254,20 @@ define(
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function(order_id) {
-                        if (self.isThreeDSecureEnabled()) {
-                            var serviceUrl = self.getMagentoReturnUrl(order_id);
-                            storage.get(serviceUrl, false)
-                                .fail(failHandler)
-                                .done(function (response) {
-                                    if (response) {
+                        var serviceUrl = self.getMagentoReturnUrl(order_id);
+                        storage.get(serviceUrl, false)
+                            .fail(failHandler)
+                            .done(function (response) {
+                                if (response) {
+                                    if(self.isThreeDSecureEnabled(response))
                                         $.mage.redirect(response.authorize_uri);
-                                    } else {
-                                        failHandler(response);
+                                    else if (self.redirectAfterPlaceOrder) {
+                                        redirectOnSuccessAction.execute();
                                     }
-                                });
-                        } else if (self.redirectAfterPlaceOrder) {
-                            redirectOnSuccessAction.execute();
-                        }
+                                } else {
+                                    failHandler(response);
+                                }
+                            });
                     });
             },
 

@@ -7,7 +7,9 @@ use Magento\Payment\Gateway\CommandInterface;
 use Magento\Payment\Gateway\Helper\ContextHelper;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Sales\Model\Order;
-use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Model\Api\Charge;
+use Magento\Sales\Model\Order\Payment\Transaction;
 
 class CreditCardStrategyCommand implements CommandInterface
 {
@@ -15,32 +17,50 @@ class CreditCardStrategyCommand implements CommandInterface
      * @var string
      */
     const ACTION_AUTHORIZE                     = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE;
-    const ACTION_AUTHORIZE_THREEDSECURE        = self::ACTION_AUTHORIZE . '_3ds';
-    const ACTION_AUTHORIZE_CAPTURE             = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE;
-    const ACTION_AUTHORIZE_CAPTURETHREEDSECURE = self::ACTION_AUTHORIZE_CAPTURE . '_3ds';
 
     /**
      * @var string
      */
-    const COMMAND_AUTHORIZE_THREEDSECURE        = 'authorize_3ds';
-    const COMMAND_AUTHORIZE_CAPTURETHREEDSECURE = 'capture_3ds';
+    const ACTION_AUTHORIZE_CAPTURE             = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE;
 
     /**
-     * @var \Magento\Payment\Gateway\Command\CommandPoolInterface
+     * @var string
+     */
+    const COMMAND_AUTHORIZE       = 'charge_authorize';
+    
+    /**
+     * @var string
+     */
+    const COMMAND_AUTHORIZE_CAPTURE = 'charge_capture';
+
+    /**
+     * @var CommandPoolInterface
      */
     private $commandPool;
 
     /**
-     * @var \Omise\Payment\Model\Config\Cc
+     * @var OmiseHelper
      */
-    private $config;
+    private $helper;
 
+    /**
+     * @var Charge
+     */
+    private $charge;
+
+    /**
+     * @param CommandPoolInterface $commandPool
+     * @param OmiseHelper $helper
+     * @param Charge $charge
+     */
     public function __construct(
         CommandPoolInterface $commandPool,
-        Config               $config
+        OmiseHelper          $helper,
+        Charge               $charge
     ) {
         $this->commandPool = $commandPool;
-        $this->config      = $config;
+        $this->helper      = $helper;
+        $this->charge      = $charge;
     }
 
     /**
@@ -52,36 +72,47 @@ class CreditCardStrategyCommand implements CommandInterface
         $payment = SubjectReader::readPayment($commandSubject)->getPayment();
         ContextHelper::assertOrderPayment($payment);
 
-        $order        = $payment->getOrder();
-        $totalDue     = $order->getTotalDue();
-        $baseTotalDue = $order->getBaseTotalDue();
-
-        switch ($this->getPaymentAction($commandSubject)) {
+        $order             = $payment->getOrder();
+        $paymentAction     = $this->getPaymentAction($commandSubject);
+        switch ($paymentAction) {
             case self::ACTION_AUTHORIZE:
-                $payment->authorize(true, $baseTotalDue);
-                $payment->setAmountAuthorized($totalDue);
+                $this->commandPool->get(self::COMMAND_AUTHORIZE)->execute($commandSubject);
                 break;
 
             case self::ACTION_AUTHORIZE_CAPTURE:
-                $payment->setAmountAuthorized($totalDue);
-                $payment->setBaseAmountAuthorized($baseTotalDue);
-                $payment->capture(null);
-                break;
-
-            case self::ACTION_AUTHORIZE_THREEDSECURE:
-                $this->commandPool->get(self::COMMAND_AUTHORIZE_THREEDSECURE)->execute($commandSubject);
-                break;
-
-            case self::ACTION_AUTHORIZE_CAPTURETHREEDSECURE:
-                $this->commandPool->get(self::COMMAND_AUTHORIZE_CAPTURETHREEDSECURE)->execute($commandSubject);
+                $this->commandPool->get(self::COMMAND_AUTHORIZE_CAPTURE)->execute($commandSubject);
                 break;
 
             default:
-                throw new CommandException(__('TODO : Rewrite error message'));
+                throw new CommandException(__('Unable to resolve payment_action type.'));
                 break;
         }
 
-        if (! $this->config->is3DSecureEnabled()) {
+        $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
+        $is3dsecured = $this->helper->is3DSecureEnabled($charge);
+        if (! $is3dsecured) {
+            $invoice = $order->getInvoiceCollection()->getLastItem();
+            $payment->setAdditionalInformation('charge_authorize_uri', "");
+            if($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
+                $invoice->setTransactionId($charge->transaction)->pay();
+                $payment->addTransactionCommentsToOrder(
+                    $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
+                    __(
+                        'Captured amount of %1 online via Omise Payment Gateway.',
+                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                    )
+                );
+            } else {
+                $payment->addTransactionCommentsToOrder(
+                    $payment->addTransaction(Transaction::TYPE_AUTH),
+                    $payment->prependMessage(
+                        __(
+                            'Authorized amount of %1 via Omise Payment Gateway.',
+                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                        )
+                    )
+                );
+            }
             $this->updateOrderState(
                 $commandSubject,
                 ($order->getState() ? $order->getState() : Order::STATE_PROCESSING),
@@ -91,19 +122,15 @@ class CreditCardStrategyCommand implements CommandInterface
     }
 
     /**
-     * @param  array  $commandSubject
-     *
-     * @return string
-     */
+    * @param  array  $commandSubject
+    *
+    * @return string
+    */
     protected function getPaymentAction(array $commandSubject)
     {
-        if ($this->config->is3DSecureEnabled()) {
-            return $commandSubject['paymentAction'] . '_3ds'; 
-        }
-
         return $commandSubject['paymentAction'];
     }
-
+    
     /**
      * @param array  $commandSubject
      * @param string $state
