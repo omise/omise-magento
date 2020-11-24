@@ -268,9 +268,10 @@ define(
                     });
             },
             saveCardBin: function () {
-                const bin = this.omiseCardNumber();
-                if (bin && bin.length > 0) {
-                    setPaymentInformation(this.messageContainer, { method: this.item.method, additional_data: { bin: bin}});
+                const ccnum = this.omiseCardNumber();
+                if (bin && bin.length >= 6) {
+
+                    setPaymentInformation(this.messageContainer, { method: this.item.method, additional_data: { bin: ccnum.substring(0, 6)}});
                 }
             },
 
