@@ -270,7 +270,6 @@ define(
             saveCardBin: function () {
                 const ccnum = this.omiseCardNumber();
                 if (bin && bin.length >= 6) {
-
                     setPaymentInformation(this.messageContainer, { method: this.item.method, additional_data: { bin: ccnum.substring(0, 6)}});
                 }
             },
