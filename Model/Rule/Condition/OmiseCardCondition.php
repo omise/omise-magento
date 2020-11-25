@@ -15,15 +15,12 @@ class OmiseCardCondition extends \Magento\Rule\Model\Condition\AbstractCondition
     private $paymentMethod; 
     public function __construct(
         \Magento\Rule\Model\Condition\Context $context,
-        \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Quote\Api\Data\PaymentInterface $paymentMethod,
         \Psr\Log\LoggerInterface $log,
-        array $data = []
+        array $data = [],
+        \Magento\Quote\Api\Data\PaymentInterface  $paymentMethod
     ) {
         //$log->debug("OmiseCardCondition -> construct");
         parent::__construct($context, $data);
-        $log->debug('this is data', $data);
-        $this->checkoutSession = $checkoutSession;
         $this->log = $log;
         $this->paymentMethod = $paymentMethod;
     }
@@ -65,20 +62,20 @@ class OmiseCardCondition extends \Magento\Rule\Model\Condition\AbstractCondition
         $this->log->debug("this is dependency injection logger");
         $logger = new \Zend\Log\Logger();
         $logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/test.log'));
-        $logger->info("this is not returning:");
-        $paymentData = $this->paymentMethod->getMet();
-        $logger->debug(json_encode($paymentData));
 
-        $logger->debug('validate rule bin!!!!!');
+        $quote = $model->getQuote();
+
+        $paymentData = $model->getQuote()->getAdditionalData("paymentData");
+        $logger->debug("validating, data there?");
         
-        if ( isset($paymentData['additional_data']) && isset($paymentData['additional_data']['omise_card_bin']) ){
-            $logger->info('setting card bin, to be validated');
-            $model->setData('card_bin', $paymentData['additional_data']['omise_card_bin']);
+        if ( isset($paymentData['additional_data']) && isset($paymentData['additional_data']['omise_card_bin']) ) {
+            $model->setData('card_bin', 232323);
+            $logger->debug('setting card bin, to be validated'. $paymentData['additional_data']['omise_card_bin']);
+            $model->setData('card_bin', 0+$paymentData['additional_data']['omise_card_bin']);
+            return parent::validate($model);
         } else {
-            $logger->info('no cart rule was set');
+            $logger->debug('no cart rule was set');
         }
-
-
-        return parent::validate($model);
+        return;
     }
 }

@@ -696,6 +696,7 @@
             <argument name="data" xsi:type="array">
                 <item name="form_name" xsi:type="string">omise_promotion_form</item>
             </argument>
+            <argument name="paymentInterface" xsi:type="object">Magento\Quote\Api\Data\PaymentInterface</argument>
         </arguments>
     </type>
 </config>
