@@ -1,11 +1,19 @@
 <?php
 namespace Omise\Payment\Cron;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Exception;
 
 class OrderSyncStatus 
 {
+    /**
+     * @var
+     */
     private $order;
+
+    /**
+     * @var array
+     */
     private $paymentMethodArray = [
                                 "omise_cc",
                                 "omise_offline_conveniencestore",
@@ -13,68 +21,145 @@ class OrderSyncStatus
                                 "omise_offline_promptpay",
                                 "omise_offline_tesco",
                                 "omise_offsite_alipay",
-                                "omise_offsite_truemoney"
+                                "omise_offsite_truemoney",
+                                "omise_offsite_installment"
                             ];
-
+    /**
+     * @var array
+     */
     private $orderStatusArray = ['pending_payment', 'processing'];
 
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
     private $orderRepository;
 
-    private $recordIndex = 0;
+    /**
+     * @var int
+     */
+    private $lastProcessedOrderId = 0;
 
-    private $pageCounter = 1;
+    /**
+     * @var int
+     */
+    private $refreshCounter = 20;
 
-    private $refreshCounter = 1;
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    private $scopeConfig;
 
-    protected $timezone;
+    /**
+     * @var \Omise\Payment\Model\SyncStatus
+     */
+    private $syncStatus;
 
-    private $config;
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     */
+    private $timezone;
 
     /**
      * @var \Omise\Payment\Model\Api\Charge
      */
     protected $apiCharge;
 
+    /**
+     * @var \Magento\Framework\App\Config\Storage\WriterInterface
+     */
+    private $configWriter;
+
+    /**
+     * @var \Omise\Payment\Model\Config\Config
+     */
+    private $config;
+
+    /**
+     * @var \Magento\Framework\App\Cache\TypeListInterface 
+     */
+    private $cacheTypeList;
+
+    /**
+     * @var \Magento\Framework\App\Cache\Frontend\Pool
+     */
+    private $cacheFrontendPool;
+    
+    /**
+     * Constructor
+     *
+     * @param \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Omise\Payment\Model\Api\Charge $apiCharge
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Omise\Payment\Model\SyncStatus $syncStatus
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
+     * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
     public function __construct(
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
         \Omise\Payment\Model\Api\Charge $apiCharge,
-        //\Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
-        \Omise\Payment\Model\Config\Config $config
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Omise\Payment\Model\SyncStatus $syncStatus,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
+        \Magento\Framework\App\Config\Storage\WriterInterface $configWriter,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Omise\Payment\Model\Config\Config $config,
+        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
+        \Magento\Framework\App\Cache\Frontend\Pool $cacheFrontendPool
     ) {
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->orderRepository = $orderRepository;
         $this->apiCharge = $apiCharge;
-        //$this->timezone = $timezone;
+        $this->scopeConfig = $scopeConfig;
+        $this->syncStatus = $syncStatus;
+        $this->timezone = $timezone;
+        $this->configWriter = $configWriter;
+        $this->_storeManager = $storeManager;
         $this->config = $config;
+        $this->cacheTypeList = $cacheTypeList;
+        $this->cacheFrontendPool = $cacheFrontendPool;
     }
 
     /**
      * Get the list of orders to be sync the status
+     * @throws Exception
      */
     public function execute()
     {
-        $this->sync();
+        try{
+            $this->sync();
+        } catch(\Exception $e) {
+            if(isset($this->lastProcessedOrderId)) {
+                $this->saveLastOrderId();
+            }
+        }
         return $this;
     }
 
-    private function sync($) {
+    /**
+     * @return void
+     */
+    private function sync() {
+        $this->lastProcessedOrderId = $this->scopeConfig->getValue(
+            'payment/omise/cron_last_order_id'
+        );
         $orderIds    = $this->getOrderIds();
-        //$date = $this->timezone->formatDateTime();
-        $date = strtotime("now");
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/cron_new.log');
-		$logger = new \Zend\Log\Logger();
-		$logger->addWriter($writer);
-		$logger->info("mayur : ".$date);
-
         if (!empty($orderIds)) {
             foreach ($orderIds as $order) {
-                $logger->info("mayur : ".$order['entity_id']);
-                $this->loadOrder($order['entity_id']);
-                $expiryDate = $this->refreshExpiryDate();
-                //$this->updateOrderStatus($expiryDate);;
+                $this->lastProcessedOrderId = $order['entity_id'];
+                $this->order = $this->orderRepository->get($order['entity_id']);
+                $expiryDate = $this->refreshExpiryDate($order);
+                $now = $this->timezone->date()->format('Y-m-d H:i:s');
+                if(strtotime($now) > strtotime($expiryDate)) {
+                    $this->syncStatus->cancelOrderInvoice($this->order);
+                    $this->order->registerCancellation(__('Omise: Payment expired. (manual sync).'))
+                      ->save();
+                }
             }
         }
+        $this->saveLastOrderId();
     }
 
     /**
@@ -84,44 +169,58 @@ class OrderSyncStatus
      */
     public function getOrderIds()
     {
-        $orderStatus = implode(',', $this->orderStatusArray);
-        $paymentMethods = implode(',', $this->paymentMethodArray);
-        $orders = $this->_orderCollectionFactory->create();
-        $orders->distinct(true);
-        $orders->addFieldToSelect(['entity_id','increment_id','created_at']);
-        $orders->addFieldToFilter('main_table.status', ['in' => $orderStatus]);
-        $orders->addFieldToFilter('sop.method', ['in' => $paymentMethods]);
-        $orders->join(['sop' => 'sales_order_payment'], 'sop.parent_id=main_table.entity_id', '');
-        $orders->addAttributeToSort('entity_id', 'desc')->setPageSize(2)->setCurPage(1);
-        $orderIds = $orders->getData();
-        return $orderIds;
+        $collection = $this->_orderCollectionFactory->create()
+            ->addAttributeToSort('entity_id', 'desc')
+            ->setPageSize(50)
+            ->setCurPage(1);
+
+        $collection->getSelect()
+            ->join(['sop' => $collection->getTable('sales_order_payment')], 'sop.parent_id = main_table.entity_id', ['method'])
+            ->where('main_table.status in (?)', $this->orderStatusArray)
+            ->where('sop.method in (?)', $this->paymentMethodArray);
+        if(isset($this->lastProcessedOrderId))
+            $collection->getSelect()->where('main_table.entity_id < ?', $this->lastProcessedOrderId);
+
+        if($collection->getSize())
+            $this->lastProcessedOrderId = 0;
+
+        return $collection->getData();
     }
 
-    private function loadOrder($orderId)
-    {
-        $this->order = $this->orderRepository->get($orderId);
-    }
-
-    private function refreshExpiryDate()
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @return string
+     */
+    private function refreshExpiryDate($order)
     {
         $payment    = $this->order->getPayment();
         $chargeId   = $payment->getAdditionalInformation('charge_id');
         $expiryDate = $payment->getAdditionalInformation('omise_expiry_date');
         if(!isset($expiryDate) && isset($chargeId) && $this->refreshCounter > 0) {
-            //$charge = $this->apiCharge->find($chargeId);
-            $charge = \OmiseCharge::retrieve($chargeId, $this->config->getPublicKey(), $this->config->getSecretKey());
-            $expiryDate = $charge['expires_at'];
+            $this->charge = \OmiseCharge::retrieve($chargeId, $this->config->getPublicKey(), $this->config->getSecretKey());
+            $expiryDate = date("Y-m-d H:i:s" , strtotime($this->charge['expires_at']));
             $payment->setAdditionalInformation('omise_expiry_date', $expiryDate);
             $this->refreshCounter--;
         }
         return $expiryDate;
     }
 
-    private function updateOrderStatus($expiryDate)
-    {
-        if($expiryDate){
-           
+    /**
+     * @return void
+     */
+    public function saveLastOrderId() {
+        if(isset($this->lastProcessedOrderId)) {
+            $this->configWriter->save(
+                'payment/omise/cron_last_order_id',
+                $this->lastProcessedOrderId
+            );
+            $types = array('config','layout','block_html','collections','reflection','db_ddl','eav','config_integration','config_integration_api','full_page','translate','config_webservice');
+            foreach ($types as $type) {
+                $this->cacheTypeList->cleanType($type);
+            }
+            foreach ($this->cacheFrontendPool as $cacheFrontend) {
+                $cacheFrontend->getBackend()->clean();
+            }
         }
-        
     }
 }

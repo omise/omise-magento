@@ -39,7 +39,7 @@ class SyncStatus
      * @param Order $order
      * @return void
      */
-    private function cancelOrderInvoice($order)
+    public function cancelOrderInvoice($order)
     {
         if ($order->hasInvoices()) {
             $invoice = $order->getInvoiceCollection()->getLastItem();
