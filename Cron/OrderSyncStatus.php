@@ -128,13 +128,15 @@ class OrderSyncStatus
      */
     public function execute()
     {
-        try{
-            $this->sync();
-        } catch(\Exception $e) {
-            if(isset($this->lastProcessedOrderId)) {
-                $this->saveLastOrderId();
+        if($this->config->getValue('enable_cron_autoexpirysync')) {
+            try{
+                $this->sync();
+            } catch(\Exception $e) {
+                if(isset($this->lastProcessedOrderId)) {
+                    $this->saveLastOrderId();
+                }
             }
-        }
+        } 
         return $this;
     }
 
@@ -158,6 +160,8 @@ class OrderSyncStatus
                       ->save();
                 }
             }
+        } else {
+            $this->lastProcessedOrderId = 0;
         }
         $this->saveLastOrderId();
     }
@@ -178,11 +182,8 @@ class OrderSyncStatus
             ->join(['sop' => $collection->getTable('sales_order_payment')], 'sop.parent_id = main_table.entity_id', ['method'])
             ->where('main_table.status in (?)', $this->orderStatusArray)
             ->where('sop.method in (?)', $this->paymentMethodArray);
-        if(isset($this->lastProcessedOrderId))
+        if(isset($this->lastProcessedOrderId) && intval($this->lastProcessedOrderId))
             $collection->getSelect()->where('main_table.entity_id < ?', $this->lastProcessedOrderId);
-
-        if($collection->getSize())
-            $this->lastProcessedOrderId = 0;
 
         return $collection->getData();
     }
