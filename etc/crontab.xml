@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="omise">
         <job name="omise_order_sync_status" instance="Omise\Payment\Cron\OrderSyncStatus" method="execute">
-            <schedule>* * * * *</schedule>
+            <schedule>*/10 * * * *</schedule>
         </job>
     </group>
 </config>
