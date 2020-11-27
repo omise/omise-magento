@@ -214,10 +214,7 @@ class OrderSyncStatus
                 'payment/omise/cron_last_order_id',
                 $this->lastProcessedOrderId
             );
-            $types = array('config','layout','block_html','collections','reflection','db_ddl','eav','config_integration','config_integration_api','full_page','translate','config_webservice');
-            foreach ($types as $type) {
-                $this->cacheTypeList->cleanType($type);
-            }
+            $this->cacheTypeList->cleanType('config');
             foreach ($this->cacheFrontendPool as $cacheFrontend) {
                 $cacheFrontend->getBackend()->clean();
             }
