@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [v2.15 _(Dec 03, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.15)
+
+### 🚀 Enhancements
+- Removing 3DS configuration from backend. (PR [#279](https://github.com/omise/omise-magento/pull/279))
+- Implementing cron job to update order status of expired omise charge. (PR [#281](https://github.com/omise/omise-magento/pull/281))
+
+
 ## [v2.14 _(Nov 10, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.14)
 
 ### 🚀 Enhancements
