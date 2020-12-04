@@ -2,6 +2,7 @@
 
 namespace Omise\Payment\Model\Api;
 
+use Magento\Framework\Exception\LocalizedException;
 use OmiseCapabilities;
 
 class Capabilities extends BaseObject
@@ -13,7 +14,7 @@ class Capabilities extends BaseObject
         try {
             $this->capabilities = OmiseCapabilities::retrieve();
         } catch (\Exception $e) {
-            // do nothing
+            throw new LocalizedException(__('unable to load OmiseCapabilities api'));
         }
     }
 
@@ -35,7 +36,8 @@ class Capabilities extends BaseObject
      *
      * @return bool
      */
-    public function isZeroInterest() {
+    public function isZeroInterest()
+    {
         return $this->capabilities ? $this->capabilities['zero_interest_installments'] : false;
     }
 }

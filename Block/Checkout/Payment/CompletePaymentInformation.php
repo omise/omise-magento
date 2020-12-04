@@ -41,7 +41,8 @@ class CompletePaymentInformation extends \Omise\Payment\Block\Checkout\Onepage\S
     /**
      * @inheritDoc
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->_order->loadByIncrementId($this->_request->getParam('orderId'));
     }
 

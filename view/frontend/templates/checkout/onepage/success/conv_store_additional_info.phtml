@@ -1,2 +1,10 @@
-<p><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong></p>
-<p><?= __('Please follow the link to find payment instructions'); ?> <button class="action secondary" onclick="window.open('<?= $block->getLink() ?>','_blank')"><?= __('Payment Instructions'); ?></button></p>
+<p>
+    <?=/* @noEscape */__('Amount to pay') ?>: <strong><?= $block->escapeHtml($block->getOrderAmount()) ?></b></strong>
+</p>
+<p>
+    <?=/* @noEscape */__('Please follow the link to find payment instructions'); ?> 
+    <button 
+        class="action secondary" 
+        onclick="window.open('<?= $block->escapeHtml($block->getLink()) ?>','_blank')"><?=/* @noEscape */__('Payment Instructions'); ?>
+    </button>
+</p>

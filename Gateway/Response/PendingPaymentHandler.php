@@ -26,7 +26,7 @@ class PendingPaymentHandler implements HandlerInterface
     public function handle(array $handlingSubject, array $response)
     {
         $is3dsecured = $this->helper->is3DSecureEnabled($response['charge']);
-        if(!$is3dsecured) {
+        if (!$is3dsecured) {
             return;
         }
         $stateObject = $handlingSubject['stateObject'];

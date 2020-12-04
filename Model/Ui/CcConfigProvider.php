@@ -72,7 +72,7 @@ class CcConfigProvider implements ConfigProviderInterface
 
         $data = [];
 
-        foreach($cards['data'] as $card) {
+        foreach ($cards['data'] as $card) {
             $label = $card['brand'] . ' **** ' . $card['last_digits'];
             $data[] = [
                 'value' => $card['id'],

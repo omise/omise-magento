@@ -47,11 +47,14 @@ class PaymentDataBuilder implements BuilderInterface
 
         $store_id = $order->getStoreId();
         $om = \Magento\Framework\App\ObjectManager::getInstance();
-        $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
+        $manager = $om->get(Magento\Store\Model\StoreManagerInterface::class);
         $store_name = $manager->getStore($store_id)->getName();
 
         return [
-            self::AMOUNT      => $this->omiseHelper->omiseAmountFormat($order->getCurrencyCode(), $order->getGrandTotalAmount()),
+            self::AMOUNT      => $this->omiseHelper->omiseAmountFormat(
+                $order->getCurrencyCode(),
+                $order->getGrandTotalAmount()
+            ),
             self::CURRENCY    => $order->getCurrencyCode(),
             self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
             self::METADATA    => [

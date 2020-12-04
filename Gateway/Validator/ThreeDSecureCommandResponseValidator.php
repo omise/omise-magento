@@ -15,7 +15,10 @@ class ThreeDSecureCommandResponseValidator extends CommandResponseValidator
     protected function validateResponse(Charge $charge)
     {
         if ($charge->isFailed()) {
-            return new ErrorInvalid('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
+            return new ErrorInvalid(
+                'Payment failed. ' . ucfirst($charge->failure_message) . ', 
+                please contact our support if you have any questions.'
+            );
         }
 
         if ($charge->isAwaitPayment()) {
@@ -24,9 +27,13 @@ class ThreeDSecureCommandResponseValidator extends CommandResponseValidator
 
         // Try validate for none 3-D Secure account case before mark as invalid
         if ($charge->capture) {
-            return $charge->isSuccessful() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
+            return $charge->isSuccessful() ? true : (new ErrorInvalid(
+                'Payment failed, invalid payment status, please contact our support if you have any questions'
+            ));
         }
 
-        return $charge->isAwaitCapture() ? true : (new ErrorInvalid('Payment failed, invalid payment status, please contact our support if you have any questions'));
+        return $charge->isAwaitCapture() ? true : (new ErrorInvalid(
+            'Payment failed, invalid payment status, please contact our support if you have any questions'
+        ));
     }
 }

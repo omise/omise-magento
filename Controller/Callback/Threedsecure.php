@@ -49,25 +49,38 @@ class Threedsecure extends Action
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
-            $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
+            $this->messageManager->addErrorMessage(
+                __('The order session no longer exists, please make an order again or contact our support if you
+                have any questions.')
+            );
 
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $payment = $order->getPayment()) {
-            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our support if you have any questions.'));
+            $this->invalid(
+                $order,
+                __('Cannot retrieve a payment detail from the request. Please contact our support if you have
+                any questions.')
+            );
 
             return $this->redirect(self::PATH_CART);
         }
 
         if ($payment->getMethod() !== 'omise' && $payment->getMethod() !== 'omise_cc') {
-            $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
+            $this->invalid(
+                $order,
+                __('Invalid payment method. Please contact our support if you have any questions.')
+            );
 
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $charge_id = $payment->getAdditionalInformation('charge_id')) {
-            $this->cancel($order, __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.'));
+            $this->cancel(
+                $order,
+                __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.')
+            );
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
@@ -75,7 +88,9 @@ class Threedsecure extends Action
 
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
             if ($order->isCanceled()) {
-                $this->messageManager->addErrorMessage(__('This order has been canceled. Please contact our support if you have any questions.'));
+                $this->messageManager->addErrorMessage(
+                    __('This order has been canceled. Please contact our support if you have any questions.')
+                );
                 return $this->redirect(self::PATH_CART);
             }
 
@@ -88,7 +103,7 @@ class Threedsecure extends Action
             $result = $this->validate($charge);
 
             if ($result instanceof Invalid) {
-                throw new Exception($result->getMessage());
+                throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
             }
 
             $order->setState(Order::STATE_PROCESSING);

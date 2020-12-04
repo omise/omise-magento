@@ -33,7 +33,9 @@ class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
                     <button type="button"
                             class="button action-configure"
                             id="' . $htmlId . '-head"
-                            onclick="omiseButtonToggle.call(this, \'' . $htmlId . "', '" . $this->getUrl('adminhtml/*/state') . '\'); return false;">
+                            onclick="omiseButtonToggle.call(
+                                this, \'' . $htmlId . "', '" . $this->getUrl('adminhtml/*/state') . '\'
+                            ); return false;">
                         <span class="state-closed">' . __('Configure') . '</span>
                         <span class="state-opened">' . __('Close') . '</span>
                     </button>
@@ -41,7 +43,8 @@ class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
                 <div class="heading">
                     <strong>' . $element->getLegend() . '</strong>
                     <span class="heading-intro">' .
-                        __('Accept credit/debit cards and Alipay and Internet Banking Payments in your Magento store') . '<br/>
+                        __('Accept credit/debit cards and Alipay and
+                        Internet Banking Payments in your Magento store') . '<br/>
                     </span>
                     <div class="config-alt"></div>
                 </div>

@@ -24,7 +24,8 @@ class CreditCardBuilder implements BuilderInterface
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
     
-        // if charge ID already exists than it is 'manual capture' request, so no other data is necessary to build request
+        // if charge ID already exists than it is 'manual capture' request,
+        // so no other data is necessary to build request
         if ($charge_id = $method->getAdditionalInformation(CreditCardDataObserver::CHARGE_ID)) {
             return [
                 self::CHARGE_ID => $charge_id
@@ -38,7 +39,7 @@ class CreditCardBuilder implements BuilderInterface
             ];
         }
 
-        return [ 
+        return [
             self::CARD => $method->getAdditionalInformation(CreditCardDataObserver::TOKEN)
         ];
     }

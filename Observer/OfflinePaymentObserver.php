@@ -7,8 +7,8 @@ use Magento\Framework\Event\Observer;
 class OfflinePaymentObserver implements ObserverInterface
 {
     /**
-    * @var \Omise\Payment\Helper\OmiseHelper
-    */
+     * @var \Omise\Payment\Helper\OmiseHelper
+     */
     private $_helper;
     /**
      * @var \Omise\Payment\Model\Data\Email
@@ -21,7 +21,7 @@ class OfflinePaymentObserver implements ObserverInterface
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Omise\Payment\Model\Data\Email $email
-        ) {
+    ) {
         $this->_helper           = $helper;
         $this->_email           = $email;
     }
@@ -34,7 +34,7 @@ class OfflinePaymentObserver implements ObserverInterface
     {
         $order   = $observer->getEvent()->getOrder();
         $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
-        if($this->_helper->isPayableByImageCode($paymentType)) {
+        if ($this->_helper->isPayableByImageCode($paymentType)) {
             $this->_email->sendEmail($order);
         }
         return $this;

@@ -94,7 +94,7 @@ class Charge extends BaseObject
      */
     public function getMetadata($field)
     {
-        return (! is_null($this->metadata) && isset($this->metadata[$field])) ? $this->metadata[$field] : null;
+        return ( $this->metadata != null && isset($this->metadata[$field])) ? $this->metadata[$field] : null;
     }
 
     /**
@@ -118,7 +118,7 @@ class Charge extends BaseObject
      */
     public function isPaid()
     {
-        $paid = ! is_null($this->paid) ? $this->paid : $this->captured;
+        $paid = $this->paid != null ? $this->paid : $this->captured;
 
         return $paid;
     }

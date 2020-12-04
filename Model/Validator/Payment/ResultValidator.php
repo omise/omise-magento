@@ -18,7 +18,10 @@ class ResultValidator
         }
 
         if ($data['status'] === 'failed') {
-            return new Invalid('Payment failed. ' . ucfirst($data['failure_message']) . ', please contact our support if you have any questions.');
+            return new Invalid(
+                'Payment failed. ' . ucfirst($data['failure_message']) . ',please contact our support
+                if you have any questions.'
+            );
         }
 
         return true;

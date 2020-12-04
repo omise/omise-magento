@@ -14,6 +14,7 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
+use Magento\Framework\Exception\LocalizedException;
 
 class Offsite extends Action
 {
@@ -63,7 +64,8 @@ class Offsite extends Action
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
-            $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
+            $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order
+            again or contact our support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
@@ -73,33 +75,52 @@ class Offsite extends Action
         }
 
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
-            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our support if you have any questions.'));
+            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
+            support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $payment = $order->getPayment()) {
-            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our support if you have any questions.'));
+            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
+            support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
         
         $paymentMethod = $payment->getMethod();
-        if (! in_array($paymentMethod, [Alipay::CODE, Internetbanking::CODE, Installment::CODE, Truemoney::CODE, Pointsciti::CODE])) {
-            $this->invalid($order, __('Invalid payment method. Please contact our support if you have any questions.'));
-
+        if (! in_array(
+            $paymentMethod,
+            [
+                Alipay::CODE,
+                Internetbanking::CODE,
+                Installment::CODE,
+                Truemoney::CODE,
+                Pointsciti::CODE
+            ]
+        )) {
+            $this->invalid(
+                $order,
+                __('Invalid payment method. Please contact our support if you have any questions.')
+            );
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $charge_id = $payment->getAdditionalInformation('charge_id')) {
-            $this->cancel($order, __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.'));
+            $this->cancel(
+                $order,
+                __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.')
+            );
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
         }
 
         if (! $order->hasInvoices()) {
-            $this->cancel($order, __('Cannot create an invoice. Please contact our support to confirm your payment.'));
+            $this->cancel(
+                $order,
+                __('Cannot create an invoice. Please contact our support to confirm your payment.')
+            );
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
@@ -109,15 +130,20 @@ class Offsite extends Action
             $charge = $this->charge->find($charge_id);
 
             if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
-                throw new Exception('Couldn\'t retrieve charge transaction. Please contact administrator.');
+                throw new LocalizedException(
+                    __('Couldn\'t retrieve charge transaction. Please contact administrator.')
+                );
             }
 
             if ($charge instanceof \Omise\Payment\Model\Api\Error) {
-                throw new Exception($charge->getMessage());
+                throw new LocalizedException(__($charge->getMessage()));
             }
 
             if ($charge->isFailed()) {
-                throw new Exception('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.');
+                throw new LocalizedException(
+                    __('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support
+                    if you have any questions.')
+                );
             }
 
             $payment->setTransactionId($charge->id);
@@ -171,7 +197,9 @@ class Offsite extends Action
             $transaction->setIsClosed(false);
             $payment->addTransactionCommentsToOrder(
                 $transaction,
-                __('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been updated (you can check at Omise Dashboard).')
+                __('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds
+                or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been 
+                updated (you can check at Omise Dashboard).')
             );
 
             $order->save();

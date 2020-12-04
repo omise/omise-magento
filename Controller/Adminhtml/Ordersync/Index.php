@@ -67,8 +67,7 @@ class Index extends \Magento\Backend\App\Action
         Helper $helper,
         LoggerInterface $logger,
         SyncStatus $syncStatus
-    )
-    {
+    ) {
         $this->_coreRegistry = $coreRegistry;
         $this->orderManagement = $orderManagement;
         $this->orderRepository = $orderRepository;

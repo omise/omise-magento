@@ -21,7 +21,6 @@ class PaymentInformation implements PaymentInformationInterface
      */
     private $data_factory;
 
-
     public function __construct(Session $session, PaymentInterfaceFactory $data_factory)
     {
         $this->session      = $session;
@@ -39,11 +38,13 @@ class PaymentInformation implements PaymentInformationInterface
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
-            throw new SessionException(__('The order session no longer exists, please make an order again or contact our support if you have any questions.'));
+            throw new SessionException(__('The order session no longer exists, please make an order again
+            or contact our support if you have any questions.'));
         }
 
         if ($id != $order->getId()) {
-            throw new AuthorizationException(__('This request is not authorized to access the resource, please contact our support if you have any questions'));
+            throw new AuthorizationException(__('This request is not authorized to access the resource,
+            please contact our support if you have any questions'));
         }
 
         return $order;
@@ -64,6 +65,7 @@ class PaymentInformation implements PaymentInformationInterface
             return $data;
         }
 
-        throw new PaymentException(__('Cannot retrieve a payment detail from the request, please contact our support if you have any questions'));
+        throw new PaymentException(__('Cannot retrieve a payment detail from the request, please contact
+        our support if you have any questions'));
     }
 }
