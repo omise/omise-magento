@@ -1,0 +1,12 @@
+name: Magento Coding Standard
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  static:
+    name: M2 Coding Standard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: extdn/github-actions-m2/magento-coding-standard@master
