@@ -47,7 +47,7 @@ class PaymentDataBuilder implements BuilderInterface
 
         $store_id = $order->getStoreId();
         $om = \Magento\Framework\App\ObjectManager::getInstance();
-        $manager = $om->get(Magento\Store\Model\StoreManagerInterface::class);
+        $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
         $store_name = $manager->getStore($store_id)->getName();
 
         return [

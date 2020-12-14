@@ -4,7 +4,7 @@
 </p>
 <p style="margin:.5rem 0">
     <?=/* @noEscape */__('Amount to pay') ?>: <strong><?= $block->escapeHtml($block->getOrderAmount()) ?></b></strong>
-<div><?= $block->escapeHtml($block->getOfflineCode()) ?></div>
+<div><?=/* @noEscape */ $block->getOfflineCode()  ?></div>
 <p>
     <button 
         class="action secondary" 

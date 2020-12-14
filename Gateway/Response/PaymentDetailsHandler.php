@@ -34,13 +34,10 @@ class PaymentDetailsHandler implements HandlerInterface
      */
     private function downloadPaymentFile($url)
     {
-        //$ch = curl_init();
         $this->curlClient->setOption(CURLOPT_RETURNTRANSFER, true);
         $this->curlClient->setOption(CURLOPT_FOLLOWLOCATION, true);
-        //$this->curlClient->setOption(CURLOPT_URL, $url);
-        return $this->curlClient->get($url);
-
-        //return curl_exec($ch);
+        $this->curlClient->get($url);
+        return $this->curlClient->getBody();
     }
     
     /**
