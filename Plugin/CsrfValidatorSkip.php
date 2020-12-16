@@ -1,11 +1,13 @@
 <?php
 namespace Omise\Payment\Plugin;
+
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 
 class CsrfValidatorSkip
 {
     protected $urlInterface;
-    public function __construct(\Magento\Framework\UrlInterface $urlInterface) {
+    public function __construct(\Magento\Framework\UrlInterface $urlInterface)
+    {
         $this->urlInterface = $urlInterface;
     }
     /**
@@ -20,7 +22,8 @@ class CsrfValidatorSkip
         $request,
         $action
     ) {
-        if ($request->getModuleName() == 'omise' && strpos($this->urlInterface->getCurrentUrl(), Webhook::URI)) {
+        if ($request->getModuleName() == 'omise'
+            && strpos($this->urlInterface->getCurrentUrl(), Webhook::URI) !== false) {
             return;
         }
         $proceed($request, $action);

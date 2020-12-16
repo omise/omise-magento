@@ -18,11 +18,11 @@ class BaseObject
      */
     protected function refresh($object = null)
     {
-        if (is_null($this->object) && is_null($object)) {
+        if ($this->object == null && $object == null) {
             return $this;
         }
 
-        if (! is_null($object)) {
+        if ($object != null) {
             $this->object = $object;
         } elseif (method_exists($this->object, 'refresh')) {
             $this->object->refresh();

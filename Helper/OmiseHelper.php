@@ -29,8 +29,8 @@ class OmiseHelper extends AbstractHelper
     public function omiseAmountFormat($currency, $amount)
     {
         switch (strtoupper($currency)) {
-            case 'EUR':                 
-            case 'GBP': 
+            case 'EUR':
+            case 'GBP':
             case 'SGD':
             case 'THB':
             case 'USD':
@@ -41,7 +41,6 @@ class OmiseHelper extends AbstractHelper
             case 'DKK':
             case 'HKD':
             case 'MYR':
-
                 // Convert to a small unit
                 $amount *= 100;
                 break;
@@ -52,7 +51,7 @@ class OmiseHelper extends AbstractHelper
 
     /**
      * Convert tesco code returned from Omise Backend in SVG format to HTML format
-     * 
+     *
      * @param  string  $svg
      *
      * @return string
@@ -96,8 +95,11 @@ class OmiseHelper extends AbstractHelper
                     $margin  = ($attrArr['x'] - $prevX - $prevWidth) . 'px';
 
                     //set html attributes based on SVG attributes
-                    $divRect->setAttribute('style', "float:left; position:relative; height:50px; width:$width; background-color:#000; margin-left:$margin");
-
+                    $divRect->setAttribute(
+                        'style',
+                        "float:left;position:relative; height:50px; width:$width; 
+                        background-color:#000; margin-left:$margin"
+                    );
                     $xhtml->appendChild($divRect);
 
                     $prevX = $attrArr['x'];
@@ -113,13 +115,18 @@ class OmiseHelper extends AbstractHelper
     }
     
     /**
-     * This method checks and return TRUE if $paymentType is offline payment which is payable by image code otherwise returns false.
+     * This method checks and return TRUE if $paymentType is offline payment which is payable by image code
+     * otherwise returns false.
      * @param string $paymentType
      * @return boolean
      */
     public function isPayableByImageCode($paymentType)
     {
-        return ($paymentType === 'paynow' || $paymentType === 'promptpay' || $paymentType === 'bill_payment_tesco_lotus');
+        return (
+            $paymentType === 'paynow'
+            || $paymentType === 'promptpay'
+            || $paymentType === 'bill_payment_tesco_lotus'
+        );
     }
 
     /**
@@ -151,7 +158,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function getOrderChargeId($order)
     {
-        if($this->isOrderOmisePayment($order)) {
+        if ($this->isOrderOmisePayment($order)) {
             return $order->getPayment()->getAdditionalInformation('charge_id');
         }
     }
@@ -164,7 +171,10 @@ class OmiseHelper extends AbstractHelper
     public function is3DSecureEnabled($charge)
     {
         $authorizeUri = $charge->authorize_uri;
-        if($charge->status === "pending" && !$charge->authorized && !$charge->paid && !empty($authorizeUri)) {
+        if ($charge->status === "pending"
+        && !$charge->authorized
+        && !$charge->paid
+        && !empty($authorizeUri)) {
             return true;
         } else {
             return false;

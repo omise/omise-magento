@@ -5,7 +5,7 @@ use Magento\Framework\View\Element\Template;
 use Omise\Payment\Model\Customer;
 
 /**
- * Class Cards
+ * Class
  */
 class Cards extends Template
 {
@@ -33,7 +33,10 @@ class Cards extends Template
      */
     public function getCards()
     {
-        return !$this->customer->getMagentoCustomerId() || !$this->customer->getId() ? null : $this->customer->cards(['order' => 'reverse_chronological']);
+        return !$this->customer->getMagentoCustomerId()
+            || !$this->customer->getId()
+            ? null
+            : $this->customer->cards(['order' => 'reverse_chronological']);
     }
 
     /**

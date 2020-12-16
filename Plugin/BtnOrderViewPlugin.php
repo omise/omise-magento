@@ -1,6 +1,7 @@
 <?php
 
 namespace Omise\Payment\Plugin;
+
 use Magento\Backend\Model\UrlInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -53,12 +54,15 @@ class BtnOrderViewPlugin
      * @param \Magento\Sales\Block\Adminhtml\Order\View $subject
      * @return void
      */
-    public function beforeSetLayout( \Magento\Sales\Block\Adminhtml\Order\View $subject )
+    public function beforeSetLayout(\Magento\Sales\Block\Adminhtml\Order\View $subject)
     {
         $order = $subject->getOrder();
-        if($this->helper->canOrderStatusAutoSync($order)) {
-            $autoSyncAction = $this->backendUrl->getUrl('omise/ordersync/order_id/'.$order->getId() );
-            $autoSyncAction = $subject->getUrl('omise/ordersync/', ['id'=> $subject->getRequest()->getParam('order_id')]);
+        if ($this->helper->canOrderStatusAutoSync($order)) {
+            $autoSyncAction = $this->backendUrl->getUrl('omise/ordersync/order_id/'.$order->getId());
+            $autoSyncAction = $subject->getUrl(
+                'omise/ordersync/',
+                ['id'=> $subject->getRequest()->getParam('order_id')]
+            );
             $subject->addButton(
                 'sync_order_status',
                 [

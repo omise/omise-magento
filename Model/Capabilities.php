@@ -19,8 +19,7 @@ class Capabilities
     public function __construct(
         Omise $omise,
         OmiseCapabilitiesAPI $capabilitiesAPI
-    )
-    {
+    ) {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
 

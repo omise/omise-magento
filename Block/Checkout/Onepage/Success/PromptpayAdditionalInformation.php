@@ -9,7 +9,7 @@ class PromptpayAdditionalInformation extends AdditionalInformation
      */
     protected function _toHtml()
     {
-        if($this->getPaymentType() !== 'promptpay') {
+        if ($this->getPaymentType() !== 'promptpay') {
             return;
         }
         $data['order_amount'] = $this->getOrderAmount();

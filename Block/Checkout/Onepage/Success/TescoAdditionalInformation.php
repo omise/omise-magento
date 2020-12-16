@@ -9,7 +9,7 @@ class TescoAdditionalInformation extends AdditionalInformation
      */
     protected function _toHtml()
     {
-        if($this->getPaymentType() !== 'bill_payment_tesco_lotus') {
+        if ($this->getPaymentType() !== 'bill_payment_tesco_lotus') {
             return;
         }
         $data['order_amount'] = $this->getOrderAmount();

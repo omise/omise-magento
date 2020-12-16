@@ -180,7 +180,8 @@ class Customer
             if ($customerAPI instanceof \Omise\Payment\Model\Api\Error) {
                 // instance of Error if merchants Omise account and key has been changed
                 $this->create();
-                //after re-creating customer, it's ID has beenchanged, so we need to find API using new customer ID, so get it again.
+                /*after re-creating customer, it's ID has beenchanged, so we need to find API using new customer ID,
+                 so get it again.*/
                 $customerAPI = $this->customerAPI->find($this->getId());
             }
 

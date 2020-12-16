@@ -41,12 +41,26 @@ $cards = $block->getCards();
                 </tr>
             </thead>
             <tbody>
-<?php foreach ($cards['data'] as $card): ?>
+    <?php foreach ($cards['data'] as $card): ?>
                 <tr>
-                    <td><?php echo ' **** **** **** ' . $card['last_digits']; ?></td>
-                    <td><?php echo $card['expiration_month']; ?>/<?php echo $card['expiration_year']; ?></td>
-                    <td><?php echo $card['brand'] ?></td>
-                    <td><a class="omise-cc-delete" href="#" data-link="<?php echo $block->getDeleteLink($card) ?>"><?=/* @noEscape */__('Delete')?></a></td>
+                    <td>
+                        <?= /* @noEscape */__(' **** **** **** ') . $block->escapeHtml($card['last_digits']); ?>
+                    </td>
+                    <td>
+                        <?= $block->escapeHtml($card['expiration_month']); ?>
+                        /
+                        <?= $block->escapeHtml($card['expiration_year']); ?>
+                    </td>
+                    <td>
+                        <?= $block->escapeHtml($card['brand']) ?>
+                    </td>
+                    <td>
+                        <a 
+                        class="omise-cc-delete" 
+                        href="#" 
+                        data-link="<?= $block->escapeHtml($block->getDeleteLink($card)) ?>">
+                        <?=/* @noEscape */__('Delete')?></a>
+                    </td>
                 </tr>
 <?php endforeach;?>
             </tbody>

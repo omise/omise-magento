@@ -1,4 +1,4 @@
-<p><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->getOrderAmount() ?></b></strong>
-<p style="margin:.5rem 0"><?= __('PromptPay QR Code.'); ?></p>
-<div><img id="img_payment_code" src="<?= $block->getImageCode() ?>" /></div>
-<p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?= __('Print')?></button></p>
+<p><?= $block->escapeHtml(__('Amount to pay')) ?>: <strong><?= $block->escapeHtml($block->getOrderAmount()) ?></b></strong>
+<p style="margin:.5rem 0"><?= $block->escapeHtml(__('PromptPay QR Code.')); ?></p>
+<div><img id="img_payment_code" src="<?= $block->escapeHtml($block->getImageCode()) ?>" /></div>
+<p><button class="action secondary" onclick="window.print ? window.print() : alert('Print not available')"><?=/* @noEscape */ __('Print')?></button></p>

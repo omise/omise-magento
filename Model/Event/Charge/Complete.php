@@ -52,7 +52,7 @@ class Complete
     {
         $charge = $event->data;
 
-        if (! $charge instanceof ApiCharge || is_null($charge->getMetadata('order_id'))) {
+        if (! $charge instanceof ApiCharge || $charge->getMetadata('order_id') == null) {
             // TODO: Handle in case of improper response structure.
             return;
         }
@@ -76,8 +76,10 @@ class Complete
                     $order->addRelatedObject($invoice);
                 }
 
-                $order->registerCancellation(__('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support if you have any questions.'))
-                      ->save();
+                $order->registerCancellation(
+                    __('Payment failed. ' . ucfirst($charge->failure_message) . ',
+                        please contact our support if you have any questions.')
+                )->save();
             }
 
             if ($charge->isSuccessful()) {
@@ -118,7 +120,5 @@ class Complete
                 $order->save();
             }
         }
-
-        return;
     }
 }

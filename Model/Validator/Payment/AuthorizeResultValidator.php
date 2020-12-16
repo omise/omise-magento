@@ -22,6 +22,8 @@ class AuthorizeResultValidator extends ResultValidator
             return true;
         }
 
-        return new Invalid('Payment failed, invalid payment status, please contact our support if you have any questions');
+        return new Invalid(
+            'Payment failed, invalid payment status, please contact our support if you have any questions'
+        );
     }
 }

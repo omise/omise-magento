@@ -6,7 +6,7 @@ use Magento\Sales\Model\Order as MagentoOrder;
 
 class Order
 {
-    /** 
+    /**
      * @var \Magento\Sales\Model\Order
      */
     protected $order;

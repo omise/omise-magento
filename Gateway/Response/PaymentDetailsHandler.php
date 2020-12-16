@@ -7,31 +7,37 @@ use Magento\Payment\Gateway\Response\HandlerInterface;
 class PaymentDetailsHandler implements HandlerInterface
 {
     /**
-     * $var \Omise\Payment\Helper\OmiseHelper
+     * @var \Omise\Payment\Helper\OmiseHelper
      */
      protected $_helper;
 
      /**
-     * @param \Omise\Payment\Helper\OmiseHelper $helper
-     */
+      * @var \Magento\Framework\HTTP\Client\Curl
+      */
+     protected $curlClient;
+
+     /**
+      * @param \Omise\Payment\Helper\OmiseHelper $helper
+      * @param \Magento\Framework\HTTP\Client\Curl $curl
+      */
     public function __construct(
-        \Omise\Payment\Helper\OmiseHelper $helper
+        \Omise\Payment\Helper\OmiseHelper $helper,
+        \Magento\Framework\HTTP\Client\Curl $curl
     ) {
         $this->_helper = $helper;
+        $this->curlClient = $curl;
     }
 
     /**
      * @param string $url URL to Tesco Barcode generated in Omise Backend
      * @return string Barcode in SVG format
      */
-    private function downloadPaymentFile($url) 
+    private function downloadPaymentFile($url)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-        return curl_exec($ch);
+        $this->curlClient->setOption(CURLOPT_RETURNTRANSFER, true);
+        $this->curlClient->setOption(CURLOPT_FOLLOWLOCATION, true);
+        $this->curlClient->get($url);
+        return $this->curlClient->getBody();
     }
     
     /**
@@ -53,7 +59,10 @@ class PaymentDetailsHandler implements HandlerInterface
         }
 
         if ($this->_helper->isPayableByImageCode($paymentType)) {
-            $payment->setAdditionalInformation('image_code', $response['charge']->source['scannable_code']['image']['download_uri']);
+            $payment->setAdditionalInformation(
+                'image_code',
+                $response['charge']->source['scannable_code']['image']['download_uri']
+            );
         }
     }
 }

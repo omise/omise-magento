@@ -4,7 +4,7 @@ namespace Omise\Payment\Cron;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Exception;
 
-class OrderSyncStatus 
+class OrderSyncStatus
 {
     /**
      * @var
@@ -75,7 +75,7 @@ class OrderSyncStatus
     private $config;
 
     /**
-     * @var \Magento\Framework\App\Cache\TypeListInterface 
+     * @var \Magento\Framework\App\Cache\TypeListInterface
      */
     private $cacheTypeList;
 
@@ -128,22 +128,23 @@ class OrderSyncStatus
      */
     public function execute()
     {
-        if($this->config->getValue('enable_cron_autoexpirysync')) {
-            try{
+        if ($this->config->getValue('enable_cron_autoexpirysync')) {
+            try {
                 $this->sync();
-            } catch(\Exception $e) {
-                if(isset($this->lastProcessedOrderId)) {
+            } catch (\Exception $e) {
+                if (isset($this->lastProcessedOrderId)) {
                     $this->saveLastOrderId();
                 }
             }
-        } 
+        }
         return $this;
     }
 
     /**
      * @return void
      */
-    private function sync() {
+    private function sync()
+    {
         $this->lastProcessedOrderId = $this->scopeConfig->getValue(
             'payment/omise/cron_last_order_id'
         );
@@ -154,7 +155,7 @@ class OrderSyncStatus
                 $this->order = $this->orderRepository->get($order['entity_id']);
                 $expiryDate = $this->refreshExpiryDate($order);
                 $now = $this->timezone->date()->format('Y-m-d H:i:s');
-                if(strtotime($now) > strtotime($expiryDate)) {
+                if (strtotime($now) > strtotime($expiryDate)) {
                     $this->syncStatus->cancelOrderInvoice($this->order);
                     $this->order->registerCancellation(__('Omise: Payment expired. (manual sync).'))
                       ->save();
@@ -179,11 +180,16 @@ class OrderSyncStatus
             ->setCurPage(1);
 
         $collection->getSelect()
-            ->join(['sop' => $collection->getTable('sales_order_payment')], 'sop.parent_id = main_table.entity_id', ['method'])
-            ->where('main_table.status in (?)', $this->orderStatusArray)
-            ->where('sop.method in (?)', $this->paymentMethodArray);
-        if(isset($this->lastProcessedOrderId) && intval($this->lastProcessedOrderId))
+            ->join(
+                ['sop' => $collection->getTable('sales_order_payment')],
+                'sop.parent_id = main_table.entity_id',
+                ['method']
+            )
+                ->where('main_table.status in (?)', $this->orderStatusArray)
+                ->where('sop.method in (?)', $this->paymentMethodArray);
+        if (isset($this->lastProcessedOrderId) && (int) $this->lastProcessedOrderId) {
             $collection->getSelect()->where('main_table.entity_id < ?', $this->lastProcessedOrderId);
+        }
 
         return $collection->getData();
     }
@@ -197,9 +203,13 @@ class OrderSyncStatus
         $payment    = $this->order->getPayment();
         $chargeId   = $payment->getAdditionalInformation('charge_id');
         $expiryDate = $payment->getAdditionalInformation('omise_expiry_date');
-        if(!isset($expiryDate) && isset($chargeId) && $this->refreshCounter > 0) {
-            $this->charge = \OmiseCharge::retrieve($chargeId, $this->config->getPublicKey(), $this->config->getSecretKey());
-            $expiryDate = date("Y-m-d H:i:s" , strtotime($this->charge['expires_at']));
+        if (!isset($expiryDate) && isset($chargeId) && $this->refreshCounter > 0) {
+            $this->charge = \OmiseCharge::retrieve(
+                $chargeId,
+                $this->config->getPublicKey(),
+                $this->config->getSecretKey()
+            );
+            $expiryDate = date("Y-m-d H:i:s", strtotime($this->charge['expires_at']));
             $payment->setAdditionalInformation('omise_expiry_date', $expiryDate);
             $this->refreshCounter--;
         }
@@ -209,8 +219,9 @@ class OrderSyncStatus
     /**
      * @return void
      */
-    public function saveLastOrderId() {
-        if(isset($this->lastProcessedOrderId)) {
+    public function saveLastOrderId()
+    {
+        if (isset($this->lastProcessedOrderId)) {
             $this->configWriter->save(
                 'payment/omise/cron_last_order_id',
                 $this->lastProcessedOrderId

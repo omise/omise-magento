@@ -58,7 +58,9 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
      */
     protected function getPaymentAdditionalInformation($key)
     {
-        return isset($this->paymentData['additional_information'][$key]) ? $this->paymentData['additional_information'][$key] : NULL;
+        return isset($this->paymentData['additional_information'][$key])
+            ? $this->paymentData['additional_information'][$key]
+            : null;
     }
 
     /**
@@ -67,6 +69,7 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
      */
     protected function getOrderAmount()
     {
-        return number_format($this->paymentData['amount_ordered'], 2) .' '.$this->order->getOrderCurrency()->getCurrencyCode();
+        return number_format($this->paymentData['amount_ordered'], 2)
+            .' '.$this->order->getOrderCurrency()->getCurrencyCode();
     }
 }

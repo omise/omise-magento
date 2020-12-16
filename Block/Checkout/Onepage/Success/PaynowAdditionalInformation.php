@@ -9,7 +9,7 @@ class PaynowAdditionalInformation extends AdditionalInformation
      */
     protected function _toHtml()
     {
-        if($this->getPaymentType() !== 'paynow') {
+        if ($this->getPaymentType() !== 'paynow') {
             return;
         }
         $data['order_amount'] = $this->getOrderAmount();

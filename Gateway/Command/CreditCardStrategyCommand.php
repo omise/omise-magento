@@ -85,7 +85,6 @@ class CreditCardStrategyCommand implements CommandInterface
 
             default:
                 throw new CommandException(__('Unable to resolve payment_action type.'));
-                break;
         }
 
         $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
@@ -93,7 +92,7 @@ class CreditCardStrategyCommand implements CommandInterface
         if (! $is3dsecured) {
             $invoice = $order->getInvoiceCollection()->getLastItem();
             $payment->setAdditionalInformation('charge_authorize_uri', "");
-            if($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
+            if ($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
                 $invoice->setTransactionId($charge->transaction)->pay();
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
@@ -116,16 +115,18 @@ class CreditCardStrategyCommand implements CommandInterface
             $this->updateOrderState(
                 $commandSubject,
                 ($order->getState() ? $order->getState() : Order::STATE_PROCESSING),
-                ($order->getStatus() ? $order->getStatus() : $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING))
+                ($order->getStatus()
+                ? $order->getStatus()
+                : $order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING))
             );
         }
     }
 
     /**
-    * @param  array  $commandSubject
-    *
-    * @return string
-    */
+     * @param  array  $commandSubject
+     *
+     * @return string
+     */
     protected function getPaymentAction(array $commandSubject)
     {
         return $commandSubject['paymentAction'];

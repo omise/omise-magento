@@ -102,22 +102,34 @@ class APMBuilder implements BuilderInterface
                 break;
             case Installment::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE              => $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE),
-                    self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(InstallmentDataAssignObserver::TERMS),
+                    self::SOURCE_TYPE              => $method->getAdditionalInformation(
+                        InstallmentDataAssignObserver::OFFSITE
+                    ),
+                    self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(
+                        InstallmentDataAssignObserver::TERMS
+                    ),
                 ];
                 break;
             case Truemoney::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE         => 'truemoney',
-                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(TruemoneyDataAssignObserver::PHONE_NUMBER),
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(
+                        TruemoneyDataAssignObserver::PHONE_NUMBER
+                    ),
                 ];
                 break;
             case Conveniencestore::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE         => 'econtext',
-                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::PHONE_NUMBER),
-                    self::SOURCE_EMAIL        => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::EMAIL),
-                    self::SOURCE_NAME         => $method->getAdditionalInformation(ConveniencestoreDataAssignObserver::CUSTOMER_NAME)
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(
+                        ConveniencestoreDataAssignObserver::PHONE_NUMBER
+                    ),
+                    self::SOURCE_EMAIL        => $method->getAdditionalInformation(
+                        ConveniencestoreDataAssignObserver::EMAIL
+                    ),
+                    self::SOURCE_NAME         => $method->getAdditionalInformation(
+                        ConveniencestoreDataAssignObserver::CUSTOMER_NAME
+                    )
                 ];
                 break;
             case Paynow::CODE:
