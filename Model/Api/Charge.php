@@ -88,6 +88,23 @@ class Charge extends BaseObject
     }
 
     /**
+     * @return Omise\Payment\Model\Api\Error|OmiseRefund
+     */
+    public function refund($refundData)
+    {
+        try {
+            $refund = $this->object->refunds()->create($refundData);
+        } catch (Exception $e) {
+            return new Error([
+                'code'    => 'failed_refund',
+                'message' => $e->getMessage()
+            ]);
+        }
+
+        return $refund;
+    }
+
+    /**
      * @param  string $field
      *
      * @return mixed

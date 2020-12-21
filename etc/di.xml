@@ -439,6 +439,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="initialize" xsi:type="string">OmiseAPMInitializeCommand</item>
+                <item name="refund" xsi:type="string">OmiseRefundCommand</item>
             </argument>
         </arguments>
     </virtualType>
@@ -526,6 +527,25 @@
         </arguments>
     </virtualType>
     <!-- /Credit Card :: Command Pool -->
+
+    <!-- Refund Command -->
+    <virtualType name="OmiseRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">OmiseRefundBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Omise\Payment\Gateway\Http\Client\PaymentRefund</argument>
+            <argument name="handler" xsi:type="object">Omise\Payment\Gateway\Response\RefundHandler</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\RefundResponseValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="OmiseRefundBuilder" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="refund" xsi:type="string">Omise\Payment\Gateway\Request\RefundDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- END Refund Command -->
 
     <!-- Credit Card :: Authorize with 3-D Secure payment -->
     <virtualType name="OmiseChargeAuthorizeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
