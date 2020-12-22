@@ -36,6 +36,12 @@ abstract class AbstractPayment implements ClientInterface
     const CHARGE = 'charge';
 
     /**
+     *
+     * @var string
+     */
+    const REFUND = 'refund';
+
+    /**
      * @var Omise\Payment\Model\Omise
      */
     protected $omise;

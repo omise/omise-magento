@@ -5,7 +5,7 @@ namespace Omise\Payment\Controller\Callback;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Omise\Payment\Model\Event;
-use Magento\Framework\Filesystem\DriverInterface as Driver;
+use Magento\Framework\App\Request\Http;
 
 class Webhook extends Action
 {
@@ -14,16 +14,20 @@ class Webhook extends Action
      */
     protected $event;
 
-    protected $driver;
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
+    protected $request;
 
     /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Omise\Payment\Model\Event            $event
+     * @param \Magento\Framework\App\Request\Http   $request
      */
-    public function __construct(Context $context, Event $event, Driver $driver)
+    public function __construct(Context $context, Event $event, Http $request)
     {
-        $this->event = $event;
-        $this->driver = $driver;
+        $this->event   = $event;
+        $this->request = $request;
 
         parent::__construct($context);
     }
@@ -38,7 +42,7 @@ class Webhook extends Action
             return;
         }
 
-        $payload = json_decode($this->driver->fileGetContents('php://input'));
+        $payload = json_decode($this->request->getContent());
 
         if ($payload->object !== 'event' || ! $payload->id) {
             // TODO: Handle in case of improper response structure.
