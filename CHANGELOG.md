@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.16 _(Dec 23, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.16)
+
+### 🚀 Enhancements
+- Implementing feature to create refund and applying it on PayNow QR payment. (PR [#284](https://github.com/omise/omise-magento/pull/284))
+- Applyiing standards for Magento and fixing it throughout the code. (PR [#283](https://github.com/omise/omise-magento/pull/283))
+
 ## [v2.15 _(Dec 03, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.15)
 
 ### 🚀 Enhancements
