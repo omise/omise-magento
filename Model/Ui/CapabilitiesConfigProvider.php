@@ -42,7 +42,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                     $configs['installment_backends'] = $this->capabilities->retrieveInstallmentBackends();
                     $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
                     break;
-                case  Fpx::CODE :
+                case Fpx::CODE:
                     $backendsFpx = $this->capabilities->getBackendsByType(Fpx::TYPE);
                     $configs['fpx']['banks'] = $backendsFpx ? current($backendsFpx)->banks : [];
                     break;
