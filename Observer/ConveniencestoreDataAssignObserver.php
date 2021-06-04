@@ -5,7 +5,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 
-class ConveniencestoreDataAssignObserver extends AbstractDataAssignObserver
+class ConveniencestoreDataAssignObserver extends OffsiteDataAssignObserver
 {
     /**
      * @var string
@@ -22,29 +22,4 @@ class ConveniencestoreDataAssignObserver extends AbstractDataAssignObserver
         self::EMAIL,
         self::CUSTOMER_NAME
     ];
-
-    /**
-     * @param \Magento\Framework\Event\Observer $observer
-     */
-    public function execute(Observer $observer)
-    {
-        $dataObject = $this->readDataArgument($observer);
-
-        $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
-
-        if (! is_array($additionalData)) {
-            return;
-        }
-
-        $paymentInfo = $this->readPaymentModelArgument($observer);
-
-        foreach ($this->additionalInformationList as $additionalInformationKey) {
-            if (isset($additionalData[$additionalInformationKey])) {
-                $paymentInfo->setAdditionalInformation(
-                    $additionalInformationKey,
-                    $additionalData[$additionalInformationKey]
-                );
-            }
-        }
-    }
 }

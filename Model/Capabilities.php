@@ -43,4 +43,13 @@ class Capabilities
     {
         return $this->capabilitiesAPI->isZeroInterest();
     }
+
+    /**
+     * @param string $type
+     * @return array|null
+     */
+    public function getBackendsByType(string $type)
+    {
+        return $this->capabilitiesAPI->getBackendsByType($type);
+    }
 }

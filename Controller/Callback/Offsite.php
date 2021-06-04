@@ -14,6 +14,7 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Fpx;
 use Magento\Framework\Exception\LocalizedException;
 
 class Offsite extends Action
@@ -96,7 +97,8 @@ class Offsite extends Action
                 Internetbanking::CODE,
                 Installment::CODE,
                 Truemoney::CODE,
-                Pointsciti::CODE
+                Pointsciti::CODE,
+                Fpx::CODE
             ]
         )) {
             $this->invalid(
@@ -172,6 +174,9 @@ class Offsite extends Action
                         break;
                     case Pointsciti::CODE:
                         $dispPaymentMethod = "Citi Pay with Points";
+                        break;
+                    case Fpx::CODE:
+                        $dispPaymentMethod = "FPX";
                         break;
                 }
                 

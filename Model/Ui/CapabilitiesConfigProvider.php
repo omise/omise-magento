@@ -5,6 +5,7 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface
@@ -34,14 +35,22 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
+        $configs = [];
         foreach ($listOfActivePaymentMethods as $method) {
-            if ($method->getCode() === OmiseInstallmentConfig::CODE) {
-                return [
-                    'installment_backends' => $this->capabilities->retrieveInstallmentBackends(),
-                    'is_zero_interest' => $this->capabilities->isZeroInterest()
-                ];
+            switch ($method->getCode()) {
+                case OmiseInstallmentConfig::CODE:
+                    $configs['installment_backends'] = $this->capabilities->retrieveInstallmentBackends();
+                    $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
+                    break;
+                case  Fpx::CODE :
+                    $backendsFpx = $this->capabilities->getBackendsByType(Fpx::TYPE);
+                    $configs['fpx']['banks'] = $backendsFpx ? current($backendsFpx)->banks : [];
+                    break;
             }
         }
-        return [];
+
+
+
+        return $configs;
     }
 }
