@@ -121,9 +121,4 @@ class Config
     {
         return $this->getValue('test_secret_key');
     }
-
-    public function isActive()
-    {
-        return $this->getLivePublicKey('active', static::CODE);
-    }
 }
