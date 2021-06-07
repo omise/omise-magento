@@ -119,6 +119,7 @@
 .select-list-box {
     overflow-y: scroll;
     height: 360px;
+    padding-left: 0;
 }
 
 .select-list-box > option {
@@ -126,6 +127,8 @@
     background-image:url(../images/fpx-unknown.svg);
     background-repeat: no-repeat;
     background-position-y: 50%;
+    background-position-x: 10px;
+    cursor: pointer;
 }
 
 .select-list-box > option.affin {
