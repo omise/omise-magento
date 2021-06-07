@@ -75,7 +75,7 @@
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked())">
+                        enable: (getCode() == isChecked() && selectedFpxBank)">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>

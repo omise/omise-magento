@@ -17,7 +17,7 @@ use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Truemoney;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
-use Omise\Payment\Observer\FPXDataAssignObserver;
+use Omise\Payment\Observer\FpxDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
@@ -158,7 +158,7 @@ class APMBuilder implements BuilderInterface
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'fpx',
                     self::BANK => $method->getAdditionalInformation(
-                        FPXDataAssignObserver::BANK
+                        FpxDataAssignObserver::BANK
                     )
                 ];
                 break;

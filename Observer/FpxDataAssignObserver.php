@@ -2,7 +2,7 @@
 
 namespace Omise\Payment\Observer;
 
-class FPXDataAssignObserver extends OffsiteDataAssignObserver
+class FpxDataAssignObserver extends OffsiteDataAssignObserver
 {
     /**
      * @var string
