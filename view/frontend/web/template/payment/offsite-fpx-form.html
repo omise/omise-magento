@@ -38,6 +38,7 @@
             <!--/ko-->
         </div>
 
+        <!-- ko if: banks().length -->
         <form class="form" data-bind="attr: {
               id: getCode() + 'Form',
               }">
@@ -66,19 +67,26 @@
                 </div>
             </fieldset>
         </form>
-
         <div class="actions-toolbar">
-        <div class="primary">
-            <button class="action primary checkout" type="submit"
-                    disabled="disabled"
-                    data-bind="
-                    click: placeOrder,
-                    attr: {title: $t('Place Order')},
-                    css: {disabled: !isPlaceOrderActionAllowed()},
-                    enable: (getCode() == isChecked())">
-                <span data-bind="i18n: 'Place Order'"></span>
-            </button>
+            <div class="primary">
+                <button class="action primary checkout" type="submit"
+                        disabled="disabled"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())">
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
         </div>
-    </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: banks().length -->
+        <div class="error-msg">
+            This payment method is not currently available, please try again later or use a different payment method.
+        </div>
+        <!-- /ko -->
+
     </div>
 </div>

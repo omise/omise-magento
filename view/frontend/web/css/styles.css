@@ -108,6 +108,14 @@
     max-width: 320px;
 }
 
+.error-msg {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 5px;
+    line-height: 30px;
+    text-align: center;
+}
+
 .select-list-box {
     overflow-y: scroll;
     height: 360px;
@@ -120,47 +128,47 @@
     background-position-y: 50%;
 }
 
-.select-list-box > option.affin{
+.select-list-box > option.affin {
     background-image:url(../images/fpx-affin.svg);
 }
 
-.select-list-box > option.agro{
+.select-list-box > option.agro {
     background-image:url(../images/fpx-agronet.svg);
 }
 
-.select-list-box > option.alliance{
+.select-list-box > option.alliance {
     background-image:url(../images/fpx-alliance.svg);
 }
 
-.select-list-box > option.ambank{
+.select-list-box > option.ambank {
     background-image:url(../images/fpx-ambank.svg);
 }
 
-.select-list-box > option.bsn{
+.select-list-box > option.bsn {
     background-image:url(../images/fpx-bsn.svg);
 }
 
-.select-list-box > option.cimb{
+.select-list-box > option.cimb {
     background-image:url(../images/fpx-cimb.svg);
 }
 
-.select-list-box > option.citi{
+.select-list-box > option.citi {
     background-image:url(../images/fpx-citi.svg);
 }
 
-.select-list-box > option.hongleong{
+.select-list-box > option.hongleong {
     background-image:url(../images/fpx-hongleong.svg);
 }
 
-.select-list-box > option.hsbc{
+.select-list-box > option.hsbc {
     background-image:url(../images/fpx-hsbc.svg);
 }
 
-.select-list-box > option.islam{
+.select-list-box > option.islam {
     background-image:url(../images/fpx-islam.svg);
 }
 
-.select-list-box > option.kfh{
+.select-list-box > option.kfh {
     background-image:url(../images/fpx-kfh.svg);
 }
 
@@ -168,34 +176,34 @@
     background-image:url(../images/fpx-maybank.svg);
 }
 
-.select-list-box > option.maybank2u{
+.select-list-box > option.maybank2u {
     background-image:url(../images/fpx-maybank.svg);
 }
 
-.select-list-box > option.muamalat{
+.select-list-box > option.muamalat {
     background-image:url(../images/fpx-muamalat.svg);
 }
 
-.select-list-box > option.ocbc{
+.select-list-box > option.ocbc {
     background-image:url(../images/fpx-ocbc.svg);
 }
 
-.select-list-box > option.public{
+.select-list-box > option.public {
     background-image:url(../images/fpx-publicbank.svg);
 }
 
-.select-list-box > option.rakyat{
+.select-list-box > option.rakyat {
     background-image:url(../images/fpx-rakyat.svg);
 }
 
-.select-list-box > option.rhb{
+.select-list-box > option.rhb {
     background-image:url(../images/fpx-rhb.svg);
 }
 
-.select-list-box > option.sc{
+.select-list-box > option.sc {
     background-image:url(../images/fpx-sc.svg);
 }
 
-.select-list-box > option.uob{
+.select-list-box > option.uob {
     background-image:url(../images/fpx-uob.svg);
 }
