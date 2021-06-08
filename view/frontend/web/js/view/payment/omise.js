@@ -13,6 +13,7 @@ define(
             'cc',
             'offsite-internetbanking',
             'offsite-alipay',
+            'offsite-fpx',
             'offsite-installment',
             'offsite-truemoney',
             'offline-tesco',

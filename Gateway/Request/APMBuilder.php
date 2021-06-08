@@ -7,6 +7,7 @@ use Magento\Payment\Gateway\Request\BuilderInterface;
 
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Installment;
@@ -16,6 +17,7 @@ use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Truemoney;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
+use Omise\Payment\Observer\FpxDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
@@ -32,6 +34,11 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const SOURCE_TYPE = 'type';
+
+    /**
+     * @var string
+     */
+    const BANK = 'bank';
 
     /**
      * @var string
@@ -145,6 +152,14 @@ class APMBuilder implements BuilderInterface
             case Pointsciti::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'points_citi'
+                ];
+                break;
+            case Fpx::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'fpx',
+                    self::BANK => $method->getAdditionalInformation(
+                        FpxDataAssignObserver::BANK
+                    )
                 ];
                 break;
         }

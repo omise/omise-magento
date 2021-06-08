@@ -146,6 +146,55 @@
     </virtualType>
     <!-- /Value Handler -->
 
+
+    <!-- FPX payment solution -->
+    <virtualType name="OmiseFPXAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Fpx::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMFpxValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMFpxValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- FPX :: Value Handler Pool -->
+    <virtualType name="OmiseAPMFpxValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMFpxConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMFpxValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMFpxCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMFpxCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMFpxConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMFpxConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMFpxConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMFpxConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Fpx::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
     <!--  Tesco payment solution-->
     <virtualType name="OmiseTescoAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
@@ -554,7 +603,6 @@
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMAuthorizeResponseHandler</argument>
-            <argument name="errorMessageMapper" xsi:type="object">Omise\Payment\Gateway\ErrorMapper\VirtualErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 
@@ -578,7 +626,6 @@
             <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
-            <argument name="errorMessageMapper" xsi:type="object">Omise\Payment\Gateway\ErrorMapper\VirtualErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 
@@ -642,12 +689,6 @@
             <argument name="cacheId" xsi:type="string">omise_error_mapper</argument>
         </arguments>
     </virtualType>
-    
-    <virtualType name="Omise\Payment\Gateway\ErrorMapper\VirtualErrorMessageMapper" type="Magento\Payment\Gateway\ErrorMapper\ErrorMessageMapper">
-        <arguments>
-            <argument name="messageMapping" xsi:type="object">Omise\Payment\Gateway\ErrorMapper\VirtualMappingData</argument>
-        </arguments>
-    </virtualType>
 
     <!-- OmiseCapture Command -->
     <virtualType name="OmiseCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
@@ -657,7 +698,6 @@
             <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseResponseHandler</argument>
             <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\OmiseCaptureCommandResponseValidator</argument>
-            <argument name="errorMessageMapper" xsi:type="object">Omise\Payment\Gateway\ErrorMapper\VirtualErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 

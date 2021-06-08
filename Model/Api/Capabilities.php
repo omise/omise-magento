@@ -40,4 +40,15 @@ class Capabilities extends BaseObject
     {
         return $this->capabilities ? $this->capabilities['zero_interest_installments'] : false;
     }
+
+    /**
+     * @param string $type
+     * @return array|null
+     */
+    public function getBackendsByType(string $type)
+    {
+        return $this->capabilities ? $this->capabilities->getBackends(
+            $this->capabilities->makeBackendFilterType($type)
+        ) : null;
+    }
 }

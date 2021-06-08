@@ -66,7 +66,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_cc/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="182" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -95,7 +95,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offsite_internetbanking/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="152" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -123,7 +123,7 @@
                     <field id="allowspecific" translate="label comment" type="select" sortOrder="181" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="182" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -151,7 +151,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offsite_pointsciti/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="212" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -180,7 +180,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offline_tesco/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="242" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -209,7 +209,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offsite_installment/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="272" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -238,7 +238,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offsite_truemoney/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="302" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -267,7 +267,7 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offline_conveniencestore/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="332" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -295,7 +295,7 @@
                     <field id="allowspecific" translate="label comment" type="select" sortOrder="361" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="362" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
@@ -323,11 +323,40 @@
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offline_promptpay/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If set to specific, guest customers will not have a billing country and may not be able to checkout.</comment>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
                     </field>
                     <field id="specificcountry" translate="label" type="multiselect" sortOrder="392" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from Specific countries</label>
                         <config_path>payment/omise_offline_promptpay/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_fpx" translate="label" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable FPX Payment</label>
+                    <comment>Enable customers to pay via FPX</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="410" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable FPX payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_fpx/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="420" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_fpx/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="421" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_fpx/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="422" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_fpx/specificcountry</config_path>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <depends>
                             <field id="allowspecific">1</field>
