@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.17 _(Jun 08, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.17)
+
+### 🚀 Enhancements
+- Enhance Magento plugin to support FPX. (PR [#287](https://github.com/omise/omise-magento/pull/287))
+
+
 ## [v2.16 _(Dec 23, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.16)
 
 ### 🚀 Enhancements
