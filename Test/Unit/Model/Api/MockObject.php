@@ -2,10 +2,12 @@
 
 namespace Omise\Payment\Test\Unit\Model\Api;
 
+use Omise\Payment\Model\Api\BaseObject;
+
 /**
  * Mock class
  */
-class MockObject extends Object
+class MockObject extends BaseObject
 {
     public function execute($fake_data = null)
     {
