@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.18 _(Jun 10, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18)
+
+### 🚀 Enhancements
+- Add support for Magento 2.4.2. (PR [#289](https://github.com/omise/omise-magento/pull/289))
+
+
 ## [v2.17 _(Jun 08, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.17)
 
 ### 🚀 Enhancements
