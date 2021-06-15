@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v2.18.1 _(Jun 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.1)
+
+### 🚀 Enhancements
+- Add support for magento-composer-installer package >= 0.2.1 (PR [#292](https://github.com/omise/omise-magento/pull/292))
+
+### 👾 Bug Fixes
+- Add back dependency injection code for charge validation (PR [#291](https://github.com/omise/omise-magento/pull/291))
+
+
 ## [v2.18 _(Jun 10, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18)
 
 ### 🚀 Enhancements
@@ -16,7 +25,7 @@
 
 ### 🚀 Enhancements
 - Implementing feature to create refund and applying it on PayNow QR payment. (PR [#284](https://github.com/omise/omise-magento/pull/284))
-- Applyiing standards for Magento and fixing it throughout the code. (PR [#283](https://github.com/omise/omise-magento/pull/283))
+- Applying standards for Magento and fixing it throughout the code. (PR [#283](https://github.com/omise/omise-magento/pull/283))
 
 ## [v2.15 _(Dec 03, 2020)_](https://github.com/omise/omise-magento/releases/tag/v2.15)
 
