@@ -603,6 +603,7 @@
             <argument name="transferFactory" xsi:type="object">Omise\Payment\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">OmiseCCCharge</argument>
             <argument name="handler" xsi:type="object">OmiseAPMAuthorizeResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Omise\Payment\Gateway\Validator\ThreeDSecureCommandResponseValidator</argument>
         </arguments>
     </virtualType>
 
