@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [v2.19 _(Jun 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.19)
+## [v2.18.1 _(Jun 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.1)
 
 ### 🚀 Enhancements
 - Add support for magento-composer-installer package >= 0.2.1 (PR [#292](https://github.com/omise/omise-magento/pull/292))
