@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v2.19 _(Jun 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.19)
+
+### 🚀 Enhancements
+- Add support for magento-composer-installer package >= 0.2.1 (PR [#292](https://github.com/omise/omise-magento/pull/292))
+
+### 👾 Bug Fixes
+- Add back dependency injection code for charge validation (PR [#291](https://github.com/omise/omise-magento/pull/291))
+
+
 ## [v2.18 _(Jun 10, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18)
 
 ### 🚀 Enhancements
