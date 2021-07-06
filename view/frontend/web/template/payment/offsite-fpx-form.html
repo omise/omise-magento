@@ -61,7 +61,7 @@
                                 value: selectedFpxBank">
 
                         <option data-bind="attr:{value: code,
-                         class:code}, html:'<span>'+name+'</span>'">
+                         class:code, disabled: !active}, html: $parent.bankLabel(name, active)">
                         </option>
                     </select>
                 </div>
