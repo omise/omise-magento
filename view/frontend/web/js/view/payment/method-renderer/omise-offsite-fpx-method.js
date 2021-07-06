@@ -24,6 +24,15 @@ define(
             restrictedToCurrencies: ['myr'],
             banks: ko.observable(checkoutConfig.fpx.banks),
             selectedFpxBank: ko.observable(),
+            bankLabel: function(name, active) {
+                var bankLabel = name;
+
+                if(!active){
+                    bankLabel = bankLabel + " (offline)";
+                }
+
+                return bankLabel;
+            },
 
             /**
              * Get a checkout form data
