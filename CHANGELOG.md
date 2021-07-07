@@ -1,5 +1,12 @@
 # CHANGELOG
 
+
+## [v2.18.2 _(Jul 06, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.2)
+
+### 👾 Bug Fixes
+- Fix FPX Magento plugin does not indicate the banks with offline status (PR [#295](https://github.com/omise/omise-magento/pull/295))
+
+
 ## [v2.18.1 _(Jun 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.1)
 
 ### 🚀 Enhancements
