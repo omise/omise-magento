@@ -17,6 +17,11 @@ class FpxSendEmailOnSuccessObserver implements ObserverInterface
     protected $orderSender;
 
     /**
+     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
+    */
+    protected $invoiceSender;
+
+    /**
      * @var \Magento\Checkout\Model\Session $checkoutSession
     */
     protected $checkoutSession;
@@ -24,17 +29,20 @@ class FpxSendEmailOnSuccessObserver implements ObserverInterface
     /**
      * @param \Magento\Sales\Model\OrderFactory $orderModel
     * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
+    * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
     * @param \Magento\Checkout\Model\Session $checkoutSession
     *
     */
     public function __construct(
         \Magento\Sales\Model\OrderFactory $orderModel,
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Checkout\Model\Session $checkoutSession
     )
     {
         $this->orderModel = $orderModel;
         $this->orderSender = $orderSender;
+        $this->invoiceSender = $invoiceSender;
         $this->checkoutSession = $checkoutSession;
     }
 
@@ -44,13 +52,20 @@ class FpxSendEmailOnSuccessObserver implements ObserverInterface
     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        // if fpx
         $orderIds = $observer->getEvent()->getOrderIds();
-        if(count($orderIds))
-        {
-            $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
-            $order = $this->orderModel->create()->load($orderIds[0]);
-            $this->orderSender->send($order, true);
+        $order = $this->orderModel->create()->load($orderIds[0]);
+        $invoiceCollection = $order->getInvoiceCollection();
+
+        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+
+        if($paymentType == 'fpx') {
+            if(count($orderIds)) {
+                $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
+                $this->orderSender->send($order, true);
+            }
+            foreach ($invoiceCollection as $invoice) {
+                $this->invoiceSender->send($invoice, true);
+            }
         }
     }
 }
