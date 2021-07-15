@@ -4,7 +4,7 @@ namespace Omise\Payment\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
 
-class OfflinePaymentObserver implements ObserverInterface
+class PaymentCreationObserver implements ObserverInterface
 {
     /**
      * @var \Omise\Payment\Helper\OmiseHelper
@@ -34,6 +34,13 @@ class OfflinePaymentObserver implements ObserverInterface
     {
         $order   = $observer->getEvent()->getOrder();
         $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+
+        // Hotfixed for FPX, can refactor for other backends.
+        if ($paymentType == 'fpx') {
+            $order->setCanSendNewEmailFlag(false);
+        }
+
+        // Offline QR code payment emails
         if ($this->_helper->isPayableByImageCode($paymentType)) {
             $this->_email->sendEmail($order);
         }
