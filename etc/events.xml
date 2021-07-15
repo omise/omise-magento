@@ -26,4 +26,8 @@
     <event name="sales_order_place_after">
         <observer name="omise_end_order" instance="Omise\Payment\Observer\OfflinePaymentObserver" />
     </event>
+
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="omise_end_order_fpx" instance="Omise\Payment\Observer\FpxSendEmailOnSuccessObserver" />
+    </event>
 </config>

@@ -34,6 +34,11 @@ class OfflinePaymentObserver implements ObserverInterface
     {
         $order   = $observer->getEvent()->getOrder();
         $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+
+        if($paymentType == 'fpx'){
+            $order->setCanSendNewEmailFlag(false);
+        }
+
         if ($this->_helper->isPayableByImageCode($paymentType)) {
             $this->_email->sendEmail($order);
         }
