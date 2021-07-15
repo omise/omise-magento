@@ -36,7 +36,7 @@ class PaymentCreationObserver implements ObserverInterface
         $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
 
         // Hotfixed for FPX, can refactor for other backends.
-        if($paymentType == 'fpx') {
+        if ($paymentType == 'fpx') {
             $order->setCanSendNewEmailFlag(false);
         }
 

@@ -8,38 +8,37 @@ class SendEmailOnSuccessObserver implements ObserverInterface
 {
     /**
      * @var \Magento\Sales\Model\OrderFactory
-    */
+     */
     protected $orderModel;
 
     /**
      * @var \Magento\Sales\Model\Order\Email\Sender\OrderSender
-    */
+     */
     protected $orderSender;
 
     /**
      * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
-    */
+     */
     protected $invoiceSender;
 
     /**
      * @var \Magento\Checkout\Model\Session $checkoutSession
-    */
+     */
     protected $checkoutSession;
 
     /**
      * @param \Magento\Sales\Model\OrderFactory $orderModel
-    * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
-    * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
-    * @param \Magento\Checkout\Model\Session $checkoutSession
-    *
-    */
+     * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
+     * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     *
+     */
     public function __construct(
         \Magento\Sales\Model\OrderFactory $orderModel,
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Checkout\Model\Session $checkoutSession
-    )
-    {
+    ) {
         $this->orderModel = $orderModel;
         $this->orderSender = $orderSender;
         $this->invoiceSender = $invoiceSender;
@@ -48,8 +47,8 @@ class SendEmailOnSuccessObserver implements ObserverInterface
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-    * @return void
-    */
+     * @return void
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $orderIds = $observer->getEvent()->getOrderIds();
@@ -60,8 +59,8 @@ class SendEmailOnSuccessObserver implements ObserverInterface
 
 
         // Hotfixed for FPX but we can refactor for other backends too
-        if($paymentType == 'fpx') {
-            if(count($orderIds)) {
+        if ($paymentType == 'fpx') {
+            if (count($orderIds)) {
                 $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
                 $this->orderSender->send($order, true);
 
