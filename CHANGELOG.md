@@ -1,6 +1,12 @@
 # CHANGELOG
 
 
+## [v2.18.3 _(Jul 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.3)
+
+### 👾 Bug Fixes
+- Fix FPX payment emails are sent before successful charge (PR [#297](https://github.com/omise/omise-magento/pull/297))
+
+
 ## [v2.18.2 _(Jul 06, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.2)
 
 ### 👾 Bug Fixes
