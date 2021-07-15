@@ -4,7 +4,7 @@ namespace Omise\Payment\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
 
-class FpxSendEmailOnSuccessObserver implements ObserverInterface
+class SendEmailOnSuccessObserver implements ObserverInterface
 {
     /**
      * @var \Magento\Sales\Model\OrderFactory
@@ -58,13 +58,16 @@ class FpxSendEmailOnSuccessObserver implements ObserverInterface
 
         $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
 
+
+        // Hotfixed for FPX but we can refactor for other backends too
         if($paymentType == 'fpx') {
             if(count($orderIds)) {
                 $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
                 $this->orderSender->send($order, true);
-            }
-            foreach ($invoiceCollection as $invoice) {
-                $this->invoiceSender->send($invoice, true);
+
+                foreach ($invoiceCollection as $invoice) {
+                    $this->invoiceSender->send($invoice, true);
+                }
             }
         }
     }

@@ -24,10 +24,10 @@
     </event>
 
     <event name="sales_order_place_after">
-        <observer name="omise_end_order" instance="Omise\Payment\Observer\OfflinePaymentObserver" />
+        <observer name="omise_end_order" instance="Omise\Payment\Observer\PaymentCreationObserver" />
     </event>
 
     <event name="checkout_onepage_controller_success_action">
-        <observer name="omise_end_order_fpx" instance="Omise\Payment\Observer\FpxSendEmailOnSuccessObserver" />
+        <observer name="omise_end_order_fpx" instance="Omise\Payment\Observer\SendEmailOnSuccessObserver" />
     </event>
 </config>
