@@ -57,7 +57,6 @@ class SendEmailOnSuccessObserver implements ObserverInterface
 
         $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
 
-
         // Hotfixed for FPX but we can refactor for other backends too
         if ($paymentType == 'fpx') {
             if (count($orderIds)) {
