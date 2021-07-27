@@ -3,6 +3,15 @@ namespace Omise\Payment\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
+use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Pointsciti;
+use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Paynow;
+use Omise\Payment\Model\Config\Promptpay;
+use Omise\Payment\Model\Config\Tesco;
 use SimpleXMLElement;
 use DOMDocument;
 
@@ -113,21 +122,57 @@ class OmiseHelper extends AbstractHelper
         }
         return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
     }
-    
+
     /**
-     * This method checks and return TRUE if $paymentType is offline payment which is payable by image code
+     * This method checks and return TRUE if $paymentMethod is offline payment which is payable by image code
+     * otherwise returns false.
+     * @param string $paymentMethod
+     * @return boolean
+     */
+    public function isPayableByImageCode($paymentMethod)
+    {
+        return in_array(
+            $paymentMethod,
+            [
+                Paynow::CODE,
+                Promptpay::CODE,
+                Tesco::CODE
+            ]
+        );
+    }
+
+    /**
+     * This method checks and return TRUE if $paymentMethod is an offsite paymetn
+     * otherwise returns false.
+     * @param string $paymentMethod
+     * @return boolean
+     */
+    public function isOffsitePayment($paymentMethod)
+    {
+       return in_array(
+            $paymentMethod,
+            [
+                Alipay::CODE,
+                Internetbanking::CODE,
+                Installment::CODE,
+                Truemoney::CODE,
+                Pointsciti::CODE,
+                Fpx::CODE
+            ]
+        );
+    }
+
+    /**
+     * This method checks and return TRUE if $paymentType is offline or offsite
      * otherwise returns false.
      * @param string $paymentType
      * @return boolean
      */
-    public function isPayableByImageCode($paymentType)
+    public function isOfflineOrOffsite($paymentMethod)
     {
-        return (
-            $paymentType === 'paynow'
-            || $paymentType === 'promptpay'
-            || $paymentType === 'bill_payment_tesco_lotus'
-        );
+        return $this->isPayableByImageCode($paymentMethod) || $this->isOffsitePayment($paymentMethod);
     }
+
 
     /**
      * Check order payment processed using Omise payment methods.
@@ -164,7 +209,7 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Checks if 3d secured setting enabled from charge data.
+     * Checks if charge flow is direct (not offline or offsite).
      * @param \Omise\Payment\Model\Api\Charge $charge
      * @return boolean
      */

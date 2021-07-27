@@ -12,37 +12,29 @@ class SendEmailOnSuccessObserver implements ObserverInterface
     protected $orderModel;
 
     /**
-     * @var \Magento\Sales\Model\Order\Email\Sender\OrderSender
+     * @var \Omise\Payment\Helper\OmiseEmailHelper
      */
-    protected $orderSender;
+    protected $_emailHelper;
 
     /**
-     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
+     * @var \Omise\Payment\Helper\OmiseHelper
      */
-    protected $invoiceSender;
-
-    /**
-     * @var \Magento\Checkout\Model\Session $checkoutSession
-     */
-    protected $checkoutSession;
+    protected $_helper;
 
     /**
      * @param \Magento\Sales\Model\OrderFactory $orderModel
-     * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
-     * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
-     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Sales\Model\OmiseEmailHelper $emailHelper
+     * @param \Omise\Payment\Helper\OmiseHelper $helper
      *
      */
     public function __construct(
         \Magento\Sales\Model\OrderFactory $orderModel,
-        \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
-        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
-        \Magento\Checkout\Model\Session $checkoutSession
+        \Omise\Payment\Helper\OmiseEmailHelper $emailHelper,
+        \Omise\Payment\Helper\OmiseHelper $helper
     ) {
         $this->orderModel = $orderModel;
-        $this->orderSender = $orderSender;
-        $this->invoiceSender = $invoiceSender;
-        $this->checkoutSession = $checkoutSession;
+        $this->_emailHelper = $emailHelper;
+        $this->_helper = $helper;
     }
 
     /**
@@ -53,20 +45,11 @@ class SendEmailOnSuccessObserver implements ObserverInterface
     {
         $orderIds = $observer->getEvent()->getOrderIds();
         $order = $this->orderModel->create()->load($orderIds[0]);
-        $invoiceCollection = $order->getInvoiceCollection();
 
-        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+        $paymentMethod = $order->getPayment()->getMethod();
 
-        // Hotfixed for FPX but we can refactor for other backends too
-        if ($paymentType == 'fpx') {
-            if (count($orderIds)) {
-                $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
-                $this->orderSender->send($order, true);
-
-                foreach ($invoiceCollection as $invoice) {
-                    $this->invoiceSender->send($invoice, true);
-                }
-            }
+        if ($this->_helper->isOffsitePayment($paymentMethod)) {
+            $this->_emailHelper->sendInvoiceAndConfirmationEmails($orderIds, $order);
         }
     }
 }

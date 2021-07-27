@@ -16,6 +16,20 @@ class Complete
     const CODE = 'charge.complete';
 
     /**
+     * @var \Omise\Payment\Helper\OmiseEmailHelper $_emailHelper
+     */
+    protected $_emailHelper;
+
+    /**
+     * @param \Omise\Payment\Helper\OmiseEmailHelper $emailHelper
+     */
+    public function __construct(
+        \Omise\Payment\Helper\OmiseEmailHelper $emailHelper
+    ) {
+        $this->_emailHelper = $emailHelper;
+    }
+
+    /**
      * There are several cases with the following payment methods
      * that would trigger the 'charge.complete' event.
      *
@@ -70,11 +84,6 @@ class Complete
 
         if ($order->isPaymentReview() || $order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
             if ($charge->isFailed()) {
-                if ($order->hasInvoices()) {
-                    $invoice = $order->getInvoiceCollection()->getLastItem();
-                    $invoice->cancel();
-                    $order->addRelatedObject($invoice);
-                }
 
                 $order->registerCancellation(
                     __('Payment failed. ' . ucfirst($charge->failure_message) . ',
@@ -87,8 +96,13 @@ class Complete
                 $order->setState(MagentoOrder::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
 
-                $invoice = $order->getInvoiceCollection()->getLastItem();
+                $invoice = $order->prepareInvoice();
+                $invoice->register();
+        
+                $order->addRelatedObject($invoice);
                 $invoice->setTransactionId($charge->id)->pay()->save();
+
+                $this->_emailHelper->sendInvoiceAndConfirmationEmails(array($order->getId()), $order);
 
                 // Add transaction.
                 $payment->addTransactionCommentsToOrder(

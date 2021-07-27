@@ -16,6 +16,7 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Fpx;
 use Magento\Framework\Exception\LocalizedException;
+use Omise\Payment\Helper\OmiseHelper;
 
 class Offsite extends Action
 {
@@ -40,17 +41,24 @@ class Offsite extends Action
      */
     protected $charge;
 
+    /**
+     * @var \Omise\Payment\Helper\OmiseHelper
+     */
+    protected $helper;
+
     public function __construct(
         Context $context,
         Session $session,
         Omise   $omise,
-        Charge  $charge
+        Charge  $charge,
+        OmiseHelper $helper
     ) {
         parent::__construct($context);
 
         $this->session = $session;
         $this->omise   = $omise;
         $this->charge  = $charge;
+        $this->helper  = $helper;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -90,17 +98,7 @@ class Offsite extends Action
         }
         
         $paymentMethod = $payment->getMethod();
-        if (! in_array(
-            $paymentMethod,
-            [
-                Alipay::CODE,
-                Internetbanking::CODE,
-                Installment::CODE,
-                Truemoney::CODE,
-                Pointsciti::CODE,
-                Fpx::CODE
-            ]
-        )) {
+        if (!$this->helper->isOffsitePayment($paymentMethod)) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')
@@ -112,16 +110,6 @@ class Offsite extends Action
             $this->cancel(
                 $order,
                 __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.')
-            );
-            $this->session->restoreQuote();
-
-            return $this->redirect(self::PATH_CART);
-        }
-
-        if (! $order->hasInvoices()) {
-            $this->cancel(
-                $order,
-                __('Cannot create an invoice. Please contact our support to confirm your payment.')
             );
             $this->session->restoreQuote();
 
@@ -156,7 +144,10 @@ class Offsite extends Action
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-                $invoice = $this->invoice($order);
+                $invoice = $payment->getOrder()->prepareInvoice();
+                $invoice->register();
+    
+                $payment->getOrder()->addRelatedObject($invoice);
                 $invoice->setTransactionId($charge->id)->pay()->save();
                 
                 switch ($paymentMethod) {
@@ -257,10 +248,6 @@ class Offsite extends Action
      */
     protected function cancel(Order $order, $message)
     {
-        $invoice = $this->invoice($order);
-        $invoice->cancel();
-        $order->addRelatedObject($invoice);
-
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
     }

@@ -28,11 +28,15 @@ class PendingInvoiceHandler implements HandlerInterface
     public function handle(array $handlingSubject, array $response)
     {
         $is3dsecured = $this->helper->is3DSecureEnabled($response['charge']);
-        if (!$is3dsecured && $handlingSubject['paymentAction'] != self::ACTION_AUTHORIZE_CAPTURE) {
-            return;
-        }
+
         /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
         $payment = SubjectReader::readPayment($handlingSubject);
+        $paymentMethod = $payment->getPayment()->getMethod();
+
+        if ((!$is3dsecured && $handlingSubject['paymentAction'] != self::ACTION_AUTHORIZE_CAPTURE) ||
+        $this->helper->isOfflineOrOffsite($paymentMethod)) {
+            return;
+        }
 
         $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
         $invoice->register();
