@@ -1,6 +1,12 @@
 # CHANGELOG
 
 
+## [v2.18.4 _(Jul 29, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.4)
+
+### 👾 Bug Fixes
+- FPX banks list dropdown fix and rename default title  (PR [#300](https://github.com/omise/omise-magento/pull/300))
+- Apply hotfixes for invoice generation for FPX payment (PR [#301](https://github.com/omise/omise-magento/pull/301))
+
 ## [v2.18.3 _(Jul 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.3)
 
 ### 👾 Bug Fixes
