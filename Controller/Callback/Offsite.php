@@ -118,7 +118,9 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if (! $order->hasInvoices()) {
+        // hotfix for fpx - invoices won't exist here yet
+        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+        if (! $order->hasInvoices() && $paymentType != 'fpx') {
             $this->cancel(
                 $order,
                 __('Cannot create an invoice. Please contact our support to confirm your payment.')
@@ -155,6 +157,13 @@ class Offsite extends Action
                 // Update order state and status.
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
+
+                // hotfix for fpx - create invoices here
+                if ($paymentType == 'fpx') {
+                    $invoice = $payment->getOrder()->prepareInvoice();
+                    $invoice->register();
+                    $payment->getOrder()->addRelatedObject($invoice);
+                }
 
                 $invoice = $this->invoice($order);
                 $invoice->setTransactionId($charge->id)->pay()->save();
@@ -257,9 +266,13 @@ class Offsite extends Action
      */
     protected function cancel(Order $order, $message)
     {
-        $invoice = $this->invoice($order);
-        $invoice->cancel();
-        $order->addRelatedObject($invoice);
+        // Hotfix for fpx, we don't want cancelled invoices as we don't generate them from the first place.
+        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+        if ($paymentType != 'fpx') {
+            $invoice = $this->invoice($order);
+            $invoice->cancel();
+            $order->addRelatedObject($invoice);
+        }
 
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);

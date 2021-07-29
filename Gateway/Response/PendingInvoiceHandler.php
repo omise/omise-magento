@@ -34,6 +34,12 @@ class PendingInvoiceHandler implements HandlerInterface
         /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
         $payment = SubjectReader::readPayment($handlingSubject);
 
+        // To remove: hotfixed for fpx
+        $paymentType = $payment->getPayment()->getAdditionalInformation('payment_type');
+        if ($paymentType == 'fpx') {
+            return;
+        }
+
         $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
         $invoice->register();
 
