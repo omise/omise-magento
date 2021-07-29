@@ -114,7 +114,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 
             <omise_offsite_fpx>
                 <active>0</active>
-                <title>FPX Payment</title>
+                <title>Online Banking (FPX)</title>
                 <model>OmiseFPXAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
