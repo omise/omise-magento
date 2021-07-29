@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+## [v2.18.5 _(Jul 29, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.5)
+
+### 👾 Bug Fixes
+- FPX banks list default to empty (PR [#303](https://github.com/omise/omise-magento/pull/303))
+
 ## [v2.18.4 _(Jul 29, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.4)
 
 ### 👾 Bug Fixes
