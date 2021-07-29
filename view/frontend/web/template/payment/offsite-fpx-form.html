@@ -59,7 +59,8 @@
                                 style="margin-bottom:10px"
                                 data-bind="foreach: banks,
                                     value: selectedFpxBank,
-                                    attr:{class: selectedFpxBank}">
+                                    attr:{class: selectedFpxBank},
+                                    valueAllowUnset: true">
 
                             <option data-bind="attr:{value: code,
                             disabled: !active}, html: $parent.bankLabel(name, active)">
