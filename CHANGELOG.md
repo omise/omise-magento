@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## [v2.18.6 _(Sep 16, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.6)
+
+### 🚀 Enhancements
+- Update omise-php version from 2.11.1 to 2.13.0 (PR [#307](https://github.com/omise/omise-magento/pull/307))
+- Installments - change minimum order from 3000 to 2000 THB (PR [#307](https://github.com/omise/omise-magento/pull/307))
+
+
 ## [v2.18.5 _(Jul 29, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.5)
 
 ### 👾 Bug Fixes
