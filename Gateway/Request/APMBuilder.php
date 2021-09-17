@@ -15,6 +15,7 @@ use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Alipayplus;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
@@ -39,6 +40,11 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const BANK = 'bank';
+
+    /**
+     * @var string
+     */
+    const PLATFORM_TYPE = 'platform_type';
 
     /**
      * @var string
@@ -160,6 +166,18 @@ class APMBuilder implements BuilderInterface
                     self::BANK => $method->getAdditionalInformation(
                         FpxDataAssignObserver::BANK
                     )
+                ];
+                break;
+            case Alipayplus::Alipay_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'alipay_cn',                
+                    self::PLATFORM_TYPE => 'WEB',
+                ];
+                break;
+            case Alipayplus::AlipayHk_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'alipay_hk',                
+                    self::PLATFORM_TYPE => 'WEB',
                 ];
                 break;
         }

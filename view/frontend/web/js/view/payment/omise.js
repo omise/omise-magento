@@ -19,7 +19,9 @@ define(
             'offline-tesco',
             'offline-paynow',
             'offline-promptpay',
-            'offsite-pointsciti'
+            'offsite-pointsciti',
+            'offsite-alipaycn',
+            'offsite-alipayhk',
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {

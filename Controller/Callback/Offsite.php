@@ -15,6 +15,7 @@ use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Alipayplus;
 use Magento\Framework\Exception\LocalizedException;
 
 class Offsite extends Action
@@ -98,7 +99,13 @@ class Offsite extends Action
                 Installment::CODE,
                 Truemoney::CODE,
                 Pointsciti::CODE,
-                Fpx::CODE
+                Fpx::CODE,
+                Alipayplus::Alipay_CODE,
+                Alipayplus::AlipayHk_CODE,
+                Alipayplus::Dana_CODE,
+                Alipayplus::Gcash_CODE,
+                Alipayplus::Kakaopay_CODE,
+                Alipayplus::TouchNGo_CODE
             ]
         )) {
             $this->invalid(
@@ -186,6 +193,24 @@ class Offsite extends Action
                         break;
                     case Fpx::CODE:
                         $dispPaymentMethod = "FPX";
+                        break;
+                    case Alipayplus::Alipay_CODE:
+                        $dispPaymentMethod = "Alipay (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::AlipayHk_CODE:
+                        $dispPaymentMethod = "AlipayHK (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::Dana_CODE:
+                        $dispPaymentMethod = "DANA (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::Gcash_CODE:
+                        $dispPaymentMethod = "GCash (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::Kakaopay_CODE:
+                        $dispPaymentMethod = "Kakao Pay (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::TouchNGo_CODE:
+                        $dispPaymentMethod = "TNG eWallet (Alipay+ Partner)";
                         break;
                 }
                 
