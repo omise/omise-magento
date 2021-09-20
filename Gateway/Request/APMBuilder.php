@@ -178,37 +178,37 @@ class APMBuilder implements BuilderInterface
                 break;
             case Alipayplus::ALIPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'alipay_cn',                
+                    self::SOURCE_TYPE   => 'alipay_cn',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::ALIPAYHK_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'alipay_hk',                
+                    self::SOURCE_TYPE   => 'alipay_hk',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::DANA_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'dana',                
+                    self::SOURCE_TYPE   => 'dana',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::GCASH_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'gcash',                
+                    self::SOURCE_TYPE   => 'gcash',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::KAKAOPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'kakopay',                
+                    self::SOURCE_TYPE   => 'kakopay',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::TOUCHNGO_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'touch_n_go',                
+                    self::SOURCE_TYPE   => 'touch_n_go',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
