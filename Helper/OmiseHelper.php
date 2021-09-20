@@ -193,7 +193,6 @@ class OmiseHelper extends AbstractHelper
         }
     }
 
-
     /**
      * Get platform type of WEB, IOS or ANDROID to add to source API parameter.
      * @return string
@@ -202,15 +201,16 @@ class OmiseHelper extends AbstractHelper
     {
         $userAgent = $this->header->getHttpUserAgent();
 
-        if ( preg_match( "/(Android)/i", $userAgent ) ) {
+        if (preg_match("/(Android)/i", $userAgent))
+        {
             return "ANDROID";
         }
 
-        if ( preg_match( "/(iPad|iPhone|iPod)/i", $userAgent ) ) {
+        if (preg_match("/(iPad|iPhone|iPod)/i", $userAgent))
+        {
             return "IOS";
         }
 
         return "WEB";
     }
-
 }
