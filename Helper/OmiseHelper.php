@@ -3,11 +3,23 @@ namespace Omise\Payment\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\HTTP\Header;
 use SimpleXMLElement;
 use DOMDocument;
 
 class OmiseHelper extends AbstractHelper
 {
+
+    /**
+     * @var \Magento\Framework\HTTP\Header
+     */
+    protected $header;
+
+    public function __construct(Header $header)
+    {
+        $this->header = $header;
+    }
+
     /**
      * @param  string $fieldId
      *
@@ -180,4 +192,25 @@ class OmiseHelper extends AbstractHelper
             return false;
         }
     }
+
+
+    /**
+     * Get platform type of WEB, IOS or ANDROID to add to source API parameter.
+     * @return string
+     */
+    public function getPlatformType()
+    {
+        $userAgent = $this->header->getHttpUserAgent();
+
+        if ( preg_match( "/(Android)/i", $userAgent ) ) {
+            return "ANDROID";
+        }
+
+        if ( preg_match( "/(iPad|iPhone|iPod)/i", $userAgent ) ) {
+            return "IOS";
+        }
+
+        return "WEB";
+    }
+
 }
