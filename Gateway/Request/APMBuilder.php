@@ -83,7 +83,6 @@ class APMBuilder implements BuilderInterface
      */
     protected $helper;
 
-
     public function __construct(UrlInterface $url, Helper $helper)
     {
         $this->url = $url;
