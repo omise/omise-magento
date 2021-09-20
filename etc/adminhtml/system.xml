@@ -480,11 +480,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_kakaopay" translate="label" sortOrder="470" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Kakaopay (Alipay+ Partner) Payment</label>
-                    <comment>Enable customers to pay using Kakaopay payment method</comment>
+                    <label>Enable Kakao Pay (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using Kakao Pay payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="471" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Kakaopay payment method.</comment>
+                        <comment>Enable Kakao Pay payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_kakaopay/active</config_path>
                     </field>
