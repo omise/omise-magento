@@ -161,7 +161,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
             </omise_offsite_alipaycn>
 
             <omise_offsite_alipayhk>
-                <active>1</active>
+                <active>0</active>
                 <title>AlipayHK (Alipay+ Partner)</title>
                 <model>OmiseAlipayHkAdapter</model>
                 <is_gateway>1</is_gateway>
