@@ -100,12 +100,12 @@ class Offsite extends Action
                 Truemoney::CODE,
                 Pointsciti::CODE,
                 Fpx::CODE,
-                Alipayplus::Alipay_CODE,
-                Alipayplus::AlipayHk_CODE,
-                Alipayplus::Dana_CODE,
-                Alipayplus::Gcash_CODE,
-                Alipayplus::Kakaopay_CODE,
-                Alipayplus::TouchNGo_CODE
+                Alipayplus::ALIPAY_CODE,
+                Alipayplus::ALIPAYHK_CODE,
+                Alipayplus::DANA_CODE,
+                Alipayplus::GCASH_CODE,
+                Alipayplus::KAKAOPAY_CODE,
+                Alipayplus::TOUCHNGO_CODE
             ]
         )) {
             $this->invalid(
@@ -194,22 +194,22 @@ class Offsite extends Action
                     case Fpx::CODE:
                         $dispPaymentMethod = "FPX";
                         break;
-                    case Alipayplus::Alipay_CODE:
+                    case Alipayplus::ALIPAY_CODE:
                         $dispPaymentMethod = "Alipay (Alipay+ Partner)";
                         break;
-                    case Alipayplus::AlipayHk_CODE:
+                    case Alipayplus::ALIPAYHK_CODE:
                         $dispPaymentMethod = "AlipayHK (Alipay+ Partner)";
                         break;
-                    case Alipayplus::Dana_CODE:
+                    case Alipayplus::DANA_CODE:
                         $dispPaymentMethod = "DANA (Alipay+ Partner)";
                         break;
-                    case Alipayplus::Gcash_CODE:
+                    case Alipayplus::GCASH_CODE:
                         $dispPaymentMethod = "GCash (Alipay+ Partner)";
                         break;
-                    case Alipayplus::Kakaopay_CODE:
+                    case Alipayplus::KAKAOPAY_CODE:
                         $dispPaymentMethod = "Kakao Pay (Alipay+ Partner)";
                         break;
-                    case Alipayplus::TouchNGo_CODE:
+                    case Alipayplus::TOUCHNGO_CODE:
                         $dispPaymentMethod = "TNG eWallet (Alipay+ Partner)";
                         break;
                 }

@@ -201,13 +201,11 @@ class OmiseHelper extends AbstractHelper
     {
         $userAgent = $this->header->getHttpUserAgent();
 
-        if (preg_match("/(Android)/i", $userAgent))
-        {
+        if (preg_match("/(Android)/i", $userAgent)) {
             return "ANDROID";
         }
 
-        if (preg_match("/(iPad|iPhone|iPod)/i", $userAgent))
-        {
+        if (preg_match("/(iPad|iPhone|iPod)/i", $userAgent)) {
             return "IOS";
         }
 

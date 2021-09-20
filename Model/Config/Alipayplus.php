@@ -8,10 +8,10 @@ class Alipayplus extends Config
     /**
      * @var string
      */
-    const Alipay_CODE = 'omise_offsite_alipaycn';
-    const AlipayHk_CODE = 'omise_offsite_alipayhk';
-    const Dana_CODE = 'omise_offsite_dana';
-    const Gcash_CODE = 'omise_offsite_gcash';
-    const Kakaopay_CODE = 'omise_offsite_kakaopay';
-    const TouchNGo_CODE = 'omise_offsite_touchngo';
+    const ALIPAY_CODE = 'omise_offsite_alipaycn';
+    const ALIPAYHK_CODE = 'omise_offsite_alipayhk';
+    const DANA_CODE = 'omise_offsite_dana';
+    const GCASH_CODE = 'omise_offsite_gcash';
+    const KAKAOPAY_CODE = 'omise_offsite_kakaopay';
+    const TOUCHNGO_CODE = 'omise_offsite_touchngo';
 }

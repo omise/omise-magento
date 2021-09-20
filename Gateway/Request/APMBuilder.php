@@ -176,37 +176,37 @@ class APMBuilder implements BuilderInterface
                     )
                 ];
                 break;
-            case Alipayplus::Alipay_CODE:
+            case Alipayplus::ALIPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'alipay_cn',                
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
-            case Alipayplus::AlipayHk_CODE:
+            case Alipayplus::ALIPAYHK_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'alipay_hk',                
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
-            case Alipayplus::Dana_CODE:
+            case Alipayplus::DANA_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'dana',                
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
-            case Alipayplus::Gcash_CODE:
+            case Alipayplus::GCASH_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'gcash',                
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
-            case Alipayplus::Kakaopay_CODE:
+            case Alipayplus::KAKAOPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'kakopay',                
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
-            case Alipayplus::TouchNGo_CODE:
+            case Alipayplus::TOUCHNGO_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'touch_n_go',                
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),

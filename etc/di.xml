@@ -198,7 +198,7 @@
     <!-- Alipay CN (Alipayplus) payment solution -->
     <virtualType name="OmiseAlipayCnAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Alipay_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::ALIPAY_CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMAlipayCnValueHandlerPool</argument>
@@ -237,7 +237,7 @@
 
     <virtualType name="OmiseAPMAlipayCnConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Alipay_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::ALIPAY_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
@@ -245,7 +245,7 @@
     <!-- Alipay HK (Alipayplus) payment solution -->
     <virtualType name="OmiseAlipayHkAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::AlipayHk_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::ALIPAYHK_CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMAlipayHkValueHandlerPool</argument>
@@ -284,7 +284,7 @@
 
     <virtualType name="OmiseAPMAlipayHkConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::AlipayHk_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::ALIPAYHK_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
@@ -292,7 +292,7 @@
     <!-- DANA (Alipayplus) payment solution -->
     <virtualType name="OmiseDanaAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Dana_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::DANA_CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMDanaValueHandlerPool</argument>
@@ -331,7 +331,7 @@
 
     <virtualType name="OmiseAPMDanaConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Dana_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::DANA_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
@@ -339,7 +339,7 @@
     <!-- GCash (Alipayplus) payment solution -->
     <virtualType name="OmiseGcashAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Gcash_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::GCASH_CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMGcashValueHandlerPool</argument>
@@ -379,7 +379,7 @@
 
     <virtualType name="OmiseAPMGcashConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Gcash_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::GCASH_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
@@ -387,7 +387,7 @@
     <!-- Kakaopay (Alipayplus) payment solution -->
     <virtualType name="OmiseKakaopayAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Kakaopay_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::KAKAOPAY_CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMKakaopayValueHandlerPool</argument>
@@ -427,7 +427,7 @@
 
     <virtualType name="OmiseAPMKakaopayConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Kakaopay_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::KAKAOPAY_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
@@ -435,7 +435,7 @@
     <!-- Touchngo (Alipayplus) payment solution -->
     <virtualType name="OmiseTouchngoAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TouchNGo_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TOUCHNGO_CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMTouchngoValueHandlerPool</argument>
@@ -475,7 +475,7 @@
 
     <virtualType name="OmiseAPMTouchngoConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TouchNGo_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TOUCHNGO_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
