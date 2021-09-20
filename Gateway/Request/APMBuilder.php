@@ -202,7 +202,7 @@ class APMBuilder implements BuilderInterface
                 break;
             case Alipayplus::KAKAOPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE   => 'kakopay',
+                    self::SOURCE_TYPE   => 'kakaopay',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
