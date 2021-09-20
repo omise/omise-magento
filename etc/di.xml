@@ -253,7 +253,7 @@
             <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
         </arguments>
     </virtualType>
-    <!-- Alipay (Alipayplus) :: Value Handler Pool -->
+    <!-- Alipay HK (Alipayplus) :: Value Handler Pool -->
     <virtualType name="OmiseAPMAlipayHkValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -285,6 +285,197 @@
     <virtualType name="OmiseAPMAlipayHkConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::AlipayHk_CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
+    <!-- DANA (Alipayplus) payment solution -->
+    <virtualType name="OmiseDanaAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Dana_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMDanaValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMDanaValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- Dana (Alipayplus) :: Value Handler Pool -->
+    <virtualType name="OmiseAPMDanaValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMDanaConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDanaValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMDanaCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDanaCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMDanaConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDanaConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMDanaConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDanaConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Dana_CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
+    <!-- GCash (Alipayplus) payment solution -->
+    <virtualType name="OmiseGcashAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Gcash_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMGcashValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMGcashValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Gcash (Alipayplus) :: Value Handler Pool -->
+    <virtualType name="OmiseAPMGcashValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMGcashConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMGcashValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMGcashCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMGcashCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMGcashConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMGcashConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMGcashConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMGcashConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Gcash_CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
+    <!-- Kakaopay (Alipayplus) payment solution -->
+    <virtualType name="OmiseKakaopayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Kakaopay_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMKakaopayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMKakaopayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Kakaopay (Alipayplus) :: Value Handler Pool -->
+    <virtualType name="OmiseAPMKakaopayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMKakaopayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMKakaopayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMKakaopayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMKakaopayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMKakaopayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMKakaopayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMKakaopayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMKakaopayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::Kakaopay_CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Value Handler -->
+
+    <!-- Touchngo (Alipayplus) payment solution -->
+    <virtualType name="OmiseTouchngoAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TouchNGo_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMTouchngoValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMTouchngoValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Touchngo (Alipayplus) :: Value Handler Pool -->
+    <virtualType name="OmiseAPMTouchngoValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMTouchngoConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMTouchngoValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMTouchngoCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMTouchngoCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMTouchngoConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMTouchngoConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMTouchngoConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMTouchngoConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TouchNGo_CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->

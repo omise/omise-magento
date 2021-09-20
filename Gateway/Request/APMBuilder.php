@@ -180,6 +180,30 @@ class APMBuilder implements BuilderInterface
                     self::PLATFORM_TYPE => 'WEB',
                 ];
                 break;
+            case Alipayplus::Dana_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'dana',                
+                    self::PLATFORM_TYPE => 'WEB',
+                ];
+                break;
+            case Alipayplus::Gcash_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'gcash',                
+                    self::PLATFORM_TYPE => 'WEB',
+                ];
+                break;
+            case Alipayplus::Kakaopay_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'kakopay',                
+                    self::PLATFORM_TYPE => 'WEB',
+                ];
+                break;
+            case Alipayplus::TouchNGo_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'touch_n_go',                
+                    self::PLATFORM_TYPE => 'WEB',
+                ];
+                break;
         }
 
         return $paymentInfo;
