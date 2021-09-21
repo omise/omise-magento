@@ -363,6 +363,180 @@
                         </depends>
                     </field>
                 </group>
+                <group id="omise_offsite_alipaycn" translate="label" sortOrder="430" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Alipay (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using Alipay payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="431" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Alipay payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_alipaycn/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="432" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_alipaycn/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="433" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_alipaycn/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="434" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_alipaycn/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_alipayhk" translate="label" sortOrder="440" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable AlipayHK (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using AlipayHK payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="441" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable AlipayHK payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_alipayhk/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="442" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_alipayhk/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="443" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_alipayhk/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="444" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_alipayhk/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_dana" translate="label" sortOrder="450" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable DANA (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using DANA payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="451" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable DANA payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_dana/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="452" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_dana/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="453" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_dana/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="454" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_dana/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_gcash" translate="label" sortOrder="460" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable GCash (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using GCash payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="461" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable GCash payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_gcash/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="462" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_gcash/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="463" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_gcash/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="464" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_gcash/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_kakaopay" translate="label" sortOrder="470" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Kakao Pay (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using Kakao Pay payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="471" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Kakao Pay payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_kakaopay/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="472" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_kakaopay/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="473" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_kakaopay/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="474" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_kakaopay/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_touchngo" translate="label" sortOrder="480" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable TNG eWallet (Alipay+ Partner) Payment</label>
+                    <comment>Enable customers to pay using TNG eWallet payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="481" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable TNG eWallet payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_touchngo/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="482" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_touchngo/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="483" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_touchngo/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="484" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_touchngo/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
             </group>
         </section>
     </system>

@@ -15,12 +15,15 @@ use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Alipayplus;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
+
+use Omise\Payment\Helper\OmiseHelper as Helper;
 
 class APMBuilder implements BuilderInterface
 {
@@ -39,6 +42,11 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const BANK = 'bank';
+
+    /**
+     * @var string
+     */
+    const PLATFORM_TYPE = 'platform_type';
 
     /**
      * @var string
@@ -70,9 +78,15 @@ class APMBuilder implements BuilderInterface
      */
     protected $url;
 
-    public function __construct(UrlInterface $url)
+    /**
+     * @var Helper
+     */
+    protected $helper;
+
+    public function __construct(UrlInterface $url, Helper $helper)
     {
         $this->url = $url;
+        $this->helper = $helper;
     }
 
     /**
@@ -160,6 +174,42 @@ class APMBuilder implements BuilderInterface
                     self::BANK => $method->getAdditionalInformation(
                         FpxDataAssignObserver::BANK
                     )
+                ];
+                break;
+            case Alipayplus::ALIPAY_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'alipay_cn',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Alipayplus::ALIPAYHK_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'alipay_hk',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Alipayplus::DANA_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'dana',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Alipayplus::GCASH_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'gcash',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Alipayplus::KAKAOPAY_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'kakaopay',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Alipayplus::TOUCHNGO_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE   => 'touch_n_go',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
         }

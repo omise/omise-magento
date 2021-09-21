@@ -19,7 +19,13 @@ define(
             'offline-tesco',
             'offline-paynow',
             'offline-promptpay',
-            'offsite-pointsciti'
+            'offsite-pointsciti',
+            'offsite-alipaycn',
+            'offsite-alipayhk',
+            'offsite-dana',
+            'offsite-gcash',
+            'offsite-kakaopay',
+            'offsite-touchngo',
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {
