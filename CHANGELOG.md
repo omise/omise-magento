@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## [v2.19.0 _(Sep 21, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.19.0)
+
+### 🚀 Enhancements
+- Add Alipay plus wallets for SG (PR [#309](https://github.com/omise/omise-magento/pull/309))
+
+## [v2.18.6 _(Sep 16, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.6)
+
+### 🚀 Enhancements
+- Update omise-php version from 2.11.1 to 2.13.0 (PR [#307](https://github.com/omise/omise-magento/pull/307))
+- Installments - change minimum order from 3000 to 2000 THB (PR [#307](https://github.com/omise/omise-magento/pull/307))
+
+
+## [v2.18.5 _(Jul 29, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.5)
+
+### 👾 Bug Fixes
+- FPX banks list default to empty (PR [#303](https://github.com/omise/omise-magento/pull/303))
+
+## [v2.18.4 _(Jul 29, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.4)
+
+### 👾 Bug Fixes
+- FPX banks list dropdown fix and rename default title  (PR [#300](https://github.com/omise/omise-magento/pull/300))
+- Apply hotfixes for invoice generation for FPX payment (PR [#301](https://github.com/omise/omise-magento/pull/301))
+
 ## [v2.18.3 _(Jul 15, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.18.3)
 
 ### 👾 Bug Fixes

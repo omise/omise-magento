@@ -3,6 +3,7 @@ namespace Omise\Payment\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
+
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Pointsciti;
@@ -12,11 +13,25 @@ use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Tesco;
+use Magento\Framework\HTTP\Header;
+use Omise\Payment\Model\Config\Alipayplus;
+
 use SimpleXMLElement;
 use DOMDocument;
 
 class OmiseHelper extends AbstractHelper
 {
+
+    /**
+     * @var \Magento\Framework\HTTP\Header
+     */
+    protected $header;
+
+    public function __construct(Header $header)
+    {
+        $this->header = $header;
+    }
+
     /**
      * @param  string $fieldId
      *
@@ -157,7 +172,13 @@ class OmiseHelper extends AbstractHelper
                 Installment::CODE,
                 Truemoney::CODE,
                 Pointsciti::CODE,
-                Fpx::CODE
+                Fpx::CODE,
+                Alipayplus::ALIPAY_CODE,
+                Alipayplus::ALIPAYHK_CODE,
+                Alipayplus::DANA_CODE,
+                Alipayplus::GCASH_CODE,
+                Alipayplus::KAKAOPAY_CODE,
+                Alipayplus::TOUCHNGO_CODE
             ]
         );
     }
@@ -224,5 +245,24 @@ class OmiseHelper extends AbstractHelper
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get platform type of WEB, IOS or ANDROID to add to source API parameter.
+     * @return string
+     */
+    public function getPlatformType()
+    {
+        $userAgent = $this->header->getHttpUserAgent();
+
+        if (preg_match("/(Android)/i", $userAgent)) {
+            return "ANDROID";
+        }
+
+        if (preg_match("/(iPad|iPhone|iPod)/i", $userAgent)) {
+            return "IOS";
+        }
+
+        return "WEB";
     }
 }

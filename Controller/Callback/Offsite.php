@@ -15,6 +15,7 @@ use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Alipayplus;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 
@@ -116,6 +117,18 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
+        // hotfix for fpx - invoices won't exist here yet
+        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+        if (! $order->hasInvoices() && $paymentType != 'fpx') {
+            $this->cancel(
+                $order,
+                __('Cannot create an invoice. Please contact our support to confirm your payment.')
+            );
+            $this->session->restoreQuote();
+
+            return $this->redirect(self::PATH_CART);
+        }
+
         try {
             $charge = $this->charge->find($charge_id);
 
@@ -144,10 +157,12 @@ class Offsite extends Action
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
+
                 $invoice = $payment->getOrder()->prepareInvoice();
                 $invoice->register();
     
                 $payment->getOrder()->addRelatedObject($invoice);
+
                 $invoice->setTransactionId($charge->id)->pay()->save();
                 
                 switch ($paymentMethod) {
@@ -168,6 +183,24 @@ class Offsite extends Action
                         break;
                     case Fpx::CODE:
                         $dispPaymentMethod = "FPX";
+                        break;
+                    case Alipayplus::ALIPAY_CODE:
+                        $dispPaymentMethod = "Alipay (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::ALIPAYHK_CODE:
+                        $dispPaymentMethod = "AlipayHK (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::DANA_CODE:
+                        $dispPaymentMethod = "DANA (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::GCASH_CODE:
+                        $dispPaymentMethod = "GCash (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::KAKAOPAY_CODE:
+                        $dispPaymentMethod = "Kakao Pay (Alipay+ Partner)";
+                        break;
+                    case Alipayplus::TOUCHNGO_CODE:
+                        $dispPaymentMethod = "TNG eWallet (Alipay+ Partner)";
                         break;
                 }
                 

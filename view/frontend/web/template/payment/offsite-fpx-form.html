@@ -53,17 +53,20 @@
                             template: '<span data-bind="text: name"></span>'
                         });
                     </script>
-                    <select class="select-list-box"
-                            name="fpx_selected_bank"
-                            style="margin-bottom:10px"
-                            size="6"
-                            data-bind="foreach: banks,
-                                value: selectedFpxBank">
+                    <div class="select-list-box">
+                        <select
+                                name="fpx_selected_bank"
+                                style="margin-bottom:10px"
+                                data-bind="foreach: banks,
+                                    value: selectedFpxBank,
+                                    attr:{class: selectedFpxBank},
+                                    valueAllowUnset: true">
 
-                        <option data-bind="attr:{value: code,
-                         class:code, disabled: !active}, html: $parent.bankLabel(name, active)">
-                        </option>
-                    </select>
+                            <option data-bind="attr:{value: code,
+                            disabled: !active}, html: $parent.bankLabel(name, active)">
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </fieldset>
         </form>

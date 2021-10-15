@@ -147,6 +147,78 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_review_payment>1</can_review_payment>
                 <payment_action>order</payment_action>
             </omise_offline_tesco>
+
+            <omise_offsite_alipaycn>
+                <active>0</active>
+                <title>Alipay (Alipay+ Partner)</title>
+                <model>OmiseAlipayCnAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_alipaycn>
+
+            <omise_offsite_alipayhk>
+                <active>0</active>
+                <title>AlipayHK (Alipay+ Partner)</title>
+                <model>OmiseAlipayHkAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_alipayhk>
+
+            <omise_offsite_dana>
+                <active>0</active>
+                <title>DANA (Alipay+ Partner)</title>
+                <model>OmiseDanaAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_dana>
+
+            <omise_offsite_gcash>
+                <active>0</active>
+                <title>GCash (Alipay+ Partner)</title>
+                <model>OmiseGcashAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_gcash>
+
+            <omise_offsite_kakaopay>
+                <active>0</active>
+                <title>Kakao Pay (Alipay+ Partner)</title>
+                <model>OmiseKakaopayAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_kakaopay>
+
+            <omise_offsite_touchngo>
+                <active>0</active>
+                <title>TNG eWallet (Alipay+ Partner)</title>
+                <model>OmiseTouchngoAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_touchngo>
         </payment>
     </default>
 </config>

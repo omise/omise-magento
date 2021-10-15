@@ -9,7 +9,7 @@
           "email": "support@omise.co"
         }
     ],
-    "version": "2.18.3",
+    "version": "2.19.0",
     "minimum-stability": "stable",
     "type": "magento2-module",
     "license": "MIT",
@@ -19,7 +19,7 @@
         "magento/module-payment": ">=100.1",
         "magento/module-checkout": ">=100.1",
         "magento/module-sales": ">=100.1",
-        "omise/omise-php": "2.11.1"
+        "omise/omise-php": "2.13.0"
     },
     "autoload": {
         "files": ["registration.php"],

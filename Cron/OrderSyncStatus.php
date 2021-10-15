@@ -22,7 +22,13 @@ class OrderSyncStatus
                                 "omise_offline_tesco",
                                 "omise_offsite_alipay",
                                 "omise_offsite_truemoney",
-                                "omise_offsite_installment"
+                                "omise_offsite_installment",
+                                "omise_offsite_alipaycn",
+                                "omise_offsite_alipayhk",
+                                "omise_offsite_dana",
+                                "omise_offsite_gcash",
+                                "omise_offsite_kakaopay",
+                                "omise_offsite_touchngo",
                             ];
     /**
      * @var array

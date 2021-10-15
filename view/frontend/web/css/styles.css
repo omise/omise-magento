@@ -117,96 +117,111 @@
 }
 
 .select-list-box {
-    overflow-y: scroll;
-    height: 360px;
-    padding-left: 0;
+    position: relative;
 }
 
-.select-list-box > option {
-    padding: 15px 15px 15px 60px;
+.select-list-box:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 30px;
+    content: "";
+    pointer-events: none;
+    background: transparent;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-y: 5px;
+}
+
+
+.select-list-box > select {
+    padding-left: 0;
+    padding: 0 50px;
     background-image:url(../images/fpx-unknown.svg);
     background-repeat: no-repeat;
     background-position-y: 50%;
     background-position-x: 10px;
+    background-size: 25px;
     cursor: pointer;
 }
 
-.select-list-box > option.affin {
+.select-list-box > select.affin {
     background-image:url(../images/fpx-affin.svg);
 }
 
-.select-list-box > option.agro {
+.select-list-box > select.agro {
     background-image:url(../images/fpx-agronet.svg);
 }
 
-.select-list-box > option.alliance {
+.select-list-box > select.alliance {
     background-image:url(../images/fpx-alliance.svg);
 }
 
-.select-list-box > option.ambank {
+.select-list-box > select.ambank {
     background-image:url(../images/fpx-ambank.svg);
 }
 
-.select-list-box > option.bsn {
+.select-list-box > select.bsn {
     background-image:url(../images/fpx-bsn.svg);
 }
 
-.select-list-box > option.cimb {
+.select-list-box > select.cimb {
     background-image:url(../images/fpx-cimb.svg);
 }
 
-.select-list-box > option.citi {
+.select-list-box > select.citi {
     background-image:url(../images/fpx-citi.svg);
 }
 
-.select-list-box > option.hongleong {
+.select-list-box > select.hongleong {
     background-image:url(../images/fpx-hongleong.svg);
 }
 
-.select-list-box > option.hsbc {
+.select-list-box > select.hsbc {
     background-image:url(../images/fpx-hsbc.svg);
 }
 
-.select-list-box > option.islam {
+.select-list-box > select.islam {
     background-image:url(../images/fpx-islam.svg);
 }
 
-.select-list-box > option.kfh {
+.select-list-box > select.kfh {
     background-image:url(../images/fpx-kfh.svg);
 }
 
-.select-list-box > option.maybank2e{
+.select-list-box > select.maybank2e{
     background-image:url(../images/fpx-maybank.svg);
 }
 
-.select-list-box > option.maybank2u {
+.select-list-box > select.maybank2u {
     background-image:url(../images/fpx-maybank.svg);
 }
 
-.select-list-box > option.muamalat {
+.select-list-box > select.muamalat {
     background-image:url(../images/fpx-muamalat.svg);
 }
 
-.select-list-box > option.ocbc {
+.select-list-box > select.ocbc {
     background-image:url(../images/fpx-ocbc.svg);
 }
 
-.select-list-box > option.public {
+.select-list-box > select.public {
     background-image:url(../images/fpx-publicbank.svg);
 }
 
-.select-list-box > option.rakyat {
+.select-list-box > select.rakyat {
     background-image:url(../images/fpx-rakyat.svg);
 }
 
-.select-list-box > option.rhb {
+.select-list-box > select.rhb {
     background-image:url(../images/fpx-rhb.svg);
 }
 
-.select-list-box > option.sc {
+.select-list-box > select.sc {
     background-image:url(../images/fpx-sc.svg);
 }
 
-.select-list-box > option.uob {
+.select-list-box > select.uob {
     background-image:url(../images/fpx-uob.svg);
 }

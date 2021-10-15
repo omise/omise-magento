@@ -16,7 +16,7 @@ define(
         priceUtils
     ) {
         'use strict';
-        const INSTALLMENT_MIN_PURCHASE_AMOUNT = 3000;
+        const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
 
         return Component.extend(Base).extend({
             defaults: {
@@ -48,7 +48,7 @@ define(
 
             /**
              * Format Price
-             * 
+             *
              * @param {float} amount - Amount to be formatted
              * @return {string}
              */
@@ -91,7 +91,7 @@ define(
              * Get Installment monthly interest rate
              *
              * NOTE: in the future this function should return data from capabilities object.
-             * 
+             *
              * @param {string} id - Bank id
              * @return {float}
              */
@@ -117,7 +117,7 @@ define(
 
             /**
              * Calculates single installment amount
-             * 
+             *
              * @param {string} id - Bank ID
              * @param {integer} terms - number of monthly installments
              * @return {integer}
@@ -147,7 +147,7 @@ define(
 
             /**
              * Get installment terms
-             * 
+             *
              * @return {string|null}
              */
             getTerms: function () {
