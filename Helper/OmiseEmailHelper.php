@@ -21,6 +21,12 @@ class OmiseEmailHelper extends AbstractHelper
     protected $checkoutSession;
 
     /**
+     * @var \Magento\Sales\Model\OrderFactory
+     */
+        protected $orderModel;
+
+    /**
+     * @param \Magento\Sales\Model\OrderFactory $orderModel
      * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
      * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -28,28 +34,28 @@ class OmiseEmailHelper extends AbstractHelper
      *
      */
     public function __construct(
+        \Magento\Sales\Model\OrderFactory $orderModel,
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\App\Helper\Context $context
     ) {
+        $this->orderModel = $orderModel;
         $this->orderSender = $orderSender;
         $this->invoiceSender = $invoiceSender;
         $this->checkoutSession = $checkoutSession;
         parent::__construct($context);
     }
 
-    public function sendInvoiceAndConfirmationEmails($orderIds, $order)
+    public function sendInvoiceAndConfirmationEmails($order)
     {
         $invoiceCollection = $order->getInvoiceCollection();
 
-        if (count($orderIds)) {
-            $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
-            $this->orderSender->send($order, true);
+        $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
+        $this->orderSender->send($order, true);
 
-            foreach ($invoiceCollection as $invoice) {
-                $this->invoiceSender->send($invoice, true);
-            }
+        foreach ($invoiceCollection as $invoice) {
+            $this->invoiceSender->send($invoice, true);
         }
     }
 }

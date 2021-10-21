@@ -18,6 +18,7 @@ use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Alipayplus;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\OmiseEmailHelper;
 
 class Offsite extends Action
 {
@@ -47,12 +48,18 @@ class Offsite extends Action
      */
     protected $helper;
 
+    /**
+     * @var \Omise\Payment\Helper\OmiseEmailHelper
+     */
+    protected $emailHelper;
+
     public function __construct(
         Context $context,
         Session $session,
         Omise   $omise,
         Charge  $charge,
-        OmiseHelper $helper
+        OmiseHelper $helper,
+        OmiseEmailHelper $emailHelper
     ) {
         parent::__construct($context);
 
@@ -60,6 +67,7 @@ class Offsite extends Action
         $this->omise   = $omise;
         $this->charge  = $charge;
         $this->helper  = $helper;
+        $this->emailHelper = $emailHelper;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -117,18 +125,6 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        // hotfix for fpx - invoices won't exist here yet
-        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
-        if (! $order->hasInvoices() && $paymentType != 'fpx') {
-            $this->cancel(
-                $order,
-                __('Cannot create an invoice. Please contact our support to confirm your payment.')
-            );
-            $this->session->restoreQuote();
-
-            return $this->redirect(self::PATH_CART);
-        }
-
         try {
             $charge = $this->charge->find($charge_id);
 
@@ -164,6 +160,8 @@ class Offsite extends Action
                 $payment->getOrder()->addRelatedObject($invoice);
 
                 $invoice->setTransactionId($charge->id)->pay()->save();
+
+                $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
                 
                 switch ($paymentMethod) {
                     case Internetbanking::CODE:

@@ -38,12 +38,6 @@ class PendingInvoiceHandler implements HandlerInterface
             return;
         }
 
-        // To remove: hotfixed for fpx
-        $paymentType = $payment->getPayment()->getAdditionalInformation('payment_type');
-        if ($paymentType == 'fpx') {
-            return;
-        }
-
         $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
         $invoice->register();
 

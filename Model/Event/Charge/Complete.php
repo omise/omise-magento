@@ -7,6 +7,7 @@ use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Model\Order;
 use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
+use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 
 class Complete
 {
@@ -14,20 +15,6 @@ class Complete
      * @var string  of an event name.
      */
     const CODE = 'charge.complete';
-
-    /**
-     * @var \Omise\Payment\Helper\OmiseEmailHelper $_emailHelper
-     */
-    protected $_emailHelper;
-
-    /**
-     * @param \Omise\Payment\Helper\OmiseEmailHelper $emailHelper
-     */
-    public function __construct(
-        \Omise\Payment\Helper\OmiseEmailHelper $emailHelper
-    ) {
-        $this->_emailHelper = $emailHelper;
-    }
 
     /**
      * There are several cases with the following payment methods
@@ -59,10 +46,11 @@ class Complete
      *
      * @param  Omise\Payment\Model\Api\Event $event
      * @param  Omise\Payment\Model\Order     $order
+     * @param  Omise\Payment\Helper\OmiseEmailHelper     $emailHelper
      *
      * @return void
      */
-    public function handle(ApiEvent $event, Order $order)
+    public function handle(ApiEvent $event, Order $order, EmailHelper $emailHelper)
     {
         $charge = $event->data;
 
@@ -98,11 +86,11 @@ class Complete
 
                 $invoice = $order->prepareInvoice();
                 $invoice->register();
-        
+
                 $order->addRelatedObject($invoice);
                 $invoice->setTransactionId($charge->id)->pay()->save();
 
-                $this->_emailHelper->sendInvoiceAndConfirmationEmails(array($order->getId()), $order);
+                $emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                 // Add transaction.
                 $payment->addTransactionCommentsToOrder(
