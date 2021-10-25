@@ -138,10 +138,10 @@ class Threedsecure extends Action
             } else {
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
-                   __(
+                    __(
                         'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
                         $order->getBaseCurrency()->formatTxt($order->getTotalDue())
-                   )
+                    )
                 );
             }
 

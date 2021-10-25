@@ -164,7 +164,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOffsitePayment($paymentMethod)
     {
-       return in_array(
+        return in_array(
             $paymentMethod,
             [
                 Alipay::CODE,
