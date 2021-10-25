@@ -79,45 +79,37 @@ class Complete
                 )->save();
             }
 
-            if ($charge->isSuccessful()) {
+            // Successful payment
+            if ($charge->isSuccessful() || $charge->isAwaitCapture()) {
                 // Update order state and status.
                 $order->setState(MagentoOrder::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
 
                 $invoice = $order->prepareInvoice();
                 $invoice->register();
-
                 $order->addRelatedObject($invoice);
                 $invoice->setTransactionId($charge->id)->pay()->save();
 
                 $emailHelper->sendInvoiceAndConfirmationEmails($order);
 
-                // Add transaction.
-                $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
-                    __(
-                        'Amount of %1 has been paid via Omise Payment Gateway',
-                        $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                    )
-                );
-
-                $order->save();
-            }
-
-            if ($charge->isAwaitCapture()) {
-                // Update order state and status.
-                $order->setState(MagentoOrder::STATE_PROCESSING);
-                $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
-
-                $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_AUTH),
-                    $payment->prependMessage(
-                        __(
+                // addTransactionCommentsToOrder with message for authorise or capture
+                if ($charge->isAwaitCapture()) {
+                    $payment->addTransactionCommentsToOrder(
+                        $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
+                       __(
                             'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
                             $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                       )
+                    );
+                } else {
+                    $payment->addTransactionCommentsToOrder(
+                        $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
+                        __(
+                            'Amount of %1 has been paid via Omise Payment Gateway',
+                            $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                         )
-                    )
-                );
+                    );
+                }
 
                 $order->save();
             }

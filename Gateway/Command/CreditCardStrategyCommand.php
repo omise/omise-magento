@@ -8,6 +8,7 @@ use Magento\Payment\Gateway\Helper\ContextHelper;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Sales\Model\Order;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Model\Api\Charge;
 use Magento\Sales\Model\Order\Payment\Transaction;
 
@@ -44,6 +45,11 @@ class CreditCardStrategyCommand implements CommandInterface
     private $helper;
 
     /**
+     * @var OmiseEmailHelper
+     */
+    private $emailHelper;
+
+    /**
      * @var Charge
      */
     private $charge;
@@ -51,15 +57,18 @@ class CreditCardStrategyCommand implements CommandInterface
     /**
      * @param CommandPoolInterface $commandPool
      * @param OmiseHelper $helper
+     * @param OmiseEmailHelper $emailHelper
      * @param Charge $charge
      */
     public function __construct(
         CommandPoolInterface $commandPool,
         OmiseHelper          $helper,
+        OmiseEmailHelper     $emailHelper,
         Charge               $charge
     ) {
         $this->commandPool = $commandPool;
         $this->helper      = $helper;
+        $this->emailHelper = $emailHelper;
         $this->charge      = $charge;
     }
 
@@ -90,10 +99,13 @@ class CreditCardStrategyCommand implements CommandInterface
         $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
         $is3dsecured = $this->helper->is3DSecureEnabled($charge);
         if (! $is3dsecured) {
-            $invoice = $order->getInvoiceCollection()->getLastItem();
-            $payment->setAdditionalInformation('charge_authorize_uri', "");
+                $invoice = $order->prepareInvoice();
+                $invoice->register();
+                $order->addRelatedObject($invoice)->save();
+                $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
+
+                $payment->setAdditionalInformation('charge_authorize_uri', "");
             if ($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
-                $invoice->setTransactionId($charge->transaction)->pay();
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
                     __(
@@ -103,13 +115,11 @@ class CreditCardStrategyCommand implements CommandInterface
                 );
             } else {
                 $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_AUTH),
-                    $payment->prependMessage(
-                        __(
-                            'Authorized amount of %1 via Omise Payment Gateway.',
-                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
-                        )
-                    )
+                    $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
+                   __(
+                        'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
+                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                   )
                 );
             }
             $this->updateOrderState(
