@@ -23,7 +23,7 @@ class OmiseEmailHelper extends AbstractHelper
     /**
      * @var \Magento\Sales\Model\OrderFactory
      */
-        protected $orderModel;
+    protected $orderModel;
 
     /**
      * @param \Magento\Sales\Model\OrderFactory $orderModel
