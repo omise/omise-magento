@@ -806,7 +806,6 @@
             <argument name="handlers" xsi:type="array">
                 <item name="paymentDetails" xsi:type="string">Omise\Payment\Gateway\Response\PaymentDetailsHandler</item>
                 <item name="pendingPayment" xsi:type="string">Omise\Payment\Gateway\Response\PendingPaymentHandler</item>
-                <item name="pendingInvoice" xsi:type="string">Omise\Payment\Gateway\Response\PendingInvoiceHandler</item>
             </argument>
         </arguments>
     </virtualType>
