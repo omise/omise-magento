@@ -153,7 +153,6 @@ class Offsite extends Action
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-
                 $invoice = $payment->getOrder()->prepareInvoice();
                 $invoice->register();
     

@@ -194,7 +194,6 @@ class OmiseHelper extends AbstractHelper
         return $this->isPayableByImageCode($paymentMethod) || $this->isOffsitePayment($paymentMethod);
     }
 
-
     /**
      * Check order payment processed using Omise payment methods.
      * @param \Magento\Sales\Model\Order $order
