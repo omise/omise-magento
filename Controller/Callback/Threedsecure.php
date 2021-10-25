@@ -11,6 +11,7 @@ use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
 use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
+use Omise\Payment\Helper\OmiseEmailHelper;
 
 class Threedsecure extends Action
 {
@@ -30,15 +31,22 @@ class Threedsecure extends Action
      */
     protected $config;
 
+    /**
+     * @var Omise\Payment\Helper\OmiseEmailHelper
+     */
+    private $emailHelper;
+
     public function __construct(
         Context $context,
         Session $session,
-        Config  $config
+        Config  $config,
+        OmiseEmailHelper $emailHelper
     ) {
         parent::__construct($context);
 
         $this->session = $session;
         $this->config  = $config;
+        $this->emailHelper = $emailHelper;
     }
 
     /**
@@ -109,15 +117,17 @@ class Threedsecure extends Action
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
+            $payment->setTransactionId($charge['transaction']);
+            $payment->setLastTransId($charge['transaction']);
+
+            $invoice = $order->prepareInvoice();
+            $invoice->register();
+            $order->addRelatedObject($invoice);
+            $invoice->setTransactionId($charge['transaction'])->pay()->save();
+            $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
+
             // Update order state and status.
-            if ($order->hasInvoices()) {
-                $payment->setTransactionId($charge['transaction']);
-                $payment->setLastTransId($charge['transaction']);
-
-                $invoice = $this->invoice($order);
-                $invoice->setTransactionId($charge['transaction'])->pay()->save();
-
-                // Add transaction.
+            if ($charge['capture']) {
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
                     __(
@@ -127,13 +137,11 @@ class Threedsecure extends Action
                 );
             } else {
                 $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_AUTH),
-                    $payment->prependMessage(
-                        __(
-                            'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
-                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
-                        )
-                    )
+                    $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
+                   __(
+                        'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
+                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                   )
                 );
             }
 
@@ -144,16 +152,6 @@ class Threedsecure extends Action
 
             return $this->redirect(self::PATH_CART);
         }
-    }
-
-    /**
-     * @param  \Magento\Sales\Model\Order $order
-     *
-     * @return \Magento\Sales\Api\Data\InvoiceInterface
-     */
-    protected function invoice(Order $order)
-    {
-        return $order->getInvoiceCollection()->getLastItem();
     }
 
     /**
@@ -198,12 +196,6 @@ class Threedsecure extends Action
      */
     protected function cancel(Order $order, $message)
     {
-        if ($order->hasInvoices()) {
-            $invoice = $this->invoice($order);
-            $invoice->cancel();
-            $order->addRelatedObject($invoice);
-        }
-
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
     }

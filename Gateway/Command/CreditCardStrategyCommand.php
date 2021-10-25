@@ -101,7 +101,8 @@ class CreditCardStrategyCommand implements CommandInterface
         if (! $is3dsecured) {
                 $invoice = $order->prepareInvoice();
                 $invoice->register();
-                $order->addRelatedObject($invoice)->save();
+                $order->addRelatedObject($invoice);
+                $invoice->setTransactionId($charge->id)->pay()->save();
                 $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                 $payment->setAdditionalInformation('charge_authorize_uri', "");
