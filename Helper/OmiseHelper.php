@@ -229,7 +229,7 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Checks if charge flow is direct (not offline or offsite).
+     * Checks if 3d secured setting enabled from charge data.
      * @param \Omise\Payment\Model\Api\Charge $charge
      * @return boolean
      */
