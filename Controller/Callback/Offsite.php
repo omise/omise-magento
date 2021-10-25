@@ -155,7 +155,7 @@ class Offsite extends Action
 
                 $invoice = $payment->getOrder()->prepareInvoice();
                 $invoice->register();
-    
+
                 $payment->getOrder()->addRelatedObject($invoice);
 
                 $invoice->setTransactionId($charge->id)->pay()->save();

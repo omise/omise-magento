@@ -3,6 +3,7 @@ namespace Omise\Payment\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\HTTP\Header;
 
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
@@ -13,7 +14,6 @@ use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Tesco;
-use Magento\Framework\HTTP\Header;
 use Omise\Payment\Model\Config\Alipayplus;
 
 use SimpleXMLElement;
