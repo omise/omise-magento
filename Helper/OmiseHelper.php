@@ -157,7 +157,7 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * This method checks and return TRUE if $paymentMethod is an offsite paymetn
+     * This method checks and return TRUE if $paymentMethod is an offsite payment
      * otherwise returns false.
      * @param string $paymentMethod
      * @return boolean
