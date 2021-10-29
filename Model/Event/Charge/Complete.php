@@ -85,10 +85,12 @@ class Complete
                 $order->setState(MagentoOrder::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
 
-                $invoice = $order->prepareInvoice();
-                $invoice->register();
-                $order->addRelatedObject($invoice);
-                $invoice->setTransactionId($charge->id)->pay()->save();
+                if (!$order->hasInvoices()) {
+                    $invoice = $order->prepareInvoice();
+                    $invoice->register();
+                    $order->addRelatedObject($invoice);
+                    $invoice->setTransactionId($charge->id)->pay()->save();
+                }
 
                 $emailHelper->sendInvoiceAndConfirmationEmails($order);
 
