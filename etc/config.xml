@@ -12,6 +12,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
             <omise>
                 <sandbox_status>0</sandbox_status>
                 <model>OmiseAdapter</model>
+                <send_invoice_at_order_status>\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT</send_invoice_at_order_status>
             </omise>
 
             <omise_cc>

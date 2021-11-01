@@ -121,4 +121,14 @@ class Config
     {
         return $this->getValue('test_secret_key');
     }
+
+    /**
+     * Retrieve the order status in which to generate invoice at
+     *
+     * @return string
+     */
+    public function getSendInvoiceAtOrderStatus()
+    {
+        return $this->getValue('send_invoice_at_order_status');
+    }
 }

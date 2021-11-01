@@ -153,13 +153,7 @@ class Offsite extends Action
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-                $invoice = $payment->getOrder()->prepareInvoice();
-                $invoice->register();
-
-                $payment->getOrder()->addRelatedObject($invoice);
-
-                $invoice->setTransactionId($charge->id)->pay()->save();
-
+                $invoice = $this->helper->getOrGenerateNewInvoice($order, $charge);
                 $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
                 
                 switch ($paymentMethod) {
@@ -278,6 +272,12 @@ class Offsite extends Action
      */
     protected function cancel(Order $order, $message)
     {
+        if ($order->hasInvoices()) {
+            $invoice = $this->invoice($order);
+            $invoice->cancel();
+            $order->addRelatedObject($invoice);
+        }
+        $order->addRelatedObject($invoice);
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
     }

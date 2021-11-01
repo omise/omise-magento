@@ -155,6 +155,16 @@ class Threedsecure extends Action
     }
 
     /**
+     * @param  \Magento\Sales\Model\Order $order
+     *
+     * @return \Magento\Sales\Api\Data\InvoiceInterface
+     */
+    protected function invoice(Order $order)
+    {
+        return $order->getInvoiceCollection()->getLastItem();
+    }
+
+    /**
      * @param  string $path
      *
      * @return \Magento\Framework\App\ResponseInterface
@@ -196,6 +206,12 @@ class Threedsecure extends Action
      */
     protected function cancel(Order $order, $message)
     {
+        if ($order->hasInvoices()) {
+            $invoice = $this->invoice($order);
+            $invoice->cancel();
+            $order->addRelatedObject($invoice);
+        }
+
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
     }

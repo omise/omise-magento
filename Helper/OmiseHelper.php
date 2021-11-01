@@ -4,6 +4,7 @@ namespace Omise\Payment\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
+use Magento\Sales\Model\Order;
 
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
@@ -15,21 +16,29 @@ use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\Cc as Config;
 
 use SimpleXMLElement;
 use DOMDocument;
 
 class OmiseHelper extends AbstractHelper
 {
-
     /**
      * @var \Magento\Framework\HTTP\Header
      */
     protected $header;
 
-    public function __construct(Header $header)
-    {
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    public function __construct(
+        Header $header,
+        Config $config
+    ) {
         $this->header = $header;
+        $this->config = $config;
     }
 
     /**
@@ -184,17 +193,6 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * This method checks and return TRUE if $paymentType is offline or offsite
-     * otherwise returns false.
-     * @param string $paymentType
-     * @return boolean
-     */
-    public function isOfflineOrOffsite($paymentMethod)
-    {
-        return $this->isPayableByImageCode($paymentMethod) || $this->isOffsitePayment($paymentMethod);
-    }
-
-    /**
      * Check order payment processed using Omise payment methods.
      * @param \Magento\Sales\Model\Order $order
      * @return boolean
@@ -263,5 +261,25 @@ class OmiseHelper extends AbstractHelper
         }
 
         return "WEB";
+    }
+
+    /**
+     * Depending on the setting to generate invoice, we will either generate one or return a created one.
+     * @param \Magento\Sales\Model\Order order
+     * @param \Omise\Payment\Model\Api\Charge $charge
+     * @return Magento\Sales\Model\Order\Invoice
+     */
+    public function getOrGenerateNewInvoice($order, $charge)
+    {
+        if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
+            $invoice = $order->getInvoiceCollection()->getLastItem();
+        } else {
+            $invoice = $order->prepareInvoice();
+            $invoice->register();
+            $order->addRelatedObject($invoice)->save();
+        }
+
+        $invoice->setTransactionId($charge->id)->pay()->save();
+        return $invoice;
     }
 }

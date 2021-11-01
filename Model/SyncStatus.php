@@ -75,6 +75,14 @@ class SyncStatus
                             && $order->getState() != Order::STATE_PROCESSING) {
                             $order->setState(Order::STATE_PROCESSING);
                             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
+                            if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
+                                $invoice = $order->getInvoiceCollection()->getLastItem();
+                            } else {
+                                $invoice = $order->prepareInvoice();
+                                $invoice->register();
+                                $order->addRelatedObject($invoice);
+                            }
+                            $invoice->setTransactionId($charge['id'])->pay()->save();
                             $order->addStatusHistoryComment(
                                 __(
                                     'Omise: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',
