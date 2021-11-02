@@ -265,6 +265,7 @@ class OmiseHelper extends AbstractHelper
 
     /**
      * Depending on the setting to generate invoice, we will either generate one or return a created one.
+     * Invoice will be marked as successfully paid.
      * @param \Magento\Sales\Model\Order order
      * @param \Omise\Payment\Model\Api\Charge $charge
      * @return Magento\Sales\Model\Order\Invoice
