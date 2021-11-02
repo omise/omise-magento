@@ -7,6 +7,7 @@ use Omise\Payment\Model\Order;
 use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Event\Charge\Complete as EventChargeComplete;
 use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
+use Omise\Payment\Helper\OmiseHelper as Helper;
 
 class Event
 {
@@ -27,16 +28,19 @@ class Event
      * @param \Omise\Payment\Model\Order     $order
      * @param \Omise\Payment\Model\Api\Event $apiEvent
      * @param \Omise\Payment\Helper\OmiseEmailHelper $emailHelper
+     * @param \Omise\Payment\Helper\OmiseHelper $helper
      */
     public function __construct(
         Omise    $omise,
         Order    $order,
         ApiEvent $apiEvent,
-        EmailHelper $emailHelper
+        EmailHelper $emailHelper,
+        Helper $helper
     ) {
         $this->order    = $order;
         $this->apiEvent = $apiEvent;
         $this->emailHelper = $emailHelper;
+        $this->helper = $helper;
 
         $omise->defineUserAgent();
         $omise->defineApiVersion();
@@ -62,6 +66,6 @@ class Event
             return;
         }
 
-        return (new $this->events[$event->key])->handle($event, $this->order, $this->emailHelper);
+        return (new $this->events[$event->key])->handle($event, $this->order, $this->emailHelper, $this->helper);
     }
 }

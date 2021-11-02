@@ -269,7 +269,7 @@ class OmiseHelper extends AbstractHelper
      * @param \Omise\Payment\Model\Api\Charge $charge
      * @return Magento\Sales\Model\Order\Invoice
      */
-    public function getOrGenerateNewInvoice($order, $charge)
+    public function getOrGenerateNewInvoice($order, $chargeId)
     {
         if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
             $invoice = $order->getInvoiceCollection()->getLastItem();
@@ -279,7 +279,7 @@ class OmiseHelper extends AbstractHelper
             $order->addRelatedObject($invoice)->save();
         }
 
-        $invoice->setTransactionId($charge->id)->pay()->save();
+        $invoice->setTransactionId($chargeId)->pay()->save();
         return $invoice;
     }
 }
