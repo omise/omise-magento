@@ -95,7 +95,7 @@ class Complete
 
                 $paymentMethod = $payment->getMethod();
                 if ($helper->isPayableByImageCode($paymentMethod)) {
-                    $invoice = $helper->getOrGenerateNewInvoice($order, $charge->id);
+                    $invoice = $helper->createInvoiceAndMarkAsPaid($order, $charge->id);
                     $emailHelper->sendInvoiceAndConfirmationEmails($order);
                 } else {
                     $invoice = $order->getInvoiceCollection()->getLastItem();

@@ -264,13 +264,13 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Depending on the setting to generate invoice, we will either generate one or return a created one.
-     * Invoice will be marked as successfully paid.
+     * Depending on the setting of state to generate invoice, we will either create an invoice or return a created one.
+     * Invoice will be marked as successfully paid and returned.
      * @param \Magento\Sales\Model\Order order
      * @param \Omise\Payment\Model\Api\Charge $charge
      * @return Magento\Sales\Model\Order\Invoice
      */
-    public function getOrGenerateNewInvoice($order, $chargeId)
+    public function createInvoiceAndMarkAsPaid($order, $chargeId)
     {
         if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
             $invoice = $order->getInvoiceCollection()->getLastItem();

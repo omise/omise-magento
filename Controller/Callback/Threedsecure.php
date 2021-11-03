@@ -127,7 +127,7 @@ class Threedsecure extends Action
             $payment->setTransactionId($charge['transaction']);
             $payment->setLastTransId($charge['transaction']);
 
-            $invoice = $this->helper->getOrGenerateNewInvoice($order, $charge['transaction']);
+            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['transaction']);
             $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
             // Update order state and status.

@@ -153,7 +153,7 @@ class Offsite extends Action
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-                $invoice = $this->helper->getOrGenerateNewInvoice($order, $charge->id);
+                $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id);
                 $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
                 
                 switch ($paymentMethod) {
