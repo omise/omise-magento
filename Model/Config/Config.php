@@ -129,6 +129,6 @@ class Config
      */
     public function getSendInvoiceAtOrderStatus()
     {
-        return $this->getValue('send_invoice_at_order_status');
+        return $this->getValue('generate_invoice_at_order_status');
     }
 }
