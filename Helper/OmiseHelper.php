@@ -272,7 +272,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function createInvoiceAndMarkAsPaid($order, $chargeId)
     {
-        if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
+        if ($order->hasInvoices() || $this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
             $invoice = $order->getInvoiceCollection()->getLastItem();
         } else {
             $invoice = $order->prepareInvoice();

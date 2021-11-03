@@ -61,11 +61,13 @@ class OmiseEmailHelper extends AbstractHelper
 
     public function sendInvoiceAndConfirmationEmails($order)
     {
-        $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
-        $this->orderSender->send($order, true);
+        if (!$order->getEmailSent()) {
+            $this->checkoutSession->setForceOrderMailSentOnSuccess(true);
+            $this->orderSender->send($order, true);
 
-        if ($this->config->getSendInvoiceAtOrderStatus() == self::STATE_PROCESSING) {
-            $this->sendInvoiceEmail($order);
+            if ($this->config->getSendInvoiceAtOrderStatus() == self::STATE_PROCESSING) {
+                $this->sendInvoiceEmail($order);
+            }
         }
     }
 
