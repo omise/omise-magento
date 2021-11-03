@@ -7,7 +7,8 @@ use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Model\Order;
 use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
-use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
+use Omise\Payment\Helper\OmiseEmailHelper;
+use Omise\Payment\Helper\OmiseHelper;
 
 class Complete
 {
@@ -47,10 +48,11 @@ class Complete
      * @param  Omise\Payment\Model\Api\Event $event
      * @param  Omise\Payment\Model\Order     $order
      * @param  Omise\Payment\Helper\OmiseEmailHelper     $emailHelper
+     * @param  Omise\Payment\Helper\OmiseHelper     $helper
      *
      * @return void
      */
-    public function handle(ApiEvent $event, Order $order, EmailHelper $emailHelper)
+    public function handle(ApiEvent $event, Order $order, OmiseEmailHelper $emailHelper, OmiseHelper $helper)
     {
         $charge = $event->data;
 
@@ -73,6 +75,12 @@ class Complete
         if ($order->isPaymentReview() || $order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
             if ($charge->isFailed()) {
 
+                if ($order->hasInvoices()) {
+                    $invoice = $order->getInvoiceCollection()->getLastItem();
+                    $invoice->cancel();
+                    $order->addRelatedObject($invoice);
+                }
+
                 $order->registerCancellation(
                     __('Payment failed. ' . ucfirst($charge->failure_message) . ',
                         please contact our support if you have any questions.')
@@ -85,14 +93,13 @@ class Complete
                 $order->setState(MagentoOrder::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
 
-                if (!$order->hasInvoices()) {
-                    $invoice = $order->prepareInvoice();
-                    $invoice->register();
-                    $order->addRelatedObject($invoice);
-                    $invoice->setTransactionId($charge->id)->pay()->save();
+                $paymentMethod = $payment->getMethod();
+                if ($helper->isPayableByImageCode($paymentMethod)) {
+                    $invoice = $helper->getOrGenerateNewInvoice($order, $charge->id);
+                    $emailHelper->sendInvoiceAndConfirmationEmails($order);
+                } else {
+                    $invoice = $order->getInvoiceCollection()->getLastItem();
                 }
-
-                $emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                 // addTransactionCommentsToOrder with message for authorise or capture
                 if ($charge->isAwaitCapture()) {
