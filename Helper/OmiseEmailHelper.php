@@ -69,7 +69,8 @@ class OmiseEmailHelper extends AbstractHelper
         }
     }
 
-    public function sendInvoiceEmail($order) {
+    public function sendInvoiceEmail($order)
+    {
         $this->checkoutSession->setForceInvoiceMailSentOnSuccess(true);
 
         $invoiceCollection = $order->getInvoiceCollection();
