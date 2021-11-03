@@ -36,6 +36,21 @@ class SyncStatus
     }
     /**
      * @param Order $order
+     * @return Magento\Sales\Model\Order\Invoice
+     */
+    public function getInvoice($order)
+    {
+        if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
+            $invoice = $order->getInvoiceCollection()->getLastItem();
+        } else {
+            $invoice = $order->prepareInvoice();
+            $invoice->register();
+            $order->addRelatedObject($invoice);
+        }
+        return $invoice;
+    }
+    /**
+     * @param Order $order
      * @return void
      */
     public function cancelOrderInvoice($order)
@@ -75,14 +90,10 @@ class SyncStatus
                             && $order->getState() != Order::STATE_PROCESSING) {
                             $order->setState(Order::STATE_PROCESSING);
                             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-                            if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
-                                $invoice = $order->getInvoiceCollection()->getLastItem();
-                            } else {
-                                $invoice = $order->prepareInvoice();
-                                $invoice->register();
-                                $order->addRelatedObject($invoice);
-                            }
+
+                            $invoice = $this->getInvoice($order);
                             $invoice->setTransactionId($charge['id'])->pay()->save();
+
                             $order->addStatusHistoryComment(
                                 __(
                                     'Omise: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',
