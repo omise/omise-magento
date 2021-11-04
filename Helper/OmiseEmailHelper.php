@@ -24,17 +24,11 @@ class OmiseEmailHelper extends AbstractHelper
     protected $checkoutSession;
 
     /**
-     * @var \Magento\Sales\Model\OrderFactory
-     */
-    protected $orderModel;
-
-    /**
      * @var Config
      */
     protected $config;
 
     /**
-     * @param \Magento\Sales\Model\OrderFactory $orderModel
      * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
      * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -43,14 +37,12 @@ class OmiseEmailHelper extends AbstractHelper
      *
      */
     public function __construct(
-        \Magento\Sales\Model\OrderFactory $orderModel,
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\App\Helper\Context $context,
         Config $config
     ) {
-        $this->orderModel = $orderModel;
         $this->orderSender = $orderSender;
         $this->invoiceSender = $invoiceSender;
         $this->checkoutSession = $checkoutSession;
