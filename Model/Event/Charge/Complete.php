@@ -79,6 +79,8 @@ class Complete
                     $invoice = $order->getInvoiceCollection()->getLastItem();
                     $invoice->cancel();
                     $order->addRelatedObject($invoice);
+                } else {
+                    $invoice = $order->getInvoiceCollection()->getLastItem();
                 }
 
                 $order->registerCancellation(
