@@ -5,6 +5,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 use Magento\Sales\Model\Order;
+use Omise\Payment\Model\Config\Cc as Config;
 
 class SyncStatus
 {
@@ -25,14 +26,16 @@ class SyncStatus
 
     /**
      * @param Helper $helper
-     * @param EmailHelper emailHelper
+     * @param EmailHelper $emailHelper
      */
     public function __construct(
         Helper $helper,
-        EmailHelper $emailHelper
+        EmailHelper $emailHelper,
+        Config $config
     ) {
         $this->helper = $helper;
-        $this->emailHelper = emailHelper;
+        $this->emailHelper = $emailHelper;
+        $this->config = $config;
     }
     /**
      * @param Order $order
