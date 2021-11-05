@@ -72,6 +72,11 @@ class Complete
             return;
         }
 
+        $paymentMethod = $payment->getMethod();
+        if (!$helper->isPayableByImageCode($paymentMethod)) {
+            return;
+        }
+
         if ($order->isPaymentReview() || $order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
             if ($charge->isFailed()) {
 
@@ -95,11 +100,8 @@ class Complete
                 $order->setState(MagentoOrder::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
 
-                $paymentMethod = $payment->getMethod();
-                if ($helper->isPayableByImageCode($paymentMethod)) {
-                    $invoice = $helper->createInvoiceAndMarkAsPaid($order, $charge->id);
-                    $emailHelper->sendInvoiceAndConfirmationEmails($order);
-                }
+                $invoice = $helper->createInvoiceAndMarkAsPaid($order, $charge->id);
+                $emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                 // addTransactionCommentsToOrder with message for authorise or capture
                 if ($charge->isAwaitCapture()) {
