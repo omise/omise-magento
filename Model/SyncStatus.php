@@ -2,8 +2,8 @@
 namespace Omise\Payment\Model;
 
 use Magento\Framework\Exception\LocalizedException;
-use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Helper\OmiseHelper as Helper;
+use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 use Magento\Sales\Model\Order;
 
 class SyncStatus
@@ -19,35 +19,20 @@ class SyncStatus
     protected $helper;
 
     /**
-     * @var Config
+     * @var EmailHelper
      */
-    protected $config;
+    protected $emailHelper;
 
     /**
      * @param Helper $helper
-     * @param Config $config
+     * @param EmailHelper emailHelper
      */
     public function __construct(
         Helper $helper,
-        Config $config
+        EmailHelper $emailHelper
     ) {
         $this->helper = $helper;
-        $this->config = $config;
-    }
-    /**
-     * @param Order $order
-     * @return Magento\Sales\Model\Order\Invoice
-     */
-    public function getInvoice($order)
-    {
-        if ($this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
-            $invoice = $order->getInvoiceCollection()->getLastItem();
-        } else {
-            $invoice = $order->prepareInvoice();
-            $invoice->register();
-            $order->addRelatedObject($invoice);
-        }
-        return $invoice;
+        $this->emailHelper = emailHelper;
     }
     /**
      * @param Order $order
@@ -91,8 +76,8 @@ class SyncStatus
                             $order->setState(Order::STATE_PROCESSING);
                             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-                            $invoice = $this->getInvoice($order);
-                            $invoice->setTransactionId($charge['id'])->pay()->save();
+                            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['id']);
+                            $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                             $order->addStatusHistoryComment(
                                 __(

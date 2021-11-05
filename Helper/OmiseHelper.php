@@ -272,28 +272,15 @@ class OmiseHelper extends AbstractHelper
      */
     public function createInvoiceAndMarkAsPaid($order, $chargeId)
     {
-        if (!$order->hasInvoices() && $this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PROCESSING) {
-            // Need to use transactions to prevent duplicate invoice race condition
-            // between redirect controllers and webhooks controller.
-            $order->getResource()->beginTransaction();
-
+        if ($order->hasInvoices() && $this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PROCESSING) {
+            $invoice = $order->getInvoiceCollection()->getLastItem();
+        } else {
             $invoice = $order->prepareInvoice();
-
             $invoice->register();
             $order->addRelatedObject($invoice)->save();
-
-            if ($order->hasInvoices() == 1) {
-                $order->getResource()->commit();
-            } else {
-                $order->getResource()->rollBack();
-            }
         }
 
-        if (!isset($invoice)) {
-            $invoice = $order->getInvoiceCollection()->getLastItem();
-        }
-            $invoice->setTransactionId($chargeId)->pay()->save();
-
+        $invoice->setTransactionId($chargeId)->pay()->save();
         return $invoice;
     }
 }
