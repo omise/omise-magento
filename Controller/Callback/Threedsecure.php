@@ -124,14 +124,15 @@ class Threedsecure extends Action
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-            $payment->setTransactionId($charge['transaction']);
-            $payment->setLastTransId($charge['transaction']);
-
-            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['transaction']);
+            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['transaction'], $charge['capture']);
             $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
             // Update order state and status.
             if ($charge['capture']) {
+                $payment->setTransactionId($charge['transaction']);
+                $payment->setLastTransId($charge['transaction']);
+
+                // Add transaction.
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
                     __(
@@ -141,10 +142,12 @@ class Threedsecure extends Action
                 );
             } else {
                 $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
-                    __(
-                        'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
-                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                    $payment->addTransaction(Transaction::TYPE_AUTH),
+                    $payment->prependMessage(
+                        __(
+                            'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
+                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                        )
                     )
                 );
             }

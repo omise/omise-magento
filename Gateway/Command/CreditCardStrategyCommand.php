@@ -97,13 +97,15 @@ class CreditCardStrategyCommand implements CommandInterface
         }
 
         $charge = $this->charge->find($payment->getAdditionalInformation('charge_id'));
+        $isCapture = $paymentAction == self::ACTION_AUTHORIZE_CAPTURE;
         $is3dsecured = $this->helper->is3DSecureEnabled($charge);
         if (! $is3dsecured) {
-                $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id);
+                $order->save();
+                $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id, $isCapture);
                 $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                 $payment->setAdditionalInformation('charge_authorize_uri', "");
-            if ($paymentAction == self::ACTION_AUTHORIZE_CAPTURE) {
+            if ($isCapture) {
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
                     __(
@@ -113,10 +115,12 @@ class CreditCardStrategyCommand implements CommandInterface
                 );
             } else {
                 $payment->addTransactionCommentsToOrder(
-                    $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
-                    __(
-                        'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
-                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                    $payment->addTransaction(Transaction::TYPE_AUTH),
+                    $payment->prependMessage(
+                        __(
+                            'Authorized amount of %1 via Omise Payment Gateway.',
+                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                        )
                     )
                 );
             }

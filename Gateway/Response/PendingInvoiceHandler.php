@@ -47,6 +47,11 @@ class PendingInvoiceHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
+        $is3dsecured = $this->helper->is3DSecureEnabled($response['charge']);
+        if (!$is3dsecured && $handlingSubject['paymentAction'] != self::ACTION_AUTHORIZE_CAPTURE) {
+            return;
+        }
+
         if ($this->config->getSendInvoiceAtOrderStatus() == self::STATE_PROCESSING) {
             return;
         }

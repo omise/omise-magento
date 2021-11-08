@@ -9,6 +9,7 @@ use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Model\Config\Cc as Config;
 
 class Complete
 {
@@ -52,7 +53,7 @@ class Complete
      *
      * @return void
      */
-    public function handle(ApiEvent $event, Order $order, OmiseEmailHelper $emailHelper, OmiseHelper $helper)
+    public function handle(ApiEvent $event, Order $order, OmiseEmailHelper $emailHelper, OmiseHelper $helper, Config $config)
     {
         $charge = $event->data;
 
@@ -73,7 +74,7 @@ class Complete
         }
 
         $paymentMethod = $payment->getMethod();
-        if (!$helper->isPayableByImageCode($paymentMethod)) {
+        if (!$helper->isPayableByImageCode($paymentMethod) && $config->getSendInvoiceAtOrderStatus() == MagentoOrder::STATE_PROCESSING) {
             return;
         }
 
