@@ -70,6 +70,7 @@ class Event
             return;
         }
 
-        return (new $this->events[$event->key])->handle($event, $this->order, $this->emailHelper, $this->helper, $this->config);
+        return (new $this->events[$event->key])
+            ->handle($event, $this->order, $this->emailHelper, $this->helper, $this->config);
     }
 }
