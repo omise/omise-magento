@@ -53,8 +53,14 @@ class Complete
      *
      * @return void
      */
-    public function handle(ApiEvent $event, Order $order, OmiseEmailHelper $emailHelper, OmiseHelper $helper, Config $config)
-    {
+    public function handle(
+        ApiEvent $event,
+        Order $order,
+        OmiseEmailHelper
+        $emailHelper,
+        OmiseHelper $helper,
+        Config $config
+    ) {
         $charge = $event->data;
 
         if (! $charge instanceof ApiCharge || $charge->getMetadata('order_id') == null) {
@@ -74,7 +80,8 @@ class Complete
         }
 
         $paymentMethod = $payment->getMethod();
-        if (!$helper->isPayableByImageCode($paymentMethod) && $config->getSendInvoiceAtOrderStatus() == MagentoOrder::STATE_PROCESSING) {
+        if (!$helper->isPayableByImageCode($paymentMethod) &&
+        $config->getSendInvoiceAtOrderStatus() == MagentoOrder::STATE_PROCESSING) {
             return;
         }
 
