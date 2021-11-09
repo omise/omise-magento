@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## [v2.20.0 _(Nov 09, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.20.0)
+
+### 🚀 Enhancements
+- Added option to generate invoice after success (PR [#313](https://github.com/omise/omise-magento/pull/313))
+
+### 👾 Bug Fixes
+- Ensure order confirmation emails are sent after payment is made for all payment methods (PR [#313](https://github.com/omise/omise-magento/pull/313))
+
 ## [v2.19.0 _(Sep 21, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.19.0)
 
 ### 🚀 Enhancements
