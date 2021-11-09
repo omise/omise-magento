@@ -17,6 +17,8 @@ use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Alipayplus;
 use Magento\Framework\Exception\LocalizedException;
+use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\OmiseEmailHelper;
 
 class Offsite extends Action
 {
@@ -41,17 +43,31 @@ class Offsite extends Action
      */
     protected $charge;
 
+    /**
+     * @var \Omise\Payment\Helper\OmiseHelper
+     */
+    protected $helper;
+
+    /**
+     * @var \Omise\Payment\Helper\OmiseEmailHelper
+     */
+    protected $emailHelper;
+
     public function __construct(
         Context $context,
         Session $session,
         Omise   $omise,
-        Charge  $charge
+        Charge  $charge,
+        OmiseHelper $helper,
+        OmiseEmailHelper $emailHelper
     ) {
         parent::__construct($context);
 
         $this->session = $session;
         $this->omise   = $omise;
         $this->charge  = $charge;
+        $this->helper  = $helper;
+        $this->emailHelper = $emailHelper;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -91,23 +107,7 @@ class Offsite extends Action
         }
         
         $paymentMethod = $payment->getMethod();
-        if (! in_array(
-            $paymentMethod,
-            [
-                Alipay::CODE,
-                Internetbanking::CODE,
-                Installment::CODE,
-                Truemoney::CODE,
-                Pointsciti::CODE,
-                Fpx::CODE,
-                Alipayplus::ALIPAY_CODE,
-                Alipayplus::ALIPAYHK_CODE,
-                Alipayplus::DANA_CODE,
-                Alipayplus::GCASH_CODE,
-                Alipayplus::KAKAOPAY_CODE,
-                Alipayplus::TOUCHNGO_CODE
-            ]
-        )) {
+        if (!$this->helper->isOffsitePayment($paymentMethod)) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')
@@ -119,18 +119,6 @@ class Offsite extends Action
             $this->cancel(
                 $order,
                 __('Cannot retrieve a charge reference id. Please contact our support to confirm your payment.')
-            );
-            $this->session->restoreQuote();
-
-            return $this->redirect(self::PATH_CART);
-        }
-
-        // hotfix for fpx - invoices won't exist here yet
-        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
-        if (! $order->hasInvoices() && $paymentType != 'fpx') {
-            $this->cancel(
-                $order,
-                __('Cannot create an invoice. Please contact our support to confirm your payment.')
             );
             $this->session->restoreQuote();
 
@@ -165,15 +153,8 @@ class Offsite extends Action
                 $order->setState(Order::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-                // hotfix for fpx - create invoices here
-                if ($paymentType == 'fpx') {
-                    $invoice = $payment->getOrder()->prepareInvoice();
-                    $invoice->register();
-                    $payment->getOrder()->addRelatedObject($invoice);
-                }
-
-                $invoice = $this->invoice($order);
-                $invoice->setTransactionId($charge->id)->pay()->save();
+                $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id);
+                $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
                 
                 switch ($paymentMethod) {
                     case Internetbanking::CODE:
@@ -291,9 +272,7 @@ class Offsite extends Action
      */
     protected function cancel(Order $order, $message)
     {
-        // Hotfix for fpx, we don't want cancelled invoices as we don't generate them from the first place.
-        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
-        if ($paymentType != 'fpx') {
+        if ($order->hasInvoices()) {
             $invoice = $this->invoice($order);
             $invoice->cancel();
             $order->addRelatedObject($invoice);

@@ -54,10 +54,11 @@ class PaymentDetailsHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
-        $payment     = SubjectReader::readPayment($handlingSubject);
-        $payment     = $payment->getPayment();
-        $paymentType = isset($response['charge']->source['type']) ? $response['charge']->source['type'] : null;
-        $order       = $payment->getOrder();
+        $payment       = SubjectReader::readPayment($handlingSubject);
+        $payment       = $payment->getPayment();
+        $paymentType   = isset($response['charge']->source['type']) ? $response['charge']->source['type'] : null;
+        $paymentMethod = $payment->getMethod();
+        $order         = $payment->getOrder();
 
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
@@ -85,7 +86,7 @@ class PaymentDetailsHandler implements HandlerInterface
             $payment->setAdditionalInformation('barcode', $barcode);
         }
 
-        if ($this->_helper->isPayableByImageCode($paymentType)) {
+        if ($this->_helper->isPayableByImageCode($paymentMethod)) {
             $payment->setAdditionalInformation(
                 'image_code',
                 $response['charge']->source['scannable_code']['image']['download_uri']

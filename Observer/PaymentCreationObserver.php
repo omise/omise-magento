@@ -10,6 +10,7 @@ class PaymentCreationObserver implements ObserverInterface
      * @var \Omise\Payment\Helper\OmiseHelper
      */
     private $_helper;
+
     /**
      * @var \Omise\Payment\Model\Data\Email
      */
@@ -33,15 +34,13 @@ class PaymentCreationObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         $order   = $observer->getEvent()->getOrder();
-        $paymentType = $order->getPayment()->getAdditionalInformation('payment_type');
+        $paymentMethod = $order->getPayment()->getMethod();
 
-        // Hotfixed for FPX, can refactor for other backends.
-        if ($paymentType == 'fpx') {
-            $order->setCanSendNewEmailFlag(false);
-        }
+        // We will send confirmation emails manually, so we disable this.
+        $order->setCanSendNewEmailFlag(false);
 
         // Offline QR code payment emails
-        if ($this->_helper->isPayableByImageCode($paymentType)) {
+        if ($this->_helper->isPayableByImageCode($paymentMethod)) {
             $this->_email->sendEmail($order);
         }
         return $this;

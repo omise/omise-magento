@@ -11,6 +11,8 @@ use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
 use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
+use Omise\Payment\Helper\OmiseEmailHelper;
+use Omise\Payment\Helper\OmiseHelper;
 
 class Threedsecure extends Action
 {
@@ -30,15 +32,28 @@ class Threedsecure extends Action
      */
     protected $config;
 
+    /**
+     * @var Omise\Payment\Helper\OmiseEmailHelper
+     */
+    private $emailHelper;
+    /**
+     * @var Omise\Payment\Helper\OmiseHelper
+     */
+    private $helper;
+
     public function __construct(
         Context $context,
         Session $session,
-        Config  $config
+        Config  $config,
+        OmiseEmailHelper $emailHelper,
+        OmiseHelper $helper
     ) {
         parent::__construct($context);
 
         $this->session = $session;
         $this->config  = $config;
+        $this->emailHelper = $emailHelper;
+        $this->helper = $helper;
     }
 
     /**
@@ -109,13 +124,13 @@ class Threedsecure extends Action
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
+            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['transaction'], $charge['capture']);
+            $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
+
             // Update order state and status.
-            if ($order->hasInvoices()) {
+            if ($charge['capture']) {
                 $payment->setTransactionId($charge['transaction']);
                 $payment->setLastTransId($charge['transaction']);
-
-                $invoice = $this->invoice($order);
-                $invoice->setTransactionId($charge['transaction'])->pay()->save();
 
                 // Add transaction.
                 $payment->addTransactionCommentsToOrder(

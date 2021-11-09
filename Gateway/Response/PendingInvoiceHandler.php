@@ -4,10 +4,13 @@ namespace Omise\Payment\Gateway\Response;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\OmiseEmailHelper;
+use Omise\Payment\Model\Config\Cc as Config;
 
 class PendingInvoiceHandler implements HandlerInterface
 {
     const ACTION_AUTHORIZE_CAPTURE             = \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE;
+    const STATE_PROCESSING = \Magento\Sales\Model\Order::STATE_PROCESSING;
 
     /**
      * @var OmiseHelper
@@ -15,13 +18,30 @@ class PendingInvoiceHandler implements HandlerInterface
     private $helper;
 
     /**
-     * @param OmiseHelper $helper
+     * @var OmiseEmailHelper
      */
-    public function __construct(OmiseHelper $helper)
-    {
+    private $emailHelper;
+
+    /**
+     * @var Config
+     */
+    private $config;
+
+    /**
+     * @param OmiseHelper $helper
+     * @param OmiseEmailHelper $emailHelper
+     * @param Config $config
+     */
+    public function __construct(
+        OmiseHelper $helper,
+        OmiseEmailHelper $emailHelper,
+        Config $config
+    ) {
         $this->helper = $helper;
+        $this->emailHelper = $emailHelper;
+        $this->config = $config;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -31,18 +51,17 @@ class PendingInvoiceHandler implements HandlerInterface
         if (!$is3dsecured && $handlingSubject['paymentAction'] != self::ACTION_AUTHORIZE_CAPTURE) {
             return;
         }
+
+        if ($this->config->getSendInvoiceAtOrderStatus() == self::STATE_PROCESSING) {
+            return;
+        }
         /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
         $payment = SubjectReader::readPayment($handlingSubject);
 
-        // To remove: hotfixed for fpx
-        $paymentType = $payment->getPayment()->getAdditionalInformation('payment_type');
-        if ($paymentType == 'fpx') {
-            return;
-        }
-
         $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
         $invoice->register();
+        $payment->getPayment()->getOrder()->addRelatedObject($invoice)->save();
 
-        $payment->getPayment()->getOrder()->addRelatedObject($invoice);
+        $this->emailHelper->sendInvoiceEmail($payment->getPayment()->getOrder());
     }
 }

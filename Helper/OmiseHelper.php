@@ -4,20 +4,41 @@ namespace Omise\Payment\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
+use Magento\Sales\Model\Order;
+
+use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Pointsciti;
+use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Paynow;
+use Omise\Payment\Model\Config\Promptpay;
+use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\Cc as Config;
+
 use SimpleXMLElement;
 use DOMDocument;
 
 class OmiseHelper extends AbstractHelper
 {
-
     /**
      * @var \Magento\Framework\HTTP\Header
      */
     protected $header;
 
-    public function __construct(Header $header)
-    {
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    public function __construct(
+        Header $header,
+        Config $config
+    ) {
         $this->header = $header;
+        $this->config = $config;
     }
 
     /**
@@ -125,19 +146,49 @@ class OmiseHelper extends AbstractHelper
         }
         return $xhtml->saveXML(null, LIBXML_NOEMPTYTAG);
     }
-    
+
     /**
-     * This method checks and return TRUE if $paymentType is offline payment which is payable by image code
+     * This method checks and return TRUE if $paymentMethod is offline payment which is payable by image code
      * otherwise returns false.
-     * @param string $paymentType
+     * @param string $paymentMethod
      * @return boolean
      */
-    public function isPayableByImageCode($paymentType)
+    public function isPayableByImageCode($paymentMethod)
     {
-        return (
-            $paymentType === 'paynow'
-            || $paymentType === 'promptpay'
-            || $paymentType === 'bill_payment_tesco_lotus'
+        return in_array(
+            $paymentMethod,
+            [
+                Paynow::CODE,
+                Promptpay::CODE,
+                Tesco::CODE
+            ]
+        );
+    }
+
+    /**
+     * This method checks and return TRUE if $paymentMethod is an offsite payment
+     * otherwise returns false.
+     * @param string $paymentMethod
+     * @return boolean
+     */
+    public function isOffsitePayment($paymentMethod)
+    {
+        return in_array(
+            $paymentMethod,
+            [
+                Alipay::CODE,
+                Internetbanking::CODE,
+                Installment::CODE,
+                Truemoney::CODE,
+                Pointsciti::CODE,
+                Fpx::CODE,
+                Alipayplus::ALIPAY_CODE,
+                Alipayplus::ALIPAYHK_CODE,
+                Alipayplus::DANA_CODE,
+                Alipayplus::GCASH_CODE,
+                Alipayplus::KAKAOPAY_CODE,
+                Alipayplus::TOUCHNGO_CODE
+            ]
         );
     }
 
@@ -210,5 +261,31 @@ class OmiseHelper extends AbstractHelper
         }
 
         return "WEB";
+    }
+
+    /**
+     * Depending on the setting of state to generate invoice, we will either create an invoice or return a created one.
+     * Invoice will be marked as successfully paid and returned.
+     * @param \Magento\Sales\Model\Order order
+     * @param int $chargeId
+     * @param boolean $isCapture
+     * @return Magento\Sales\Model\Order\Invoice
+     */
+    public function createInvoiceAndMarkAsPaid($order, $chargeId, $isCapture = true)
+    {
+        if (!$isCapture) {
+            return;
+        }
+
+        if ($order->hasInvoices() && $this->config->getSendInvoiceAtOrderStatus() == Order::STATE_PENDING_PAYMENT) {
+            $invoice = $order->getInvoiceCollection()->getLastItem();
+        } else {
+            $invoice = $order->prepareInvoice();
+            $invoice->register();
+            $order->addRelatedObject($invoice)->save();
+        }
+
+        $invoice->setTransactionId($chargeId)->pay()->save();
+        return $invoice;
     }
 }

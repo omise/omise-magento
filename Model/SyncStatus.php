@@ -2,9 +2,10 @@
 namespace Omise\Payment\Model;
 
 use Magento\Framework\Exception\LocalizedException;
-use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Helper\OmiseHelper as Helper;
+use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 use Magento\Sales\Model\Order;
+use Omise\Payment\Model\Config\Cc as Config;
 
 class SyncStatus
 {
@@ -19,19 +20,21 @@ class SyncStatus
     protected $helper;
 
     /**
-     * @var Config
+     * @var EmailHelper
      */
-    protected $config;
+    protected $emailHelper;
 
     /**
      * @param Helper $helper
-     * @param Config $config
+     * @param EmailHelper $emailHelper
      */
     public function __construct(
         Helper $helper,
+        EmailHelper $emailHelper,
         Config $config
     ) {
         $this->helper = $helper;
+        $this->emailHelper = $emailHelper;
         $this->config = $config;
     }
     /**
@@ -75,8 +78,10 @@ class SyncStatus
                             && $order->getState() != Order::STATE_PROCESSING) {
                             $order->setState(Order::STATE_PROCESSING);
                             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-                            $invoice = $order->getInvoiceCollection()->getLastItem();
-                            $invoice->setTransactionId($charge['id'])->pay()->save();
+
+                            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['id']);
+                            $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
+
                             $order->addStatusHistoryComment(
                                 __(
                                     'Omise: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',
