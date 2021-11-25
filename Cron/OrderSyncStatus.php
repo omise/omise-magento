@@ -159,9 +159,8 @@ class OrderSyncStatus
             foreach ($orderIds as $order) {
                 $this->lastProcessedOrderId = $order['entity_id'];
                 $this->order = $this->orderRepository->get($order['entity_id']);
-                $expiryDate = $this->refreshExpiryDate($order);
-                $now = $this->timezone->date()->format('Y-m-d H:i:s');
-                if (strtotime($now) > strtotime($expiryDate)) {
+                $isExpired = $this->isExpired();
+                if ($isExpired) {
                     $this->syncStatus->cancelOrderInvoice($this->order);
                     $this->order->registerCancellation(__('Omise: Payment expired. (manual sync).'))
                       ->save();
@@ -203,6 +202,8 @@ class OrderSyncStatus
     /**
      * @param \Magento\Sales\Model\Order $order
      * @return string
+     * @deprecated
+     *  - Method to be removed once new logic is confirmed as stable
      */
     private function refreshExpiryDate($order)
     {
@@ -220,6 +221,28 @@ class OrderSyncStatus
             $this->refreshCounter--;
         }
         return $expiryDate;
+    }
+
+    /**
+     * isExpired
+     *  - Gets fresh charge data and returns bool representing if the charge has expired or not
+     * @return bool
+     */
+    private function isExpired()
+    {
+        $isExpired = true;
+        $payment    = $this->order->getPayment();
+        $chargeId   = $payment->getAdditionalInformation('charge_id');
+        if (isset($chargeId) && $this->refreshCounter > 0) {
+            $this->charge = \OmiseCharge::retrieve(
+                $chargeId,
+                $this->config->getPublicKey(),
+                $this->config->getSecretKey()
+            );
+            $isExpired = $this->charge['expired'];
+            $this->refreshCounter--;
+        }
+        return (bool)$isExpired;
     }
 
     /**
