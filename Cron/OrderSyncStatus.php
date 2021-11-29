@@ -30,10 +30,6 @@ class OrderSyncStatus
                                 "omise_offsite_kakaopay",
                                 "omise_offsite_touchngo",
                                 "omise_offsite_internetbanking",
-                                "omise_offsite_internetbanking_scb",
-                                "omise_offsite_internetbanking_ktb",
-                                "omise_offsite_internetbanking_bay",
-                                "omise_offsite_internetbanking_bbl",
                             ];
     /**
      * @var array
