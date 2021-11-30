@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.20.1 _(Nov 30, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.20.1)
+
+### 👾 Bug Fixes
+- Fix expiry cron worker incorrectly expiring orders sporadically (PR [#316](https://github.com/omise/omise-magento/pull/316))
+- Fix internet banking charges not being marked as expired (PR [#315](https://github.com/omise/omise-magento/pull/315))
 
 ## [v2.20.0 _(Nov 09, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.20.0)
 
