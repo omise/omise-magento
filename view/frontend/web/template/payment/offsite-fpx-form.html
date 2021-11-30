@@ -11,7 +11,7 @@
                visible: isRadioButtonVisible(),
                enable: isActive()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
-            <span data-bind="text: getTitle()"></span>
+            <span data-bind="text: getTitle()"></span><div class="fpx"></div>
         </label>
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
@@ -32,12 +32,6 @@
             <!-- /ko -->
             <!--/ko-->
         </div>
-        <div class="checkout-agreements-block">
-            <!-- ko foreach: $parent.getRegion('before-place-order') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-            <!--/ko-->
-        </div>
-
         <!-- ko if: banks().length -->
         <form class="form" data-bind="attr: {
               id: getCode() + 'Form',
@@ -71,6 +65,12 @@
             </fieldset>
         </form>
         <div class="actions-toolbar">
+            <div class="checkout-agreements-block">
+                <span>clicking on tht "Place Order" button, you agree to FPX's</span>
+                <a href="https://www.mepsfpx.com.my/FPXMain/termsAndConditions.jsp" target="_blank">
+                    Terms and Conditions
+                </a>
+            </div>
             <div class="primary">
                 <button class="action primary checkout" type="submit"
                         disabled="disabled"
