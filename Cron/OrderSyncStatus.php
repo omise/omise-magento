@@ -29,6 +29,7 @@ class OrderSyncStatus
                                 "omise_offsite_gcash",
                                 "omise_offsite_kakaopay",
                                 "omise_offsite_touchngo",
+                                "omise_offsite_internetbanking",
                             ];
     /**
      * @var array
