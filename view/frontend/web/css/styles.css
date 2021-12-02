@@ -96,6 +96,15 @@
     background: url('../images/kbank.svg')rgb(247, 226, 226);
 }
 
+div.fpx {
+    background: url('../images/fpx.svg');
+    width: 68px;
+    height: 22px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 #omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorePhoneNumber, #omise_offline_conveniencestoreCustomerName {
     width: 225px;
 }
