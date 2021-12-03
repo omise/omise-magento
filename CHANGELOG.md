@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [v2.20.2 _(Dec 03, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.20.2)
+
+### 👾 Bug Fixes
+- Fix FPX logo never display on checkout screen (PR [#318](https://github.com/omise/omise-magento/pull/318))
+- Add FPX term and condition link on checkout screen (PR [#318](https://github.com/omise/omise-magento/pull/318))
+
+# CHANGELOG
+
 ## [v2.20.1 _(Nov 30, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.20.1)
 
 ### 👾 Bug Fixes
