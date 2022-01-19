@@ -108,7 +108,7 @@ class Complete
                 $order->setState(MagentoOrder::STATE_PROCESSING);
                 $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
 
-                $invoice = $helper->createInvoiceAndMarkAsPaid($order, $charge->id);
+                $invoice = $helper->createInvoiceAndMarkAsPaid($order, $charge->id, !$charge->isAwaitCapture());
                 $emailHelper->sendInvoiceAndConfirmationEmails($order);
 
                 // addTransactionCommentsToOrder with message for authorise or capture
