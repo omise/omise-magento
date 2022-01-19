@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.20.3 _(Jan 19, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.20.3)
+
+### 👾 Bug Fixes
+- Fix invoice generated before charge is captured (PR [#320](https://github.com/omise/omise-magento/pull/320))
+
 ## [v2.20.2 _(Dec 03, 2021)_](https://github.com/omise/omise-magento/releases/tag/v2.20.2)
 
 ### 👾 Bug Fixes
