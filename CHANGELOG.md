@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.20.4 _(Feb 14, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.20.4)
+
+### 👾 Bug Fixes
+- Fix duplicate invoices being sent via email (PR [#320](https://github.com/omise/omise-magento/pull/325))
+
 ## [v2.20.3 _(Jan 19, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.20.3)
 
 ### 👾 Bug Fixes
