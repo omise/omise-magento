@@ -88,7 +88,7 @@ class OmiseEmailHelper extends AbstractHelper
         $invoiceCollection = $order->getInvoiceCollection();
         foreach ($invoiceCollection as $invoice) {
             $key = 'omise:invoice:sent:'. $invoice->getId();
-            if(!$this->cache->load($key)) {
+            if (!$this->cache->load($key)) {
                 $this->invoiceSender->send($invoice, true);
                 $this->cache->save('', $key, [], 300);
             }
