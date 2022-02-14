@@ -60,7 +60,7 @@ class OmiseEmailHelper extends AbstractHelper
 
     /**
      * sendInvoiceAndConfirmationEmails
-     * 
+     *
      * @param $order
      * @return void
      */
@@ -90,7 +90,7 @@ class OmiseEmailHelper extends AbstractHelper
             $key = 'omise:invoice:sent:'. $invoice->getId();
             if(!$this->cache->load($key)) {
                 $this->invoiceSender->send($invoice, true);
-                $this->cache->save('1', $key, [], 300);
+                $this->cache->save('', $key, [], 300);
             }
         }
     }
