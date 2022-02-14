@@ -58,6 +58,12 @@ class OmiseEmailHelper extends AbstractHelper
         parent::__construct($context);
     }
 
+    /**
+     * sendInvoiceAndConfirmationEmails
+     * 
+     * @param $order
+     * @return void
+     */
     public function sendInvoiceAndConfirmationEmails($order)
     {
         if (!$order->getEmailSent()) {
@@ -70,16 +76,21 @@ class OmiseEmailHelper extends AbstractHelper
         }
     }
 
+    /**
+     * sendInvoiceEmail
+     *
+     * @param $order
+     * @return void
+     */
     public function sendInvoiceEmail($order)
     {
         $this->checkoutSession->setForceInvoiceMailSentOnSuccess(true);
-
         $invoiceCollection = $order->getInvoiceCollection();
         foreach ($invoiceCollection as $invoice) {
-            $id = $invoice->getId();
-            if(!$this->cache->load('omise:invoice:sent:'. $id)) {
+            $key = 'omise:invoice:sent:'. $invoice->getId();
+            if(!$this->cache->load($key)) {
                 $this->invoiceSender->send($invoice, true);
-                $this->cache->save('1', 'omise:invoice:sent:'. $id, [], 300);
+                $this->cache->save('1', $key, [], 300);
             }
         }
     }
