@@ -29,24 +29,31 @@ class OmiseEmailHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var \Magento\Framework\App\CacheInterface
+     */
+    protected $cache;
+
+    /**
      * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
      * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Framework\App\Helper\Context $context
      * @param Config $config
-     *
+     * @param \Magento\Framework\App\CacheInterface $cache
      */
     public function __construct(
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\App\Helper\Context $context,
-        Config $config
+        Config $config,
+        \Magento\Framework\App\CacheInterface $cache
     ) {
         $this->orderSender = $orderSender;
         $this->invoiceSender = $invoiceSender;
         $this->checkoutSession = $checkoutSession;
         $this->config = $config;
+        $this->cache = $cache;
 
         parent::__construct($context);
     }
@@ -69,7 +76,11 @@ class OmiseEmailHelper extends AbstractHelper
 
         $invoiceCollection = $order->getInvoiceCollection();
         foreach ($invoiceCollection as $invoice) {
-            $this->invoiceSender->send($invoice, true);
+            $id = $invoice->getId();
+            if(!$this->cache->load('omise:invoice:sent:'. $id)) {
+                $this->invoiceSender->send($invoice, true);
+                $this->cache->save('1', 'omise:invoice:sent:'. $id, [], 300);
+            }
         }
     }
 }
