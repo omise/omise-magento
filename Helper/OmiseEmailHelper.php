@@ -29,28 +29,41 @@ class OmiseEmailHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var \Magento\Framework\App\CacheInterface
+     */
+    protected $cache;
+
+    /**
      * @param \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
      * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Framework\App\Helper\Context $context
      * @param Config $config
-     *
+     * @param \Magento\Framework\App\CacheInterface $cache
      */
     public function __construct(
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
         \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\App\Helper\Context $context,
-        Config $config
+        Config $config,
+        \Magento\Framework\App\CacheInterface $cache
     ) {
         $this->orderSender = $orderSender;
         $this->invoiceSender = $invoiceSender;
         $this->checkoutSession = $checkoutSession;
         $this->config = $config;
+        $this->cache = $cache;
 
         parent::__construct($context);
     }
 
+    /**
+     * sendInvoiceAndConfirmationEmails
+     *
+     * @param $order
+     * @return void
+     */
     public function sendInvoiceAndConfirmationEmails($order)
     {
         if (!$order->getEmailSent()) {
@@ -63,13 +76,22 @@ class OmiseEmailHelper extends AbstractHelper
         }
     }
 
+    /**
+     * sendInvoiceEmail
+     *
+     * @param $order
+     * @return void
+     */
     public function sendInvoiceEmail($order)
     {
         $this->checkoutSession->setForceInvoiceMailSentOnSuccess(true);
-
         $invoiceCollection = $order->getInvoiceCollection();
         foreach ($invoiceCollection as $invoice) {
-            $this->invoiceSender->send($invoice, true);
+            $key = 'omise:invoice:sent:'. $invoice->getId();
+            if (!$this->cache->load($key)) {
+                $this->invoiceSender->send($invoice, true);
+                $this->cache->save('', $key, [], 300);
+            }
         }
     }
 }
