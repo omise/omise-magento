@@ -87,10 +87,8 @@ class OmiseEmailHelper extends AbstractHelper
         $this->checkoutSession->setForceInvoiceMailSentOnSuccess(true);
         $invoiceCollection = $order->getInvoiceCollection();
         foreach ($invoiceCollection as $invoice) {
-            $key = 'omise:invoice:sent:'. $invoice->getId();
-            if (!$this->cache->load($key)) {
+            if(!$invoice->getEmailSent()) {
                 $this->invoiceSender->send($invoice, true);
-                $this->cache->save('', $key, [], 300);
             }
         }
     }
