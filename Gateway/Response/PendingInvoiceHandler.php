@@ -62,6 +62,7 @@ class PendingInvoiceHandler implements HandlerInterface
          * Delay exec of creating invoice and sending for 10secs
          * This allows time for redirect process to complete and dB 'emailSent' value to be updated to true
          */
+        // @codingStandardsIgnoreLine
         sleep(10);
         $this->emailHelper->sendInvoiceEmail($payment->getPayment()->getOrder(), true);
     }
