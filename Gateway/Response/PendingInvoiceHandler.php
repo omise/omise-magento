@@ -58,10 +58,11 @@ class PendingInvoiceHandler implements HandlerInterface
         /** @var \Magento\Payment\Gateway\Data\PaymentDataObjectInterface **/
         $payment = SubjectReader::readPayment($handlingSubject);
 
-        $invoice = $payment->getPayment()->getOrder()->prepareInvoice();
-        $invoice->register();
-        $payment->getPayment()->getOrder()->addRelatedObject($invoice)->save();
-
-        $this->emailHelper->sendInvoiceEmail($payment->getPayment()->getOrder());
+        /**
+         * Delay exec of creating invoice and sending for 10secs
+         * This allows time for redirect process to complete and dB 'emailSent' value to be updated to true
+         */
+        sleep(10);
+        $this->emailHelper->sendInvoiceEmail($payment->getPayment()->getOrder(), true);
     }
 }

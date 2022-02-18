@@ -59,8 +59,6 @@ class OmiseEmailHelper extends AbstractHelper
     }
 
     /**
-     * sendInvoiceAndConfirmationEmails
-     *
      * @param $order
      * @return void
      */
@@ -77,13 +75,18 @@ class OmiseEmailHelper extends AbstractHelper
     }
 
     /**
-     * sendInvoiceEmail
-     *
      * @param $order
+     * @param $createInvoice
      * @return void
      */
-    public function sendInvoiceEmail($order)
+    public function sendInvoiceEmail($order, $createInvoice = false)
     {
+        if ($createInvoice && !$order->hasInvoices()) {
+            $invoice = $order->prepareInvoice();
+            $invoice->register();
+            $order->addRelatedObject($invoice)->save();
+        }
+
         $this->checkoutSession->setForceInvoiceMailSentOnSuccess(true);
         $invoiceCollection = $order->getInvoiceCollection();
         foreach ($invoiceCollection as $invoice) {
