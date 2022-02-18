@@ -14,7 +14,7 @@ class Capabilities extends BaseObject
         try {
             $this->capabilities = OmiseCapabilities::retrieve();
         } catch (\Exception $e) {
-            throw new LocalizedException(__('Unable to load OmiseCapabilities api - Error: ' . $e->getMessage() ));
+            throw new LocalizedException(__('unable to load OmiseCapabilities api') . ' - Error: '. $e->getMessage());
         }
     }
 
