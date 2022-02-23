@@ -21,7 +21,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_dana',
-            restrictedToCurrencies: ['thb']
+            restrictedToCurrencies: ['sgd']
         });
     }
 );
