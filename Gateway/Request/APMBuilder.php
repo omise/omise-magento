@@ -216,13 +216,13 @@ class APMBuilder implements BuilderInterface
             case Mobilebanking::OCBCPAO_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'mobile_banking_ocbc_pao'
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    // self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
             case Mobilebanking::BAY_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'mobile_banking_bay'
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    // self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
         }

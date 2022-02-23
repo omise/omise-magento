@@ -189,7 +189,7 @@ class OmiseHelper extends AbstractHelper
                 Alipayplus::GCASH_CODE,
                 Alipayplus::KAKAOPAY_CODE,
                 Alipayplus::TOUCHNGO_CODE,
-                Mobilebanking::OCBCPAO_CODE
+                Mobilebanking::OCBCPAO_CODE,
                 Mobilebanking::BAY_CODE
             ]
         );
