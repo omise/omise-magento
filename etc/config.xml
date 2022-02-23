@@ -220,6 +220,30 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_touchngo>
-        </payment>
+
+            <omise_offsite_mobilebanking_ocbc_pao>
+                <active>0</active>
+                <title>Mobile Banking OCBC PAO</title>
+                <model>OmiseMobilebankingOcbcPaoAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_mobilebanking_ocbc_pao>
+            
+            <omise_offsite_mobilebanking_bay>
+                <active>0</active>
+                <title>Mobile Banking bay</title>
+                <model>OmiseMobilebankingBayAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_mobilebanking_bay>
+        </payment>     
     </default>
 </config>

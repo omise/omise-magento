@@ -16,6 +16,7 @@ use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\Mobilebanking;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
@@ -209,6 +210,18 @@ class APMBuilder implements BuilderInterface
             case Alipayplus::TOUCHNGO_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'touch_n_go',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Mobilebanking::OCBCPAO_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'mobile_banking_bay'
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Mobilebanking::BAY_CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'mobile_banking_bay'
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;

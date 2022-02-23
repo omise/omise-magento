@@ -16,6 +16,7 @@ use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Cc as Config;
 
 use SimpleXMLElement;
@@ -187,7 +188,9 @@ class OmiseHelper extends AbstractHelper
                 Alipayplus::DANA_CODE,
                 Alipayplus::GCASH_CODE,
                 Alipayplus::KAKAOPAY_CODE,
-                Alipayplus::TOUCHNGO_CODE
+                Alipayplus::TOUCHNGO_CODE,
+                Mobilebanking::OCBCPAO_CODE
+                Mobilebanking::BAY_CODE
             ]
         );
     }

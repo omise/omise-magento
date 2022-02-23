@@ -12,15 +12,14 @@ define(
         quote
     ) {
         'use strict';
-
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-alipayplus-form'
+                template: 'Omise_Payment/payment/offsite-mobilebanking-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_alipaycn',
+            code: 'omise_offsite_mobilebanking_bay',
             restrictedToCurrencies: ['thb']
         });
     }
