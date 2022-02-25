@@ -6,6 +6,7 @@ use Magento\Payment\Api\PaymentMethodListInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface

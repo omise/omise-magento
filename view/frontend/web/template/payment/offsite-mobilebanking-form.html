@@ -11,6 +11,7 @@
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
         </label>
+            <h6 data-bind="text:getCode()"></h6>
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
@@ -32,6 +33,67 @@
             <!-- /ko -->
             <!--/ko-->
         </div>
+        <div class="omise-banking-fee-warn"
+            data-bind="i18n: 'Your bank may charge a small fee for internet banking payments'"></div>
+        <form class="form" data-bind="attr: {
+              id: getCode() + 'Form',
+              }">
+
+            <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
+                <ul class="form-list">
+                    <!-- SCB -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="internet_banking_scb" data-bind="
+                            attr: {
+                                id: getCode() + '_scb'
+                            },
+                            checked: omiseOffsite" />
+                        <label for="omise_offsite_internetbanking_scb">
+                            <div class="omise-logo-wrapper scb">
+                                <img class="scb" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Siam Commercial Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+
+                    <!-- KTB -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="internet_banking_ktb" data-bind="
+                            attr: {
+                                id: getCode() + '_ktb'
+                            },
+                            checked: omiseOffsite" />
+                        <label for="omise_offsite_internetbanking_ktb">
+                            <div class="omise-logo-wrapper ktb">
+                                <img class="ktb" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Krungthai Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+
+                    <!-- BBL -->
+                    <li class="items">
+                        <input type="radio" name="offsite" value="internet_banking_bbl" data-bind="
+                            attr: {
+                                id: getCode() + '_bbl'
+                            },
+                            checked: omiseOffsite" />
+                        <label for="omise_offsite_internetbanking_bbl">
+                            <div class="omise-logo-wrapper bbl">
+                                <img class="bbl" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Bangkok Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
             <!-- ko template: getTemplate() -->
@@ -44,7 +106,7 @@
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked())">
+                        enable: (getCode() == isChecked() && omiseOffsite())">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>

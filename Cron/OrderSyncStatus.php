@@ -30,8 +30,7 @@ class OrderSyncStatus
                                 "omise_offsite_kakaopay",
                                 "omise_offsite_touchngo",
                                 "omise_offsite_internetbanking",
-                                "omise_offsite_mobilebanking_ocbc_pao",
-                                "omise_offsite_mobilebanking_bay",
+                                "omise_offsite_mobilebanking",
                             ];
     /**
      * @var array
