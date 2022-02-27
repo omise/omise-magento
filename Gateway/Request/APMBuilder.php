@@ -21,6 +21,7 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
+use Omise\Payment\Observer\MobilebankingDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 
@@ -215,8 +216,8 @@ class APMBuilder implements BuilderInterface
                 break;
             case Mobilebanking::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'mobile_banking',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::SOURCE_TYPE => $method->getAdditionalInformation(MobilebankingDataAssignObserver::OFFSITE),
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType()
                 ];
                 break;
         }

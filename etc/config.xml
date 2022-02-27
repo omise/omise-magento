@@ -27,7 +27,7 @@
             </omise_cc>
 
             <omise_offsite_internetbanking>
-                <active>1</active>
+                <active>0</active>
                 <title>Internet Banking</title>
                 <model>OmiseInternetbankingAdapter</model>
                 <is_gateway>1</is_gateway>
@@ -88,7 +88,7 @@
             </omise_offsite_pointsciti>
 
             <omise_offsite_installment>
-                <active>1</active>
+                <active>0</active>
                 <title>Installment</title>
                 <model>OmiseInstallmentAdapter</model>
                 <is_gateway>1</is_gateway>
@@ -221,7 +221,7 @@
             </omise_offsite_touchngo>
 
             <omise_offsite_mobilebanking>
-                <active>1</active>
+                <active>0</active>
                 <title>Mobile Banking</title>
                 <model>OmiseMobilebankingAdapter</model>
                 <is_gateway>1</is_gateway>
@@ -232,17 +232,6 @@
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_mobilebanking>
 
-            <omise_offsite_dummy>
-                <active>1</active>
-                <title>Dummy</title>
-                <model>OmiseDummyAdapter</model>
-                <is_gateway>1</is_gateway>
-                <can_initialize>1</can_initialize>
-                <can_use_checkout>1</can_use_checkout>
-                <can_capture>1</can_capture>
-                <can_review_payment>1</can_review_payment>
-                <payment_action>authorize_capture</payment_action>
-            </omise_offsite_dummy>
         </payment>
     </default>
 </config>
