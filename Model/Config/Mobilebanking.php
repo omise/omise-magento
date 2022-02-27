@@ -8,6 +8,5 @@ class Mobilebanking extends Config
     /**
      * @var string
      */
-    const CODE = 'omise_offsite_mobilebanking';
-
+    const CODE = 'omise_offsite_mobilebanking'; 
 }
