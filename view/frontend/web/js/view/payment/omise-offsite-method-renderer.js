@@ -24,7 +24,7 @@ define(
                     self = this,
                     buildFailHandler = this.buildFailHandler,
                     failHandler = buildFailHandler(self)
-                    ;
+                ;
 
                 event && event.preventDefault();
 
@@ -34,7 +34,7 @@ define(
                         var
                             storageFailHandler = buildFailHandler(this),
                             serviceUrl = self.getMagentoReturnUrl(order_id)
-                            ;
+                        ;
                         storage.get(serviceUrl, false)
                             .fail(storageFailHandler)
                             .done(function (response) {

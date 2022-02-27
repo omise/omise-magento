@@ -17,7 +17,6 @@ use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
-use Omise\Payment\Model\Config\Dummy;
 use Omise\Payment\Model\Config\Cc as Config;
 
 use SimpleXMLElement;
