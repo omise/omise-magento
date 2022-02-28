@@ -720,6 +720,54 @@
     </virtualType>
     <!-- /Promptpay ::Value Handler Pool-->
 
+    <!-- Mobile Banking payment solution -->
+    <virtualType name="OmiseMobilebankingAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Mobilebanking::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMMobilebankingValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMMobilebankingValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Mobile Banking :: Value Handler Pool -->
+    <virtualType name="OmiseAPMMobilebankingValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMMobilebankingConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMobilebankingValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMMobilebankingCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMobilebankingCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMMobilebankingConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMobilebankingConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMMobilebankingConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMobilebankingConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Mobilebanking::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Mobile Banking :: Value Handler -->
+
     <!--  Convenience Store payment solution-->
     <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>

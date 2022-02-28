@@ -26,6 +26,7 @@ define(
             'offsite-gcash',
             'offsite-kakaopay',
             'offsite-touchngo',
+            'offsite-mobilebanking',
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {

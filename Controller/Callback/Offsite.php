@@ -16,6 +16,7 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\Mobilebanking;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -192,6 +193,9 @@ class Offsite extends Action
                         break;
                     case Alipayplus::TOUCHNGO_CODE:
                         $dispPaymentMethod = "TNG eWallet (Alipay+ Partner)";
+                        break;
+                    case Mobilebanking::CODE:
+                        $dispPaymentMethod = "Mobile Banking";
                         break;
                 }
                 
