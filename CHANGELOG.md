@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.21.0 _(Feb 28, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.21.0)
+
+### 🚀 Enhancements
+- Add Alipay plus wallets for SG (PR [#309](https://github.com/omise/omise-magento/pull/309))
+
 ## [v2.20.4 _(Feb 14, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.20.4)
 
 ### 👾 Bug Fixes
