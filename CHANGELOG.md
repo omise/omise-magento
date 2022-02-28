@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [v2.21.0-alpha _(Feb 28, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.21.0-alpha)
+## [v2.21.0 _(Feb 28, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.21.0)
 
 ### 🚀 Enhancements
 - Add Mobile banking OCBC PAO for SG (PR [#327](https://github.com/omise/omise-magento/pull/327))
