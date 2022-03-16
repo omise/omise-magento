@@ -31,6 +31,7 @@ class OrderSyncStatus
                                 "omise_offsite_touchngo",
                                 "omise_offsite_internetbanking",
                                 "omise_offsite_mobilebanking",
+                                "omise_offsite_rabbitlinepay",
                             ];
     /**
      * @var array

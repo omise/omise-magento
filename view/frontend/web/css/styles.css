@@ -96,6 +96,14 @@
     background: url('../images/kbank.svg')rgb(247, 226, 226);
 }
 
+/** UOB **/
+#omise_offsite_installmentForm .uob {
+  background: rgb(0, 36, 105);
+}
+#omise_offsite_installmentForm img.uob {
+  background: url('../images/uob.svg')rgb(0, 36, 105);
+}
+
 /** OCBC PAO **/
 #omise_offsite_mobilebankingForm .ocbc_pao {
     background: rgb(250, 238, 238);

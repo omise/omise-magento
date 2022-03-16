@@ -17,6 +17,7 @@ use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Cc as Config;
 
 use SimpleXMLElement;
@@ -190,6 +191,7 @@ class OmiseHelper extends AbstractHelper
                 Alipayplus::KAKAOPAY_CODE,
                 Alipayplus::TOUCHNGO_CODE,
                 Mobilebanking::CODE,
+                Rabbitlinepay::CODE,
             ]
         );
     }
