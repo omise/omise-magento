@@ -41,6 +41,40 @@
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
                 <ul class="form-list">
+                    <!-- BAY -->
+                    <li class="items" data-bind="visible: isAllowCurrency(['thb'])">
+                        <input type="radio" name="offsite" value="mobile_banking_bay" data-bind="
+                            attr: {
+                                id: getCode() + '_bay'
+                            },
+                                checked: omiseOffsite" />
+                        <label for="omise_offsite_mobilebanking_bay">
+                            <div class="omise-logo-wrapper bay">
+                                <img class="bay" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Bank of Ayudhya'"></span>
+                            </div>
+                        </label>
+                    </li>
+
+                    <!-- KBANK -->
+                    <li class="items" data-bind="visible: isAllowCurrency(['thb'])">
+                        <input type="radio" name="offsite" value="mobile_banking_kbank" data-bind="
+                            attr: {
+                                id: getCode() + '_kbank'
+                            },
+                             checked: omiseOffsite" />
+                        <label for="omise_offsite_mobilebanking_kbank">
+                            <div class="omise-logo-wrapper kbank">
+                                <img class="kbank" />
+                            </div>
+                            <div class="omise-banking-text-wrapper">
+                                <span class="title" data-bind="i18n: 'Kasikorn Bank'"></span>
+                            </div>
+                        </label>
+                    </li>
+
                     <!-- SCB -->
                     <li class="items" data-bind="visible: isAllowCurrency(['thb'])">
                         <input type="radio" name="offsite" value="mobile_banking_scb" data-bind="
