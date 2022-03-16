@@ -85,7 +85,7 @@ define(
                     'first_choice'  : 300,
                     'ktc'           : 300,
                     'scb'           : 500,
-                    'uob'           : 500,
+                    'uob'           : 500
                 }[id];
             },
 

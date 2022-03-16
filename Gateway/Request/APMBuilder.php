@@ -223,7 +223,7 @@ class APMBuilder implements BuilderInterface
                 break;
             case Rabbitlinepay::CODE:
                 $paymentInfo[self::SOURCE] = [
-                  self::SOURCE_TYPE => 'rabbit_linepay'
+                    self::SOURCE_TYPE => 'rabbit_linepay'
                 ];
                 break;
         }
