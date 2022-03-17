@@ -20,7 +20,7 @@
     cursor: pointer;
 }
 
-#omise_offsite_internetbankingForm .omise-logo-wrapper, #omise_offsite_installmentForm .omise-logo-wrapper, #omise_offsite_mobilebankingForm .omise-logo-wrapper  {
+#omise_offsite_internetbankingForm .omise-logo-wrapper, #omise_offsite_installmentForm .omise-logo-wrapper {
     display: inline-block;
     padding: 5px;
     margin: 0 10px;
@@ -28,7 +28,19 @@
     vertical-align: top;
 }
 
-#omise_offsite_internetbankingForm .omise-logo-wrapper img, #omise_offsite_installmentForm .omise-logo-wrapper img, #omise_offsite_mobilebankingForm .omise-logo-wrapper img {
+#omise_offsite_mobilebankingForm .omise-logo-wrapper  {
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: top;
+}
+
+#omise_offsite_mobilebankingForm .omise-logo-wrapper img {
+    width: 40px;
+    height: 40px;
+    display: block;
+}
+
+#omise_offsite_internetbankingForm .omise-logo-wrapper img, #omise_offsite_installmentForm .omise-logo-wrapper img {
     width: 30px;
     height: 30px;
     display: block;
@@ -40,11 +52,11 @@
 }
 
 /** SCB **/
-#omise_offsite_internetbankingForm .scb, #omise_offsite_installmentForm .scb , #omise_offsite_mobilebankingForm .scb{
+#omise_offsite_internetbankingForm .scb, #omise_offsite_installmentForm .scb {
     background: #4e2e7f;
 }
 
-#omise_offsite_internetbankingForm img.scb, #omise_offsite_installmentForm img.scb, #omise_offsite_mobilebankingForm img.scb{
+#omise_offsite_internetbankingForm img.scb, #omise_offsite_installmentForm img.scb {
     background: url('../images/scb.svg') #4e2e7f;
 }
 
@@ -105,9 +117,26 @@
 }
 
 /** OCBC PAO **/
-#omise_offsite_mobilebankingForm .ocbc_pao {
-    background: rgb(250, 238, 238);
+#omise_offsite_mobilebankingForm img.ocbc_pao {
+  background-image: url('../images/payment_ocbc_pao.png');
 }
+
+/** BAYKMA**/
+#omise_offsite_mobilebankingForm img.bay{
+    background: url('../images/bay_kma.png');
+}
+
+/** KPlus**/
+#omise_offsite_mobilebankingForm img.kbank {
+    background: url('../images/kplus.png');
+}
+
+/** SCBEasy**/
+#omise_offsite_mobilebankingForm img.scb{
+    background: url('../images/scb_easy.png');
+}
+
+/** OCBC PAO **/
 #omise_offsite_mobilebankingForm img.ocbc_pao {
     background-image: url('../images/payment_ocbc_pao.png');
 }
