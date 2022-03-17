@@ -116,11 +116,6 @@
   background: url('../images/uob.svg')rgb(0, 36, 105);
 }
 
-/** OCBC PAO **/
-#omise_offsite_mobilebankingForm img.ocbc_pao {
-  background-image: url('../images/payment_ocbc_pao.png');
-}
-
 /** BAYKMA**/
 #omise_offsite_mobilebankingForm img.bay{
     background: url('../images/bay_kma.png');
