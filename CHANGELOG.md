@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [v2.22.0 _(Mar 17, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.22.0)
+
+### 🚀 Enhancements
+- Add Mobile banking BAY for TH (PR [#329](https://github.com/omise/omise-magento/pull/329))
+- Add Mobile banking KBANK for TH (PR [#329](https://github.com/omise/omise-magento/pull/329))
+- Add UOB Installment for TH (PR [#330](https://github.com/omise/omise-magento/pull/330))
+- Add Rabbit LINE Pay for TH (PR [#330](https://github.com/omise/omise-magento/pull/330))
+
 ## [v2.21.0 _(Mar 09, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.21.0)
 
 ### 🚀 Enhancements
