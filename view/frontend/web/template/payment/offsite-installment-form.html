@@ -236,6 +236,38 @@
                                         visible: omiseOffsite() === 'installment_scb',
                                         optionsCaption: 'Choose number of monthly payments'"></select>
                     </li>
+
+                    <!-- UOB -->
+                    <li class="items">
+                      <input type="radio" name="offsite" value="installment_uob" data-bind="
+                          attr: {
+                              id: getCode() + '_uob'
+                          },
+                          checked: omiseOffsite,
+                          click: function(data, event) { 
+                              resetTerms();
+                              return true;
+                          };" />
+                      <label for="omise_offsite_installment_uob">
+                          <div class="omise-logo-wrapper uob">
+                              <img class="uob" />
+                          </div>
+                          <div class="omise-banking-text-wrapper">
+                              <span class="title" data-bind="i18n: 'United Overseas Bank'"></span>
+                          </div>
+                      </label>
+                      <select style="margin-top:10px" data-bind="options: getInstallmentTerms('uob'),
+                                      optionsText: function (item) {
+                                          return item.label
+                                      },
+                                      optionsValue: function (item) {
+                                          return item.key
+                                      },
+                                      valueAllowUnset:true,
+                                      value: installmentTermsUOB,
+                                      visible: omiseOffsite() === 'installment_uob',
+                                      optionsCaption: 'Choose number of monthly payments'"></select>
+                  </li>
                 </ul>
             </fieldset>
         </form>

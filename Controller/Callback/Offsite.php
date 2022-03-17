@@ -17,6 +17,7 @@ use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Rabbitlinepay;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -196,6 +197,9 @@ class Offsite extends Action
                         break;
                     case Mobilebanking::CODE:
                         $dispPaymentMethod = "Mobile Banking";
+                        break;
+                    case Rabbitlinepay::CODE:
+                        $dispPaymentMethod = "Rabbit LINE Pay";
                         break;
                 }
                 
