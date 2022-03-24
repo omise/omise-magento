@@ -42,7 +42,7 @@
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
                 <ul class="form-list">
                     <!-- BAY -->
-                    <li class="items" data-bind="visible: isAllowCurrency(['thb'])">
+                    <li class="items" data-bind="visible: false">
                         <input type="radio" name="offsite" value="mobile_banking_bay" data-bind="
                             attr: {
                                 id: getCode() + '_bay'
@@ -59,7 +59,7 @@
                     </li>
 
                     <!-- KBANK -->
-                    <li class="items" data-bind="visible: isAllowCurrency(['thb'])">
+                    <li class="items" data-bind="visible: false">
                         <input type="radio" name="offsite" value="mobile_banking_kbank" data-bind="
                             attr: {
                                 id: getCode() + '_kbank'
