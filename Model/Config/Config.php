@@ -123,6 +123,16 @@ class Config
     }
 
     /**
+     * Check if using webhook or not
+     *
+     * @return bool
+     */
+    public function isWebhookEnabled()
+    {
+        return $this->getValue('webhook_status');
+    }
+
+    /**
      * Retrieve the order status in which to generate invoice at
      *
      * @return string

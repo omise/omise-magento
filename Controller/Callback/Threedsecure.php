@@ -61,6 +61,11 @@ class Threedsecure extends Action
      */
     public function execute()
     {
+        // Do not proceed if webhook is enabled
+        if ($this->config->isWebhookEnabled()) {
+            return $this->redirect(self::PATH_SUCCESS);
+        }
+
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {

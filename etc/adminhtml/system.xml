@@ -32,6 +32,11 @@
                     <label>Secret key for live</label>
                     <comment>The "Live" mode secret key can be found in Omise Dashboard.</comment>
                 </field>
+                <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Webhook</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Use webhook.</comment>
+                </field>
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Webhook endpoint</label>
                     <comment><![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]></comment>

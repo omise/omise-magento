@@ -45,7 +45,7 @@ class Customer extends BaseObject
         return $this;
     }
 
-     /**
+    /**
       * @param  array $params
       *
       * @return \Omise\Payment\Model|\Api\Error|self
