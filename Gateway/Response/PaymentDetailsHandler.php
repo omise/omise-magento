@@ -13,8 +13,8 @@ class PaymentDetailsHandler implements HandlerInterface
     protected $_helper;
 
     /**
-      * @var \Magento\Framework\HTTP\Client\Curl
-      */
+     * @var \Magento\Framework\HTTP\Client\Curl
+     */
     protected $curlClient;
 
     /**
@@ -23,10 +23,10 @@ class PaymentDetailsHandler implements HandlerInterface
     protected $transactionBuilder;
 
     /**
-      * @param \Omise\Payment\Helper\OmiseHelper $helper
-      * @param \Magento\Framework\HTTP\Client\Curl $curl
-      * @param Transaction\BuilderInterface $transactionBuilder
-      */
+     * @param \Omise\Payment\Helper\OmiseHelper $helper
+     * @param \Magento\Framework\HTTP\Client\Curl $curl
+     * @param Transaction\BuilderInterface $transactionBuilder
+     */
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Magento\Framework\HTTP\Client\Curl $curl,
