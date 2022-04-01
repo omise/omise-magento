@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.23.0 _(Apr 1, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.23.0)
+
+### 🚀 Enhancements
+- Add setting to enable webhook (PR [#333](https://github.com/omise/omise-magento/pull/333))
+
 ## [v2.22.0 _(Mar 17, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.22.0)
 
 ### 🚀 Enhancements
