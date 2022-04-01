@@ -45,11 +45,11 @@ class Customer extends BaseObject
         return $this;
     }
 
-     /**
-      * @param  array $params
-      *
-      * @return \Omise\Payment\Model|\Api\Error|self
-      */
+    /**
+     * @param  array $params
+     *
+     * @return \Omise\Payment\Model|\Api\Error|self
+     */
     public function update($params)
     {
         try {

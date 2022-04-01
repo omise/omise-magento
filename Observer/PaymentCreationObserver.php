@@ -23,8 +23,8 @@ class PaymentCreationObserver implements ObserverInterface
         \Omise\Payment\Helper\OmiseHelper $helper,
         \Omise\Payment\Model\Data\Email $email
     ) {
-        $this->_helper           = $helper;
-        $this->_email           = $email;
+        $this->_helper = $helper;
+        $this->_email = $email;
     }
 
     /**

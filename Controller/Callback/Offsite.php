@@ -21,6 +21,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
+use Omise\Payment\Model\Config\Cc as Config;
 
 class Offsite extends Action
 {
@@ -61,7 +62,8 @@ class Offsite extends Action
         Omise   $omise,
         Charge  $charge,
         OmiseHelper $helper,
-        OmiseEmailHelper $emailHelper
+        OmiseEmailHelper $emailHelper,
+        Config $config
     ) {
         parent::__construct($context);
 
@@ -70,6 +72,7 @@ class Offsite extends Action
         $this->charge  = $charge;
         $this->helper  = $helper;
         $this->emailHelper = $emailHelper;
+        $this->config = $config;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -81,6 +84,11 @@ class Offsite extends Action
      */
     public function execute()
     {
+        // Do not proceed if webhook is enabled
+        if ($this->config->isWebhookEnabled()) {
+            return $this->redirect(self::PATH_SUCCESS);
+        }
+
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
@@ -109,6 +117,7 @@ class Offsite extends Action
         }
         
         $paymentMethod = $payment->getMethod();
+
         if (!$this->helper->isOffsitePayment($paymentMethod)) {
             $this->invalid(
                 $order,

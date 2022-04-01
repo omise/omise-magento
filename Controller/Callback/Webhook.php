@@ -37,6 +37,10 @@ class Webhook extends Action
      */
     public function execute()
     {
+        if (! $this->event->config->isWebhookEnabled()) {
+            return;
+        }
+
         if (! $this->getRequest()->isPost()) {
             // TODO: Only accept for POST verb.
             return;

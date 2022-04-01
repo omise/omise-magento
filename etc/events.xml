@@ -19,7 +19,7 @@
         <observer name="omise_data_assign_truemoney" instance="Omise\Payment\Observer\TruemoneyDataAssignObserver" />
     </event>
 
-     <event name="payment_method_assign_data_omise_offsite_fpx">
+    <event name="payment_method_assign_data_omise_offsite_fpx">
         <observer name="omise_data_assign_fpx" instance="Omise\Payment\Observer\FpxDataAssignObserver" />
     </event>
 

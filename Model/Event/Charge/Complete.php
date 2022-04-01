@@ -79,12 +79,6 @@ class Complete
             return;
         }
 
-        $paymentMethod = $payment->getMethod();
-        if (!$helper->isPayableByImageCode($paymentMethod) &&
-        $config->getSendInvoiceAtOrderStatus() == MagentoOrder::STATE_PROCESSING) {
-            return;
-        }
-
         if ($order->isPaymentReview() || $order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
             if ($charge->isFailed()) {
 
