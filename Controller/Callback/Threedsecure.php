@@ -112,11 +112,6 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_SUCCESS);
         }
 
-        // Do not proceed if webhook is enabled
-        if ($this->config->isWebhookEnabled()) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
         try {
             $charge = \OmiseCharge::retrieve($charge_id, $this->config->getPublicKey(), $this->config->getSecretKey());
 
@@ -124,6 +119,11 @@ class Threedsecure extends Action
 
             if ($result instanceof Invalid) {
                 throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
+            }
+
+            // Do not proceed if webhook is enabled
+            if ($this->config->isWebhookEnabled()) {
+                return $this->redirect(self::PATH_SUCCESS);
             }
 
             $order->setState(Order::STATE_PROCESSING);
