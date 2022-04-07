@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 👾 Bug Fixes
+- Fix bug where redirects didnt handle redirects correctly (PR [#334](https://github.com/omise/omise-magento/pull/334))
+
 ## [v2.23.0 _(Apr 1, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.23.0)
 
 ### 🚀 Enhancements
