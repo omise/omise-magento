@@ -84,11 +84,6 @@ class Offsite extends Action
      */
     public function execute()
     {
-        // Do not proceed if webhook is enabled
-        if ($this->config->isWebhookEnabled()) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
@@ -134,6 +129,11 @@ class Offsite extends Action
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
+        }
+
+        // Do not proceed if webhook is enabled
+        if ($this->config->isWebhookEnabled()) {
+            return $this->redirect(self::PATH_SUCCESS);
         }
 
         try {
