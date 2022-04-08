@@ -5,11 +5,11 @@
     "homepage": "https://github.com/omise/omise-magento",
     "authors": [
         {
-          "name": "Omise",
-          "email": "support@omise.co"
+            "name": "Omise",
+            "email": "support@omise.co"
         }
     ],
-    "version": "2.23.0",
+    "version": "2.23.1",
     "minimum-stability": "stable",
     "type": "magento2-module",
     "license": "MIT",

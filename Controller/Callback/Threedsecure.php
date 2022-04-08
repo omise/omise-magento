@@ -61,11 +61,6 @@ class Threedsecure extends Action
      */
     public function execute()
     {
-        // Do not proceed if webhook is enabled
-        if ($this->config->isWebhookEnabled()) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
@@ -124,6 +119,11 @@ class Threedsecure extends Action
 
             if ($result instanceof Invalid) {
                 throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
+            }
+
+            // Do not proceed if webhook is enabled
+            if ($this->config->isWebhookEnabled()) {
+                return $this->redirect(self::PATH_SUCCESS);
             }
 
             $order->setState(Order::STATE_PROCESSING);

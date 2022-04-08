@@ -84,11 +84,6 @@ class Offsite extends Action
      */
     public function execute()
     {
-        // Do not proceed if webhook is enabled
-        if ($this->config->isWebhookEnabled()) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
@@ -154,6 +149,11 @@ class Offsite extends Action
                     __('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support
                     if you have any questions.')
                 );
+            }
+
+            // Do not proceed if webhook is enabled
+            if ($this->config->isWebhookEnabled()) {
+                return $this->redirect(self::PATH_SUCCESS);
             }
 
             $payment->setTransactionId($charge->id);
