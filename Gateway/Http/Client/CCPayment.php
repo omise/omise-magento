@@ -15,7 +15,8 @@ class CCPayment extends AbstractPayment
 
         // if charge_id already exists than action is 'manual capture'
         if (isset($transferObjectBody[self::CHARGE_ID])) {
-            $charge = $this->apiCharge->find($transferObjectBody[self::CHARGE_ID]);
+            $storeId = $transferObjectBody['metadata']['store_id'];
+            $charge = $this->apiCharge->find($transferObjectBody[self::CHARGE_ID], $storeId);
             return [self::CHARGE => $charge->capture()];
         }
 
