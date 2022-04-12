@@ -17,6 +17,13 @@ class Config
     const MODULE_NAME = 'Omise_Payment';
 
     /**
+     * To fetch value from specific store. It will fetch from default is no storeId passed
+     *
+     * @var integer
+     */
+    private $storeId = null;
+
+    /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $scopeConfig;
@@ -24,6 +31,17 @@ class Config
     public function __construct(MagentoScopeConfigInterface $scopeConfig)
     {
         $this->scopeConfig = $scopeConfig;
+    }
+
+    /**
+     * Change the store ID from the default store to fetch store specific values
+     *
+     * @param  integer|null  $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId = null)
+    {
+        $this->storeId = $storeId;
     }
 
     /**
@@ -36,7 +54,8 @@ class Config
     {
         return $this->scopeConfig->getValue(
             'payment/' . $code . '/' . $field,
-            MagentoScopeInterface::SCOPE_STORE
+            MagentoScopeInterface::SCOPE_STORE,
+            $this->storeId
         );
     }
 
