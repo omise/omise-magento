@@ -13,6 +13,33 @@ define(
     ) {
         'use strict';
 
+        const providers = [
+            {
+                id: "internet_banking_scb",
+                title: 'Siam Commercial Bank',
+                logo: 'scb',
+                active: true
+            },
+            {
+                id: "internet_banking_ktb",
+                title: 'Krungthai Bank',
+                logo: 'ktb',
+                active: true
+            },
+            {
+                id: "internet_banking_bay",
+                title: 'Krungsri Bank',
+                logo: 'bay',
+                active: true
+            },
+            {
+                id: "internet_banking_bbl",
+                title: 'Bangkok Bank',
+                logo: 'bbl',
+                active: true
+            },
+        ]
+
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-internetbanking-form'
@@ -49,8 +76,18 @@ define(
                         'offsite': this.omiseOffsite()
                     }
                 };
-            }
+            },
 
+            /**
+            * Get a provider list form capabilities api and filter on;y support type
+            *
+            * @return {Array}
+            */
+            get_available_providers() {
+                let _providers = Object.values(window.checkoutConfig.internet_banking);
+                
+                return providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
+            }
         });
     }
 );

@@ -1,128 +1,52 @@
 <div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}, visible: isActive()">
     <div class="payment-method-title field choice">
-        <input type="radio"
-               name="payment[method]"
-               class="radio"
-               data-bind="attr: {
+        <input type="radio" name="payment[method]" class="radio" data-bind="attr: {
                'id': getCode()
                },
                value: getCode(),
                checked: isChecked,
                click: selectPaymentMethod,
                visible: isRadioButtonVisible(),
-               enable: isActive()"/>
+               enable: isActive()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
         </label>
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
-                    <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank" href="https://www.omise.co/what-are-test-keys-and-live-keys"><span data-bind="i18n: 'more info'"></span></a>)
+                    <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank"
+                        href="https://www.omise.co/what-are-test-keys-and-live-keys"><span
+                            data-bind="i18n: 'more info'"></span></a>)
                 </div>
             </div>
         </div>
     </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!-- ko template: getTemplate() -->
+        <!-- /ko -->
         <!--/ko-->
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- ko template: getTemplate() -->
+            <!-- /ko -->
             <!--/ko-->
         </div>
-        <div class="omise-banking-fee-warn" data-bind="i18n: 'Your bank may charge a small fee for internet banking payments'"></div>
-        <form class="form"
-              data-bind="attr: {
-              id: getCode() + 'Form',
-              }">
-
+        <div class="omise-banking-fee-warn"
+            data-bind="i18n: 'Your bank may charge a small fee for internet banking payments'"></div>
+        <form class="form" data-bind="attr: {id: getCode() + 'Form',}">
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
-                <ul class="form-list">
-                    <!-- SCB -->
-                    <li class="items">
-                        <input
-                            type="radio"
-                            name="offsite"
-                            value="internet_banking_scb"
-                            data-bind="
-                            attr: {
-                                id: getCode() + '_scb'
-                            },
-                            checked: omiseOffsite"
-                        />
-                        <label for="omise_offsite_internetbanking_scb">
-                            <div class="omise-logo-wrapper scb">
-                                <img class="scb" />
+                <ul class="form-list" data-bind="foreach: get_available_providers()">
+                    <!-- <li data-bind="text: id"></li> -->
+                    <li class="items" data-bind="visible: active">
+                        <input type="radio" name="offsite"
+                            data-bind=" attr: { id: $parent.getCode() + '_' + logo , value: id },checked: $parent.omiseOffsite" />
+                        <label data-bind="attr:{'for': 'omise_offsite_internetbanking_'+logo}">
+                            <div class="omise-logo-wrapper" data-bind="css: logo">
+                                <img data-bind="css: logo" />
                             </div>
                             <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Siam Commercial Bank'"></span>
-                            </div>
-                        </label>
-                    </li>
-
-                    <!-- KTB -->
-                    <li class="items">
-                        <input
-                            type="radio"
-                            name="offsite"
-                            value="internet_banking_ktb"
-                            data-bind="
-                            attr: {
-                                id: getCode() + '_ktb'
-                            },
-                            checked: omiseOffsite"
-                        />
-                        <label for="omise_offsite_internetbanking_ktb">
-                            <div class="omise-logo-wrapper ktb">
-                                <img class="ktb" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Krungthai Bank'"></span>
-                            </div>
-                        </label>
-                    </li>
-
-                    <!-- BAY -->
-                    <li class="items">
-                        <input
-                            type="radio"
-                            name="offsite"
-                            value="internet_banking_bay"
-                            data-bind="
-                            attr: {
-                                id: getCode() + '_bay'
-                            },
-                            checked: omiseOffsite"
-                        />
-                        <label for="omise_offsite_internetbanking_bay">
-                            <div class="omise-logo-wrapper bay">
-                                <img class="bay" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Krungsri Bank'"></span>
-                            </div>
-                        </label>
-                    </li>
-
-                    <!-- BBL -->
-                    <li class="items">
-                        <input
-                            type="radio"
-                            name="offsite"
-                            value="internet_banking_bbl"
-                            data-bind="
-                            attr: {
-                                id: getCode() + '_bbl'
-                            },
-                            checked: omiseOffsite"
-                        />
-                        <label for="omise_offsite_internetbanking_bbl">
-                            <div class="omise-logo-wrapper bbl">
-                                <img class="bbl" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Bangkok Bank'"></span>
+                                <span class="title" data-bind="i18n: title"></span>
                             </div>
                         </label>
                     </li>
@@ -131,15 +55,13 @@
         </form>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
-                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- ko template: getTemplate() -->
+            <!-- /ko -->
             <!--/ko-->
         </div>
         <div class="actions-toolbar">
             <div class="primary">
-                <button class="action primary checkout"
-                        type="submit"
-                        disabled="disabled"
-                        data-bind="
+                <button class="action primary checkout" type="submit" disabled="disabled" data-bind="
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
