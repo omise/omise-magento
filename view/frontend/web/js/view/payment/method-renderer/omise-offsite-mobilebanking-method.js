@@ -12,6 +12,38 @@ define(
         quote
     ) {
         'use strict';
+
+        const providers = [
+            {
+                id: "mobile_banking_kbank",
+                title: 'K PLUS',
+                logo: 'kbank',
+                currencies: ['thb'],
+                active : false
+            },
+            {
+                id: "mobile_banking_scb",
+                title: 'SCB EASY',
+                logo: 'scb',
+                currencies: ['thb'],
+                active: true
+            },
+            {
+                id: "mobile_banking_bay",
+                title: 'KMA',
+                logo: 'bay',
+                currencies: ['thb'],
+                active: false
+            },
+            {
+                id: "mobile_banking_ocbc_pao",
+                title: 'OCBC Pay Anyone',
+                logo: 'ocbc_pao',
+                currencies: ['sgd'],
+                active: true
+            },
+        ]
+
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-mobilebanking-form'
@@ -21,6 +53,7 @@ define(
 
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb', 'sgd'],
+            
             /**
             * Initiate observable fields
             *
@@ -34,6 +67,7 @@ define(
 
                 return this;
             },
+
             /**
              * Is method available to display
              *
@@ -42,6 +76,7 @@ define(
             isAllowCurrency: function (currency) {
                 return currency.includes(this.getOrderCurrency())
             },
+
             /**
             * Get a checkout form data
             *
@@ -55,6 +90,18 @@ define(
                     }
                 };
             },
+
+            /**
+            * Get a provider list form capabilities api and filter on;y support type
+            *
+            * @return {Array}
+            */
+            get_available_providers() {
+                let _providers = Object.values(window.checkoutConfig.mobile_banking);
+
+                return providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
+            }
+
         });
     }
 );

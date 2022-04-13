@@ -51,4 +51,14 @@ class Capabilities extends BaseObject
             $this->capabilities->makeBackendFilterType($type)
         ) : null;
     }
+
+    /**
+     * Get Installment capabilities array from Omise-PHP
+     *
+     * @return array
+     */
+    public function getBackends()
+    {
+        return $this->capabilities ? $this->capabilities->getBackends() : null;
+    }
 }
