@@ -37,7 +37,6 @@
         <form class="form" data-bind="attr: {id: getCode() + 'Form',}">
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
                 <ul class="form-list" data-bind="foreach: get_available_providers()">
-                    <!-- <li data-bind="text: id"></li> -->
                     <li class="items" data-bind="visible: active">
                         <input type="radio" name="offsite"
                             data-bind=" attr: { id: $parent.getCode() + '_' + logo , value: id },checked: $parent.omiseOffsite" />

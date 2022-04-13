@@ -83,7 +83,7 @@ define(
             *
             * @return {Array}
             */
-            get_available_providers() {
+            get_available_providers: function() {
                 let _providers = Object.values(window.checkoutConfig.internet_banking);
                 
                 return providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
