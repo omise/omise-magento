@@ -337,6 +337,7 @@ define(
             */
             get_available_providers: function (){
                 let _providers = Object.values(window.checkoutConfig.installment_backends);
+                
                 return this.providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
             }
 

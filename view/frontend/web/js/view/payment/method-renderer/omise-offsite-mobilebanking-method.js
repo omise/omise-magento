@@ -17,13 +17,15 @@ define(
             {
                 id: "mobile_banking_kbank",
                 title: 'K PLUS',
+                code: 'kbank',
                 logo: 'kbank',
                 currencies: ['thb'],
-                active : false
+                active: false
             },
             {
                 id: "mobile_banking_scb",
                 title: 'SCB EASY',
+                code: 'scb',
                 logo: 'scb',
                 currencies: ['thb'],
                 active: true
@@ -31,6 +33,7 @@ define(
             {
                 id: "mobile_banking_bay",
                 title: 'KMA',
+                code: 'bay',
                 logo: 'bay',
                 currencies: ['thb'],
                 active: false
@@ -38,6 +41,7 @@ define(
             {
                 id: "mobile_banking_ocbc_pao",
                 title: 'OCBC Pay Anyone',
+                code: 'ocbc_pao',
                 logo: 'ocbc_pao',
                 currencies: ['sgd'],
                 active: true
@@ -53,7 +57,7 @@ define(
 
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb', 'sgd'],
-            
+
             /**
             * Initiate observable fields
             *
@@ -99,7 +103,15 @@ define(
             get_available_providers: function () {
                 let _providers = Object.values(window.checkoutConfig.mobile_banking);
 
-                return providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
+                return providers.filter((a1) => _providers.find(a2 => {
+                    if (a1.id === a2._id) {
+                        // set currencies from api if is undefined use default value
+                        if (a2?.currencies !== undefined) {
+                            a1.currencies = a2.currencies
+                        }
+                        return true
+                    }
+                }))
             }
 
         });

@@ -17,24 +17,28 @@ define(
             {
                 id: "internet_banking_scb",
                 title: 'Siam Commercial Bank',
+                code: 'scb',
                 logo: 'scb',
                 active: true
             },
             {
                 id: "internet_banking_ktb",
                 title: 'Krungthai Bank',
+                code: 'ktb',
                 logo: 'ktb',
                 active: true
             },
             {
                 id: "internet_banking_bay",
                 title: 'Krungsri Bank',
+                code: 'bay',
                 logo: 'bay',
                 active: true
             },
             {
                 id: "internet_banking_bbl",
                 title: 'Bangkok Bank',
+                code: 'bbl',
                 logo: 'bbl',
                 active: true
             },
