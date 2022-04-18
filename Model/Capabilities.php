@@ -57,7 +57,7 @@ class Capabilities
      *
      * @return array|null
      */
-    public function retrieveMobileBankingBackends() 
+    public function retrieveMobileBankingBackends()
     {
         $backends = $this->capabilitiesAPI->getBackends();
         return array_filter($backends, function ($obj) {
