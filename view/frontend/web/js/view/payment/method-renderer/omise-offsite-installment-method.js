@@ -127,7 +127,7 @@ define(
             getMinimumOrderText: function () {
                 return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
             },
-            
+
             /**
              * Get formatted message about installment caption
              *
@@ -239,7 +239,7 @@ define(
              *
              * @return {string|null}
              */
-            getObservableTrem: function (name) {
+            getObservableTerm: function (name) {
                 switch (name) {
                     case 'installmentTermsUOB':
                         return this.installmentTermsUOB()
