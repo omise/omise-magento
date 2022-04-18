@@ -55,7 +55,7 @@ class Config
         return $this->scopeConfig->getValue(
             'payment/' . $code . '/' . $field,
             MagentoScopeInterface::SCOPE_STORE,
-            $this->storeId
+            $this->storeId ?? null
         );
     }
 

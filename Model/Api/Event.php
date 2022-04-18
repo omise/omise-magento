@@ -4,6 +4,7 @@ namespace Omise\Payment\Model\Api;
 
 use Exception;
 use OmiseEvent;
+use Omise\Payment\Model\Api\Charge;
 
 /**
  * @property string $object
@@ -18,6 +19,14 @@ use OmiseEvent;
 class Event extends BaseObject
 {
     /**
+     * @param Omise\Payment\Model\Api\Charge $charge
+     */
+    public function __construct(Charge $charge)
+    {
+        $this->charge = $charge;
+    }
+
+    /**
      * @param  string $id
      *
      * @return \Omise\Payment\Model\Api\Error|self
@@ -25,7 +34,7 @@ class Event extends BaseObject
     public function find($id)
     {
         try {
-            $event         = OmiseEvent::retrieve($id);
+            $event = OmiseEvent::retrieve($id);
             $event['data'] = $this->transformDataToObject($event['data']);
             $this->refresh($event);
         } catch (Exception $e) {
@@ -47,7 +56,7 @@ class Event extends BaseObject
     {
         switch ($data['object']) {
             case 'charge':
-                $data = (new Charge)->find($data['id']);
+                $data = $this->charge->find($data['id']);
                 break;
         }
 
