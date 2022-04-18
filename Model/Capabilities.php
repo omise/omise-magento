@@ -54,7 +54,7 @@ class Capabilities
     }
 
     /**
-     * @param string $type
+     * 
      * @return array|null
      */
     public function retrieveMobileBankingBackends()
@@ -62,14 +62,13 @@ class Capabilities
         $backends = $this->capabilitiesAPI->getBackends(); 
         return array_filter($backends, function($obj){
          if (isset($obj->_id)) {
-            if (preg_match('/mobile_banking_\S+/m' ,$obj->_id)) return true;
-    }
-    return false;
-});
+            if (preg_match('/mobile_banking_\S+/m' ,$obj->_id)) 
+                return true;}
+            });
     }
     
     /**
-     * @param string $type
+     * 
      * @return array|null
      */
     public function getBackends()

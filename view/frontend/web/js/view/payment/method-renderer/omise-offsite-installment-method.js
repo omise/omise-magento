@@ -128,7 +128,7 @@ define(
                 return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
             },
             /**
-             * Get formatted message about installment option caption
+             * Get formatted message about installment caption
              *
              * @return {string}
              */
@@ -315,6 +315,7 @@ define(
                             });
                         }
                     }
+
                     return ko.observableArray(
                         dispTerms
                     );
