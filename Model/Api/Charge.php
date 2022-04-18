@@ -4,6 +4,7 @@ namespace Omise\Payment\Model\Api;
 
 use Exception;
 use OmiseCharge;
+use Omise\Payment\Model\Config\Config;
 
 /**
  * @property string $object
@@ -32,15 +33,29 @@ use OmiseCharge;
  */
 class Charge extends BaseObject
 {
+    private $config;
+
+    /**
+     * Injecting dependencies
+     *
+     * @param Config $config
+     */
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * @param  string $id
+     * @param  integer|null $storeId
      *
      * @return Omise\Payment\Model\Api\Error|self
      */
-    public function find($id)
+    public function find($id, $storeId = null)
     {
         try {
-            $this->refresh(OmiseCharge::retrieve($id));
+            $this->config->setStoreId($storeId);
+            $this->refresh(OmiseCharge::retrieve($id, $this->config->getPublicKey(), $this->config->getSecretKey()));
         } catch (Exception $e) {
             return new Error([
                 'code'    => 'not_found',
