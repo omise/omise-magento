@@ -127,6 +127,7 @@ define(
             getMinimumOrderText: function () {
                 return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
             },
+            
             /**
              * Get formatted message about installment caption
              *
@@ -147,13 +148,13 @@ define(
              */
             getInstallmentMinimum: function (id) {
                 return {
-                    'kbank'         : 500,
-                    'bbl'           : 500,
-                    'bay'           : 300,
-                    'first_choice'  : 300,
-                    'ktc'           : 300,
-                    'scb'           : 500,
-                    'uob'           : 500
+                    'kbank': 500,
+                    'bbl': 500,
+                    'bay': 300,
+                    'first_choice': 300,
+                    'ktc': 300,
+                    'scb': 500,
+                    'uob': 500
                 }[id];
             },
 
@@ -167,13 +168,13 @@ define(
              */
             getInstallmentInterestRate: function (id) {
                 return {
-                    'kbank'         : 0.0065,
-                    'bbl'           : 0.008,
-                    'bay'           : 0.008,
-                    'first_choice'  : 0.013,
-                    'ktc'           : 0.008,
-                    'scb'           : 0.0074,
-                    'uob'           : 0.0064
+                    'kbank': 0.0065,
+                    'bbl': 0.008,
+                    'bay': 0.008,
+                    'first_choice': 0.013,
+                    'ktc': 0.008,
+                    'scb': 0.0074,
+                    'uob': 0.0064
                 }[id];
             },
 
@@ -332,13 +333,13 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api and filter on;y support type
+            * Get a provider list form capabilities api and filter only support type
             *
             * @return {Array}
             */
-            get_available_providers: function (){
+            get_available_providers: function () {
                 let _providers = Object.values(window.checkoutConfig.installment_backends);
-                
+
                 return this.providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
             }
 

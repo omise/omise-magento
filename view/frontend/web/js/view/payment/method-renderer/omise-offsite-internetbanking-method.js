@@ -22,7 +22,7 @@ define(
 
             code: 'omise_offsite_internetbanking',
             restrictedToCurrencies: ['thb'],
-            providers :[
+            providers: [
                 {
                     id: "internet_banking_scb",
                     title: 'Siam Commercial Bank',
@@ -58,7 +58,7 @@ define(
              *
              * @return this
              */
-            initObservable: function() {
+            initObservable: function () {
                 this._super()
                     .observe([
                         'omiseOffsite'
@@ -72,7 +72,7 @@ define(
              *
              * @return {Object}
              */
-            getData: function() {
+            getData: function () {
                 return {
                     'method': this.item.method,
                     'additional_data': {
@@ -82,13 +82,13 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api and filter on;y support type
+            * Get a provider list form capabilities api and filter only support type
             *
             * @return {Array}
             */
-            get_available_providers: function() {
+            get_available_providers: function () {
                 let _providers = Object.values(window.checkoutConfig.internet_banking);
-                
+
                 return this.providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
             }
         });

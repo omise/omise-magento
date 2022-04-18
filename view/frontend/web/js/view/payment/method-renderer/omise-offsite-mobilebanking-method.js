@@ -21,7 +21,7 @@ define(
 
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb', 'sgd'],
-            providers : [
+            providers: [
                 {
                     id: "mobile_banking_kbank",
                     title: 'K PLUS',
@@ -94,7 +94,7 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api and filter on;y support type
+            * Get a provider list form capabilities api and filter only support type
             *
             * @return {Array}
             */
