@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.23.2 _(Apr 1, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.23.2)
+- The issue of capturing a 3DS payment from sub-stores has been fixed. (PR [#335](https://github.com/omise/omise-magento/pull/335))
+- Fixed the issue with the Sync Order Status button in the orders page of the admin panel. (PR [#336](https://github.com/omise/omise-magento/pull/336))
+
+## [v2.23.1 _(Apr 1, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.23.1)
 ### 👾 Bug Fixes
 - Fix bug where redirects didnt handle redirects correctly (PR [#334](https://github.com/omise/omise-magento/pull/334))
 
