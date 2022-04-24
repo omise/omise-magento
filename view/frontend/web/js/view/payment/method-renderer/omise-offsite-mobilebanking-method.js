@@ -67,6 +67,9 @@ define(
                         'omiseOffsite'
                     ]);
 
+                // filter provider for checkout page
+                this.providers = this.get_available_providers()
+
                 return this;
             },
 

@@ -41,7 +41,7 @@
                 class: 'fieldset payment items ' + getCode()
                 , id: 'payment_form_' + getCode()
                 }">
-                <ul class="form-list" data-bind="foreach: get_available_providers()">
+                <ul class="form-list" data-bind="foreach: providers">
                     <li class="items" data-bind="visible: $parent.isAllowCurrency(currencies) && active">
                         <input type="radio" name="offsite" data-bind=" attr: { 
                                 id: $parent.getCode() + '_' + code , 

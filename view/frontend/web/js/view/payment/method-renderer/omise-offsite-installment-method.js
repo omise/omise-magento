@@ -18,7 +18,6 @@ define(
         'use strict';
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
         const CAPTION = 'Choose number of monthly payments';
-
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
@@ -32,7 +31,6 @@ define(
                     title: 'Krungthai Card',
                     code: 'ktc',
                     logo: 'ktc',
-                    obs: 'installmentTermsKTC',
                     active: true
                 },
                 {
@@ -40,7 +38,6 @@ define(
                     title: 'First Choice',
                     code: 'first_choice',
                     logo: 'fc',
-                    obs: 'installmentTermsFC',
                     active: true
                 },
                 {
@@ -48,7 +45,6 @@ define(
                     title: 'Kasikorn Bank',
                     code: 'kbank',
                     logo: 'kbank',
-                    obs: 'installmentTermsKBank',
                     active: true
                 },
                 {
@@ -56,7 +52,6 @@ define(
                     title: 'Bangkok Bank',
                     code: 'bbl',
                     logo: 'bbl',
-                    obs: 'installmentTermsBBL',
                     active: true
                 },
                 {
@@ -64,7 +59,6 @@ define(
                     title: 'Krungsri',
                     code: 'bay',
                     logo: 'bay',
-                    obs: 'installmentTermsBAY',
                     active: true
                 },
                 {
@@ -72,7 +66,6 @@ define(
                     title: 'Siam Commercial Bank',
                     code: 'scb',
                     logo: 'scb',
-                    obs: 'installmentTermsSCB',
                     active: true
                 },
                 {
@@ -80,7 +73,6 @@ define(
                     title: 'United Overseas Bank',
                     code: 'uob',
                     logo: 'uob',
-                    obs: 'installmentTermsUOB',
                     active: true
                 },
 
@@ -103,6 +95,8 @@ define(
                         'installmentTermsSCB',
                         'installmentTermsUOB',
                     ]);
+
+                this.providers = this.get_available_providers()
 
                 return this;
             },
@@ -241,20 +235,20 @@ define(
              */
             getObservableTerm: function (name) {
                 switch (name) {
-                    case 'installmentTermsUOB':
-                        return this.installmentTermsUOB()
-                    case 'installmentTermsSCB':
-                        return this.installmentTermsSCB()
-                    case 'installmentTermsBBL':
-                        return this.installmentTermsBBL()
-                    case 'installmentTermsKBank':
-                        return this.installmentTermsKBank()
-                    case 'installmentTermsFC':
-                        return this.installmentTermsFC()
-                    case 'installmentTermsKTC':
-                        return this.installmentTermsKTC()
-                    case 'installmentTermsBAY':
-                        return this.installmentTermsBAY()
+                    case 'installment_uob':
+                        return this.observe().installmentTermsUOB
+                    case 'installment_scb':
+                        return this.observe().installmentTermsSCB
+                    case 'installment_bbl':
+                        return this.observe().installmentTermsBBL
+                    case 'installment_kbank':
+                        return this.observe().installmentTermsKBank
+                    case 'installment_first_choice':
+                        return this.observe().installmentTermsFC
+                    case 'installment_ktc':
+                        return this.observe().installmentTermsKTC
+                    case 'installment_bay':
+                        return this.observe().installmentTermsBAY
                     default:
                         return null
                 }
@@ -333,14 +327,20 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api and filter only support type
+            * Get a provider list form capabilities api ,setup observer by id and filter only support type
             *
             * @return {Array}
             */
             get_available_providers: function () {
                 let _providers = Object.values(window.checkoutConfig.installment_backends);
 
-                return this.providers.filter((a1) => _providers.find(a2 => a1.id === a2._id))
+                return this.providers.filter((a1) => _providers.find(a2 => {
+                    if (a1.id === a2._id) {
+                        a1.obs = this.getInstallmentTerms(a2._id)
+                        return true
+                    }
+                }
+                ))
             }
 
         });

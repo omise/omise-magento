@@ -45,7 +45,7 @@
               }">
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
-                <ul class="form-list" data-bind="foreach: get_available_providers()">
+                <ul class="form-list" data-bind="foreach: providers">
                     <li class="items" data-bind="visible: active">
                         <input type="radio" name="offsite" data-bind=" 
                                         attr: { 
@@ -68,7 +68,7 @@
                                 <span class="title" data-bind="i18n: title"></span>
                             </div>
                         </label>
-                        <select style="margin-top:10px" data-bind="options: $parent.getInstallmentTerms(logo),
+                        <select style="margin-top:10px" data-bind="options: $parent.getInstallmentTerms(code),
                                                       optionsText: function (item) {
                                                           return item.label
                                                       },
@@ -76,7 +76,7 @@
                                                         return item.key
                                                       },
                                                       valueAllowUnset:true,
-                                                      value: $parent.getObservableTerm(obs),
+                                                      value: $parent.getObservableTerm(id),
                                                       visible: $parent.omiseOffsite() === id,
                                                       optionsCaption: $parent.getCaptionText()"></select>
                     </li>
