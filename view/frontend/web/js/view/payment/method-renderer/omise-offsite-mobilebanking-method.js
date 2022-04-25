@@ -107,7 +107,7 @@ define(
                 return this.providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {
                         // set currencies from api if is undefined use default value
-                        if (a2?.currencies !== undefined) {
+                        if (a2?.currencies !== null) {
                             a1.currencies = a2.currencies
                         }
                         return true
