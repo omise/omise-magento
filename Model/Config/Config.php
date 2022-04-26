@@ -52,11 +52,11 @@ class Config
      */
     public function getValue($field, $code = self::CODE)
     {
-        return $this->scopeConfig->getValue(
+        return trim($this->scopeConfig->getValue(
             'payment/' . $code . '/' . $field,
             MagentoScopeInterface::SCOPE_STORE,
             $this->storeId ?? null
-        );
+        ));
     }
 
     /**
