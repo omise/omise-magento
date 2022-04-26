@@ -33,7 +33,7 @@ class Capabilities extends BaseObject
         $this->config->setStoreId($storeId);
 
         // Initialize only if both keys are present
-        if(!$this->config->getPublicKey() || !$this->config->getSecretKey()) {
+        if (!$this->config->getPublicKey() || !$this->config->getSecretKey()) {
             return false;
         }
 
