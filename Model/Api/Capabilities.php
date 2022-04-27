@@ -4,13 +4,39 @@ namespace Omise\Payment\Model\Api;
 
 use Magento\Framework\Exception\LocalizedException;
 use OmiseCapabilities;
+use Omise\Payment\Model\Config\Config;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Capabilities extends BaseObject
 {
     private $capabilities;
 
-    public function __construct()
+    /**
+     * Injecting dependencies
+     * @param \Omise\Payment\Model\Config\Config $config
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
+    public function __construct(Config $config, StoreManagerInterface $storeManager)
     {
+        $this->config = $config;
+        $this->storeManager = $storeManager;
+
+        $this->initOmise();
+    }
+
+    /**
+     * Initialize the Omise plugin
+     */
+    private function initOmise()
+    {
+        $storeId = $this->storeManager->getStore()->getId();
+        $this->config->setStoreId($storeId);
+
+        // Initialize only if both keys are present
+        if (!$this->config->getPublicKey() || !$this->config->getSecretKey()) {
+            return false;
+        }
+
         try {
             $this->capabilities = OmiseCapabilities::retrieve();
         } catch (\Exception $e) {
