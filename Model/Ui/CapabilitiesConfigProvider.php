@@ -6,6 +6,7 @@ use Magento\Payment\Api\PaymentMethodListInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 
@@ -46,6 +47,12 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                 case Fpx::CODE:
                     $backendsFpx = $this->capabilities->getBackendsByType(Fpx::TYPE);
                     $configs['fpx']['banks'] = $backendsFpx ? current($backendsFpx)->banks : [];
+                    break;
+                case Mobilebanking::CODE:
+                    $configs['mobile_banking'] = $this->capabilities->retrieveMobileBankingBackends();
+                    break;
+                case Internetbanking::CODE:
+                    $configs['internet_banking'] = $this->capabilities->getBackendsByType("internet_banking");
                     break;
             }
         }
