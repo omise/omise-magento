@@ -52,4 +52,29 @@ class Capabilities
     {
         return $this->capabilitiesAPI->getBackendsByType($type);
     }
+
+    /**
+     *
+     * @return array|null
+     */
+    public function retrieveMobileBankingBackends()
+    {
+        $backends = $this->capabilitiesAPI->getBackends();
+        return array_filter($backends, function ($obj) {
+            if (isset($obj->_id)) {
+                if (preg_match('/mobile_banking_\S+/m', $obj->_id)) {
+                    return true;
+                }
+            }
+        });
+    }
+    
+    /**
+     *
+     * @return array|null
+     */
+    public function getBackends()
+    {
+        return $this->capabilitiesAPI->getBackends();
+    }
 }

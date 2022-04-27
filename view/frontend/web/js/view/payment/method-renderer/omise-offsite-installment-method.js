@@ -17,7 +17,7 @@ define(
     ) {
         'use strict';
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
-
+        const CAPTION = 'Choose number of monthly payments';
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
@@ -25,6 +25,58 @@ define(
 
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
+            providers: [
+                {
+                    id: "installment_ktc",
+                    title: 'Krungthai Card',
+                    code: 'ktc',
+                    logo: 'ktc',
+                    active: true
+                },
+                {
+                    id: "installment_first_choice",
+                    title: 'First Choice',
+                    code: 'first_choice',
+                    logo: 'fc',
+                    active: true
+                },
+                {
+                    id: "installment_kbank",
+                    title: 'Kasikorn Bank',
+                    code: 'kbank',
+                    logo: 'kbank',
+                    active: true
+                },
+                {
+                    id: "installment_bbl",
+                    title: 'Bangkok Bank',
+                    code: 'bbl',
+                    logo: 'bbl',
+                    active: true
+                },
+                {
+                    id: "installment_bay",
+                    title: 'Krungsri',
+                    code: 'bay',
+                    logo: 'bay',
+                    active: true
+                },
+                {
+                    id: "installment_scb",
+                    title: 'Siam Commercial Bank',
+                    code: 'scb',
+                    logo: 'scb',
+                    active: true
+                },
+                {
+                    id: "installment_uob",
+                    title: 'United Overseas Bank',
+                    code: 'uob',
+                    logo: 'uob',
+                    active: true
+                },
+
+            ],
 
             /**
              * Initiate observable fields
@@ -43,6 +95,8 @@ define(
                         'installmentTermsSCB',
                         'installmentTermsUOB',
                     ]);
+
+                this.providers = this.get_available_providers()
 
                 return this;
             },
@@ -69,6 +123,15 @@ define(
             },
 
             /**
+             * Get formatted message about installment caption
+             *
+             * @return {string}
+             */
+            getCaptionText: function () {
+                return CAPTION
+            },
+
+            /**
              * Get Installment minimum
              * this function respects info from: https://www.omise.co/installment-payment
              *
@@ -79,13 +142,13 @@ define(
              */
             getInstallmentMinimum: function (id) {
                 return {
-                    'kbank'         : 500,
-                    'bbl'           : 500,
-                    'bay'           : 300,
-                    'first_choice'  : 300,
-                    'ktc'           : 300,
-                    'scb'           : 500,
-                    'uob'           : 500
+                    'kbank': 500,
+                    'bbl': 500,
+                    'bay': 300,
+                    'first_choice': 300,
+                    'ktc': 300,
+                    'scb': 500,
+                    'uob': 500
                 }[id];
             },
 
@@ -99,13 +162,13 @@ define(
              */
             getInstallmentInterestRate: function (id) {
                 return {
-                    'kbank'         : 0.0065,
-                    'bbl'           : 0.008,
-                    'bay'           : 0.008,
-                    'first_choice'  : 0.013,
-                    'ktc'           : 0.008,
-                    'scb'           : 0.0074,
-                    'uob'           : 0.0064
+                    'kbank': 0.0065,
+                    'bbl': 0.008,
+                    'bay': 0.008,
+                    'first_choice': 0.013,
+                    'ktc': 0.008,
+                    'scb': 0.0074,
+                    'uob': 0.0064
                 }[id];
             },
 
@@ -163,6 +226,32 @@ define(
                     this.installmentTermsSCB() ||
                     this.installmentTermsUOB()
                 );
+            },
+
+            /**
+             * Get installment term ko.observable by name
+             *
+             * @return {string|null}
+             */
+            getObservableTerm: function (name) {
+                switch (name) {
+                    case 'installment_uob':
+                        return this.observe().installmentTermsUOB
+                    case 'installment_scb':
+                        return this.observe().installmentTermsSCB
+                    case 'installment_bbl':
+                        return this.observe().installmentTermsBBL
+                    case 'installment_kbank':
+                        return this.observe().installmentTermsKBank
+                    case 'installment_first_choice':
+                        return this.observe().installmentTermsFC
+                    case 'installment_ktc':
+                        return this.observe().installmentTermsKTC
+                    case 'installment_bay':
+                        return this.observe().installmentTermsBAY
+                    default:
+                        return null
+                }
             },
 
             /**
@@ -235,6 +324,23 @@ define(
              */
             orderValueTooLow: function () {
                 return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT;
+            },
+
+            /**
+            * Get a provider list form capabilities api ,setup observer by id and filter only support type
+            *
+            * @return {Array}
+            */
+            get_available_providers: function () {
+                let _providers = Object.values(window.checkoutConfig.installment_backends);
+
+                return this.providers.filter((a1) => _providers.find(a2 => {
+                    if (a1.id === a2._id) {
+                        a1.obs = this.getInstallmentTerms(a2._id)
+                        return true
+                    }
+                }
+                ))
             }
 
         });

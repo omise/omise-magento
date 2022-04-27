@@ -14,7 +14,9 @@
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
                 <div class="message-warning warning message">
-                    <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank" href="https://www.omise.co/what-are-test-keys-and-live-keys"><span data-bind="i18n: 'more info'"></span></a>)
+                    <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank"
+                        href="https://www.omise.co/what-are-test-keys-and-live-keys"><span
+                            data-bind="i18n: 'more info'"></span></a>)
                 </div>
             </div>
         </div>
@@ -43,231 +45,41 @@
               }">
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
-                <ul class="form-list">
-                    <!-- KTC -->
-                    <li class="items">
-                        <input type="radio" name="offsite" value="installment_ktc" data-bind="
-                            attr: {
-                                id: getCode() + '_ktc'
-                            },
-                            checked: omiseOffsite,
-                            click: function(data, event) { 
-                                resetTerms();
-                                return true;
-                            }" />
-                        <label for="omise_offsite_installment_ktc">
-                            <div class="omise-logo-wrapper ktc">
-                                <img class="ktc" />
+                <ul class="form-list" data-bind="foreach: providers">
+                    <li class="items" data-bind="visible: active">
+                        <input type="radio" name="offsite" data-bind=" 
+                                        attr: { 
+                                            id: $parent.getCode() + '_' + code 
+                                            , value: id 
+                                        },
+                                        checked: $parent.omiseOffsite,
+                                        click: function(data, event) { 
+                                            $parent.resetTerms();
+                                            return true;
+                                        };" />
+                        <label data-bind="
+                                attr:{
+                                    'for': 'omise_offsite_installment_'+logo
+                                }">
+                            <div class="omise-logo-wrapper" data-bind="css: logo">
+                                <img data-bind="css: logo" />
                             </div>
                             <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Krungthai Card'"></span>
+                                <span class="title" data-bind="i18n: title"></span>
                             </div>
                         </label>
-                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('ktc'),
-                                        optionsText: function (item) {
-                                            return item.label
-                                        },
-                                        optionsValue: function (item) {
-                                            return item.key
-                                        },
-                                        valueAllowUnset: true,
-                                        value: installmentTermsKTC,
-                                        visible: omiseOffsite() === 'installment_ktc',
-                                        optionsCaption: 'Choose number of monthly payments'"></select>
+                        <select style="margin-top:10px" data-bind="options: $parent.getInstallmentTerms(code),
+                                                      optionsText: function (item) {
+                                                          return item.label
+                                                      },
+                                                      optionsValue: function (item) {
+                                                        return item.key
+                                                      },
+                                                      valueAllowUnset:true,
+                                                      value: $parent.getObservableTerm(id),
+                                                      visible: $parent.omiseOffsite() === id,
+                                                      optionsCaption: $parent.getCaptionText()"></select>
                     </li>
-
-                    <!-- First Choice -->
-                    <li class="items">
-                        <input type="radio" name="offsite" value="installment_first_choice" data-bind="
-                            attr: {
-                                id: getCode() + '_first_choice'
-                            },
-                            checked: omiseOffsite,
-                            click: function(data, event) { 
-                                resetTerms();
-                                return true;
-                            };" />
-                        <label for="omise_offsite_installment_first_choice">
-                            <div class="omise-logo-wrapper fc">
-                                <img class="fc" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'First Choice'"></span>
-                            </div>
-                        </label>
-                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('first_choice'),
-                                        optionsText: function (item) {
-                                            return item.label
-                                        },
-                                        optionsValue: function (item) {
-                                            return item.key
-                                        },
-                                        valueAllowUnset: true,
-                                        value: installmentTermsFC,
-                                        visible: omiseOffsite() === 'installment_first_choice',
-                                        optionsCaption: 'Choose number of monthly payments'"></select>
-                    </li>
-
-                    <!-- KBank -->
-                    <li class="items">
-                        <input type="radio" name="offsite" value="installment_kbank" data-bind="
-                            attr: {
-                                id: getCode() + '_kbank'
-                            },
-                            checked: omiseOffsite,
-                            click: function(data, event) { 
-                                resetTerms();
-                                return true;
-                            };" />
-                        <label for="omise_offsite_installment_kbank">
-                            <div class="omise-logo-wrapper kbank">
-                                <img class="kbank" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Kasikorn Bank'"></span>
-                            </div>
-                        </label>
-                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('kbank'),
-                                        optionsText: function (item) {
-                                            return item.label
-                                        },
-                                        optionsValue: function (item) {
-                                            return item.key
-                                        },
-                                        valueAllowUnset: true,
-                                        value: installmentTermsKBank,
-                                        visible: omiseOffsite() === 'installment_kbank',
-                                        optionsCaption: 'Choose number of monthly payments'"></select>
-
-                    </li>
-
-                    <!-- BBL -->
-                    <li class="items">
-                        <input type="radio" name="offsite" value="installment_bbl" data-bind="
-                            attr: {
-                                id: getCode() + '_bbl'
-                            },
-                            checked: omiseOffsite,
-                            click: function(data, event) { 
-                                resetTerms();
-                                return true;
-                            };" />
-                        <label for="omise_offsite_installment_bbl">
-                            <div class="omise-logo-wrapper bbl">
-                                <img class="bbl" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Bangkok Bank'"></span>
-                            </div>
-                        </label>
-                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bbl'),
-                                        optionsText: function (item) {
-                                            return item.label
-                                        },
-                                        optionsValue: function (item) {
-                                            return item.key
-                                        },
-                                        valueAllowUnset:true,
-                                        value: installmentTermsBBL,
-                                        visible: omiseOffsite() === 'installment_bbl',
-                                        optionsCaption: 'Choose number of monthly payments'"></select>
-                    </li>
-
-                    <!-- BAY -->
-                    <li class="items">
-                        <input type="radio" name="offsite" value="installment_bay" data-bind="
-                            attr: {
-                                id: getCode() + '_bay'
-                            },
-                            checked: omiseOffsite,
-                            click: function(data, event) { 
-                                resetTerms();
-                                return true;
-                            };" />
-                        <label for="omise_offsite_installment_bay">
-                            <div class="omise-logo-wrapper bay">
-                                <img class="bay" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Krungsri'"></span>
-                            </div>
-                        </label>
-                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('bay'),
-                                        optionsText: function (item) {
-                                            return item.label
-                                        },
-                                        optionsValue: function (item) {
-                                            return item.key
-                                        },
-                                        valueAllowUnset:true,
-                                        value: installmentTermsBAY,
-                                        visible: omiseOffsite() === 'installment_bay',
-                                        optionsCaption: 'Choose number of monthly payments'"></select>
-                    </li>
-
-                    <!-- SCB -->
-                    <li class="items">
-                        <input type="radio" name="offsite" value="installment_scb" data-bind="
-                            attr: {
-                                id: getCode() + '_scb'
-                            },
-                            checked: omiseOffsite,
-                            click: function(data, event) { 
-                                resetTerms();
-                                return true;
-                            };" />
-                        <label for="omise_offsite_installment_scb">
-                            <div class="omise-logo-wrapper scb">
-                                <img class="scb" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Siam Commercial Bank'"></span>
-                            </div>
-                        </label>
-                        <select style="margin-top:10px" data-bind="options: getInstallmentTerms('scb'),
-                                        optionsText: function (item) {
-                                            return item.label
-                                        },
-                                        optionsValue: function (item) {
-                                            return item.key
-                                        },
-                                        valueAllowUnset:true,
-                                        value: installmentTermsSCB,
-                                        visible: omiseOffsite() === 'installment_scb',
-                                        optionsCaption: 'Choose number of monthly payments'"></select>
-                    </li>
-
-                    <!-- UOB -->
-                    <li class="items">
-                      <input type="radio" name="offsite" value="installment_uob" data-bind="
-                          attr: {
-                              id: getCode() + '_uob'
-                          },
-                          checked: omiseOffsite,
-                          click: function(data, event) { 
-                              resetTerms();
-                              return true;
-                          };" />
-                      <label for="omise_offsite_installment_uob">
-                          <div class="omise-logo-wrapper uob">
-                              <img class="uob" />
-                          </div>
-                          <div class="omise-banking-text-wrapper">
-                              <span class="title" data-bind="i18n: 'United Overseas Bank'"></span>
-                          </div>
-                      </label>
-                      <select style="margin-top:10px" data-bind="options: getInstallmentTerms('uob'),
-                                      optionsText: function (item) {
-                                          return item.label
-                                      },
-                                      optionsValue: function (item) {
-                                          return item.key
-                                      },
-                                      valueAllowUnset:true,
-                                      value: installmentTermsUOB,
-                                      visible: omiseOffsite() === 'installment_uob',
-                                      optionsCaption: 'Choose number of monthly payments'"></select>
-                  </li>
                 </ul>
             </fieldset>
         </form>

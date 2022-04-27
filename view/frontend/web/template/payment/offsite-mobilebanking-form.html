@@ -35,76 +35,26 @@
         <div class="omise-banking-fee-warn"
             data-bind="i18n: 'Your bank may charge a small fee for mobile banking payments'"></div>
         <form class="form" data-bind="attr: {
-              id: getCode() + 'Form',
-              }
-              ">
-
-            <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
-                <ul class="form-list">
-                    <!-- BAY -->
-                    <li class="items" data-bind="visible: false">
-                        <input type="radio" name="offsite" value="mobile_banking_bay" data-bind="
-                            attr: {
-                                id: getCode() + '_bay'
-                            },
-                                checked: omiseOffsite" />
-                        <label for="omise_offsite_mobilebanking_bay">
-                            <div class="omise-logo-wrapper bay">
-                                <img class="bay" />
+            id: getCode() + 'Form',
+            }">
+            <fieldset data-bind="attr: {
+                class: 'fieldset payment items ' + getCode()
+                , id: 'payment_form_' + getCode()
+                }">
+                <ul class="form-list" data-bind="foreach: providers">
+                    <li class="items" data-bind="visible: $parent.isAllowCurrency(currencies) && active">
+                        <input type="radio" name="offsite" data-bind=" attr: { 
+                                id: $parent.getCode() + '_' + code , 
+                                value: id },
+                                checked: $parent.omiseOffsite" />
+                        <label data-bind="attr:{
+                            'for': 'omise_offsite_mobilebanking_'+logo
+                            }">
+                            <div class="omise-logo-wrapper" data-bind="css: logo">
+                                <img data-bind="css: logo" />
                             </div>
                             <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Bank of Ayudhya'"></span>
-                            </div>
-                        </label>
-                    </li>
-
-                    <!-- KBANK -->
-                    <li class="items" data-bind="visible: false">
-                        <input type="radio" name="offsite" value="mobile_banking_kbank" data-bind="
-                            attr: {
-                                id: getCode() + '_kbank'
-                            },
-                             checked: omiseOffsite" />
-                        <label for="omise_offsite_mobilebanking_kbank">
-                            <div class="omise-logo-wrapper kbank">
-                                <img class="kbank" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Kasikorn Bank'"></span>
-                            </div>
-                        </label>
-                    </li>
-
-                    <!-- SCB -->
-                    <li class="items" data-bind="visible: isAllowCurrency(['thb'])">
-                        <input type="radio" name="offsite" value="mobile_banking_scb" data-bind="
-                            attr: {
-                                id: getCode() + '_scb'
-                            },
-                             checked: omiseOffsite" />
-                        <label for="omise_offsite_mobilebanking_scb">
-                            <div class="omise-logo-wrapper scb">
-                                <img class="scb" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'Siam Commercial Bank'"></span>
-                            </div>
-                        </label>
-                    </li>
-
-                    <!-- OCBC PAO -->
-                    <li class="items" data-bind="visible: isAllowCurrency(['sgd'])">
-                        <input type="radio" name="offsite" value="mobile_banking_ocbc_pao" data-bind="
-                            attr: {
-                                id: getCode() + '_ocbc_pao'
-                            },
-                             checked: omiseOffsite" />
-                        <label for="omise_offsite_mobilebanking_ocbc_pao">
-                            <div class="omise-logo-wrapper ocbc_pao">
-                                <img class="ocbc_pao" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: 'OCBC Pay Anyone'"></span>
+                                <span class="title" data-bind="i18n: title"></span>
                             </div>
                         </label>
                     </li>

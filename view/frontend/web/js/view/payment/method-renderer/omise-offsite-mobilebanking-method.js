@@ -21,6 +21,41 @@ define(
 
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb', 'sgd'],
+            providers: [
+                {
+                    id: "mobile_banking_kbank",
+                    title: 'K PLUS',
+                    code: 'kbank',
+                    logo: 'kbank',
+                    currencies: ['thb'],
+                    active: false
+                },
+                {
+                    id: "mobile_banking_scb",
+                    title: 'SCB EASY',
+                    code: 'scb',
+                    logo: 'scb',
+                    currencies: ['thb'],
+                    active: true
+                },
+                {
+                    id: "mobile_banking_bay",
+                    title: 'KMA',
+                    code: 'bay',
+                    logo: 'bay',
+                    currencies: ['thb'],
+                    active: false
+                },
+                {
+                    id: "mobile_banking_ocbc_pao",
+                    title: 'OCBC Pay Anyone',
+                    code: 'ocbc_pao',
+                    logo: 'ocbc_pao',
+                    currencies: ['sgd'],
+                    active: true
+                },
+            ],
+
             /**
             * Initiate observable fields
             *
@@ -32,8 +67,12 @@ define(
                         'omiseOffsite'
                     ]);
 
+                // filter provider for checkout page
+                this.providers = this.get_available_providers()
+
                 return this;
             },
+
             /**
              * Is method available to display
              *
@@ -42,6 +81,7 @@ define(
             isAllowCurrency: function (currency) {
                 return currency.includes(this.getOrderCurrency())
             },
+
             /**
             * Get a checkout form data
             *
@@ -55,6 +95,26 @@ define(
                     }
                 };
             },
+
+            /**
+            * Get a provider list form capabilities api and filter only support type
+            *
+            * @return {Array}
+            */
+            get_available_providers: function () {
+                let _providers = Object.values(window.checkoutConfig.mobile_banking);
+
+                return this.providers.filter((a1) => _providers.find(a2 => {
+                    if (a1.id === a2._id) {
+                        // set currencies from api if is undefined use default value
+                        if (a2?.currencies !== null) {
+                            a1.currencies = a2.currencies
+                        }
+                        return true
+                    }
+                }))
+            }
+
         });
     }
 );
