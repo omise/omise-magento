@@ -49,7 +49,7 @@ class Webhook extends Field
 
         // if $storeId is not null then we are in the sub-store view.
         // We want to set the current store so that we get desired base URL
-        if($storeId) {
+        if ($storeId) {
             $this->storeManager->setCurrentStore($storeId);
         }
 
