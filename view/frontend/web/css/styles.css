@@ -131,11 +131,6 @@
     background: url('../images/scb_easy.png');
 }
 
-/** OCBC PAO **/
-#omise_offsite_mobilebankingForm img.ocbc_pao {
-    background-image: url('../images/payment_ocbc_pao.png');
-}
-
 div.fpx {
     background: url('../images/fpx.svg');
     width: 68px;
