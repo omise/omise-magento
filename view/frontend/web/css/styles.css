@@ -131,6 +131,16 @@
     background: url('../images/scb_easy.png');
 }
 
+/** OCBC PAO **/
+div.ocbc_pao {
+    background-image: url('../images/payment_ocbc_pao.png');
+    width: 30px;
+    height: 30px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 div.fpx {
     background: url('../images/fpx.svg');
     width: 68px;

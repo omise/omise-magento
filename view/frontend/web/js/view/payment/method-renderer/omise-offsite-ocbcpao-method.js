@@ -15,7 +15,7 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-common-form'
+                template: 'Omise_Payment/payment/offsite-ocbcpao-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
