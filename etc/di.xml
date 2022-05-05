@@ -822,7 +822,7 @@
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Ocbcpao::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
-            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMOcbcPaoValueHandlerPool</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMOcbcpaoValueHandlerPool</argument>
             <argument name="validatorPool" xsi:type="object">OmiseAPMOcbcpaoValidatorPool</argument>
             <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
         </arguments>
