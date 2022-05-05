@@ -212,7 +212,7 @@ class Offsite extends Action
                         $dispPaymentMethod = "Rabbit LINE Pay";
                         break;
                     case Ocbcpao::CODE:
-                        $dispPaymentMethod = "OCBC PayAnyone";
+                        $dispPaymentMethod = "OCBC Pay Anyone";
                         break;
                 }
                 

@@ -606,11 +606,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_ocbcpao" translate="label" sortOrder="490" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable OCBC PayAnyone Payment</label>
-                    <comment>Enable customers to pay using OCBC PayAnyone payment method</comment>
+                    <label>Enable OCBC Pay Anyone Payment</label>
+                    <comment>Enable customers to pay using OCBC Pay Anyone payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="491" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable OCBC PayAnyone payment method.</comment>
+                        <comment>Enable OCBC Pay Anyone payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_ocbcpao/active</config_path>
                     </field>
