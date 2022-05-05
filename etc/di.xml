@@ -814,7 +814,55 @@
             <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Rabbitlinepay::CODE</argument>
         </arguments>
     </virtualType>
-    <!-- /Rabbitlinepay ::Value Handler Pool-->
+    <!-- /Rabbitlinepay :: Value Handler Pool-->
+ 
+    <!--  Ocbc Pao payment solution-->
+    <virtualType name="OmiseOcbcpaoAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Ocbcpao::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMOcbcPaoValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMOcbcpaoValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Ocbc Pao :: Value Handler Pool -->
+    <virtualType name="OmiseAPMOcbcpaoValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMOcbcpaoConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMOcbcpaoValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMOcbcpaoCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMOcbcpaoCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMOcbcpaoConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMOcbcpaoConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMOcbcpaoConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMOcbcpaoConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Ocbcpao::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Ocbc Pao :: Value Handler Pool-->
 
     <!--  Convenience Store payment solution-->
     <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">

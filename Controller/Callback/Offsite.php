@@ -18,6 +18,7 @@ use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
+use Omise\Payment\Model\Config\Ocbcpao;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -209,6 +210,9 @@ class Offsite extends Action
                         break;
                     case Rabbitlinepay::CODE:
                         $dispPaymentMethod = "Rabbit LINE Pay";
+                        break;
+                    case Ocbcpao::CODE:
+                        $dispPaymentMethod = "OCBC PayAnyone";
                         break;
                 }
                 
