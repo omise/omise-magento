@@ -56,7 +56,7 @@ class OmiseHelper extends AbstractHelper
      *
      * @var array
      */
-    private $offsitePaymentImageCode = [
+    private $offlinePaymentMethods = [
         Paynow::CODE,
         Promptpay::CODE,
         Tesco::CODE
@@ -189,7 +189,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isPayableByImageCode($paymentMethod)
     {
-        return in_array($paymentMethod, $this->offsitePaymentImageCode);
+        return in_array($paymentMethod, $this->offlinePaymentMethods);
     }
 
     /**
@@ -310,9 +310,9 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOmisePayment($paymentMethod)
     {
-        $offsitePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offsitePaymentImageCode);
+        $offsiteOfflinePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offlinePaymentMethods);
         $omisePaymentMethods = array_merge(
-            $offsitePaymentMethods,
+            $offsiteOfflinePaymentMethods,
             [
                 Config::CODE,
                 Conveniencestore::CODE
