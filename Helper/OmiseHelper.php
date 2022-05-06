@@ -310,15 +310,15 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOmisePayment($paymentMethod)
     {
-        return in_array(
-            $paymentMethod,
-            array_merge(
-                array_merge($this->offsitePaymentMethods, $this->offsitePaymentImageCode),
-                [
-                    Config::CODE,
-                    Conveniencestore::CODE
-                ]
-            )
+        $offsitePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offsitePaymentImageCode);
+        $omisePaymentMethods = array_merge(
+            $offsitePaymentMethods,
+            [
+                Config::CODE,
+                Conveniencestore::CODE
+            ]
         );
+
+        return in_array($paymentMethod, $omisePaymentMethods);
     }
 }
