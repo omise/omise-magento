@@ -32,6 +32,37 @@ class OmiseHelper extends AbstractHelper
     protected $header;
 
     /**
+     * @var array
+     */
+    private $offsitePaymentMethods = [
+        Alipay::CODE,
+        Internetbanking::CODE,
+        Installment::CODE,
+        Truemoney::CODE,
+        Pointsciti::CODE,
+        Fpx::CODE,
+        Alipayplus::ALIPAY_CODE,
+        Alipayplus::ALIPAYHK_CODE,
+        Alipayplus::DANA_CODE,
+        Alipayplus::GCASH_CODE,
+        Alipayplus::KAKAOPAY_CODE,
+        Alipayplus::TOUCHNGO_CODE,
+        Mobilebanking::CODE,
+        Rabbitlinepay::CODE,
+    ];
+
+    /**
+     * Payment method payable by image code
+     *
+     * @var array
+     */
+    private $offsitePaymentImageCode = [
+        Paynow::CODE,
+        Promptpay::CODE,
+        Tesco::CODE
+    ];
+
+    /**
      * @var Config
      */
     protected $config;
@@ -158,14 +189,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isPayableByImageCode($paymentMethod)
     {
-        return in_array(
-            $paymentMethod,
-            [
-                Paynow::CODE,
-                Promptpay::CODE,
-                Tesco::CODE
-            ]
-        );
+        return in_array($paymentMethod, $this->offsitePaymentImageCode);
     }
 
     /**
@@ -176,25 +200,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOffsitePayment($paymentMethod)
     {
-        return in_array(
-            $paymentMethod,
-            [
-                Alipay::CODE,
-                Internetbanking::CODE,
-                Installment::CODE,
-                Truemoney::CODE,
-                Pointsciti::CODE,
-                Fpx::CODE,
-                Alipayplus::ALIPAY_CODE,
-                Alipayplus::ALIPAYHK_CODE,
-                Alipayplus::DANA_CODE,
-                Alipayplus::GCASH_CODE,
-                Alipayplus::KAKAOPAY_CODE,
-                Alipayplus::TOUCHNGO_CODE,
-                Mobilebanking::CODE,
-                Rabbitlinepay::CODE,
-            ]
-        );
+        return in_array($paymentMethod, $this->offsitePaymentMethods);
     }
 
     /**
@@ -306,27 +312,13 @@ class OmiseHelper extends AbstractHelper
     {
         return in_array(
             $paymentMethod,
-            [
-                Alipay::CODE,
-                Internetbanking::CODE,
-                Installment::CODE,
-                Truemoney::CODE,
-                Pointsciti::CODE,
-                Fpx::CODE,
-                Alipayplus::ALIPAY_CODE,
-                Alipayplus::ALIPAYHK_CODE,
-                Alipayplus::DANA_CODE,
-                Alipayplus::GCASH_CODE,
-                Alipayplus::KAKAOPAY_CODE,
-                Alipayplus::TOUCHNGO_CODE,
-                Mobilebanking::CODE,
-                Rabbitlinepay::CODE,
-                Paynow::CODE,
-                Promptpay::CODE,
-                Tesco::CODE,
-                Config::CODE,
-                Conveniencestore::CODE,
-            ]
+            array_merge(
+                array_merge($this->offsitePaymentMethods, $this->offsitePaymentImageCode),
+                [
+                    Config::CODE,
+                    Conveniencestore::CODE
+                ]
+            )
         );
     }
 }
