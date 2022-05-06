@@ -19,6 +19,7 @@ use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Model\Config\Conveniencestore;
 
 use SimpleXMLElement;
 use DOMDocument;
@@ -291,5 +292,41 @@ class OmiseHelper extends AbstractHelper
 
         $invoice->setTransactionId($chargeId)->pay()->save();
         return $invoice;
+    }
+
+    /**
+     * This method checks and return TRUE if $paymentMethod is
+     * offered by our Omise payment plugin otherwise returns false.
+     *
+     * @param string $paymentMethod
+     *
+     * @return boolean
+     */
+    public function isOmisePayment($paymentMethod)
+    {
+        return in_array(
+            $paymentMethod,
+            [
+                Alipay::CODE,
+                Internetbanking::CODE,
+                Installment::CODE,
+                Truemoney::CODE,
+                Pointsciti::CODE,
+                Fpx::CODE,
+                Alipayplus::ALIPAY_CODE,
+                Alipayplus::ALIPAYHK_CODE,
+                Alipayplus::DANA_CODE,
+                Alipayplus::GCASH_CODE,
+                Alipayplus::KAKAOPAY_CODE,
+                Alipayplus::TOUCHNGO_CODE,
+                Mobilebanking::CODE,
+                Rabbitlinepay::CODE,
+                Paynow::CODE,
+                Promptpay::CODE,
+                Tesco::CODE,
+                Config::CODE,
+                Conveniencestore::CODE,
+            ]
+        );
     }
 }
