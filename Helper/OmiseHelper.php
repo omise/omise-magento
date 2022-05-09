@@ -20,6 +20,7 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Model\Config\Conveniencestore;
 
 use SimpleXMLElement;
 use DOMDocument;
@@ -30,6 +31,38 @@ class OmiseHelper extends AbstractHelper
      * @var \Magento\Framework\HTTP\Header
      */
     protected $header;
+
+    /**
+     * @var array
+     */
+    private $offsitePaymentMethods = [
+        Alipay::CODE,
+        Internetbanking::CODE,
+        Installment::CODE,
+        Truemoney::CODE,
+        Pointsciti::CODE,
+        Fpx::CODE,
+        Alipayplus::ALIPAY_CODE,
+        Alipayplus::ALIPAYHK_CODE,
+        Alipayplus::DANA_CODE,
+        Alipayplus::GCASH_CODE,
+        Alipayplus::KAKAOPAY_CODE,
+        Alipayplus::TOUCHNGO_CODE,
+        Mobilebanking::CODE,
+        Rabbitlinepay::CODE,
+        Ocbcpao::CODE
+    ];
+
+    /**
+     * Payment method payable by image code
+     *
+     * @var array
+     */
+    private $offlinePaymentMethods = [
+        Paynow::CODE,
+        Promptpay::CODE,
+        Tesco::CODE
+    ];
 
     /**
      * @var Config
@@ -158,14 +191,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isPayableByImageCode($paymentMethod)
     {
-        return in_array(
-            $paymentMethod,
-            [
-                Paynow::CODE,
-                Promptpay::CODE,
-                Tesco::CODE
-            ]
-        );
+        return in_array($paymentMethod, $this->offlinePaymentMethods);
     }
 
     /**
@@ -176,26 +202,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOffsitePayment($paymentMethod)
     {
-        return in_array(
-            $paymentMethod,
-            [
-                Alipay::CODE,
-                Internetbanking::CODE,
-                Installment::CODE,
-                Truemoney::CODE,
-                Pointsciti::CODE,
-                Fpx::CODE,
-                Alipayplus::ALIPAY_CODE,
-                Alipayplus::ALIPAYHK_CODE,
-                Alipayplus::DANA_CODE,
-                Alipayplus::GCASH_CODE,
-                Alipayplus::KAKAOPAY_CODE,
-                Alipayplus::TOUCHNGO_CODE,
-                Mobilebanking::CODE,
-                Rabbitlinepay::CODE,
-                Ocbcpao::CODE,
-            ]
-        );
+        return in_array($paymentMethod, $this->offsitePaymentMethods);
     }
 
     /**
@@ -293,5 +300,27 @@ class OmiseHelper extends AbstractHelper
 
         $invoice->setTransactionId($chargeId)->pay()->save();
         return $invoice;
+    }
+
+    /**
+     * This method checks and return TRUE if $paymentMethod is
+     * offered by our Omise payment plugin otherwise returns false.
+     *
+     * @param string $paymentMethod
+     *
+     * @return boolean
+     */
+    public function isOmisePayment($paymentMethod)
+    {
+        $offsiteOfflinePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offlinePaymentMethods);
+        $omisePaymentMethods = array_merge(
+            $offsiteOfflinePaymentMethods,
+            [
+                Config::CODE,
+                Conveniencestore::CODE
+            ]
+        );
+
+        return in_array($paymentMethod, $omisePaymentMethods);
     }
 }

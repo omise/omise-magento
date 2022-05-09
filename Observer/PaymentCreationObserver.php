@@ -36,13 +36,17 @@ class PaymentCreationObserver implements ObserverInterface
         $order   = $observer->getEvent()->getOrder();
         $paymentMethod = $order->getPayment()->getMethod();
 
-        // We will send confirmation emails manually, so we disable this.
-        $order->setCanSendNewEmailFlag(false);
+        // Disable only if the payment method is offered by Omise
+        if ($this->_helper->isOmisePayment($paymentMethod)) {
+            // We will send confirmation emails manually
+            $order->setCanSendNewEmailFlag(false);
+        }
 
         // Offline QR code payment emails
         if ($this->_helper->isPayableByImageCode($paymentMethod)) {
             $this->_email->sendEmail($order);
         }
+
         return $this;
     }
 }
