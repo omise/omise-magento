@@ -20,7 +20,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_mobilebanking',
-            restrictedToCurrencies: ['thb', 'sgd'],
+            restrictedToCurrencies: ['thb'],
             providers: [
                 {
                     id: "mobile_banking_kbank",
@@ -45,14 +45,6 @@ define(
                     logo: 'bay',
                     currencies: ['thb'],
                     active: false
-                },
-                {
-                    id: "mobile_banking_ocbc_pao",
-                    title: 'OCBC Pay Anyone',
-                    code: 'ocbc_pao',
-                    logo: 'ocbc_pao',
-                    currencies: ['sgd'],
-                    active: true
                 },
             ],
 

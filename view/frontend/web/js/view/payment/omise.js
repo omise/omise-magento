@@ -28,6 +28,7 @@ define(
             'offsite-touchngo',
             'offsite-mobilebanking',
             'offsite-rabbitlinepay',
+            'offsite-ocbcpao',
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {
