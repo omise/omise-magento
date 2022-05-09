@@ -18,6 +18,7 @@ use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
+use Omise\Payment\Model\Config\Ocbcpao;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
@@ -224,6 +225,12 @@ class APMBuilder implements BuilderInterface
             case Rabbitlinepay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'rabbit_linepay'
+                ];
+                break;
+            case Ocbcpao::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'mobile_banking_ocbc_pao',
+                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
         }

@@ -4,8 +4,9 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\Form\Field;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
-use Magento\Framework\Url;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\Request\Http;
 
 class Webhook extends Field
 {
@@ -21,15 +22,18 @@ class Webhook extends Field
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Url                  $urlHelper
-     * @param array                                   $data
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\App\Request\Http $http
+     * @param array $data
      */
     public function __construct(
         Context $context,
-        Url     $urlHelper,
+        StoreManagerInterface $storeManager,
+        Http $request,
         array   $data = []
     ) {
-        $this->urlHelper = $urlHelper;
+        $this->storeManager = $storeManager;
+        $this->request = $request;
         parent::__construct($context, $data);
     }
 
@@ -40,6 +44,15 @@ class Webhook extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        return $this->urlHelper->getRouteUrl(self::URI, ['_secure' => true]);
+        // fetch the store ID from the URL. The value will be NULL if the storeview is a default view.
+        $storeId = $this->request->getParam('website') ?? $this->request->getParam('store');
+
+        // if $storeId is not null then we are in the sub-store view.
+        // We want to set the current store so that we get desired base URL
+        if ($storeId) {
+            $this->storeManager->setCurrentStore($storeId);
+        }
+
+        return $this->storeManager->getStore()->getBaseUrl() . self::URI;
     }
 }
