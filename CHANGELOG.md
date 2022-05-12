@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [v2.23.3 _(May 12, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.23.3)
+- Fetch capabilities. (PR [#337](https://github.com/omise/omise-magento/pull/337))
+- Preventing Omise plugin to initialize when public and secret keys are not present. (PR [#339](https://github.com/omise/omise-magento/pull/339))
+- Incorrect webhook endpoint being displayed has been fixed. (PR [#340]) https://github.com/omise/omise-magento/pull/340))
+- Move OCBC Pao as standalone payment. (PR [#341](https://github.com/omise/omise-magento/pull/341))
+- Issue of new order email not being sent when order is placed with non omise payment method has been fixed. (PR [#342](https://github.com/omise/omise-magento/pull/342))
+
 ## [v2.23.2 _(Apr 20, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.23.2)
 - The issue of capturing a 3DS payment from sub-stores has been fixed. (PR [#335](https://github.com/omise/omise-magento/pull/335))
 - Fixed the issue with the Sync Order Status button in the orders page of the admin panel. (PR [#336](https://github.com/omise/omise-magento/pull/336))
