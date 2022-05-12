@@ -19,6 +19,7 @@ use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
+use Omise\Payment\Model\Config\Grabpay;
 use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\Config\Conveniencestore;
 
@@ -50,7 +51,8 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::TOUCHNGO_CODE,
         Mobilebanking::CODE,
         Rabbitlinepay::CODE,
-        Ocbcpao::CODE
+        Ocbcpao::CODE,
+        Grabpay::CODE
     ];
 
     /**

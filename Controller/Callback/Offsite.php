@@ -19,6 +19,7 @@ use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
+use Omise\Payment\Model\Config\Grabpay;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -213,6 +214,9 @@ class Offsite extends Action
                         break;
                     case Ocbcpao::CODE:
                         $dispPaymentMethod = "OCBC Pay Anyone";
+                        break;
+                    case Grabpay::CODE:
+                        $dispPaymentMethod = "GrabPay";
                         break;
                 }
                 
