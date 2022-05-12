@@ -3,7 +3,7 @@
 ## [v2.23.3 _(May 12, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.23.3)
 - Fetch capabilities. (PR [#337](https://github.com/omise/omise-magento/pull/337))
 - Preventing Omise plugin to initialize when public and secret keys are not present. (PR [#339](https://github.com/omise/omise-magento/pull/339))
-- Incorrect webhook endpoint being displayed has been fixed. (PR [#340]) https://github.com/omise/omise-magento/pull/340))
+- Incorrect webhook endpoint being displayed has been fixed. (PR [#340](https://github.com/omise/omise-magento/pull/340))
 - Move OCBC Pao as standalone payment. (PR [#341](https://github.com/omise/omise-magento/pull/341))
 - Issue of new order email not being sent when order is placed with non omise payment method has been fixed. (PR [#342](https://github.com/omise/omise-magento/pull/342))
 
