@@ -29,6 +29,7 @@ define(
             'offsite-mobilebanking',
             'offsite-rabbitlinepay',
             'offsite-ocbcpao',
+            'offsite-grabpay',
         ];
 
         METHOD_RENDERERS.forEach(rendererName => {
