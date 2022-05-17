@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v2.24.0 _(May 17, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.24.0)
+- Add GrabPay payment method (PR [#344](https://github.com/omise/omise-magento/pull/344))
+
 ## [v2.23.3 _(May 12, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.23.3)
 - Fetch capabilities. (PR [#337](https://github.com/omise/omise-magento/pull/337))
 - Preventing Omise plugin to initialize when public and secret keys are not present. (PR [#339](https://github.com/omise/omise-magento/pull/339))
