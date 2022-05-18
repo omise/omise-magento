@@ -4,9 +4,20 @@ namespace Omise\Payment\Model\Api;
 
 use Exception;
 use OmiseCustomer;
+use Omise\Payment\Model\Config\Config;
 
 class Customer extends BaseObject
 {
+    /**
+     * Injecting dependencies
+     * @param \Omise\Payment\Model\Config\Config $config
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * @param  string $id
      *
@@ -14,6 +25,9 @@ class Customer extends BaseObject
      */
     public function find($id)
     {
+        if (!$this->config->canInitialize()) {
+            return;
+        }
         try {
             $this->refresh(OmiseCustomer::retrieve($id));
         } catch (Exception $e) {
