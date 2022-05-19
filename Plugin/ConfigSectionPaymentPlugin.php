@@ -5,6 +5,8 @@ namespace Omise\Payment\Plugin;
 use Magento\Config\Model\Config as CoreConfig;
 use Omise\Payment\Model\Config\Config;
 use OmiseCapabilities;
+use OmiseAuthenticationFailureException;
+use Magento\Framework\Exception\LocalizedException;
 
 class ConfigSectionPaymentPlugin
 {
@@ -39,9 +41,11 @@ class ConfigSectionPaymentPlugin
                 try {
                     // Fetching capabilities to check the supplied keys validity
                     OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
-                } catch (\Exception $e) {
+                } catch (OmiseAuthenticationFailureException $e) {
                     $errors = $e->getOmiseError();
-                    throw new \Exception($this->errorCodes[$errors['code']]);
+                    throw new LocalizedException(__($this->errorCodes[$errors['code']]));
+                } catch (Exception $e) {
+                    throw new LocalizedException(__('unable to load OmiseCapabilities api'));
                 }
             }
         }
