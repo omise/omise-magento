@@ -131,6 +131,11 @@
     background: url('../images/scb_easy.png');
 }
 
+/** BualuangMBanking**/
+#omise_offsite_mobilebankingForm img.bbl{
+    background: url('../images/bbl_mbank.png');
+}
+
 /** OCBC PAO **/
 div.ocbc_pao {
     background-image: url('../images/payment_ocbc_pao.png');

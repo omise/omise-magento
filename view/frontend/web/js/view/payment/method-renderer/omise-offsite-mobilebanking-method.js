@@ -28,7 +28,7 @@ define(
                     code: 'kbank',
                     logo: 'kbank',
                     currencies: ['thb'],
-                    active: false
+                    active: true
                 },
                 {
                     id: "mobile_banking_scb",
@@ -44,7 +44,14 @@ define(
                     code: 'bay',
                     logo: 'bay',
                     currencies: ['thb'],
-                    active: false
+                    active: true
+                },       {
+                    id: "mobile_banking_bbl",
+                    title: 'Bualuang mBanking',
+                    code: 'bbl',
+                    logo: 'bbl',
+                    currencies: ['thb'],
+                    active: true
                 },
             ],
 
