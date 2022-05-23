@@ -43,7 +43,12 @@ class ConfigSectionPaymentPlugin
                     OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
                 } catch (OmiseAuthenticationFailureException $e) {
                     $errors = $e->getOmiseError();
-                    throw new LocalizedException(__($this->errorCodes[$errors['code']]));
+
+                    $errorMessage = array_key_exists($errors['code'], $this->errorCodes)
+                        ? $this->errorCodes[$errors['code']]
+                        : $e->getMessage();
+
+                    throw new LocalizedException(__($errorMessage));
                 } catch (Exception $e) {
                     throw new LocalizedException(__('unable to load OmiseCapabilities api'));
                 }
@@ -62,18 +67,18 @@ class ConfigSectionPaymentPlugin
     {
         $configFields = $configData['groups']['omise']['fields'];
 
-        $publicKey = ($configFields['sandbox_status']) ? 'test_public_key' : 'live_public_key';
-        $secretKey = ($configFields['sandbox_status']) ? 'test_secret_key' : 'live_secret_key';
+        $publicKeyIndex = ($configFields['sandbox_status']) ? 'test_public_key' : 'live_public_key';
+        $secretKeyIndex = ($configFields['sandbox_status']) ? 'test_secret_key' : 'live_secret_key';
+
+        $hasPublicKeyUpdated = array_key_exists('value', $configFields[$publicKeyIndex]);
+        $hasSecretKeyUpdated = array_key_exists('value', $configFields[$secretKeyIndex]);
 
         $this->config->setStoreId($configData['store']);
 
+        // If keys are not updated then the CoreConfig won't have the value so we have to pull it from the config
         return [
-            'public_key' => array_key_exists('value', $configFields[$publicKey])
-                ? $configFields[$publicKey]['value']
-                : $this->config->getPublicKey(),
-            'secret_key' => array_key_exists('value', $configFields[$secretKey])
-                ? $configFields[$secretKey]['value']
-                : $this->config->getSecretKey()
+            'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(),
+            'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey()
         ];
     }
 }
