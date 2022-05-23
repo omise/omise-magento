@@ -1199,4 +1199,8 @@
             <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Config::CODE</argument>
         </arguments>
     </virtualType>
+
+    <type name="Magento\Config\Model\Config">
+        <plugin name="admin_system_config_save_plugin" type="Omise\Payment\Plugin\ConfigSectionPaymentPlugin" sortOrder="1"/>
+    </type>
 </config>

@@ -1,8 +1,10 @@
 <?php
+
 namespace Omise\Payment\Model\Config;
 
 use Magento\Framework\App\Config\ScopeConfigInterface as MagentoScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface as MagentoScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Config
 {
@@ -28,9 +30,29 @@ class Config
      */
     protected $scopeConfig;
 
-    public function __construct(MagentoScopeConfigInterface $scopeConfig)
+    private $canInitialize = false;
+
+    public function __construct(MagentoScopeConfigInterface $scopeConfig, StoreManagerInterface $storeManager)
     {
         $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
+        $this->init();
+    }
+
+    private function init()
+    {
+        $storeId = $this->storeManager->getStore()->getId();
+        $this->setStoreId($storeId);
+
+        // Initialize only if both keys are present
+        if ($this->getPublicKey() && $this->getSecretKey()) {
+            $this->canInitialize = true;
+        }
+    }
+
+    public function canInitialize()
+    {
+        return $this->canInitialize;
     }
 
     /**
