@@ -17,7 +17,9 @@ class ConfigSectionPaymentPlugin
      */
     private $errorCodes = [
         'authentication_failure' => 'The keys for Omise Payment are invalid',
-        'key_expired_error' => 'The keys for Omise Payment are expired.'
+        'key_expired_error' => 'The keys for Omise Payment are expired.',
+        'locked_account_error' => 'The account is locked. Please contact support@omise.co.',
+        'not_authorized' => 'An attempt was made to perform an unauthorized action.',
     ];
 
     /**
@@ -46,7 +48,7 @@ class ConfigSectionPaymentPlugin
 
                     $errorMessage = array_key_exists($errors['code'], $this->errorCodes)
                         ? $this->errorCodes[$errors['code']]
-                        : $e->getMessage();
+                        : 'unable to load OmiseCapabilities api';
 
                     throw new LocalizedException(__($errorMessage));
                 } catch (Exception $e) {
@@ -77,8 +79,12 @@ class ConfigSectionPaymentPlugin
 
         // If keys are not updated then the CoreConfig won't have the value so we have to pull it from the config
         return [
-            'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(),
-            'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey()
+            'public_key' => $hasPublicKeyUpdated
+                ? $configFields[$publicKeyIndex]['value']
+                : $this->config->getPublicKey(),
+            'secret_key' => $hasSecretKeyUpdated
+                ? $configFields[$secretKeyIndex]['value']
+                : $this->config->getSecretKey()
         ];
     }
 }
