@@ -45,7 +45,8 @@ define(
                     logo: 'bay',
                     currencies: ['thb'],
                     active: true
-                },       {
+                },
+                {
                     id: "mobile_banking_bbl",
                     title: 'Bualuang mBanking',
                     code: 'bbl',
