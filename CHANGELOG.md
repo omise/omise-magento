@@ -1,4 +1,7 @@
 # CHANGELOG
+## [v2.25.0 _(May 25, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.25.0)
+- Add Mobile banking BBL for TH (PR [#347](https://github.com/omise/omise-magento/pull/347))
+- Checks validity of the keys when adding them. (PR [#346](https://github.com/omise/omise-magento/pull/346))
 
 ## [v2.24.0 _(May 17, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.24.0)
 - Add GrabPay payment method (PR [#344](https://github.com/omise/omise-magento/pull/344))
