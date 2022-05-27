@@ -1023,6 +1023,64 @@
     </virtualType>
     <!-- /Response Handler-->
 
+    <!-- Google Pay payment solution -->
+    <virtualType name="OmiseCcGooglePayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\CcGooglePay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form\Cc</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseCcGooglePayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseCcGooglePayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseCreditCardCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Google Pay payment solution -->
+
+    <!-- Google Pay :: Value Handler Pool -->
+    <virtualType name="OmiseCcGooglePayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseCcGooglePayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- /Google Pay :: Value Handler Pool -->
+
+    <!-- Google Pay :: Validator Pool -->
+    <virtualType name="OmiseCcGooglePayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseCcGooglePayConfig</argument>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseCcGooglePayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- /Google Pay :: Validator Pool -->
+
+    <!-- Google Pay :: Config Value Handler -->
+    <virtualType name="OmiseCcGooglePayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseCcGooglePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Google Pay :: Config Value Handler -->
+
+    <!-- Google Pay :: Country Validator Handler -->
+    <virtualType name="OmiseCcGooglePayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseCcGooglePayConfig</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Google Pay :: Country Validator Handler -->
+
+    <!-- Google Pay :: Config -->
+    <virtualType name="OmiseCcGooglePayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\CcGooglePay::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Google Pay :: Config -->
+
     <!-- Credit Card payment solution -->
     <virtualType name="OmiseCcAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
