@@ -83,7 +83,10 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($payment->getMethod() !== 'omise' && $payment->getMethod() !== 'omise_cc' && $payment->getMethod() !== CcGooglePay::CODE) {
+        if ($payment->getMethod() !== 'omise'
+            && $payment->getMethod() !== 'omise_cc'
+            && $payment->getMethod() !== CcGooglePay::CODE
+        ) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')
