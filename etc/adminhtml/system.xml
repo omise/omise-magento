@@ -685,9 +685,12 @@
                     </field>
                     <field id="request_phone_number" translate="label comment" type="select" sortOrder="509" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Request Phone Number</label>
-                        <comment>Request customer's phone number from their Google Account upon checkout.</comment>
+                        <comment>Request customer's phone number from their Google Account upon checkout when billing address is requested.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc_googlepay/request_phone_number</config_path>
+                        <depends>
+                            <field id="request_billing_address">1</field>
+                        </depends>
                     </field>
                     <field id="payment_action" translate="label" type="select" sortOrder="510" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment Action</label>

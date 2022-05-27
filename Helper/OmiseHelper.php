@@ -68,6 +68,14 @@ class OmiseHelper extends AbstractHelper
     ];
 
     /**
+     * Payment method that utilizes card token to create charges.
+     */
+    private $cardPaymentMethods = [
+        Config::CODE,
+        CcGooglepay::CODE
+    ];
+
+    /**
      * @var Config
      */
     protected $config;
@@ -318,13 +326,24 @@ class OmiseHelper extends AbstractHelper
         $offsiteOfflinePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offlinePaymentMethods);
         $omisePaymentMethods = array_merge(
             $offsiteOfflinePaymentMethods,
+            $this->cardPaymentMethods,
             [
-                Config::CODE,
-                Conveniencestore::CODE,
-                CcGooglepay::CODE
+                Conveniencestore::CODE
             ]
         );
 
         return in_array($paymentMethod, $omisePaymentMethods);
+    }
+
+    /**
+     * Return TRUE if $paymentMethod uses card token to create a charge.
+     *
+     * @param string $paymentMethod
+     *
+     * @return boolean
+     */
+    public function isCreditCardPayment($paymentMethod)
+    {
+        return in_array($paymentMethod, $this->cardPaymentMethods);
     }
 }
