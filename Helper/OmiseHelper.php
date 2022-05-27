@@ -21,6 +21,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
 use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Model\Config\CcGooglepay;
 use Omise\Payment\Model\Config\Conveniencestore;
 
 use SimpleXMLElement;
@@ -319,7 +320,8 @@ class OmiseHelper extends AbstractHelper
             $offsiteOfflinePaymentMethods,
             [
                 Config::CODE,
-                Conveniencestore::CODE
+                Conveniencestore::CODE,
+                CcGooglepay::CODE
             ]
         );
 

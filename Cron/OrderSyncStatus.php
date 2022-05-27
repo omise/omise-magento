@@ -16,6 +16,7 @@ class OrderSyncStatus
      */
     private $paymentMethodArray = [
         "omise_cc",
+        "omise_cc_googlepay",
         "omise_offline_conveniencestore",
         "omise_offline_paynow",
         "omise_offline_promptpay",
