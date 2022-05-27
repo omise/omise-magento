@@ -42,14 +42,14 @@ define(
                 'JCB': 'JCB',
                 'MasterCard': 'MASTERCARD',
                 'Visa': 'VISA',
-            }
-            const cardBrands = []
+            };
+            const cardBrands = [];
             window.checkoutConfig.card_brands.forEach(brand => {
                 if (brandMapping[brand]) {
                     cardBrands.push(brandMapping[brand])
                 }
-            })
-            return cardBrands
+            });
+            return cardBrands;
         }();
         
         /**
@@ -84,7 +84,7 @@ define(
             type: 'CARD',
             parameters: {
                 allowedAuthMethods: allowedCardAuthMethods,
-                allowedCardNetworks: [],
+                allowedCardNetworks: allowedCardNetworks,
                 billingAddressRequired: (window.checkoutConfig.omise_cc_googlepay.requestBillingAddress === '1'),
                 billingAddressParameters: {
                     format: 'FULL',

@@ -25,7 +25,7 @@ class PluginConfigProvider implements ConfigProviderInterface
             CcGooglePay::CODE => [
                 'merchantId' => $this->config->getValue('merchant_id', CcGooglePay::CODE),
                 'requestBillingAddress' => $this->config->getValue('request_billing_address', CcGooglePay::CODE),
-                'requestPhoneNumber' => $this->config->getValue('request_phone_number', CcGooglePay::CODE),
+                'requestPhoneNumber' => $this->config->getValue('request_phone_number', CcGooglePay::CODE)
             ]
         ];
     }
