@@ -221,6 +221,10 @@ div.fpx {
     background-image:url(../images/fpx-ambank.svg);
 }
 
+.select-list-box > select.bocm {
+    background-image:url(../images/fpx-bocm.svg);
+}
+
 .select-list-box > select.bsn {
     background-image:url(../images/fpx-bsn.svg);
 }
