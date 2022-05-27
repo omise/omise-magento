@@ -270,6 +270,21 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_grabpay>
+
+            <omise_cc_googlepay>
+                <active>0</active>
+                <title>Google Pay</title>
+                <merchant_id></merchant_id>
+                <request_billing_address>0</request_billing_address>
+                <request_phone_number>0</request_phone_number>
+                <model>OmiseCcGooglePayAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_cc_googlepay>
         </payment>
     </default>
 </config>
