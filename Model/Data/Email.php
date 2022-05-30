@@ -148,6 +148,7 @@ class Email
                 // for convenience store
                 $emailData->addData(['link' => $payment->getAdditionalInformation('charge_authorize_uri')]);
                 $this->emailTemplate = 'send_email_convenience_store_template';
+                break;
             default:
                 return $this;
         }
