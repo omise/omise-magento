@@ -1,0 +1,20 @@
+<!--@subject {{trans "Convenience Store Payment"}}  @-->
+{{template config_path="design/email/header_template"}}
+<div>
+    <p>
+        {{trans "%thankyou" thankyou="Thank you for your order."}}</p>
+        {{trans "%message" message="You are now one step away from completing the order. Please follow the link to find the payment instructions to complete the payment "}}.
+    </p>
+    <p>
+        <br /><br /><a style="color: black; border-style: solid; border-width: 1px 1px 1px 1px; text-decoration: none; padding: 4px; border-radius: 5px" href="{{var data.link|raw }}" _blank="">
+            {{trans "%paymentInstructions" paymentInstructions="Payment Instructions."}}
+        </a><br /><br />
+    </p>
+    <p>
+        {{trans "%orderid" orderid="Order ID:"}} <strong>{{var data.orderId|raw}}</strong><br/>
+        {{trans "%amounttopay" amounttopay="Amount to pay:"}} <strong>{{var data.amount|raw}}</strong><br/>
+    </p>
+    
+    <p style="margin-top: 50px"><i>{{var data.storename|raw}}</i></p>
+</div>
+{{template config_path="design/email/footer_template"}}
