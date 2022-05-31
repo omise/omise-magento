@@ -196,7 +196,7 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Check if payment method is among the payment methods which is payable by image code and
+     * Check if payment method is among the payment methods which is payable by image code or not
      *
      * @param string $paymentMethod
      * @return boolean
