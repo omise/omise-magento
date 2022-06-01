@@ -674,7 +674,7 @@
                     </field>
                     <field id="merchant_id" translate="label" type="text" sortOrder="507" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google Pay Merchant ID</label>
-                        <comment><![CDATA[The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>.]]></comment>
+                        <comment><![CDATA[The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>. Only required for live mode.]]></comment>
                         <config_path>payment/omise_cc_googlepay/merchant_id</config_path>
                     </field>
                     <field id="request_billing_address" translate="label comment" type="select" sortOrder="508" showInDefault="1" showInWebsite="1" showInStore="1">

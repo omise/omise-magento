@@ -124,7 +124,6 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_cc_googlepay',
-            restrictedToCurrencies: ['thb', 'sgd', 'myr'],
 
             /**
              * Get a checkout form data.
