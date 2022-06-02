@@ -60,10 +60,20 @@ class OmiseHelper extends AbstractHelper
      *
      * @var array
      */
-    private $offlinePaymentMethods = [
+    private $imageCodePaymentMethods = [
         Paynow::CODE,
         Promptpay::CODE,
         Tesco::CODE
+    ];
+
+    /**
+     * @var array
+     */
+    private $offlinePaymentMethods = [
+        Paynow::CODE,
+        Promptpay::CODE,
+        Tesco::CODE,
+        Conveniencestore::CODE
     ];
 
     /**
@@ -186,23 +196,34 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * This method checks and return TRUE if $paymentMethod is offline payment which is payable by image code
-     * otherwise returns false.
+     * Check if payment method is among the payment methods which is payable by image code or not
+     *
      * @param string $paymentMethod
      * @return boolean
      */
     public function isPayableByImageCode($paymentMethod)
     {
+        return in_array($paymentMethod, $this->imageCodePaymentMethods);
+    }
+
+    /**
+     * Check if payment method is one of the offline payment methods or not
+     *
+     * @param string $paymentMethod
+     * @return boolean
+     */
+    public function isOfflinePaymentMethod($paymentMethod)
+    {
         return in_array($paymentMethod, $this->offlinePaymentMethods);
     }
 
     /**
-     * This method checks and return TRUE if $paymentMethod is an offsite payment
-     * otherwise returns false.
+     * Check if payment method is one of the offsite payment methods or not
+     *
      * @param string $paymentMethod
      * @return boolean
      */
-    public function isOffsitePayment($paymentMethod)
+    public function isOffsitePaymentMethod($paymentMethod)
     {
         return in_array($paymentMethod, $this->offsitePaymentMethods);
     }
@@ -315,13 +336,7 @@ class OmiseHelper extends AbstractHelper
     public function isOmisePayment($paymentMethod)
     {
         $offsiteOfflinePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offlinePaymentMethods);
-        $omisePaymentMethods = array_merge(
-            $offsiteOfflinePaymentMethods,
-            [
-                Config::CODE,
-                Conveniencestore::CODE
-            ]
-        );
+        $omisePaymentMethods = array_merge($offsiteOfflinePaymentMethods, [ Config::CODE ]);
 
         return in_array($paymentMethod, $omisePaymentMethods);
     }

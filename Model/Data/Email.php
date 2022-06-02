@@ -144,6 +144,11 @@ class Email
                 $emailData->addData(['validUntil' => date("d-m-Y H:i:s", strtotime('+1 day'))]);
                 $this->emailTemplate = 'send_email_promptpay_template';
                 break;
+            case 'econtext':
+                // for convenience store
+                $emailData->addData(['link' => $payment->getAdditionalInformation('charge_authorize_uri')]);
+                $this->emailTemplate = 'send_email_convenience_store_template';
+                break;
             default:
                 return $this;
         }
