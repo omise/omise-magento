@@ -1,9 +1,12 @@
 # CHANGELOG
+## [v2.25.0 _(May 25, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.25.0)
+- Add Mobile banking BBL for TH (PR [#347](https://github.com/omise/omise-magento/pull/347))
+- Checks validity of the keys when adding them. (PR [#346](https://github.com/omise/omise-magento/pull/346))
 
-## [v2.24.0 _(May 17, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.24.0)
+## [v2.24.0 _(May 17, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.24.0)
 - Add GrabPay payment method (PR [#344](https://github.com/omise/omise-magento/pull/344))
 
-## [v2.23.3 _(May 12, 2022)](https://github.com/omise/omise-magento/releases/tag/v2.23.3)
+## [v2.23.3 _(May 12, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.23.3)
 - Fetch capabilities. (PR [#337](https://github.com/omise/omise-magento/pull/337))
 - Preventing Omise plugin to initialize when public and secret keys are not present. (PR [#339](https://github.com/omise/omise-magento/pull/339))
 - Incorrect webhook endpoint being displayed has been fixed. (PR [#340](https://github.com/omise/omise-magento/pull/340))

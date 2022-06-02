@@ -14,6 +14,7 @@ use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
 use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Helper\OmiseHelper;
+use Magento\Checkout\Model\Session as CheckoutSession;
 
 class Threedsecure extends Action
 {
@@ -47,7 +48,8 @@ class Threedsecure extends Action
         Session $session,
         Config  $config,
         OmiseEmailHelper $emailHelper,
-        OmiseHelper $helper
+        OmiseHelper $helper,
+        CheckoutSession $checkoutSession
     ) {
         parent::__construct($context);
 
@@ -55,6 +57,7 @@ class Threedsecure extends Action
         $this->config  = $config;
         $this->emailHelper = $emailHelper;
         $this->helper = $helper;
+        $this->checkoutSession  = $checkoutSession;
     }
 
     /**
@@ -119,6 +122,8 @@ class Threedsecure extends Action
             $result = $this->validate($charge);
 
             if ($result instanceof Invalid) {
+                // restoring the cart
+                $this->checkoutSession->restoreQuote();
                 throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
             }
 
