@@ -21,7 +21,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
 use Omise\Payment\Model\Config\Cc as Config;
-use Omise\Payment\Model\Config\CcGooglepay;
+use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
 
 use SimpleXMLElement;
@@ -75,6 +75,14 @@ class OmiseHelper extends AbstractHelper
         Promptpay::CODE,
         Tesco::CODE,
         Conveniencestore::CODE
+    ];
+
+    /**
+     * @var array
+     */
+    private $cardPaymentMethods = [
+        Config::CODE,
+        CcGooglePay::CODE
     ];
 
     /**
@@ -336,8 +344,11 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOmisePayment($paymentMethod)
     {
-        $offsiteOfflinePaymentMethods = array_merge($this->offsitePaymentMethods, $this->offlinePaymentMethods);
-        $omisePaymentMethods = array_merge($offsiteOfflinePaymentMethods, [ Config::CODE ]);
+        $omisePaymentMethods = array_merge(
+            $this->offsitePaymentMethods,
+            $this->offlinePaymentMethods,
+            $this->cardPaymentMethods
+        );
 
         return in_array($paymentMethod, $omisePaymentMethods);
     }
