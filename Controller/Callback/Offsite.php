@@ -118,7 +118,7 @@ class Offsite extends Action
         
         $paymentMethod = $payment->getMethod();
 
-        if (!$this->helper->isOffsitePayment($paymentMethod)) {
+        if (!$this->helper->isOffsitePaymentMethod($paymentMethod)) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')
