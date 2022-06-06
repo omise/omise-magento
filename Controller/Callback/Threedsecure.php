@@ -86,7 +86,7 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($payment->getMethod() !== 'omise' && !$this->helper->isCreditCardPayment($payment->getMethod())) {
+        if ($payment->getMethod() !== 'omise' && !$this->helper->isCreditCardPaymentMethod($payment->getMethod())) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')

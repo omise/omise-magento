@@ -360,7 +360,7 @@ class OmiseHelper extends AbstractHelper
      *
      * @return boolean
      */
-    public function isCreditCardPayment($paymentMethod)
+    public function isCreditCardPaymentMethod($paymentMethod)
     {
         return in_array($paymentMethod, $this->cardPaymentMethods);
     }
