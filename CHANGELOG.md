@@ -1,5 +1,5 @@
 # CHANGELOG
-## [v2.26.0 _(June 6, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.26.0)
+## [v2.26.0 _(Jun 6, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.26.0)
 - Retain the cart items when payment fails (PR [#350](https://github.com/omise/omise-magento/pull/350))
 - Added support for Google Pay payment method (PR [#351](https://github.com/omise/omise-magento/pull/351))
 - Added bank of China logo for FPX payment method (PR [#352](https://github.com/omise/omise-magento/pull/352))
