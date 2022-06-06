@@ -5,6 +5,7 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Mobilebanking;
@@ -53,6 +54,9 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                     break;
                 case Internetbanking::CODE:
                     $configs['internet_banking'] = $this->capabilities->getBackendsByType("internet_banking");
+                    break;
+                case CcGooglePay::CODE:
+                    $configs['card_brands'] = $this->capabilities->getCardBrands();
                     break;
             }
         }

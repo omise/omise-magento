@@ -9,6 +9,7 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
 use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -85,7 +86,7 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($payment->getMethod() !== 'omise' && $payment->getMethod() !== 'omise_cc') {
+        if ($payment->getMethod() !== 'omise' && !$this->helper->isCreditCardPaymentMethod($payment->getMethod())) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')

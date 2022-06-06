@@ -1,0 +1,47 @@
+<div class="payment-method"
+    data-bind="css: {'_active': (getCode() == isChecked())}, visible: isActive()">
+    <div class="payment-method-title field choice">
+        <input type="radio" name="payment[method]" class="radio"
+            data-bind="attr: {
+               'id': getCode()
+               },
+               value: getCode(),
+               checked: isChecked,
+               click: selectPaymentMethod,
+               visible: isRadioButtonVisible(),
+               enable: isActive()" />
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <span data-bind="text: getTitle()"></span>
+        </label>
+        <div data-bind="visible: isSandboxOn()" class="page messages">
+            <div role="alert" class="messages">
+                <div class="message-warning warning message">
+                    <span data-bind="i18n: 'Test mode'"></span> (<a target="_blank" href="https://www.omise.co/what-are-test-keys-and-live-keys"><span data-bind="i18n: 'more info'"></span></a>)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() -->
+        <!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() -->
+            <!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar" data-bind="visible: loadGooglePay()">
+          <div id="googlepay-container"></div>
+        </div>
+        <div class="message-error error message" style="display:none" id="googlepay-error-message">
+            This payment method is not currently available, please try again later or use a different payment method.
+        </div>
+    </div>
+</div>

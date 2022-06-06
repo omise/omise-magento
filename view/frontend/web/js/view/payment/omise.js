@@ -11,6 +11,7 @@ define(
 
         const METHOD_RENDERERS = [
             'cc',
+            'cc-googlepay',
             'offsite-internetbanking',
             'offsite-alipay',
             'offsite-fpx',

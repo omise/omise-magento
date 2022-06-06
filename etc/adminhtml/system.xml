@@ -663,6 +663,60 @@
                         </depends>
                     </field>
                 </group>
+                <group id="omise_cc_googlepay" translate="label" sortOrder="505" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Google Pay Payment</label>
+                    <comment>Enable customers to pay using credit/debit cards connected to their Google account. </comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="506" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Google Pay payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_cc_googlepay/active</config_path>
+                    </field>
+                    <field id="merchant_id" translate="label" type="text" sortOrder="507" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Google Pay Merchant ID</label>
+                        <comment><![CDATA[The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>. Only required for live mode.]]></comment>
+                        <config_path>payment/omise_cc_googlepay/merchant_id</config_path>
+                    </field>
+                    <field id="request_billing_address" translate="label comment" type="select" sortOrder="508" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Request Billing Address</label>
+                        <comment>Request customer's name and billing address from their Google Account upon checkout.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_cc_googlepay/request_billing_address</config_path>
+                    </field>
+                    <field id="request_phone_number" translate="label comment" type="select" sortOrder="509" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Request Phone Number</label>
+                        <comment>Request customer's phone number from their Google Account upon checkout when billing address is requested.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_cc_googlepay/request_phone_number</config_path>
+                        <depends>
+                            <field id="request_billing_address">1</field>
+                        </depends>
+                    </field>
+                    <field id="payment_action" translate="label" type="select" sortOrder="510" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment Action</label>
+                        <source_model>Omise\Payment\Model\Source\PaymentAction</source_model>
+                        <config_path>payment/omise_cc_googlepay/payment_action</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="511" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_cc_googlepay/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="512" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_cc_googlepay/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="513" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_cc_googlepay/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
             </group>
         </section>
     </system>

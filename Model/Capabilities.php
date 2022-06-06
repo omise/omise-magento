@@ -77,4 +77,14 @@ class Capabilities
     {
         return $this->capabilitiesAPI->getBackends();
     }
+
+    /**
+     *
+     * @return array|null
+     */
+    public function getCardBrands()
+    {
+        $card = $this->getBackendsByType("card");
+        return $card ? current($card)->brands : [];
+    }
 }
