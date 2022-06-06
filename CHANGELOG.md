@@ -1,4 +1,10 @@
 # CHANGELOG
+## [v2.26.0 _(April 6, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.26.0)
+- Retain the cart items when payment fails (PR [#350](https://github.com/omise/omise-magento/pull/350))
+- Added support for Google Pay payment method (PR [#351](https://github.com/omise/omise-magento/pull/351))
+- Added bank of China logo for FPX payment method (PR [#352](https://github.com/omise/omise-magento/pull/352))
+- Payment instructions will be sent to the customer's email for convenience store payment method (PR [#353](https://github.com/omise/omise-magento/pull/353))
+
 ## [v2.25.0 _(May 25, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.25.0)
 - Add Mobile banking BBL for TH (PR [#347](https://github.com/omise/omise-magento/pull/347))
 - Checks validity of the keys when adding them. (PR [#346](https://github.com/omise/omise-magento/pull/346))
