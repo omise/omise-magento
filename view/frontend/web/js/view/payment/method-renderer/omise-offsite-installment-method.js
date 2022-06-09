@@ -6,7 +6,6 @@ define(
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/quote',
         'Magento_Catalog/js/price-utils',
-        'mage/translate'
     ],
     function (
         $,
@@ -51,7 +50,7 @@ define(
             },
             {
                 id: "installment_bay",
-                title: $.mage.__('Krungsri Bank'),
+                title: $.mage.__('Krungsri'),
                 code: 'bay',
                 logo: 'bay',
                 active: true
@@ -337,13 +336,13 @@ define(
             get_available_providers: function () {
                 let _providers = Object.values(window.checkoutConfig.installment_backends);
 
-                return providers.filter((a1) => _providers.find(a2 => {
+                return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {
                         a1.obs = this.getInstallmentTerms(a2._id)
                         return true
                     }
                 }
-                ))
+                )))
             }
 
         });

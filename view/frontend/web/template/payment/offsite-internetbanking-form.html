@@ -32,6 +32,7 @@
             <!-- /ko -->
             <!--/ko-->
         </div>
+        <!-- ko if: providers().length -->
         <div class="omise-banking-fee-warn"
             data-bind="i18n: 'Your bank may charge a small fee for internet banking payments'"></div>
         <form class="form" data-bind="attr: {id: getCode() + 'Form',}">
@@ -77,5 +78,13 @@
                 </button>
             </div>
         </div>
+        <!-- /ko -->
+        
+        <!-- ko ifnot: providers().length -->
+        <div class="error-msg">
+            <!-- ko i18n: 'This payment method is not currently available, please try again later or use a different payment method.'-->
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
     </div>
 </div>
