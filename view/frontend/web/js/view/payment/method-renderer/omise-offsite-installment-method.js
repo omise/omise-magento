@@ -5,7 +5,8 @@ define(
         'Omise_Payment/js/view/payment/omise-offsite-method-renderer',
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/quote',
-        'Magento_Catalog/js/price-utils'
+        'Magento_Catalog/js/price-utils',
+        'mage/translate'
     ],
     function (
         $,
@@ -16,8 +17,62 @@ define(
         priceUtils
     ) {
         'use strict';
+
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
-        const CAPTION = 'Choose number of monthly payments';
+        const CAPTION = $.mage.__('Choose number of monthly payments');
+        const providers = [
+            {
+                id: "installment_ktc",
+                title: $.mage.__('Krungthai Card'),
+                code: 'ktc',
+                logo: 'ktc',
+                active: true
+            },
+            {
+                id: "installment_first_choice",
+                title: $.mage.__('First Choice'),
+                code: 'first_choice',
+                logo: 'fc',
+                active: true
+            },
+            {
+                id: "installment_kbank",
+                title: $.mage.__('Kasikorn Bank'),
+                code: 'kbank',
+                logo: 'kbank',
+                active: true
+            },
+            {
+                id: "installment_bbl",
+                title: $.mage.__('Bangkok Bank'),
+                code: 'bbl',
+                logo: 'bbl',
+                active: true
+            },
+            {
+                id: "installment_bay",
+                title: $.mage.__('Krungsri Bank'),
+                code: 'bay',
+                logo: 'bay',
+                active: true
+            },
+            {
+                id: "installment_scb",
+                title: $.mage.__('Siam Commercial Bank'),
+                code: 'scb',
+                logo: 'scb',
+                active: true
+            },
+            {
+                id: "installment_uob",
+                title: $.mage.__('United Overseas Bank'),
+                code: 'uob',
+                logo: 'uob',
+                active: true
+            },
+
+        ]
+
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
@@ -25,58 +80,6 @@ define(
 
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
-            providers: [
-                {
-                    id: "installment_ktc",
-                    title: 'Krungthai Card',
-                    code: 'ktc',
-                    logo: 'ktc',
-                    active: true
-                },
-                {
-                    id: "installment_first_choice",
-                    title: 'First Choice',
-                    code: 'first_choice',
-                    logo: 'fc',
-                    active: true
-                },
-                {
-                    id: "installment_kbank",
-                    title: 'Kasikorn Bank',
-                    code: 'kbank',
-                    logo: 'kbank',
-                    active: true
-                },
-                {
-                    id: "installment_bbl",
-                    title: 'Bangkok Bank',
-                    code: 'bbl',
-                    logo: 'bbl',
-                    active: true
-                },
-                {
-                    id: "installment_bay",
-                    title: 'Krungsri',
-                    code: 'bay',
-                    logo: 'bay',
-                    active: true
-                },
-                {
-                    id: "installment_scb",
-                    title: 'Siam Commercial Bank',
-                    code: 'scb',
-                    logo: 'scb',
-                    active: true
-                },
-                {
-                    id: "installment_uob",
-                    title: 'United Overseas Bank',
-                    code: 'uob',
-                    logo: 'uob',
-                    active: true
-                },
-
-            ],
 
             /**
              * Initiate observable fields
@@ -334,7 +337,7 @@ define(
             get_available_providers: function () {
                 let _providers = Object.values(window.checkoutConfig.installment_backends);
 
-                return this.providers.filter((a1) => _providers.find(a2 => {
+                return providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {
                         a1.obs = this.getInstallmentTerms(a2._id)
                         return true
