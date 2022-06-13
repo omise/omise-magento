@@ -203,6 +203,14 @@ class Threedsecure extends Action
             return (new CaptureResultValidator)->validate($charge);
         }
 
+        if ($this->config->isWebhookEnabled()) {
+            // preventing the order being canceled when the return_uri is hit directly
+            // by the user and not by the Omise server
+            if ($charge['status'] === 'pending' && $charge['authorized'] == false) {
+                return true;
+            }
+        }
+
         return (new AuthorizeResultValidator)->validate($charge);
     }
 
