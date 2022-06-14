@@ -65,6 +65,10 @@ class Threedsecure extends Action
      */
     public function execute()
     {
+        if (!$this->helper->validate3DSReferer()) {
+            return $this->redirect(self::PATH_CART);
+        }
+
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
@@ -201,14 +205,6 @@ class Threedsecure extends Action
     {
         if ($charge['capture']) {
             return (new CaptureResultValidator)->validate($charge);
-        }
-
-        if ($this->config->isWebhookEnabled()) {
-            // preventing the order being canceled when the return_uri is hit directly
-            // by the user and not by the Omise server
-            if ($charge['status'] === 'pending' && $charge['authorized'] == false) {
-                return true;
-            }
         }
 
         return (new AuthorizeResultValidator)->validate($charge);

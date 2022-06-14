@@ -364,4 +364,16 @@ class OmiseHelper extends AbstractHelper
     {
         return in_array($paymentMethod, $this->cardPaymentMethods);
     }
+
+    /**
+     * Validate whether the a URI was triggered by Omiser server or not
+     */
+    public function validate3DSReferer()
+    {
+        $refererValue = $this->header->getHttpReferer();
+        $isProduction = strpos($refererValue, 'https://api.omise.co') === 0;
+        $isStaging = strpos($this->header->getHttpReferer(), 'https://api.staging-omise.co') === 0;
+
+        return $isProduction || $isStaging;
+    }
 }
