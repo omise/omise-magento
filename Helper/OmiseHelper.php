@@ -366,13 +366,13 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Validate whether the a URI was triggered by Omiser server or not
+     * Validate whether the a URI was triggered by Omise server or not
      */
     public function validate3DSReferer()
     {
         $refererValue = $this->header->getHttpReferer();
         $isProduction = strpos($refererValue, 'https://api.omise.co') === 0;
-        $isStaging = strpos($this->header->getHttpReferer(), 'https://api.staging-omise.co') === 0;
+        $isStaging = strpos($refererValue, 'https://api.staging-omise.co') === 0;
 
         return $isProduction || $isStaging;
     }
