@@ -65,6 +65,10 @@ class Threedsecure extends Action
      */
     public function execute()
     {
+        if (!$this->helper->validate3DSReferer()) {
+            return $this->redirect(self::PATH_CART);
+        }
+
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
