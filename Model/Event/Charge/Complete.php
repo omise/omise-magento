@@ -122,7 +122,8 @@ class Complete
             return;
         }
 
-        // To handle the situation where charge is manually updated as successful from Omise dashboard after the order is canceled.
+        // To handle the situation where charge is manually updated as successful
+        // from Omise dashboard after the order is canceled.
         if ($this->order->getState() === MagentoOrder::STATE_CANCELED && $this->charge->isSuccessful()) {
             $this->processCancelledOrder($helper, $emailHelper);
         }
@@ -138,13 +139,11 @@ class Complete
     {
         if ($isCaptured) {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_PAYMENT, $this->invoice);
-            $comment = __( self::ORDER_COMMENT['CAPTURED'], $amount );
+            $comment = __('Amount of %1 has been paid via Omise Payment Gateway.', $amount);
         } else {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_AUTH, $this->invoice);
-            $comment = __( self::ORDER_COMMENT['AWAIT_CAPTURE'], $amount );
+            $comment = __('Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).', $amount);
         }
-
-        var_dump($comment);
 
         $this->payment->addTransactionCommentsToOrder($transaction, $comment);
     }
@@ -194,7 +193,7 @@ class Complete
     {
         $items = $this->order->getAllItems();
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $item->setQtyCanceled(0);
             $item->save();
         }
@@ -211,7 +210,10 @@ class Complete
             $this->order->addRelatedObject($this->invoice);
         }
 
-        $orderMessage = __(self::ORDER_COMMENT['PAYMENT_FAILED'], ucfirst($this->charge->failure_message));
+        $orderMessage = __(
+            'Payment failed. %1, please contact our support if you have any questions.',
+            ucfirst($this->charge->failure_message)
+        );
         $this->order->registerCancellation($orderMessage)->save();
     }
 }
