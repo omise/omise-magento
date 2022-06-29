@@ -39,7 +39,7 @@ class Complete
     private $charge;
 
     const ORDER_COMMENT = [
-        'CAPTURED' => 'Amount of %1 has been paid via Omise Payment Gateway',
+        'CAPTURED' => 'Amount of %1 has been paid via Omise Payment Gateway.',
         'AWAIT_CAPTURE' => 'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
         'PAYMENT_FAILED' => 'Payment failed. %1, please contact our support if you have any questions.'
     ];
@@ -138,7 +138,7 @@ class Complete
     {
         if ($isCaptured) {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_PAYMENT, $this->invoice);
-            $comment = __( 'Amount of %1 has been paid via Omise Payment Gateway.', $amount );
+            $comment = __( self::ORDER_COMMENT['CAPTURED'], $amount );
         } else {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_AUTH, $this->invoice);
             $comment = __( self::ORDER_COMMENT['AWAIT_CAPTURE'], $amount );
