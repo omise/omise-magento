@@ -69,6 +69,7 @@ class ConfigSectionPaymentPlugin
     {
         $configFields = $configData['groups']['omise']['fields'];
 
+        // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
         $sandboxStatus = array_key_exists('value', $configFields['sandbox_status'])
             ? $configFields['sandbox_status']['value']
             : $configFields['sandbox_status'];
