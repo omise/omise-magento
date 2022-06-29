@@ -37,7 +37,7 @@ class Complete
      * @var Omise\Payment\Model\Api\Charge
      */
     private $charge;
-x
+
     /**
      * There are several cases with the following payment methods
      * that would trigger the 'charge.complete' event.
