@@ -69,7 +69,9 @@ class ConfigSectionPaymentPlugin
     {
         $configFields = $configData['groups']['omise']['fields'];
 
-        $standboxStatus = array_key_exists('value', $configFields['sandbox_status']) ? $configFields['sandbox_status']['value'] : $configFields['sandbox_status'];
+        $standboxStatus = array_key_exists('value', $configFields['sandbox_status'])
+            ? $configFields['sandbox_status']['value']
+            : $configFields['sandbox_status'];
 
         $publicKeyIndex = $standboxStatus ? 'test_public_key' : 'live_public_key';
         $secretKeyIndex = $standboxStatus ? 'test_secret_key' : 'live_secret_key';

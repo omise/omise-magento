@@ -37,13 +37,7 @@ class Complete
      * @var Omise\Payment\Model\Api\Charge
      */
     private $charge;
-
-    const ORDER_COMMENT = [
-        'CAPTURED' => 'Amount of %1 has been paid via Omise Payment Gateway.',
-        'AWAIT_CAPTURE' => 'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
-        'PAYMENT_FAILED' => 'Payment failed. %1, please contact our support if you have any questions.'
-    ];
-
+x
     /**
      * There are several cases with the following payment methods
      * that would trigger the 'charge.complete' event.
