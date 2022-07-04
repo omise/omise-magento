@@ -9,4 +9,6 @@ class Tesco extends Config
      * @var string
      */
     const CODE = 'omise_offline_tesco';
+
+    const NAME = 'bill_payment_tesco_lotus';
 }

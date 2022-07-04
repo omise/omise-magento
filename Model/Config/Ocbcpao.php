@@ -9,4 +9,6 @@ class Ocbcpao extends Config
      * @var string
      */
     const CODE = 'omise_offsite_ocbcpao';
+
+    const NAME = "mobile_banking_ocbc_pao";
 }

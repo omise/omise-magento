@@ -9,4 +9,9 @@ class Cc extends Config
      * @var string
      */
     const CODE = 'omise_cc';
+
+    /**
+     * @var string
+     */
+    const NAME ='googlepay';
 }

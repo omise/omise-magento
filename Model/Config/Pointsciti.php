@@ -9,4 +9,6 @@ class Pointsciti extends Config
      * @var string
      */
     const CODE = 'omise_offsite_pointsciti';
+
+    const NAME ='points_citi';
 }

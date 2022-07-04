@@ -9,4 +9,6 @@ class Paynow extends Config
      * @var string
      */
     const CODE = 'omise_offline_paynow';
+
+    const NAME ='paynow';
 }

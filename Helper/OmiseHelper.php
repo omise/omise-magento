@@ -6,6 +6,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
 use Magento\Sales\Model\Order;
 
+use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Pointsciti;
@@ -82,8 +83,106 @@ class OmiseHelper extends AbstractHelper
      */
     private $cardPaymentMethods = [
         Config::CODE,
+        Cc::CODE,
         CcGooglePay::CODE
     ];
+
+
+    /**
+     * @var array
+     */
+    private $omisePaymentMethods;
+
+    /**
+     *
+     * @var array
+     */
+    private $omiseCodeByOmiseName = [
+        // card payment
+        CC::NAME => Cc::CODE,
+        CcGooglePay::NAME => CcGooglePay::CODE,
+
+        // offsite payment
+        Alipay::NAME => Alipay::CODE,
+        Truemoney::NAME => Truemoney::CODE,
+        Pointsciti::NAME => Pointsciti::CODE,
+        Fpx::NAME => Fpx::CODE,
+        Alipayplus::ALIPAY_NAME => Alipayplus::ALIPAY_CODE,
+        Alipayplus::ALIPAYHK_NAME => Alipayplus::ALIPAYHK_CODE,
+        Alipayplus::DANA_NAME => Alipayplus::DANA_CODE,
+        Alipayplus::GCASH_NAME => Alipayplus::GCASH_CODE,
+        Alipayplus::KAKAOPAY_NAME => Alipayplus::KAKAOPAY_CODE,
+        Alipayplus::TOUCHNGO_NAME => Alipayplus::TOUCHNGO_CODE,
+        Rabbitlinepay::NAME => Rabbitlinepay::CODE,
+        Ocbcpao::NAME => Ocbcpao::CODE,
+        Grabpay::NAME => Grabpay::CODE,
+
+        // offsite internet banking payment
+        // Internetbanking::BBl_NAME => Internetbanking::CODE,
+        Internetbanking::BAY_NAME => Internetbanking::CODE,
+        Internetbanking::KTB_NAME => Internetbanking::CODE,
+        Internetbanking::SCB_NAME => Internetbanking::CODE,
+        
+        // offsite installment banking payment
+        Installment::BAY_NAME => Installment::CODE,
+        Installment::BBL_NAME => Installment::CODE,
+        Installment::CITI_NAME => Installment::CODE,
+        Installment::UOB_NAME  => Installment::CODE,
+        Installment::FIRST_CHOICE_NAME => Installment::CODE,
+        Installment::KBANK_NAME => Installment::CODE,
+        Installment::KTC_NAME => Installment::CODE,
+        Installment::SCB_NAME => Installment::CODE,
+        Installment::TTB_NAME => Installment::CODE,
+        Installment::UOB_NAME => Installment::CODE,
+        
+        
+        // offsite installment banking payment
+        Mobilebanking::BAY_NAME => Mobilebanking::CODE,
+        Mobilebanking::BBL_NAME => Mobilebanking::CODE,
+        Mobilebanking::KBANK_NAME => Mobilebanking::CODE,
+        Mobilebanking::SCB_NAME => Mobilebanking::CODE,
+        
+        // offline payment
+        Paynow::NAME=>Paynow::CODE,
+        Promptpay::NAME=>Promptpay::CODE,
+        Tesco::NAME=>Tesco::CODE,
+        Conveniencestore::NAME=>Conveniencestore::CODE
+    ];
+
+    /**
+     *
+     * @var array
+     */
+    private $labelByOmiseCode = [
+        // card payment
+        Cc::CODE => "Credit Card Payment",
+        CcGooglePay::CODE => "Google Pay Payment",
+
+        // offsite payment
+        Alipay::CODE => "Alipay",
+        Internetbanking::CODE => "Internet Banking Payment",
+        Installment::CODE => "Installment Payment",
+        Truemoney::CODE => "TrueMoney Wallet Payment",
+        Pointsciti::CODE => "Citi Pay with Points",
+        Fpx::CODE => "FPX Payment",
+        Alipayplus::ALIPAY_CODE => "Alipay (Alipay+ Partner) Payment",
+        Alipayplus::ALIPAYHK_CODE => "AlipayHK (Alipay+ Partner) Payment",
+        Alipayplus::DANA_CODE => "DANA (Alipay+ Partner) Payment",
+        Alipayplus::GCASH_CODE => "GCash (Alipay+ Partner) Payment",
+        Alipayplus::KAKAOPAY_CODE => "Kakao Pay (Alipay+ Partner) Payment",
+        Alipayplus::TOUCHNGO_CODE => "TNG eWallet (Alipay+ Partner) Payment",
+        Mobilebanking::CODE => "Mobile Banking Payment",
+        Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
+        Ocbcpao::CODE => "OCBC Pay Anyone Payment",
+        Grabpay::CODE => "GrabPay Payment",
+
+        // offline payment
+        Paynow::CODE => "PayNow QR Payment",
+        Promptpay::CODE => "PromptPay QR Payment",
+        Tesco::CODE => "Tesco Lotus Bill Payment",
+        Conveniencestore::CODE => "Convenience Store Payment"
+    ];
+    
 
     /**
      * @var Config
@@ -96,6 +195,11 @@ class OmiseHelper extends AbstractHelper
     ) {
         $this->header = $header;
         $this->config = $config;
+        $this->omisePaymentMethods = array_merge(
+            $this->offsitePaymentMethods,
+            $this->offlinePaymentMethods,
+            $this->cardPaymentMethods
+        );
     }
 
     /**
@@ -290,10 +394,10 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Get platform type of WEB, IOS or ANDROID to add to source API parameter.
+     * Get platform NAME of WEB, IOS or ANDROID to add to source API parameter.
      * @return string
      */
-    public function getPlatformType()
+    public function getPlatformNAME()
     {
         $userAgent = $this->header->getHttpUserAgent();
 
@@ -344,13 +448,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function isOmisePayment($paymentMethod)
     {
-        $omisePaymentMethods = array_merge(
-            $this->offsitePaymentMethods,
-            $this->offlinePaymentMethods,
-            $this->cardPaymentMethods
-        );
-
-        return in_array($paymentMethod, $omisePaymentMethods);
+        return in_array($paymentMethod, $this->omisePaymentMethods);
     }
 
     /**
@@ -375,5 +473,17 @@ class OmiseHelper extends AbstractHelper
         $isStaging = strpos($refererValue, 'https://api.staging-omise.co') === 0;
 
         return $isProduction || $isStaging;
+    }
+
+    public function getOmiseLabelByOmiseCode(string $code)
+    {
+        if (array_key_exists($code, $this->labelByOmiseCode))
+            return $this->labelByOmiseCode[$code];
+    }
+
+    public function  getOmiseCodeByOmiseName(string $name)
+    {
+        if (array_key_exists($name, $this->omiseCodeByOmiseName))
+            return  $this->omiseCodeByOmiseName[$name];
     }
 }
