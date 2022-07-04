@@ -10,5 +10,5 @@ class Ocbcpao extends Config
      */
     const CODE = 'omise_offsite_ocbcpao';
 
-    const NAME = "mobile_banking_ocbc_pao";
+    const ID = "mobile_banking_ocbc_pao";
 }

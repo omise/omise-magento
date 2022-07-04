@@ -13,5 +13,5 @@ class CcGooglePay extends Config
     /**
      * @var string
      */
-    const NAME ='card';
+    const ID ='googlepay';
 }

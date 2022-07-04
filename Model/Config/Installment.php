@@ -11,13 +11,13 @@ class Installment extends Config
     const CODE = 'omise_offsite_installment';
 
    
-      const BAY_NAME ="installment_bay";
-      const BBL_NAME ="installment_bbl";
-      const CITI_NAME ="installment_citi";
-      const FIRST_CHOICE_NAME ="installment_first_choice";
-      const KBANK_NAME ="installment_kbank";
-      const KTC_NAME ="installment_ktc";
-      const SCB_NAME ="installment_scb";
-      const TTB_NAME ="installment_ttb";
-      const UOB_NAME ="installment_uob";
+      const BAY_ID ="installment_bay";
+      const BBL_ID ="installment_bbl";
+      const CITI_ID ="installment_citi";
+      const FIRST_CHOICE_ID ="installment_first_choice";
+      const KBANK_ID ="installment_kbank";
+      const KTC_ID ="installment_ktc";
+      const SCB_ID ="installment_scb";
+      const TTB_ID ="installment_ttb";
+      const UOB_ID ="installment_uob";
 }

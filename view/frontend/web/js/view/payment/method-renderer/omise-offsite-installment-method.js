@@ -16,7 +16,7 @@ define(
         priceUtils
     ) {
         'use strict';
-
+        // console.log(capabilities);
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
         const CAPTION = $.mage.__('Choose number of monthly payments');
         const providers = [
@@ -76,9 +76,11 @@ define(
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
-
+            capabilities: checkoutConfig.omise_payment_list['omise_offsite_installment'],
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
+
+            capabilities: null,
 
             /**
              * Initiate observable fields
@@ -98,6 +100,9 @@ define(
                         'installmentTermsUOB',
                     ]);
 
+                this.capabilities = checkoutConfig.omise_payment_list[this.code];
+
+                // filter provider for checkout page
                 this.providers = this.get_available_providers()
 
                 return this;
@@ -334,7 +339,7 @@ define(
             * @return {Array}
             */
             get_available_providers: function () {
-                let _providers = Object.values(window.checkoutConfig.installment_backends);
+                let _providers = Object.values(this.capabilities);
 
                 return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {

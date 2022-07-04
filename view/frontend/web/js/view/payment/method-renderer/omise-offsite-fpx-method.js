@@ -22,7 +22,7 @@ define(
 
             code: 'omise_offsite_fpx',
             restrictedToCurrencies: ['myr'],
-            banks: ko.observable(checkoutConfig.fpx.banks),
+            banks: ko.observable(checkoutConfig.omise_payment_list['omise_offsite_fpx'][0].banks),
             selectedFpxBank: ko.observable(),
             bankLabel: function(name, active) {
                 var bankLabel = name;

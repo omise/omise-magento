@@ -10,5 +10,5 @@ class Rabbitlinepay extends Config
      */
     const CODE = 'omise_offsite_rabbitlinepay';
 
-    const NAME = 'rabbit_linepay';
+    const ID = 'rabbit_linepay';
 }

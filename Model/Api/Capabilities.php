@@ -73,7 +73,7 @@ class Capabilities extends BaseObject
     }
 
     /**
-     * Get Installment capabilities array from Omise-PHP
+     * Retrieves details of payment backends from capabilities
      *
      * @return array
      */

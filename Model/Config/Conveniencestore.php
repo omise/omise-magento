@@ -10,5 +10,5 @@ class Conveniencestore extends Config
      */
     const CODE = 'omise_offline_conveniencestore';
 
-    const NAME = 'econtext';
+    const ID = 'econtext';
 }

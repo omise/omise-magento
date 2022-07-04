@@ -12,6 +12,6 @@ class Grabpay extends Config
     /**
      * @var string
      */
-    const NAME = 'grabpay';
+    const ID = 'grabpay';
     
 }

@@ -3,6 +3,7 @@ namespace Omise\Payment\Model;
 
 use Omise\Payment\Model\Api\Capabilities as OmiseCapabilitiesAPI;
 use Omise\Payment\Model\Omise;
+use Omise\Payment\Helper\OmiseHelper;
 
 class Capabilities
 {
@@ -16,12 +17,19 @@ class Capabilities
      */
     protected $capabilitiesAPI;
 
+    /**
+     * @var Omise\Payment\Helper\OmiseHelper
+     */
+    protected $helper;
+
     public function __construct(
         Omise $omise,
-        OmiseCapabilitiesAPI $capabilitiesAPI
+        OmiseCapabilitiesAPI $capabilitiesAPI,
+        OmiseHelper $helper
     ) {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
+        $this->helper = $helper;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -76,6 +84,24 @@ class Capabilities
     public function getBackends()
     {
         return $this->capabilitiesAPI->getBackends();
+    }
+
+
+    /**
+     *
+     * @return array|null
+     */
+    public function getBackendsWithOmiseCode()
+    {
+        $backends = $this->capabilitiesAPI->getBackends();
+    $list=array();   
+    foreach ($backends as $backend) {
+          $code = $this->helper->getOmiseCodeByOmiseName($backend->_id);
+          if(!is_null($code)){  
+          $list[$code][] =$backend;
+          }
+        };
+    return $list;
     }
 
     /**

@@ -99,54 +99,54 @@ class OmiseHelper extends AbstractHelper
      */
     private $omiseCodeByOmiseName = [
         // card payment
-        CC::NAME => Cc::CODE,
-        CcGooglePay::NAME => CcGooglePay::CODE,
+        CC::ID => Cc::CODE,
+        CcGooglePay::ID => CcGooglePay::CODE,
 
         // offsite payment
-        Alipay::NAME => Alipay::CODE,
-        Truemoney::NAME => Truemoney::CODE,
-        Pointsciti::NAME => Pointsciti::CODE,
-        Fpx::NAME => Fpx::CODE,
-        Alipayplus::ALIPAY_NAME => Alipayplus::ALIPAY_CODE,
-        Alipayplus::ALIPAYHK_NAME => Alipayplus::ALIPAYHK_CODE,
-        Alipayplus::DANA_NAME => Alipayplus::DANA_CODE,
-        Alipayplus::GCASH_NAME => Alipayplus::GCASH_CODE,
-        Alipayplus::KAKAOPAY_NAME => Alipayplus::KAKAOPAY_CODE,
-        Alipayplus::TOUCHNGO_NAME => Alipayplus::TOUCHNGO_CODE,
-        Rabbitlinepay::NAME => Rabbitlinepay::CODE,
-        Ocbcpao::NAME => Ocbcpao::CODE,
-        Grabpay::NAME => Grabpay::CODE,
+        Alipay::ID => Alipay::CODE,
+        Truemoney::ID => Truemoney::CODE,
+        Pointsciti::ID => Pointsciti::CODE,
+        Fpx::ID => Fpx::CODE,
+        Alipayplus::ALIPAY_ID => Alipayplus::ALIPAY_CODE,
+        Alipayplus::ALIPAYHK_ID => Alipayplus::ALIPAYHK_CODE,
+        Alipayplus::DANA_ID => Alipayplus::DANA_CODE,
+        Alipayplus::GCASH_ID => Alipayplus::GCASH_CODE,
+        Alipayplus::KAKAOPAY_ID => Alipayplus::KAKAOPAY_CODE,
+        Alipayplus::TOUCHNGO_ID => Alipayplus::TOUCHNGO_CODE,
+        Rabbitlinepay::ID => Rabbitlinepay::CODE,
+        Ocbcpao::ID => Ocbcpao::CODE,
+        Grabpay::ID => Grabpay::CODE,
 
         // offsite internet banking payment
-        // Internetbanking::BBl_NAME => Internetbanking::CODE,
-        Internetbanking::BAY_NAME => Internetbanking::CODE,
-        Internetbanking::KTB_NAME => Internetbanking::CODE,
-        Internetbanking::SCB_NAME => Internetbanking::CODE,
+        // Internetbanking::BBl_ID => Internetbanking::CODE,
+        Internetbanking::BAY_ID => Internetbanking::CODE,
+        Internetbanking::KTB_ID => Internetbanking::CODE,
+        Internetbanking::SCB_ID => Internetbanking::CODE,
         
         // offsite installment banking payment
-        Installment::BAY_NAME => Installment::CODE,
-        Installment::BBL_NAME => Installment::CODE,
-        Installment::CITI_NAME => Installment::CODE,
-        Installment::UOB_NAME  => Installment::CODE,
-        Installment::FIRST_CHOICE_NAME => Installment::CODE,
-        Installment::KBANK_NAME => Installment::CODE,
-        Installment::KTC_NAME => Installment::CODE,
-        Installment::SCB_NAME => Installment::CODE,
-        Installment::TTB_NAME => Installment::CODE,
-        Installment::UOB_NAME => Installment::CODE,
+        Installment::BAY_ID => Installment::CODE,
+        Installment::BBL_ID => Installment::CODE,
+        Installment::CITI_ID => Installment::CODE,
+        Installment::UOB_ID  => Installment::CODE,
+        Installment::FIRST_CHOICE_ID => Installment::CODE,
+        Installment::KBANK_ID => Installment::CODE,
+        Installment::KTC_ID => Installment::CODE,
+        Installment::SCB_ID => Installment::CODE,
+        Installment::TTB_ID => Installment::CODE,
+        Installment::UOB_ID => Installment::CODE,
         
         
         // offsite installment banking payment
-        Mobilebanking::BAY_NAME => Mobilebanking::CODE,
-        Mobilebanking::BBL_NAME => Mobilebanking::CODE,
-        Mobilebanking::KBANK_NAME => Mobilebanking::CODE,
-        Mobilebanking::SCB_NAME => Mobilebanking::CODE,
+        Mobilebanking::BAY_ID => Mobilebanking::CODE,
+        Mobilebanking::BBL_ID => Mobilebanking::CODE,
+        Mobilebanking::KBANK_ID => Mobilebanking::CODE,
+        Mobilebanking::SCB_ID => Mobilebanking::CODE,
         
         // offline payment
-        Paynow::NAME=>Paynow::CODE,
-        Promptpay::NAME=>Promptpay::CODE,
-        Tesco::NAME=>Tesco::CODE,
-        Conveniencestore::NAME=>Conveniencestore::CODE
+        Paynow::ID=>Paynow::CODE,
+        Promptpay::ID=>Promptpay::CODE,
+        Tesco::ID=>Tesco::CODE,
+        Conveniencestore::ID=>Conveniencestore::CODE
     ];
 
     /**
@@ -394,10 +394,10 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Get platform NAME of WEB, IOS or ANDROID to add to source API parameter.
+     * Get platform ID of WEB, IOS or ANDROID to add to source API parameter.
      * @return string
      */
-    public function getPlatformNAME()
+    public function getPlatformID()
     {
         $userAgent = $this->header->getHttpUserAgent();
 

@@ -10,5 +10,5 @@ class Tesco extends Config
      */
     const CODE = 'omise_offline_tesco';
 
-    const NAME = 'bill_payment_tesco_lotus';
+    const ID = 'bill_payment_tesco_lotus';
 }

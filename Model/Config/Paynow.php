@@ -10,5 +10,5 @@ class Paynow extends Config
      */
     const CODE = 'omise_offline_paynow';
 
-    const NAME ='paynow';
+    const ID ='paynow';
 }

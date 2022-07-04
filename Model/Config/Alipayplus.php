@@ -18,10 +18,10 @@ class Alipayplus extends Config
      /**
      * @var string
      */
-    const ALIPAY_NAME = 'alipay_cn';
-    const ALIPAYHK_NAME = 'alipay_hk';
-    const DANA_NAME = 'dana';
-    const GCASH_NAME = 'gcash';
-    const KAKAOPAY_NAME = 'kakaopay';
-    const TOUCHNGO_NAME = 'touch_n_go';
+    const ALIPAY_ID = 'alipay_cn';
+    const ALIPAYHK_ID = 'alipay_hk';
+    const DANA_ID = 'dana';
+    const GCASH_ID = 'gcash';
+    const KAKAOPAY_ID = 'kakaopay';
+    const TOUCHNGO_ID = 'touch_n_go';
 }

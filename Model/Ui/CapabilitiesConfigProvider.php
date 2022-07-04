@@ -42,18 +42,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         foreach ($listOfActivePaymentMethods as $method) {
             switch ($method->getCode()) {
                 case OmiseInstallmentConfig::CODE:
-                    $configs['installment_backends'] = $this->capabilities->retrieveInstallmentBackends();
                     $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
-                    break;
-                case Fpx::CODE:
-                    $backendsFpx = $this->capabilities->getBackendsByType(Fpx::TYPE);
-                    $configs['fpx']['banks'] = $backendsFpx ? current($backendsFpx)->banks : [];
-                    break;
-                case Mobilebanking::CODE:
-                    $configs['mobile_banking'] = $this->capabilities->retrieveMobileBankingBackends();
-                    break;
-                case Internetbanking::CODE:
-                    $configs['internet_banking'] = $this->capabilities->getBackendsByType("internet_banking");
                     break;
                 case CcGooglePay::CODE:
                     $configs['card_brands'] = $this->capabilities->getCardBrands();
@@ -61,6 +50,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             }
         }
 
+        $configs['omise_payment_list'] = $this->capabilities->getBackendsWithOmiseCode();
         return $configs;
     }
 }

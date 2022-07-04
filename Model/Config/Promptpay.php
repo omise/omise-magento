@@ -10,5 +10,5 @@ class Promptpay extends Config
      */
     const CODE = 'omise_offline_promptpay';
 
-    const NAME ='promptpay';
+    const ID ='promptpay';
 }

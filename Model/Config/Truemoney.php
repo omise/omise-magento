@@ -10,5 +10,5 @@ class Truemoney extends Config
      */
     const CODE = 'omise_offsite_truemoney';
 
-    const NAME = 'truemoney';
+    const ID = 'truemoney';
 }

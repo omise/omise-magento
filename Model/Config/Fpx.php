@@ -16,5 +16,5 @@ class Fpx extends Config
      */
     const TYPE = 'fpx';
 
-    const NAME = 'fpx';
+    const ID = 'fpx';
 }

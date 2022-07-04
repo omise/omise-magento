@@ -54,7 +54,8 @@ class ConfigSectionPaymentPlugin
         $this->helper = $helper;
         $this->messageManager = $messageManager;
         // using diffrent version from omise-php 2.13(2017-11-02)
-        define('OMISE_API_VERSION', '2019-05-29');
+        // define('OMISE_API_VERSION', '2019-05-29');
+        define('OMISE_API_VERSION', '2017-11-02');
     }
 
     /**
@@ -67,12 +68,16 @@ class ConfigSectionPaymentPlugin
             $this->config->setStoreId($coreConfig->getData('store'));
             $omiseConfigData = $coreConfig->toArray()['groups']['omise'];
             $keys = $this->getKeys($omiseConfigData);
+            
 
             // if both keys are empty then we ignore the check.
             if ($keys['public_key'] || $keys['secret_key']) {
                 try {
                     // Fetching capabilities to check the supplied keys validity
                     $this->capabilities = OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
+                    // print_r($this->getBackendsWithOmiseCode());
+                            // print_r($this->capabilities['payment_backends']);
+
                     $paymentList  = $this->getBackends();
                     $omiseConfigPaymentList=$this->getBackendsTest($omiseConfigData);
                     
@@ -136,9 +141,7 @@ class ConfigSectionPaymentPlugin
 
     private function getBackends()
     {
-        $backendNames = array_map(function ($payment) {
-            return $payment['name'];
-        }, $this->capabilities['payment_methods']);
+        $backendNames = array_map(function ($payment) {return key($payment);}, $this->capabilities['payment_backends']);
         return array_filter(array_map(function ($name) {
             return $this->helper->getOmiseCodeByOmiseName($name);
         }, $backendNames));
@@ -158,6 +161,24 @@ class ConfigSectionPaymentPlugin
         }
         return  $paymentConfigList;
     }
+        /**
+     *
+     * @return array|null
+     */
+    public function getBackendsWithOmiseCode()
+    {
+        // $list = array();
+
+        //    $paymentConfigList = []; 
+        // foreach ($configData['groups'] as $backend) {
+
+        // }
+       return  array_map(function ($backend) {
+           $backend['code']=$this->helper->getOmiseCodeByOmiseName(key($backend));
+           return $backend;
+        }, $this->capabilities['payment_backends']);
+    }
+
 }
 
 

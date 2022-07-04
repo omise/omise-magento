@@ -13,5 +13,5 @@ class Alipay extends Config
     /**
      * @var string
      */
-    const NAME = 'alipay';
+    const ID = 'alipay';
 }
