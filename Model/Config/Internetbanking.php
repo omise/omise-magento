@@ -21,5 +21,5 @@ class Internetbanking extends Config
 
     const BBL_ID = "internet_banking_bbl";
 
-    const SCB_ID = "internet_banking_scb"; 
+    const SCB_ID = "internet_banking_scb";
 }

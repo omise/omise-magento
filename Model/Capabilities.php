@@ -96,7 +96,7 @@ class Capabilities
         $list = new stdClass();
         foreach ($backends as $backend) {
             $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
-            if (! is_null($code)) {
+            if (isset($code)) {
                 $list[$code][] = $backend;
             }
         }
@@ -133,11 +133,10 @@ class Capabilities
         $list = new stdClass();
         foreach ($methods as $method) {
             $code = $this->helper->getOmiseCodeByOmiseId($method);
-            if ($code !== NULL) {
+            if (isset($code)) {
                 $list[$code][] = $methods;
             }
         };
         return $list;
     }
-
 }
