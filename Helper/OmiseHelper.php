@@ -122,31 +122,30 @@ class OmiseHelper extends AbstractHelper
         Internetbanking::BAY_ID => Internetbanking::CODE,
         Internetbanking::KTB_ID => Internetbanking::CODE,
         Internetbanking::SCB_ID => Internetbanking::CODE,
-        
+
         // offsite installment banking payment
         Installment::BAY_ID => Installment::CODE,
         Installment::BBL_ID => Installment::CODE,
         Installment::CITI_ID => Installment::CODE,
-        Installment::UOB_ID  => Installment::CODE,
+        Installment::UOB_ID => Installment::CODE,
         Installment::FIRST_CHOICE_ID => Installment::CODE,
         Installment::KBANK_ID => Installment::CODE,
         Installment::KTC_ID => Installment::CODE,
         Installment::SCB_ID => Installment::CODE,
         Installment::TTB_ID => Installment::CODE,
         Installment::UOB_ID => Installment::CODE,
-        
-        
+
         // offsite installment banking payment
         Mobilebanking::BAY_ID => Mobilebanking::CODE,
         Mobilebanking::BBL_ID => Mobilebanking::CODE,
         Mobilebanking::KBANK_ID => Mobilebanking::CODE,
         Mobilebanking::SCB_ID => Mobilebanking::CODE,
-        
+
         // offline payment
-        Paynow::ID=>Paynow::CODE,
-        Promptpay::ID=>Promptpay::CODE,
-        Tesco::ID=>Tesco::CODE,
-        Conveniencestore::ID=>Conveniencestore::CODE
+        Paynow::ID => Paynow::CODE,
+        Promptpay::ID => Promptpay::CODE,
+        Tesco::ID => Tesco::CODE,
+        Conveniencestore::ID => Conveniencestore::CODE
     ];
 
     /**
@@ -482,10 +481,10 @@ class OmiseHelper extends AbstractHelper
         return null;
     }
 
-    public function  getOmiseCodeByOmiseName(string $name)
+    public function getOmiseCodeByOmiseId(string $name)
     {
         if (array_key_exists($name, $this->omiseCodeByOmiseName))
-            return  $this->omiseCodeByOmiseName[$name];
+            return $this->omiseCodeByOmiseName[$name];
         return null;
     }
 }

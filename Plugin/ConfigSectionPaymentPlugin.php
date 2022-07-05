@@ -145,7 +145,7 @@ class ConfigSectionPaymentPlugin
         $backendNames = array_map(function ($payment) {return key($payment);}, $this->capabilities['payment_backends']);
         $backendNames =array_merge($backendNames, $this->capabilities['tokenization_methods']);
         return array_filter(array_map(function ($name) {
-            return $this->helper->getOmiseCodeByOmiseName($name);
+            return $this->helper->getOmiseCodeByOmiseId($name);
         }, $backendNames));
     }
 
@@ -176,7 +176,7 @@ class ConfigSectionPaymentPlugin
 
         // }
        return  array_map(function ($backend) {
-           $backend['code']=$this->helper->getOmiseCodeByOmiseName(key($backend));
+           $backend['code']=$this->helper->getOmiseCodeByOmiseId(key($backend));
            return $backend;
         }, $this->capabilities['payment_backends']);
     }

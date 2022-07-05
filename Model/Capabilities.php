@@ -96,7 +96,7 @@ class Capabilities
         $backends = $this->capabilitiesAPI->getBackends();
     $list=array();   
     foreach ($backends as $backend) {
-          $code = $this->helper->getOmiseCodeByOmiseName($backend->_id);
+          $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
           if(!is_null($code)){  
           $list[$code][] =$backend;
           }
@@ -132,7 +132,7 @@ class Capabilities
         $methods = $this->capabilitiesAPI->getTokenizationMethods();
     $list=array();   
     foreach ($methods as $method) {
-          $code = $this->helper->getOmiseCodeByOmiseName($method);
+          $code = $this->helper->getOmiseCodeByOmiseId($method);
           if(!is_null($code)){  
           $list[$code][] =$methods;
           }
