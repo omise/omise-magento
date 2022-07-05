@@ -49,8 +49,7 @@ class ConfigSectionPaymentPlugin
         Config $config,
         OmiseHelper $helper,
         ManagerInterface $messageManager
-        )
-    {
+    ){
         $this->config = $config;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
@@ -126,7 +125,7 @@ class ConfigSectionPaymentPlugin
         $configFields = $configData['fields'];
             // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
         $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) 
-            ? $configFields['sandbox_status']['value'] 
+            ? $configFields['sandbox_status']['value']
             : $configFields['sandbox_status'];
 
         $publicKeyIndex = $sandboxStatus ? 'test_public_key' : 'live_public_key';
@@ -186,11 +185,10 @@ class ConfigSectionPaymentPlugin
                  * Set payment list with display name
                  * if omise label didn't exist use title from config instead
                  */
-                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) ?? $this->config->getValue('title', $key);
+                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) 
+                    ?? $this->config->getValue('title', $key);
             }
         }
         return $paymentConfigList;
     }
 }
-
-
