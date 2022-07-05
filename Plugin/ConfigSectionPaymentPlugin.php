@@ -49,7 +49,7 @@ class ConfigSectionPaymentPlugin
         Config $config,
         OmiseHelper $helper,
         ManagerInterface $messageManager
-    ){
+    ) {
         $this->config = $config;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
@@ -94,7 +94,8 @@ class ConfigSectionPaymentPlugin
 
                         // show error message by using title from omise helper
                     if (! empty($nonSupportPayments)) {
-                        $this->messageManager->addError(__("This Omise account is not support " . implode(", ", $nonSupportPayments)));
+                        $this->messageManager->
+                            addError(__("This Omise account is not support " . implode(", ", $nonSupportPayments)));
                     }
 
                         // still save other payment methods that api support
@@ -123,7 +124,7 @@ class ConfigSectionPaymentPlugin
     private function getKeys($configData)
     {
         $configFields = $configData['fields'];
-            // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
+        // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
         $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) 
             ? $configFields['sandbox_status']['value']
             : $configFields['sandbox_status'];
