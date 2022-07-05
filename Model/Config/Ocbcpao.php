@@ -13,6 +13,6 @@ class Ocbcpao extends Config
     /**
      * Backends identifier
      * @var string
-     */ 
+     */
     const ID = "mobile_banking_ocbc_pao";
 }

@@ -87,7 +87,6 @@ class OmiseHelper extends AbstractHelper
         CcGooglePay::CODE
     ];
 
-
     /**
      * @var array
      */
@@ -181,7 +180,6 @@ class OmiseHelper extends AbstractHelper
         Tesco::CODE => "Tesco Lotus Bill Payment",
         Conveniencestore::CODE => "Convenience Store Payment"
     ];
-    
 
     /**
      * @var Config

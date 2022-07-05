@@ -133,7 +133,7 @@ class Capabilities
         $list = new stdClass();
         foreach ($methods as $method) {
             $code = $this->helper->getOmiseCodeByOmiseId($method);
-            if (! is_null($code)) {
+            if ($code !== NULL) {
                 $list[$code][] = $methods;
             }
         };

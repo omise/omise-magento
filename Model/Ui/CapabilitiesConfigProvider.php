@@ -56,7 +56,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                     break;
             }
             // filter only active backends
-            if (array_key_exists($code ,$backends)) {
+            if (array_key_exists($code, $backends)) {
                 $configs['omise_payment_list'][$code]= $backends[$code];
             }
         }
