@@ -125,7 +125,7 @@ class ConfigSectionPaymentPlugin
     {
         $configFields = $configData['fields'];
         // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
-        $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) 
+        $sandboxStatus = array_key_exists('value', $configFields['sandbox_status'])
             ? $configFields['sandbox_status']['value']
             : $configFields['sandbox_status'];
 
@@ -172,7 +172,7 @@ class ConfigSectionPaymentPlugin
      * and map omise title for displaying error message
      *
      * @param \Magento\Config\Model\Config ['groups']['omise'] $omiseConfigData
-     *         
+     *
      * @return array
      */
     private function getActivePaymentMethods($configData)
@@ -186,7 +186,7 @@ class ConfigSectionPaymentPlugin
                  * Set payment list with display name
                  * if omise label didn't exist use title from config instead
                  */
-                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) 
+                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key)
                     ?? $this->config->getValue('title', $key);
             }
         }
