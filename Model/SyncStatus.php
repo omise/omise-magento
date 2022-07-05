@@ -131,7 +131,11 @@ class SyncStatus
      */
     private function refund($order, $charge)
     {
-        if ($charge['funding_amount'] == $charge['refunded_amount']) {
+        $refundedAmount = isset($charge['refunded_amount'])
+            ? $charge['refunded_amount']
+            : $charge['refunded'];
+
+        if ($charge['funding_amount'] == $refundedAmount) {
             $order->setState(Order::STATE_CLOSED);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
         }
