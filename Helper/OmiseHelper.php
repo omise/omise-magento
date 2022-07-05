@@ -479,11 +479,13 @@ class OmiseHelper extends AbstractHelper
     {
         if (array_key_exists($code, $this->labelByOmiseCode))
             return $this->labelByOmiseCode[$code];
+        return null;
     }
 
     public function  getOmiseCodeByOmiseName(string $name)
     {
         if (array_key_exists($name, $this->omiseCodeByOmiseName))
             return  $this->omiseCodeByOmiseName[$name];
+        return null;
     }
 }

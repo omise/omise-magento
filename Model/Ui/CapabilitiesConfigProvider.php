@@ -39,8 +39,12 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     {
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
         $configs = [];
+        $backends = $this->capabilities->getBackendsWithOmiseCode();
+        $methods =$this->capabilities->getTokenizationMethodsWithOmiseCode();
+        $backends = array_merge( $backends, $methods );
         foreach ($listOfActivePaymentMethods as $method) {
-            switch ($method->getCode()) {
+            $code = $method->getCode();
+            switch ($code) {
                 case OmiseInstallmentConfig::CODE:
                     $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
                     break;
@@ -48,9 +52,11 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                     $configs['card_brands'] = $this->capabilities->getCardBrands();
                     break;
             }
+            if (array_key_exists($code , $backends)) {
+                $configs['omise_payment_list'][$code]= $backends[$code];
+            }
         }
-
-        $configs['omise_payment_list'] = $this->capabilities->getBackendsWithOmiseCode();
+        $configs['test']= $backends;
         return $configs;
     }
 }

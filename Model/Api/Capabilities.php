@@ -81,4 +81,14 @@ class Capabilities extends BaseObject
     {
         return $this->capabilities ? $this->capabilities->getBackends() : null;
     }
+
+    /**
+     * Get information about tokenization methods
+     *
+     * @return bool
+     */
+    public function getTokenizationMethods()
+    {
+        return $this->capabilities ? $this->capabilities['tokenization_methods'] : null;
+    }
 }

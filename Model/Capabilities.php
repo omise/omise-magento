@@ -113,4 +113,31 @@ class Capabilities
         $card = $this->getBackendsByType("card");
         return $card ? current($card)->brands : [];
     }
+
+    /**
+     *
+     * @return array|null
+     */
+    public function getTokenizationMethods()
+    {
+        return $this->capabilitiesAPI->getTokenizationMethods();
+    }
+
+        /**
+     *
+     * @return array|null
+     */
+    public function getTokenizationMethodsWithOmiseCode()
+    {
+        $methods = $this->capabilitiesAPI->getTokenizationMethods();
+    $list=array();   
+    foreach ($methods as $method) {
+          $code = $this->helper->getOmiseCodeByOmiseName($method);
+          if(!is_null($code)){  
+          $list[$code][] =$methods;
+          }
+        };
+    return $list;
+    }
+
 }

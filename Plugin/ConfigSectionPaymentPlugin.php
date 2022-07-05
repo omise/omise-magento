@@ -53,8 +53,7 @@ class ConfigSectionPaymentPlugin
         $this->logger = $logger;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
-        // using diffrent version from omise-php 2.13(2017-11-02)
-        // define('OMISE_API_VERSION', '2019-05-29');
+        // using same version as omise-php 2.13(2017-11-02)
         define('OMISE_API_VERSION', '2017-11-02');
     }
 
@@ -79,6 +78,8 @@ class ConfigSectionPaymentPlugin
                             // print_r($this->capabilities['payment_backends']);
 
                     $paymentList  = $this->getBackends();
+                    // print_r($paymentList);
+
                     $omiseConfigPaymentList=$this->getBackendsTest($omiseConfigData);
                     
                     //TODO 
@@ -142,6 +143,7 @@ class ConfigSectionPaymentPlugin
     private function getBackends()
     {
         $backendNames = array_map(function ($payment) {return key($payment);}, $this->capabilities['payment_backends']);
+        $backendNames =array_merge($backendNames, $this->capabilities['tokenization_methods']);
         return array_filter(array_map(function ($name) {
             return $this->helper->getOmiseCodeByOmiseName($name);
         }, $backendNames));
