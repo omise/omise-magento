@@ -86,22 +86,22 @@ class Capabilities
         return $this->capabilitiesAPI->getBackends();
     }
 
-
     /**
      *
-     * @return array|null
+     * @return array
      */
     public function getBackendsWithOmiseCode()
     {
         $backends = $this->capabilitiesAPI->getBackends();
-    $list=array();   
-    foreach ($backends as $backend) {
-          $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
-          if(!is_null($code)){  
-          $list[$code][] =$backend;
-          }
-        };
-    return $list;
+        $list = array();
+        foreach ($backends as $backend) {
+            $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
+            if (! is_null($code)) {
+                $list[$code][] = $backend;
+            }
+        }
+        ;
+        return $list;
     }
 
     /**
@@ -123,21 +123,22 @@ class Capabilities
         return $this->capabilitiesAPI->getTokenizationMethods();
     }
 
-        /**
+    /**
      *
-     * @return array|null
+     * @return array
      */
     public function getTokenizationMethodsWithOmiseCode()
     {
         $methods = $this->capabilitiesAPI->getTokenizationMethods();
-    $list=array();   
-    foreach ($methods as $method) {
-          $code = $this->helper->getOmiseCodeByOmiseId($method);
-          if(!is_null($code)){  
-          $list[$code][] =$methods;
-          }
-        };
-    return $list;
+        $list = array();
+        foreach ($methods as $method) {
+            $code = $this->helper->getOmiseCodeByOmiseId($method);
+            if (! is_null($code)) {
+                $list[$code][] = $methods;
+            }
+        }
+        ;
+        return $list;
     }
 
 }

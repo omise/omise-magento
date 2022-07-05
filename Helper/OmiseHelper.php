@@ -97,9 +97,9 @@ class OmiseHelper extends AbstractHelper
      *
      * @var array
      */
-    private $omiseCodeByOmiseName = [
+    private $omiseCodeByOmiseId = [
         // card payment
-        CC::ID => Cc::CODE,
+        Cc::ID => Cc::CODE,
         CcGooglePay::ID => CcGooglePay::CODE,
 
         // offsite payment
@@ -483,8 +483,8 @@ class OmiseHelper extends AbstractHelper
 
     public function getOmiseCodeByOmiseId(string $name)
     {
-        if (array_key_exists($name, $this->omiseCodeByOmiseName))
-            return $this->omiseCodeByOmiseName[$name];
+        if (array_key_exists($name, $this->omiseCodeByOmiseId))
+            return $this->omiseCodeByOmiseId[$name];
         return null;
     }
 }

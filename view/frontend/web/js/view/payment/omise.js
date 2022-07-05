@@ -8,6 +8,7 @@ define(
         rendererList
     ) {
         'use strict';
+        
         const METHOD_RENDERERS = Object.keys(window.checkoutConfig.omise_payment_list);
 
         METHOD_RENDERERS.forEach(rendererName => {
@@ -23,8 +24,6 @@ define(
                 component: 'Omise_Payment/js/view/payment/method-renderer/omise-offline-conveniencestore-method'
             }
         );
-
-        // console.log(rendererList)
 
         return Component.extend({});
     }

@@ -10,5 +10,9 @@ class Pointsciti extends Config
      */
     const CODE = 'omise_offsite_pointsciti';
 
+    /**
+     * Backends identifier
+     * @var string
+     */
     const ID ='points_citi';
 }

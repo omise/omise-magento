@@ -85,7 +85,7 @@ class Capabilities extends BaseObject
     /**
      * Get information about tokenization methods
      *
-     * @return bool
+     * @return array
      */
     public function getTokenizationMethods()
     {

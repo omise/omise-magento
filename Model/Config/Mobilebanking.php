@@ -10,6 +10,10 @@ class Mobilebanking extends Config
      */
     const CODE = 'omise_offsite_mobilebanking';
 
+    /**
+     * Backends identifier
+     * @var string
+     */
     const SCB_ID = "mobile_banking_scb";
     const KBANK_ID ="mobile_banking_kbank";
     const BBL_ID ="mobile_banking_bbl";

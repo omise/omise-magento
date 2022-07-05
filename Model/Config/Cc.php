@@ -11,6 +11,7 @@ class Cc extends Config
     const CODE = 'omise_cc';
 
     /**
+     * Backends identifier
      * @var string
      */
     const ID ='credit_card';

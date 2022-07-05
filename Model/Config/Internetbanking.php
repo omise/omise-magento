@@ -10,6 +10,10 @@ class Internetbanking extends Config
      */
     const CODE = 'omise_offsite_internetbanking';
 
+    /**
+     * Backends identifier
+     * @var string
+     */
     const KTB_ID ="internet_banking_ktb"; 
     const BAY_ID ="internet_banking_bay"; 
     const BBL_ID ="internet_banking_bbl"; 

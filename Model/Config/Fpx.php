@@ -16,5 +16,9 @@ class Fpx extends Config
      */
     const TYPE = 'fpx';
 
+    /**
+     * Backends identifier
+     * @var string
+     */
     const ID = 'fpx';
 }

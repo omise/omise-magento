@@ -9,7 +9,9 @@ class Grabpay extends Config
      * @var string
      */
     const CODE = 'omise_offsite_grabpay';
+    
     /**
+     * Backends identifier
      * @var string
      */
     const ID = 'grabpay';

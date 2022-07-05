@@ -16,7 +16,6 @@ define(
         priceUtils
     ) {
         'use strict';
-        // console.log(capabilities);
         const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
         const CAPTION = $.mage.__('Choose number of monthly payments');
         const providers = [

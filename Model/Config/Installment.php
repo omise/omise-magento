@@ -10,14 +10,17 @@ class Installment extends Config
      */
     const CODE = 'omise_offsite_installment';
 
-   
-      const BAY_ID ="installment_bay";
-      const BBL_ID ="installment_bbl";
-      const CITI_ID ="installment_citi";
-      const FIRST_CHOICE_ID ="installment_first_choice";
-      const KBANK_ID ="installment_kbank";
-      const KTC_ID ="installment_ktc";
-      const SCB_ID ="installment_scb";
-      const TTB_ID ="installment_ttb";
-      const UOB_ID ="installment_uob";
+    /**
+     * Backends identifier
+     * @var string
+     */
+    const BAY_ID ="installment_bay";
+    const BBL_ID ="installment_bbl";
+    const CITI_ID ="installment_citi";
+    const FIRST_CHOICE_ID ="installment_first_choice";
+    const KBANK_ID ="installment_kbank";
+    const KTC_ID ="installment_ktc";
+    const SCB_ID ="installment_scb";
+    const TTB_ID ="installment_ttb";
+    const UOB_ID ="installment_uob";
 }

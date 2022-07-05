@@ -15,7 +15,8 @@ class Alipayplus extends Config
     const KAKAOPAY_CODE = 'omise_offsite_kakaopay';
     const TOUCHNGO_CODE = 'omise_offsite_touchngo';
 
-     /**
+    /**
+     * Backends identifier
      * @var string
      */
     const ALIPAY_ID = 'alipay_cn';

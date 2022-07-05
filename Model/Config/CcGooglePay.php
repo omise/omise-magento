@@ -11,6 +11,7 @@ class CcGooglePay extends Config
     const CODE = 'omise_cc_googlepay';
 
     /**
+     * Backends methods
      * @var string
      */
     const ID ='googlepay';

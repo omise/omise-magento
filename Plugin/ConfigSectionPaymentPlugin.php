@@ -13,19 +13,20 @@ use Magento\Framework\Message\ManagerInterface;
 class ConfigSectionPaymentPlugin
 {
 
-    private $logger;
-
+    /**
+     * @var OmiseCapabilities
+     */
     private $capabilities;
+
     /**
      * @var Omise\Payment\Helper\OmiseHelper
      */
     private $helper;
-    
-    private $messageManager;
+
     /**
-     * @var WriterInterface
+     * @var Magento\Framework\Message\ManagerInterface;
      */
-    protected $configWriter;
+    private $messageManager;
 
     /**
      * Error code sent from the API and the message to be displayed on screen
@@ -42,15 +43,14 @@ class ConfigSectionPaymentPlugin
     /**
      * @param \Omise\Payment\Model\Config\Config $config
      * @param OmiseHelper $helper
+     * @param Magento\Framework\Message\ManagerInterface $messageManager
      */
     public function __construct(
         Config $config,
         OmiseHelper $helper, 
-        \Psr\Log\LoggerInterface $logger,
         ManagerInterface $messageManager)
     {
         $this->config = $config;
-        $this->logger = $logger;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
         // using same version as omise-php 2.13(2017-11-02)
@@ -74,16 +74,17 @@ class ConfigSectionPaymentPlugin
                 try {
                     // Fetching capabilities to check the supplied keys validity
                     $this->capabilities = OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
-                    // print_r($this->getBackendsWithOmiseCode());
-                            // print_r($this->capabilities['payment_backends']);
 
+                    /** when using test mode is will fetch all available payment methods 
+                     *  that omise is supported 
+                     * */ 
                     $paymentList  = $this->getBackends();
-                    // print_r($paymentList);
+                    $omiseConfigPaymentList=$this->getActivePaymentMethods($omiseConfigData);
 
-                    $omiseConfigPaymentList=$this->getBackendsTest($omiseConfigData);
-                    
-                    //TODO 
+                    // list active payment methods that not support from capabilities api
                     $nonSupportPayments = array();
+
+                    // set disable only not support payment methods
                     $data = $coreConfig->getGroups();
                     foreach ($omiseConfigPaymentList as $payment => $title) {
                         if(!in_array($payment, $paymentList)){
@@ -92,9 +93,13 @@ class ConfigSectionPaymentPlugin
                         }
                         
                     }
+
+                    // show error message by using title from omise helper 
                     if(!empty($nonSupportPayments)){
-                        $this->messageManager->addError(__("The Omise account is not support ".implode(", ", $nonSupportPayments)));
+                        $this->messageManager->addError(__("This Omise account is not support ".implode(", ", $nonSupportPayments)));
                     }
+
+                    //still save other payment methods that api support 
                     $coreConfig->setData('groups', $data);
                     
                 } catch (OmiseAuthenticationFailureException $e) {
@@ -140,45 +145,48 @@ class ConfigSectionPaymentPlugin
         ];
     }
 
+    /**
+     * Retrieve only available backends & methods 
+     * from capabilities api that only support by omise plugin
+     * with mapping backends id to magneto code format
+     * 
+     * @return array
+     */
+
     private function getBackends()
     {
+        // Retrieve backends & methods from capabilities api
         $backendNames = array_map(function ($payment) {return key($payment);}, $this->capabilities['payment_backends']);
-        $backendNames =array_merge($backendNames, $this->capabilities['tokenization_methods']);
-        return array_filter(array_map(function ($name) {
+        $backendNames = array_merge($backendNames, $this->capabilities['tokenization_methods']);
+        
+        //filter not support payment method from backends list
+        return array_unique(array_filter(array_map(function ($name) {
             return $this->helper->getOmiseCodeByOmiseId($name);
-        }, $backendNames));
+        }, $backendNames)));
     }
 
-    private function getBackendsTest($configData)
+    /**
+     * Retrieve active omise payment methods in magento config
+     * and map omise title for displaying error message
+     * 
+     * @param \Magento\Config\Model\Config ['groups']['omise'] $omiseConfigData
+     * 
+     * @return array
+     */
+    private function getActivePaymentMethods($configData)
     {
         $paymentConfigList = []; 
         foreach ($configData['groups'] as $key => $value) {
             //filter only oayment that merchant is active
             if($value['fields']['active']['value']){
-                /* set list with display name
-                 * if label didn't exist use title from config instead
+                
+                /** Set payment list with display name
+                 *  if omise label didn't exist use title from config instead
                  */ 
                 $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) ?? $this->config->getValue('title', $key );
             }
         }
         return  $paymentConfigList;
-    }
-        /**
-     *
-     * @return array|null
-     */
-    public function getBackendsWithOmiseCode()
-    {
-        // $list = array();
-
-        //    $paymentConfigList = []; 
-        // foreach ($configData['groups'] as $backend) {
-
-        // }
-       return  array_map(function ($backend) {
-           $backend['code']=$this->helper->getOmiseCodeByOmiseId(key($backend));
-           return $backend;
-        }, $this->capabilities['payment_backends']);
     }
 
 }
