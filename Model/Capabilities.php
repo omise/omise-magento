@@ -88,12 +88,12 @@ class Capabilities
 
     /**
      *
-     * @return array
+     * @return object
      */
     public function getBackendsWithOmiseCode()
     {
         $backends = $this->capabilitiesAPI->getBackends();
-        $list = array();
+        $list = new stdClass();
         foreach ($backends as $backend) {
             $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
             if (! is_null($code)) {
@@ -125,19 +125,18 @@ class Capabilities
 
     /**
      *
-     * @return array
+     * @return object
      */
     public function getTokenizationMethodsWithOmiseCode()
     {
         $methods = $this->capabilitiesAPI->getTokenizationMethods();
-        $list = array();
+        $list = new stdClass();
         foreach ($methods as $method) {
             $code = $this->helper->getOmiseCodeByOmiseId($method);
             if (! is_null($code)) {
                 $list[$code][] = $methods;
             }
-        }
-        ;
+        };
         return $list;
     }
 

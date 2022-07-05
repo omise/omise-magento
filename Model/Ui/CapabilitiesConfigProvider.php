@@ -39,11 +39,11 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     {
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
         $configs = [];
-         
-        // Retrieve available backends & methods from capabilities api
+
+            // Retrieve available backends & methods from capabilities api
         $backends = $this->capabilities->getBackendsWithOmiseCode();
-        $tokenization_methods =$this->capabilities->getTokenizationMethodsWithOmiseCode();
-        $backends = array_merge( $backends, $tokenization_methods );
+        $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
+        $backends = array_merge($backends, $tokenization_methods);
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
@@ -56,7 +56,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                     break;
             }
             // filter only active backends
-            if (array_key_exists($code , $backends)) {
+            if (array_key_exists($code ,$backends)) {
                 $configs['omise_payment_list'][$code]= $backends[$code];
             }
         }

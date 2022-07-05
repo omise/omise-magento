@@ -12,10 +12,14 @@ class Internetbanking extends Config
 
     /**
      * Backends identifier
+     *
      * @var string
      */
-    const KTB_ID ="internet_banking_ktb"; 
-    const BAY_ID ="internet_banking_bay"; 
-    const BBL_ID ="internet_banking_bbl"; 
-    const SCB_ID ="internet_banking_scb"; 
+    const KTB_ID = "internet_banking_ktb";
+
+    const BAY_ID = "internet_banking_bay";
+
+    const BBL_ID = "internet_banking_bbl";
+
+    const SCB_ID = "internet_banking_scb"; 
 }
