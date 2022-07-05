@@ -93,7 +93,7 @@ class Capabilities
     public function getBackendsWithOmiseCode()
     {
         $backends = $this->capabilitiesAPI->getBackends();
-        $list = new stdClass();
+        $list = [];
         foreach ($backends as $backend) {
             $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
             if (isset($code)) {
@@ -130,7 +130,7 @@ class Capabilities
     public function getTokenizationMethodsWithOmiseCode()
     {
         $methods = $this->capabilitiesAPI->getTokenizationMethods();
-        $list = new stdClass();
+        $list = [];
         foreach ($methods as $method) {
             $code = $this->helper->getOmiseCodeByOmiseId($method);
             if (isset($code)) {
