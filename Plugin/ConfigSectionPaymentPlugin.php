@@ -206,7 +206,8 @@ class ConfigSectionPaymentPlugin
 
         // show error message by using title from omise helper
         if (! empty($nonSupportPayments)) {
-            $this->messageManager->addError(__("This Omise account is not support " . implode(", ", $nonSupportPayments)));
+            $this->messageManager->
+                addError(__("This Omise account is not support " . implode(", ", $nonSupportPayments)));
         }
         return $data;
     }
