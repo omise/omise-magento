@@ -100,7 +100,6 @@ class Capabilities
                 $list[$code][] = $backend;
             }
         }
-        ;
         return $list;
     }
 
@@ -136,7 +135,7 @@ class Capabilities
             if (isset($code)) {
                 $list[$code][] = $methods;
             }
-        };
+        }
         return $list;
     }
 }

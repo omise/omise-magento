@@ -40,7 +40,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
         $configs = [];
 
-            // Retrieve available backends & methods from capabilities api
+        // Retrieve available backends & methods from capabilities api
         $backends = $this->capabilities->getBackendsWithOmiseCode();
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
