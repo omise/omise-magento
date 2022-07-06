@@ -75,7 +75,6 @@ define(
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
-            capabilities: checkoutConfig.omise_payment_list['omise_offsite_installment'],
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb'],
 
