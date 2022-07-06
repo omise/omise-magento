@@ -115,7 +115,7 @@ class OmiseHelper extends AbstractHelper
         Grabpay::ID => Grabpay::CODE,
 
         // offsite internet banking payment
-        Internetbanking::BBl_ID => Internetbanking::CODE,
+        Internetbanking::BBL_ID => Internetbanking::CODE,
         Internetbanking::BAY_ID => Internetbanking::CODE,
         Internetbanking::KTB_ID => Internetbanking::CODE,
         Internetbanking::SCB_ID => Internetbanking::CODE,
