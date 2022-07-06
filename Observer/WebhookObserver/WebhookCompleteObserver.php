@@ -95,12 +95,15 @@ class WebhookCompleteObserver extends WebhookObserver
     {
         // Update order state and status.
         $this->orderData->setState(MagentoOrder::STATE_PROCESSING);
-        $defaultStatus = $this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING)
+        $defaultStatus = $this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING);
         $this->orderData->setStatus($defaultStatus);
 
         $this->invoice = $this->helper->createInvoiceAndMarkAsPaid(
-            $this->orderData, $this->charge->id, $isCaptured
+            $this->orderData,
+            $this->charge->id,
+            $isCaptured
         );
+
         $this->emailHelper->sendInvoiceAndConfirmationEmails($this->orderData);
 
         // addTransactionCommentsToOrder with message for authorise or capture
