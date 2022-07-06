@@ -1,4 +1,10 @@
 # CHANGELOG
+
+## [v2.27.0 _(Jun 30, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.27.0)
+- Added missing translation for Thai language. (PR [#356](https://github.com/omise/omise-magento/pull/356))
+- Items restored in the cart if the return URI is not triggered by Omise server. (PR [#357](https://github.com/omise/omise-magento/pull/357))
+- Allow GrabPay to have payment in THB. (PR [#358](https://github.com/omise/omise-magento/pull/358))
+
 ## [v2.26.0 _(Jun 6, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.26.0)
 - Retain the cart items when payment fails (PR [#350](https://github.com/omise/omise-magento/pull/350))
 - Added support for Google Pay payment method (PR [#351](https://github.com/omise/omise-magento/pull/351))
