@@ -6,7 +6,6 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
 use Magento\Sales\Model\Order;
 
-use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Pointsciti;
@@ -83,7 +82,6 @@ class OmiseHelper extends AbstractHelper
      */
     private $cardPaymentMethods = [
         Config::CODE,
-        Cc::CODE,
         CcGooglePay::CODE
     ];
 
@@ -98,7 +96,7 @@ class OmiseHelper extends AbstractHelper
      */
     private $omiseCodeByOmiseId = [
         // card payment
-        Cc::ID => Cc::CODE,
+        Config::ID => Config::CODE,
         CcGooglePay::ID => CcGooglePay::CODE,
 
         // offsite payment
@@ -117,7 +115,7 @@ class OmiseHelper extends AbstractHelper
         Grabpay::ID => Grabpay::CODE,
 
         // offsite internet banking payment
-        // Internetbanking::BBl_ID => Internetbanking::CODE,
+        Internetbanking::BBl_ID => Internetbanking::CODE,
         Internetbanking::BAY_ID => Internetbanking::CODE,
         Internetbanking::KTB_ID => Internetbanking::CODE,
         Internetbanking::SCB_ID => Internetbanking::CODE,
@@ -153,7 +151,7 @@ class OmiseHelper extends AbstractHelper
      */
     private $labelByOmiseCode = [
         // card payment
-        Cc::CODE => "Credit Card Payment",
+        Config::CODE => "Credit Card Payment",
         CcGooglePay::CODE => "Google Pay Payment",
 
         // offsite payment
