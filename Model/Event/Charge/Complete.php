@@ -19,6 +19,26 @@ class Complete
     const CODE = 'charge.complete';
 
     /**
+     * @var Magento\Sales\Model\Order\Payment\Interceptor
+     */
+    private $payment;
+
+    /**
+     * @var Magento\Sales\Model\Order\Invoice\Interceptor
+     */
+    private $invoice;
+
+    /**
+     * @var Magento\Sales\Model\Order\Interceptor
+     */
+    private $order;
+
+    /**
+     * @var Omise\Payment\Model\Api\Charge
+     */
+    private $charge;
+
+    /**
      * There are several cases with the following payment methods
      * that would trigger the 'charge.complete' event.
      *
@@ -61,71 +81,133 @@ class Complete
         OmiseHelper $helper,
         Config $config
     ) {
-        $charge = $event->data;
+        $this->charge = $event->data;
 
-        if (! $charge instanceof ApiCharge || $charge->getMetadata('order_id') == null) {
+        if (! $this->charge instanceof ApiCharge || $this->charge->getMetadata('order_id') == null) {
             // TODO: Handle in case of improper response structure.
             return;
         }
 
-        $order = $order->loadByIncrementId($charge->getMetadata('order_id'));
-        if (! $order->getId()) {
+        $this->order = $order->loadByIncrementId($this->charge->getMetadata('order_id'));
+
+        if (! $this->order->getId()) {
             // TODO: Handle in case of improper response structure.
             return;
         }
 
-        if (! $payment = $order->getPayment()) {
+        if (! $this->payment = $this->order->getPayment()) {
             // TODO: Handle in case of improper response structure.
             return;
         }
 
-        if ($order->isPaymentReview() || $order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
-            if ($charge->isFailed()) {
-
-                if ($order->hasInvoices()) {
-                    $invoice = $order->getInvoiceCollection()->getLastItem();
-                    $invoice->cancel();
-                    $order->addRelatedObject($invoice);
-                } else {
-                    $invoice = $order->getInvoiceCollection()->getLastItem();
-                }
-
-                $order->registerCancellation(
-                    __('Payment failed. ' . ucfirst($charge->failure_message) . ',
-                        please contact our support if you have any questions.')
-                )->save();
+        if ($this->order->isPaymentReview() || $this->order->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
+            if ($this->charge->isFailed()) {
+                $this->cancelOrder();
+                return;
             }
+
+            $isAwaitingCapture = $this->charge->isAwaitCapture();
 
             // Successful payment
-            if ($charge->isSuccessful() || $charge->isAwaitCapture()) {
-                // Update order state and status.
-                $order->setState(MagentoOrder::STATE_PROCESSING);
-                $order->setStatus($order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
-
-                $invoice = $helper->createInvoiceAndMarkAsPaid($order, $charge->id, !$charge->isAwaitCapture());
-                $emailHelper->sendInvoiceAndConfirmationEmails($order);
-
-                // addTransactionCommentsToOrder with message for authorise or capture
-                if ($charge->isAwaitCapture()) {
-                    $payment->addTransactionCommentsToOrder(
-                        $payment->addTransaction(Transaction::TYPE_AUTH, $invoice),
-                        __(
-                            'Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).',
-                            $order->getBaseCurrency()->formatTxt($order->getTotalDue())
-                        )
-                    );
-                } else {
-                    $payment->addTransactionCommentsToOrder(
-                        $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
-                        __(
-                            'Amount of %1 has been paid via Omise Payment Gateway',
-                            $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                        )
-                    );
-                }
-
-                $order->save();
+            if ($this->charge->isSuccessful() || $isAwaitingCapture) {
+                $this->processOrder($helper, $emailHelper, !$isAwaitingCapture);
             }
+
+            return;
         }
+
+        // To handle the situation where charge is manually updated as successful
+        // from Omise dashboard after the order is canceled.
+        if ($this->order->getState() === MagentoOrder::STATE_CANCELED && $this->charge->isSuccessful()) {
+            $this->processCancelledOrder($helper, $emailHelper);
+        }
+    }
+
+    /**
+     * Add transaction comments to the order with message for authorise or capture
+     *
+     * @param boolean $isCaptured
+     * @param string $amount
+     */
+    private function transactionCommentToOrder(bool $isCaptured, string $amount)
+    {
+        if ($isCaptured) {
+            $transaction = $this->payment->addTransaction(Transaction::TYPE_PAYMENT, $this->invoice);
+            $comment = __('Amount of %1 has been paid via Omise Payment Gateway.', $amount);
+        } else {
+            $transaction = $this->payment->addTransaction(Transaction::TYPE_AUTH, $this->invoice);
+            $comment = __('Authorized amount of %1 via Omise Payment Gateway (3-D Secure payment).', $amount);
+        }
+
+        $this->payment->addTransactionCommentsToOrder($transaction, $comment);
+    }
+
+    /**
+     * Complete the transaction and set order status as processing
+     *
+     * @param OmiseHelper $helper
+     * @param OmiseEmailHelper $emailHelper
+     * @param bool $isCaptured Is capture pending
+     */
+    private function processOrder($helper, $emailHelper, $isCaptured = true)
+    {
+        // Update order state and status.
+        $this->order->setState(MagentoOrder::STATE_PROCESSING);
+        $this->order->setStatus($this->order->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
+
+        $this->invoice = $helper->createInvoiceAndMarkAsPaid($this->order, $this->charge->id, $isCaptured);
+        $emailHelper->sendInvoiceAndConfirmationEmails($this->order);
+
+        // addTransactionCommentsToOrder with message for authorise or capture
+        $amount = $isCaptured ? $this->invoice->getBaseGrandTotal() : $this->order->getTotalDue();
+        $this->transactionCommentToOrder($isCaptured, $this->order->getBaseCurrency()->formatTxt($amount));
+
+        $this->order->save();
+    }
+
+    /**
+     * Reverse the item status to ordered and process the order. Not reversing the item status
+     * changes the order status to closed/complete even if we set it to be processing
+     *
+     * @param OmiseHelper $helper
+     * @param OmiseEmailHelper $emailHelper
+     */
+    private function processCancelledOrder($helper, $emailHelper)
+    {
+        $this->reverseCancelledItems();
+        $this->processOrder($helper, $emailHelper);
+    }
+
+    /**
+     * Setting the item status from cancelled to ordered to properly set the order status
+     *
+     * @return void
+     */
+    private function reverseCancelledItems()
+    {
+        $items = $this->order->getAllItems();
+
+        foreach ($items as $item) {
+            $item->setQtyCanceled(0);
+            $item->save();
+        }
+    }
+
+    /**
+     * Cancel the order by registering payment failure message
+     */
+    private function cancelOrder()
+    {
+        if ($this->order->hasInvoices()) {
+            $this->invoice = $this->order->getInvoiceCollection()->getLastItem();
+            $this->invoice->cancel();
+            $this->order->addRelatedObject($this->invoice);
+        }
+
+        $orderMessage = __(
+            'Payment failed. %1, please contact our support if you have any questions.',
+            ucfirst($this->charge->failure_message)
+        );
+        $this->order->registerCancellation($orderMessage)->save();
     }
 }
