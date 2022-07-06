@@ -389,10 +389,10 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Get platform ID of WEB, IOS or ANDROID to add to source API parameter.
+     * Get platform Type of WEB, IOS or ANDROID to add to source API parameter.
      * @return string
      */
-    public function getPlatformID()
+    public function getPlatformType()
     {
         $userAgent = $this->header->getHttpUserAgent();
 
