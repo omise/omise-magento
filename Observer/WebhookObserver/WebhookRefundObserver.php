@@ -23,7 +23,7 @@ class WebhookRefundObserver extends WebhookObserver
      * @param \Omise\Payment\Helper\OmiseHelper $helper
      * @param \Omise\Payment\Model\Config\Config $config
      */
-    function __construct(
+    public function __construct(
         ApiEvent $apiEvent,
         Order $order,
         EmailHelper $emailHelper,
@@ -59,7 +59,8 @@ class WebhookRefundObserver extends WebhookObserver
         if ($isFullyRefunded) {
             // Update order state and status.
             $this->orderData->setState(MagentoOrder::STATE_CLOSED);
-            $this->orderData->setStatus($this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_CLOSED));
+            $defaultStatus = $this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_CLOSED);
+            $this->orderData->setStatus($defaultStatus);
         }
 
         $refundContextText = $isFullyRefunded ? 'fully' : 'partially';

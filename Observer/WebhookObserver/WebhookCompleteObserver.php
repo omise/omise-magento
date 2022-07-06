@@ -24,7 +24,7 @@ class WebhookCompleteObserver extends WebhookObserver
      * @param \Omise\Payment\Helper\OmiseHelper $helper
      * @param \Omise\Payment\Model\Config\Config $config
      */
-    function __construct(
+    public function __construct(
         ApiEvent $apiEvent,
         Order $order,
         EmailHelper $emailHelper,
@@ -42,8 +42,9 @@ class WebhookCompleteObserver extends WebhookObserver
     public function execute(Observer $observer)
     {
         $this->setUpExecute($observer);
+        $isPaymentPending = $this->orderData->getState() === MagentoOrder::STATE_PENDING_PAYMENT;
 
-        if ($this->orderData->isPaymentReview() || $this->orderData->getState() === MagentoOrder::STATE_PENDING_PAYMENT) {
+        if ($this->orderData->isPaymentReview() || $isPaymentPending) {
             if ($this->charge->isFailed()) {
                 $this->cancelOrder();
                 return;
@@ -94,9 +95,12 @@ class WebhookCompleteObserver extends WebhookObserver
     {
         // Update order state and status.
         $this->orderData->setState(MagentoOrder::STATE_PROCESSING);
-        $this->orderData->setStatus($this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING));
+        $defaultStatus = $this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_PROCESSING)
+        $this->orderData->setStatus($defaultStatus);
 
-        $this->invoice = $this->helper->createInvoiceAndMarkAsPaid($this->orderData, $this->charge->id, $isCaptured);
+        $this->invoice = $this->helper->createInvoiceAndMarkAsPaid(
+            $this->orderData, $this->charge->id, $isCaptured
+        );
         $this->emailHelper->sendInvoiceAndConfirmationEmails($this->orderData);
 
         // addTransactionCommentsToOrder with message for authorise or capture

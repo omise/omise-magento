@@ -204,11 +204,11 @@ class Charge extends BaseObject
     {
         $refundedAmount = 0;
 
-        if(!$this->refunds) {
+        if (!$this->refunds) {
             return $refundedAmount;
         }
 
-        foreach($this->refunds['data'] as $refund) {
+        foreach ($this->refunds['data'] as $refund) {
             $refundedAmount += ($refund['amount']/100);
         }
 
