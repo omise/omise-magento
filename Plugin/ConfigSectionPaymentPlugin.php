@@ -80,25 +80,10 @@ class ConfigSectionPaymentPlugin
                     $paymentList  = $this->getBackends();
                     $omiseConfigPaymentList=$this->getActivePaymentMethods($omiseConfigData);
 
-                    // list active payment methods that not support from capabilities api
-                    $nonSupportPayments = [];
+                    // filter and update config payment method data that omise account is supported
+                    $data = $this->validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig);
 
-                        // set disable only not support payment methods
-                    $data = $coreConfig->getGroups();
-                    foreach ($omiseConfigPaymentList as $payment => $title) {
-                        if (! in_array($payment, $paymentList)) {
-                            $data['omise']['groups'][$payment]['fields']['active']['value'] = 0;
-                            array_push($nonSupportPayments, $title);
-                        }
-                    }
-
-                        // show error message by using title from omise helper
-                    if (! empty($nonSupportPayments)) {
-                        $this->messageManager->
-                            addError(__("This Omise account is not support " . implode(", ", $nonSupportPayments)));
-                    }
-
-                        // still save other payment methods that api support
+                    // still save other payment methods that api support
                     $coreConfig->setData('groups', $data);
                     
                 } catch (OmiseAuthenticationFailureException $e) {
@@ -191,5 +176,38 @@ class ConfigSectionPaymentPlugin
             }
         }
         return $paymentConfigList;
+    }
+
+    /**
+     * Cheking and update the payment methods that merchant trying
+     * to enable is supported or not and will showing error message
+     * if any non supported payment methods is got enable and
+     * disable it before saving config
+     *
+     * @param array $paymentList
+     * @param array $omiseConfigPaymentList
+     * @param \Magento\Config\Model\Config $coreConfig
+     *
+     * @return \Magento\Config\Model\Config $coreConfig
+     */
+    private function validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig)
+    {
+        // list active payment methods that not support from capabilities api
+        $nonSupportPayments = [];
+
+        // set disable only not support payment methods
+        $data = $coreConfig->getGroups();
+        foreach ($omiseConfigPaymentList as $payment => $title) {
+            if (! in_array($payment, $paymentList)) {
+                $data['omise']['groups'][$payment]['fields']['active']['value'] = 0;
+                array_push($nonSupportPayments, $title);
+            }
+        }
+
+        // show error message by using title from omise helper
+        if (! empty($nonSupportPayments)) {
+            $this->messageManager->addError(__("This Omise account is not support " . implode(", ", $nonSupportPayments)));
+        }
+        return $data;
     }
 }
