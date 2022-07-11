@@ -94,27 +94,18 @@ class SyncStatus
     /**
      * @param Order $order
      * @param array $charge
+     * @return void
      */
     private function markPaymentSuccessful($order, $charge)
     {
-        $refunded_amount = isset($charge['refunded_amount'])
-            ? $charge['refunded_amount']
-            : $charge['refunded'];
-
-        if ($charge['funding_amount'] == $refunded_amount) {
-            $order->addStatusHistoryComment(
-                __(
-                    'Omise: Payment refunded.<br/>An amount %1 %2 has been refunded (manual sync).',
-                    number_format($order->getGrandTotal(), 2, '.', ''),
-                    $order->getOrderCurrencyCode()
-                )
-            );
-
-            $order->save();
-            return;
+        if ($charge['refunds'] && $order->getState() != Order::STATE_CLOSED) {
+            return $this->refund($order, $charge);
         }
 
-        if ($order->getState() != Order::STATE_COMPLETE && $order->getState() != Order::STATE_PROCESSING) {
+        // Payment will be already processed for the following states
+        $orderStates = [Order::STATE_COMPLETE, Order::STATE_CLOSED, Order::STATE_PROCESSING];
+
+        if (!in_array($order->getState(), $orderStates)) {
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
@@ -128,7 +119,34 @@ class SyncStatus
                     $order->getOrderCurrencyCode()
                 )
             );
+
+            $order->save();
         }
+    }
+
+    /**
+     * @param Order $order
+     * @param array $charge
+     * @return void
+     */
+    private function refund($order, $charge)
+    {
+        $refundedAmount = isset($charge['refunded_amount'])
+            ? $charge['refunded_amount']
+            : $charge['refunded'];
+
+        if ($charge['funding_amount'] == $refundedAmount) {
+            $order->setState(Order::STATE_CLOSED);
+            $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
+        }
+
+        $order->addStatusHistoryComment(
+            __(
+                'Omise: Payment refunded.<br/>An amount of %1 %2 has been refunded (manual sync).',
+                number_format($charge['refunded_amount']/100, 2, '.', ''),
+                $order->getOrderCurrencyCode()
+            )
+        );
 
         $order->save();
     }
