@@ -15,16 +15,28 @@
     "license": "MIT",
     "require": {
         "php": "~5.5.0|~5.6.0|~7",
-        "magento/magento-composer-installer": ">=0.1.13",
-        "magento/module-payment": ">=100.1",
-        "magento/module-checkout": ">=100.1",
-        "magento/module-sales": ">=100.1",
+        "magento/magento-composer-installer": ">=0.3.0",
         "omise/omise-php": "2.13.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.5.0",
+        "magento/community-edition": "2.4.4"
     },
     "autoload": {
         "files": ["registration.php"],
         "psr-4": {
             "Omise\\Payment\\": ""
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "magento/magento-composer-installer": true,
+            "laminas/laminas-dependency-plugin": true,
+            "magento/composer-dependency-version-audit-plugin": true,
+            "magento/composer-root-update-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "phpunit Test"
     }
 }

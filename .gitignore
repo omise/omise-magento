@@ -1,3 +1,7 @@
 .buildpath
 .project
 .settings/
+.phpunit.cache
+.phpunit.result.cache
+reports
+.DS_Store
