@@ -633,7 +633,7 @@
                             <field id="allowspecific">1</field>
                         </depends>
                     </field>
-                </group>p>
+                </group>
                 <group id="omise_offsite_grabpay" translate="label" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable GrabPay Payment</label>
                     <comment>Enable customers to pay using GrabPay payment method</comment>
