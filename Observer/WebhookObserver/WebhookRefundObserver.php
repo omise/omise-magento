@@ -40,7 +40,9 @@ class WebhookRefundObserver extends WebhookObserver
      */
     public function execute(Observer $observer)
     {
-        $this->setUpExecute($observer);
+        if (!$this->setUpExecute($observer)) {
+            return;
+        }
 
         if (!$this->orderData->isPaymentReview() && $this->orderData->getState() === MagentoOrder::STATE_PROCESSING) {
             $this->closeOrder($this->charge->getRefundedAmount(), $this->charge->isFullyRefunded());

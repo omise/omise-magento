@@ -41,7 +41,10 @@ class WebhookCompleteObserver extends WebhookObserver
      */
     public function execute(Observer $observer)
     {
-        $this->setUpExecute($observer);
+        if (!$this->setUpExecute($observer)) {
+            return;
+        }
+
         $isPaymentPending = $this->orderData->getState() === MagentoOrder::STATE_PENDING_PAYMENT;
 
         if ($this->orderData->isPaymentReview() || $isPaymentPending) {

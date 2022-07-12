@@ -58,20 +58,22 @@ abstract class WebhookObserver implements ObserverInterface
 
         if (! $this->charge instanceof ApiCharge || $this->charge->getMetadata('order_id') == null) {
             // TODO: Handle in case of improper response structure.
-            return;
+            return false;
         }
 
         $this->orderData = $this->order->loadByIncrementId($this->charge->getMetadata('order_id'));
 
         if (! $this->orderData->getId()) {
             // TODO: Handle in case of improper response structure.
-            return;
+            return false;
         }
 
         if (! $this->payment = $this->orderData->getPayment()) {
             // TODO: Handle in case of improper response structure.
-            return;
+            return false;
         }
+
+        return true;
     }
 
     abstract public function execute(Observer $observer);
