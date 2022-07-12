@@ -23,6 +23,7 @@ use Omise\Payment\Model\Config\Grabpay;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
+use Omise\Payment\Observer\DuitnowOBWDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\MobilebankingDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
@@ -238,6 +239,34 @@ class APMBuilder implements BuilderInterface
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'grabpay',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                ];
+                break;
+            case Boost::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'boost',
+                ];
+                break;
+            case DuitnowOBW::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'duitnow_obw',
+                    self::BANK => $method->getAdditionalInformation(
+                        DuitnowOBWDataAssignObserver::BANK
+                    )
+                ];
+                break;
+            case DuitnowQR::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'duitnow_qr',
+                ];
+                break;
+            case MaybankQR::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'maybank_qr',
+                ];
+                break;
+            case Shopeepay::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => 'shopeepay',
                 ];
                 break;
         }
