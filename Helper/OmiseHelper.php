@@ -21,6 +21,11 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Boost;
+use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\DuitnowQR;
+use Omise\Payment\Model\Config\MaybankQR;
+use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
@@ -177,11 +182,11 @@ class OmiseHelper extends AbstractHelper
         Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
         Ocbcpao::CODE => "OCBC Pay Anyone Payment",
         Grabpay::CODE => "GrabPay Payment",
-        Boost::CODE,
-        DuitnowOBW::CODE,
-        DuitnowQR::CODE,
-        MaybankQR::CODE,
-        Shopeepay::CODE
+        Boost::CODE => "Boost Payment", 
+        DuitnowOBW::CODE => "Duitnow Online Banking/Wallets Payment",
+        DuitnowQR::CODE => "DuitNow QR Payment",
+        MaybankQR::CODE => "Maybank QRPay Payment",
+        Shopeepay::CODE => "ShopeePay Payment",
 
 
         // offline payment

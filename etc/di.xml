@@ -432,10 +432,10 @@
     </virtualType>
     <!-- /Value Handler -->
 
-    <!-- Touchngo (Alipayplus) payment solution -->
+    <!-- Touchngo payment solution -->
     <virtualType name="OmiseTouchngoAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TOUCHNGO_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Touchngo::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMTouchngoValueHandlerPool</argument>
@@ -444,7 +444,7 @@
         </arguments>
     </virtualType>
 
-    <!-- Touchngo (Alipayplus) :: Value Handler Pool -->
+    <!-- Touchngo :: Value Handler Pool -->
     <virtualType name="OmiseAPMTouchngoValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -475,7 +475,7 @@
 
     <virtualType name="OmiseAPMTouchngoConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TOUCHNGO_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Touchngo::CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
