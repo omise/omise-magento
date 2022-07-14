@@ -11,7 +11,7 @@
                visible: isRadioButtonVisible(),
                enable: isActive()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
-            <span data-bind="text: getTitle()"></span><div class="fpx"></div>
+            <span data-bind="text: getTitle()"></span>
         </label>
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
@@ -37,7 +37,6 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
-        <!-- ko if: banks().length -->
         <form class="form" data-bind="attr: {
               id: getCode() + 'Form',
               }">
@@ -61,20 +60,14 @@
                                     attr:{class: selectedFpxBank},
                                     valueAllowUnset: true">
 
-                            <option data-bind="attr:{value: code,
-                            disabled: !active}, html: $parent.bankLabel(name, active)">
+                            <option data-bind="attr:{value: code,}, 
+                                html: $parent.bankLabel(name)">
                             </option>
                         </select>
                     </div>
                 </div>
             </fieldset>
         </form>
-        <div class="terms-and-conditions-block">
-            <span>By clicking on the "Place Order" button, you agree to FPX's</span>
-            <a href="https://www.mepsfpx.com.my/FPXMain/termsAndConditions.jsp" target="_blank">
-                Terms and Conditions
-            </a>
-        </div>
         <div class="actions-toolbar">
             <div class="primary">
                 <button class="action primary checkout" type="submit"
@@ -89,13 +82,5 @@
             </div>
         </div>
         <!-- /ko -->
-
-        <!-- ko ifnot: banks().length -->
-        <div class="error-msg">
-                <!-- ko i18n: 'This payment method is not currently available, please try again later or use a different payment method.'-->
-                <!-- /ko -->
-        </div>
-        <!-- /ko -->
-
     </div>
 </div>

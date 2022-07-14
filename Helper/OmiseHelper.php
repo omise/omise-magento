@@ -124,6 +124,11 @@ class OmiseHelper extends AbstractHelper
         Rabbitlinepay::ID => Rabbitlinepay::CODE,
         Ocbcpao::ID => Ocbcpao::CODE,
         Grabpay::ID => Grabpay::CODE,
+        Boost::ID => Boost::CODE,
+        DuitnowOBW::ID => DuitnowOBW::CODE,
+        DuitnowQR::ID => DuitnowQR::CODE,
+        MaybankQR::ID => MaybankQR::CODE,
+        Shopeepay::ID => Shopeepay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
