@@ -194,4 +194,29 @@ class Charge extends BaseObject
     {
         return $this->status === 'failed';
     }
+
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    public function getRefundedAmount()
+    {
+        $refundedAmount = 0;
+
+        if (!$this->refunds) {
+            return $refundedAmount;
+        }
+
+        foreach ($this->refunds['data'] as $refund) {
+            $refundedAmount += ($refund['amount']/100);
+        }
+
+        return $refundedAmount;
+    }
+
+    public function isFullyRefunded()
+    {
+        return (($this->amount/100) - $this->getRefundedAmount()) === 0;
+    }
 }
