@@ -13,7 +13,7 @@ define(
     ) {
         'use strict';
 
-        // Duitnow obw is using fpx bank
+        // Duitnow obw is using fpx so wil using the same resource
         const bankList = [
             {
                 code: 'affin',
