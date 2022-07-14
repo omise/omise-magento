@@ -716,151 +716,151 @@
                             <field id="allowspecific">1</field>
                         </depends>
                     </field>
-                    <group id="omise_offsite_boost" translate="label" sortOrder="514" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable Boost Payment</label>
-                        <comment>Enable customers to pay using Boost payment method</comment>
-                        <field id="active" translate="label comment" type="select" sortOrder="515" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Enable/Disable</label>
-                            <comment>Enable Boost eWallet payment method.</comment>
-                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_boost/active</config_path>
-                        </field>
-                        <field id="title" translate="label" type="text" sortOrder="516" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Title</label>
-                            <comment>This controls the title which the user sees during checkout.</comment>
-                            <config_path>payment/omise_offsite_boost/title</config_path>
-                        </field>
-                        <field id="allowspecific" translate="label comment" type="select" sortOrder="517" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Allowed Countries</label>
-                            <config_path>payment/omise_offsite_boost/allowspecific</config_path>
-                            <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                            <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
-                        </field>
-                        <field id="specificcountry" translate="label" type="multiselect" sortOrder="518" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payment from Specific countries</label>
-                            <config_path>payment/omise_offsite_boost/specificcountry</config_path>
-                            <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                            <depends>
-                                <field id="allowspecific">1</field>
-                            </depends>
-                        </field>
-                    </group>
-                    <group id="omise_offsite_duitnowobw" translate="label" sortOrder="519" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable Duitnow Online Banking/Wallets Payment</label>
-                        <comment>Enable customers to pay using Duitnow Online Banking/Wallets payment method</comment>
-                        <field id="active" translate="label comment" type="select" sortOrder="520" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Enable/Disable</label>
-                            <comment>Enable Duitnow Online Banking/Wallets payment method.</comment>
-                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_duitnowobw/active</config_path>
-                        </field>
-                        <field id="title" translate="label" type="text" sortOrder="521" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Title</label>
-                            <comment>This controls the title which the user sees during checkout.</comment>
-                            <config_path>payment/omise_offsite_duitnowobw/title</config_path>
-                        </field>
-                        <field id="allowspecific" translate="label comment" type="select" sortOrder="521" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Allowed Countries</label>
-                            <config_path>payment/omise_offsite_duitnowobw/allowspecific</config_path>
-                            <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                            <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
-                        </field>
-                        <field id="specificcountry" translate="label" type="multiselect" sortOrder="522" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payment from Specific countries</label>
-                            <config_path>payment/omise_offsite_duitnowobw/specificcountry</config_path>
-                            <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                            <depends>
-                                <field id="allowspecific">1</field>
-                            </depends>
-                        </field>
-                    </group>
-                    <group id="omise_offsite_duitnowqr" translate="label" sortOrder="523" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable DuitNow QR Payment</label>
-                        <comment>Enable customers to pay using DuitNow QR payment method</comment>
-                        <field id="active" translate="label comment" type="select" sortOrder="524" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Enable/Disable</label>
-                            <comment>Enable DuitNow QR payment method.</comment>
-                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_duitnowqr/active</config_path>
-                        </field>
-                        <field id="title" translate="label" type="text" sortOrder="525" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Title</label>
-                            <comment>This controls the title which the user sees during checkout.</comment>
-                            <config_path>payment/omise_offsite_duitnowqr/title</config_path>
-                        </field>
-                        <field id="allowspecific" translate="label comment" type="select" sortOrder="526" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Allowed Countries</label>
-                            <config_path>payment/omise_offsite_duitnowqr/allowspecific</config_path>
-                            <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                            <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
-                        </field>
-                        <field id="specificcountry" translate="label" type="multiselect" sortOrder="527" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payment from Specific countries</label>
-                            <config_path>payment/omise_offsite_duitnowqr/specificcountry</config_path>
-                            <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                            <depends>
-                                <field id="allowspecific">1</field>
-                            </depends>
-                        </field>
-                    </group>
-                    <group id="omise_offsite_maybankqr" translate="label" sortOrder="528" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable Maybank QRPay Payment</label>
-                        <comment>Enable customers to pay using Maybank QRPay payment method</comment>
-                        <field id="active" translate="label comment" type="select" sortOrder="529" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Enable/Disable</label>
-                            <comment>Enable Maybank QRPay payment method.</comment>
-                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_maybankqr/active</config_path>
-                        </field>
-                        <field id="title" translate="label" type="text" sortOrder="530" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Title</label>
-                            <comment>This controls the title which the user sees during checkout.</comment>
-                            <config_path>payment/omise_offsite_maybankqr/title</config_path>
-                        </field>
-                        <field id="allowspecific" translate="label comment" type="select" sortOrder="531" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Allowed Countries</label>
-                            <config_path>payment/omise_offsite_maybankqr/allowspecific</config_path>
-                            <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                            <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
-                        </field>
-                        <field id="specificcountry" translate="label" type="multiselect" sortOrder="532" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payment from Specific countries</label>
-                            <config_path>payment/omise_offsite_maybankqr/specificcountry</config_path>
-                            <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                            <depends>
-                                <field id="allowspecific">1</field>
-                            </depends>
-                        </field>
-                    </group>
-                    <group id="omise_offsite_shopeepay" translate="label" sortOrder="533" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable ShopeePay Payment</label>
-                        <comment>Enable customers to pay using ShopeePay payment method</comment>
-                        <field id="active" translate="label comment" type="select" sortOrder="534" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Enable/Disable</label>
-                            <comment>Enable ShopeePay payment method.</comment>
-                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payment/omise_offsite_shopeepay/active</config_path>
-                        </field>
-                        <field id="title" translate="label" type="text" sortOrder="535" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Title</label>
-                            <comment>This controls the title which the user sees during checkout.</comment>
-                            <config_path>payment/omise_offsite_shopeepay/title</config_path>
-                        </field>
-                        <field id="allowspecific" translate="label comment" type="select" sortOrder="536" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Allowed Countries</label>
-                            <config_path>payment/omise_offsite_shopeepay/allowspecific</config_path>
-                            <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                            <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
-                        </field>
-                        <field id="specificcountry" translate="label" type="multiselect" sortOrder="537" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payment from Specific countries</label>
-                            <config_path>payment/omise_offsite_shopeepay/specificcountry</config_path>
-                            <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                            <depends>
-                                <field id="allowspecific">1</field>
-                            </depends>
-                        </field>
-                    </group>
+                </group>
+                <group id="omise_offsite_boost" translate="label" sortOrder="514" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Boost Payment</label>
+                    <comment>Enable customers to pay using Boost payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="515" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Boost eWallet payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_boost/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="516" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_boost/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="517" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_boost/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="518" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_boost/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_duitnowobw" translate="label" sortOrder="519" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Duitnow Online Banking/Wallets Payment</label>
+                    <comment>Enable customers to pay using Duitnow Online Banking/Wallets payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="520" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Duitnow Online Banking/Wallets payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_duitnowobw/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="521" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_duitnowobw/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="521" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_duitnowobw/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="522" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_duitnowobw/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_duitnowqr" translate="label" sortOrder="523" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable DuitNow QR Payment</label>
+                    <comment>Enable customers to pay using DuitNow QR payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="524" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable DuitNow QR payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_duitnowqr/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="525" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_duitnowqr/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="526" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_duitnowqr/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="527" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_duitnowqr/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_maybankqr" translate="label" sortOrder="528" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Maybank QRPay Payment</label>
+                    <comment>Enable customers to pay using Maybank QRPay payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="529" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable Maybank QRPay payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_maybankqr/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="530" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_maybankqr/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="531" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_maybankqr/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="532" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_maybankqr/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="omise_offsite_shopeepay" translate="label" sortOrder="533" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable ShopeePay Payment</label>
+                    <comment>Enable customers to pay using ShopeePay payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="534" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable ShopeePay payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_shopeepay/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="535" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_shopeepay/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="536" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_shopeepay/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to checkout.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="537" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from Specific countries</label>
+                        <config_path>payment/omise_offsite_shopeepay/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
                 </group>
             </group>
         </section>
