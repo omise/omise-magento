@@ -20,6 +20,12 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Boost;
+use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\DuitnowQR;
+use Omise\Payment\Model\Config\MaybankQR;
+use Omise\Payment\Model\Config\Shopeepay;
+use Omise\Payment\Model\Config\Touchngo;
 
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Observer\FpxDataAssignObserver;
@@ -212,7 +218,7 @@ class APMBuilder implements BuilderInterface
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
                 ];
                 break;
-            case Alipayplus::TOUCHNGO_CODE:
+            case Touchngo::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'touch_n_go',
                     self::PLATFORM_TYPE => $this->helper->getPlatformType(),
