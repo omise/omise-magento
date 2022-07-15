@@ -21,23 +21,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_touchngo',
-            restrictedToCurrencies: ['sgd', 'myr'],
-
-            initialize: function () {
-                this._super(); //_super will call parent's `initialize` method here
-                return this;
-            },
-
-            
-            /**
-            * Get payment method title
-            *
-            * @return {string}
-            */
-            getTitle: function () {
-                let provider = checkoutConfig.omise_payment_list['omise_offsite_touchngo'][0]['provider']
-                return this._super() + (provider == 'Alipay_plus' ? '(Alipay + Partner)' : '');
-            },
+            restrictedToCurrencies: ['sgd', 'myr']
         });
         
     }

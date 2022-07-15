@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <tesco>
             <email>
@@ -212,7 +211,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 
             <omise_offsite_touchngo>
                 <active>0</active>
-                <title>TNG eWallet (Alipay+ Partner)</title>
+                <title>TNG eWallet</title>
                 <model>OmiseTouchngoAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>

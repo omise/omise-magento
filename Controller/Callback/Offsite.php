@@ -218,7 +218,7 @@ class Offsite extends Action
                         $dispPaymentMethod = "Kakao Pay (Alipay+ Partner)";
                         break;
                     case Touchngo::CODE:
-                        $dispPaymentMethod = "TNG eWallet (Alipay+ Partner)";
+                        $dispPaymentMethod = "TNG eWallet";
                         break;
                     case Mobilebanking::CODE:
                         $dispPaymentMethod = "Mobile Banking";
