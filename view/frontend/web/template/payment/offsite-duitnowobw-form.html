@@ -43,7 +43,7 @@
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
                 <div class="field required">
-                    <label for="omise_offsite_fpx_banks" class="label">
+                    <label for="omise_offsite_duitnowobw_banks" class="label">
                         <span class="title" data-bind="i18n: 'Select Bank'"></span>
                     </label>
                     <script>
@@ -53,10 +53,10 @@
                     </script>
                     <div class="select-list-box">
                         <select
-                                name="fpx_selected_bank"
+                                name="duitnowobw_selected_bank"
                                 style="margin-bottom:10px"
                                 data-bind="foreach: banks,
-                                    value: selectedFpxBank,
+                                    value: selectedDuitnowOBWBank,
                                     attr:{class: selectedFpxBank},
                                     valueAllowUnset: true">
 
@@ -76,7 +76,7 @@
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked() && selectedFpxBank)">
+                        enable: (getCode() == isChecked() && selectedDuitnowOBWBank)">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>

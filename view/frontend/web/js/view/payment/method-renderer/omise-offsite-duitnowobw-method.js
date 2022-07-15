@@ -99,7 +99,7 @@ define(
             code: 'omise_offsite_duitnowobw',
             restrictedToCurrencies: ['myr'],
             banks: ko.observable(bankList),
-            selectedFpxBank: ko.observable(),
+            selectedDuitnowOBWBank: ko.observable(),
             bankLabel: function(name) {
                 var bankLabel = name;
                 return bankLabel;
@@ -114,7 +114,7 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'bank': this.selectedFpxBank()
+                        'bank': this.selectedDuitnowOBWBank()
                     }
                 };
             },
