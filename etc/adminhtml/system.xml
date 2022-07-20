@@ -751,11 +751,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_duitnowobw" translate="label" sortOrder="519" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Duitnow Online Banking/Wallets Payment</label>
-                    <comment>Enable customers to pay using Duitnow Online Banking/Wallets payment method</comment>
+                    <label>Enable DuitNow Online Banking/Wallets Payment</label>
+                    <comment>Enable customers to pay using DuitNow Online Banking/Wallets payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="520" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Duitnow Online Banking/Wallets payment method.</comment>
+                        <comment>Enable DuitNow Online Banking/Wallets payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_duitnowobw/active</config_path>
                     </field>

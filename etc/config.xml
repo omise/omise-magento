@@ -299,7 +299,7 @@
 
             <omise_offsite_duitnowobw>
                 <active>0</active>
-                <title>Duitnow Online Banking/Wallets</title>
+                <title>DuitNow Online Banking/Wallets</title>
                 <model>OmiseDuitnowOBWAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
@@ -311,7 +311,7 @@
 
             <omise_offsite_duitnowqr>
                 <active>0</active>
-                <title>Duitnow QR</title>
+                <title>DuitNow QR</title>
                 <model>OmiseDuitnowQRAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>

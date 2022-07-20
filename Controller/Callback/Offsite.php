@@ -236,7 +236,7 @@ class Offsite extends Action
                         $dispPaymentMethod = "Boost";
                         break;
                     case DuitnowOBW::CODE:
-                        $dispPaymentMethod = "Duitnow Online Banking/Wallets";
+                        $dispPaymentMethod = "DuitNow Online Banking/Wallets";
                         break;
                     case DuitnowQR::CODE:
                         $dispPaymentMethod = "DuitNow QR";
