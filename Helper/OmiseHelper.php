@@ -182,7 +182,7 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::DANA_CODE => "DANA (Alipay+ Partner) Payment",
         Alipayplus::GCASH_CODE => "GCash (Alipay+ Partner) Payment",
         Alipayplus::KAKAOPAY_CODE => "Kakao Pay (Alipay+ Partner) Payment",
-        Touchngo::CODE => "TNG eWallet Payment",
+        Touchngo::CODE => "Touch`n Go eWallet Payment",
         Mobilebanking::CODE => "Mobile Banking Payment",
         Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
         Ocbcpao::CODE => "OCBC Pay Anyone Payment",

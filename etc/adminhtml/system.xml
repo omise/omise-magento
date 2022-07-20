@@ -521,11 +521,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_touchngo" translate="label" sortOrder="480" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable TNG eWallet Payment</label>
-                    <comment>Enable customers to pay using TNG eWallet payment method</comment>
+                    <label>Enable Touch`n Go eWallet Payment</label>
+                    <comment>Enable customers to pay using Touch`n Go eWallet payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="481" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable TNG eWallet payment method.</comment>
+                        <comment>Enable Touch`n Go eWallet payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_touchngo/active</config_path>
                     </field>
