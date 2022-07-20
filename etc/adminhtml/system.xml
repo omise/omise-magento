@@ -809,11 +809,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_maybankqr" translate="label" sortOrder="528" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Maybank QRPAY Payment</label>
-                    <comment>Enable customers to pay using Maybank QRPAY payment method</comment>
+                    <label>Enable Maybank QRPay Payment</label>
+                    <comment>Enable customers to pay using Maybank QRPay payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="529" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Maybank QRPAY payment method.</comment>
+                        <comment>Enable Maybank QRPay payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_maybankqr/active</config_path>
                     </field>

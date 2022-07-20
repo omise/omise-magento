@@ -190,7 +190,7 @@ class OmiseHelper extends AbstractHelper
         Boost::CODE => "Boost Payment", 
         DuitnowOBW::CODE => "Duitnow Online Banking/Wallets Payment",
         DuitnowQR::CODE => "DuitNow QR Payment",
-        MaybankQR::CODE => "Maybank QRPAY Payment",
+        MaybankQR::CODE => "Maybank QRPay Payment",
         Shopeepay::CODE => "ShopeePay Payment",
 
 
