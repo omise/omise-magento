@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_shopeepay',
-            restrictedToCurrencies: ['myr']
+            restrictedToCurrencies: ['myr'],
+            logo: {
+                file: "images/shopeepay.png",
+                width: "73",
+                height: "30",
+                name: "shopeepay"
+            }
         });
     }
 );

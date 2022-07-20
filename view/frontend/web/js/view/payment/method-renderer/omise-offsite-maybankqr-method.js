@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_maybankqr',
-            restrictedToCurrencies: ['myr']
+            restrictedToCurrencies: ['myr'],
+            logo: {
+                file: "images/mae_maybank.png",
+                width: "60",
+                height: "40",
+                name: "mae_maybank"
+            }
         });
     }
 );

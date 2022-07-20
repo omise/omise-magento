@@ -98,6 +98,12 @@ define(
 
             code: 'omise_offsite_duitnowobw',
             restrictedToCurrencies: ['myr'],
+            logo: {
+                file: "images/duitnow_obw.png",
+                width: "65",
+                height: "35",
+                name: "duitnow_obw"
+            },
             banks: ko.observable(bankList),
             selectedDuitnowOBWBank: ko.observable(),
             bankLabel: function(name) {

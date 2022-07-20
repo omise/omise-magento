@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_duitnowqr',
-            restrictedToCurrencies: ['myr']
+            restrictedToCurrencies: ['myr'],
+            logo: {
+                file: "images/duitnow_qr.png",
+                width: "65",
+                height: "35",
+                name: "duitnow_qr"
+            }
         });
     }
 );

@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_boost',
-            restrictedToCurrencies: ['myr']
+            restrictedToCurrencies: ['myr'],
+            logo: {
+                file: "images/boost.png",
+                width: "60",
+                height: "20",
+                name: "boost"
+            }
         });
     }
 );
