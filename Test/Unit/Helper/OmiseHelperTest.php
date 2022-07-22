@@ -22,9 +22,6 @@ use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
 
-/**
- * @covers \Omise\Payment\Helper\OmiseHelper
- */
 class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 {
     protected $omiseHelperMock;
@@ -50,13 +47,15 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * Ideal for setting the values to variables or objects.
      * @coversNothing
      */
-    public function tearDown(): void {}
+    public function tearDown(): void
+    {
+    }
 
     /**
      * Test the function returns amount in correct format
      *
      * @dataProvider currencyProvider
-     * @covers ::omiseAmountFormat
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function omiseAmountFormatReturnCorrectFormat($currency)
@@ -91,7 +90,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function isPayableByImageCode() returns true when correct code is passed
-     * @covers ::isPayableByImageCode
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function isPayableByImageCodeReturnsTrueWhenCorrectPaymentCodeIsPassed()
@@ -102,7 +101,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function isPayableByImageCode() returns false when invalid code is passed
-     * @covers ::isPayableByImageCode
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function isPayableByImageCodeReturnsFalseWhenWrongPaymentCodeIsPassed()
@@ -113,7 +112,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function isOfflinePaymentMethod() returns true when correct code is passed
-     * @covers ::isOfflinePaymentMethod
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function isOfflinePaymentMethodReturnsTrueWhenWrongPaymentCodeIsPassed()
@@ -124,7 +123,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function isOfflinePaymentMethod() returns false when invalid code is passed
-     * @covers ::isOfflinePaymentMethod
+     * @covers \Omise\Payment\Helper\OmiseHelper
      */
     public function testIsOfflinePaymentMethodReturnsFalseWhenWrongPaymentCodeIsPassed()
     {
@@ -134,7 +133,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function isOffsitePaymentMethod() returns true when correct code is passed
-     * @covers ::isOffsitePaymentMethod
+     * @covers \Omise\Payment\Helper\OmiseHelper
      */
     public function isOffsitePaymentMethodReturnsTrueWhenWrongPaymentCodeIsPassed()
     {
@@ -144,7 +143,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function isOffsitePaymentMethod() returns false when invalid code is passed
-     * @covers ::isOffsitePaymentMethod
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function isOffsitePaymentMethodReturnsFalseWhenWrongPaymentCodeIsPassed()
@@ -157,7 +156,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * Test the function isOmisePayment() return true whe
      * correct payment code is passed
      *
-     * @covers ::isOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function isOmisePaymentReturnsTrueWhenCorrectPaymentCodeIsPassed()
@@ -170,7 +169,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * Test the function whether isCreditCardPaymentMethod() returns false
      * when invalid code is passed
      *
-     * @covers ::isCreditCardPaymentMethod
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function isCreditCardPaymentMethodReturnFalseIfWrongPaymentCodeIsPassed()
@@ -183,7 +182,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * Test the function validate3DSReferer() returns true when
      * the referer is either Omise staging or production
      * 
-     * @covers ::validate3DSReferer
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function validate3DSRefererReturnsTrueWhenRefererIsOmise()
@@ -211,7 +210,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * Test the function validate3DSReferer() returns false when
      * the referer neither Omise staging nor production
      *
-     * @covers ::validate3DSReferer
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function validate3DSRefererReturnsFalseWhenReferIsNotOmise()
@@ -227,9 +226,9 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test the function getPlatformType() return correct platform as per user agent
-     * 
+     *
      * @dataProvider platformTypeProvider
-     * @covers ::getPlatformType
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function getPlatformTypeReturnsCorrectPlatform($platform, $expectedValue)
@@ -241,7 +240,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $result = $this->model->getPlatformType();
         
         $this->assertEquals($expectedValue, $result);
-        
     }
 
     public function platformTypeProvider()
@@ -266,7 +264,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * Test the function is3DSecureEnabled() whether 3DS is enabled or not
      * by checking charge object
      *
-     * @covers ::is3DSecureEnabled
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function is3DSecureEnabledReturnsTrue()
@@ -288,7 +286,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * any one properties of charge does not match the condition
      *
      * @dataProvider chargeProvider
-     * @covers ::is3DSecureEnabled
+     * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
     public function is3DSecureEnabledReturnsFalse($charge)

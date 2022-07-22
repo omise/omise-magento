@@ -37,6 +37,6 @@
         }
     },
     "scripts": {
-        "test": "phpunit Test"
+        "test": "XDEBUG_MODE_COVERAGE=coverage vendor/bin/phpunit --coverage-html reports Test/Unit"
     }
 }

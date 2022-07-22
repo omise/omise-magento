@@ -3,5 +3,5 @@
 .settings/
 .phpunit.cache
 .phpunit.result.cache
-reports
 .DS_Store
+coverage.xml

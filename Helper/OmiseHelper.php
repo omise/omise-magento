@@ -280,17 +280,14 @@ class OmiseHelper extends AbstractHelper
     public function is3DSecureEnabled($charge)
     {
         $authorizeUri = $charge->authorize_uri;
+        $notAuthorizedNorPaid = !$charge->authorized && !$charge->paid;
+        $isPending = $charge->status === "pending";
 
-        if (
-            $charge->status === "pending" &&
-            !$charge->authorized &&
-            !$charge->paid &&
-            !empty($authorizeUri)
-        ) {
+        if ($isPending && $notAuthorizedNorPaid && !empty($authorizeUri)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
