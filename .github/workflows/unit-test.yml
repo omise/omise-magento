@@ -25,14 +25,14 @@ jobs:
         php_version: ${{ matrix.php_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
     - uses: EndBug/add-and-commit@v9
-      if: github.head_ref == 'master'
+      if: github.ref == 'refs/heads/master'
       with:
         message: Code coverage report generated
         default_author: github_actions
         add: 'reports'
     - name: Generate test coverage badge
       uses: timkrase/phpunit-coverage-badge@v1.2.0
-      if: github.head_ref == 'master'
+      if: github.ref == 'refs/heads/master'
       with:
         coverage_badge_path: 'badge.svg'
         report_type: 'html'
