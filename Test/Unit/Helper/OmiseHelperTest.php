@@ -181,7 +181,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     /**
      * Test the function validate3DSReferer() returns true when
      * the referer is either Omise staging or production
-     * 
+     *
      * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
@@ -282,7 +282,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test the function is3DSecureEnabled() returns false if the value of 
+     * Test the function is3DSecureEnabled() returns false if the value of
      * any one properties of charge does not match the condition
      *
      * @dataProvider chargeProvider
