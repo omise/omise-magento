@@ -20,9 +20,10 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
-use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Omise\Payment\Model\Config\Config;
 
 use SimpleXMLElement;
 use DOMDocument;
@@ -81,7 +82,7 @@ class OmiseHelper extends AbstractHelper
      * @var array
      */
     private $cardPaymentMethods = [
-        Config::CODE,
+        Cc::CODE,
         CcGooglePay::CODE
     ];
 
