@@ -37,6 +37,7 @@ class SyncStatus
         $this->emailHelper = $emailHelper;
         $this->config = $config;
     }
+
     /**
      * @param Order $order
      * @return void
@@ -98,7 +99,7 @@ class SyncStatus
      */
     private function markPaymentSuccessful($order, $charge)
     {
-        if ($charge['refunds'] && $order->getState() != Order::STATE_CLOSED) {
+        if ($charge['refunds']['data'] && $order->getState() != Order::STATE_CLOSED) {
             return $this->refund($order, $charge);
         }
 
