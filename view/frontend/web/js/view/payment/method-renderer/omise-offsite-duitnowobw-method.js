@@ -107,8 +107,7 @@ define(
             banks: ko.observable(bankList),
             selectedDuitnowOBWBank: ko.observable(),
             bankLabel: function(name) {
-                var bankLabel = name;
-                return bankLabel;
+                return name;
             },
 
             /**
