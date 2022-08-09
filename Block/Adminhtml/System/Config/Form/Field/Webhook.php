@@ -22,17 +22,15 @@ class Webhook extends Field
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\App\Request\Http $http
      * @param array $data
      */
     public function __construct(
         Context $context,
-        StoreManagerInterface $storeManager,
         Http $request,
         array   $data = []
     ) {
-        $this->storeManager = $storeManager;
+        $this->storeManager = $context->getStoreManager();
         $this->request = $request;
         parent::__construct($context, $data);
     }
