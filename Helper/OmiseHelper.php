@@ -26,9 +26,10 @@ use Omise\Payment\Model\Config\DuitnowOBW;
 use Omise\Payment\Model\Config\DuitnowQR;
 use Omise\Payment\Model\Config\MaybankQR;
 use Omise\Payment\Model\Config\Shopeepay;
-use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Omise\Payment\Model\Config\Config;
 
 use SimpleXMLElement;
 use DOMDocument;
@@ -92,7 +93,7 @@ class OmiseHelper extends AbstractHelper
      * @var array
      */
     private $cardPaymentMethods = [
-        Config::CODE,
+        Cc::CODE,
         CcGooglePay::CODE
     ];
 
@@ -107,7 +108,7 @@ class OmiseHelper extends AbstractHelper
      */
     private $omiseCodeByOmiseId = [
         // card payment
-        Config::ID => Config::CODE,
+        Cc::ID => Cc::CODE,
         CcGooglePay::ID => CcGooglePay::CODE,
 
         // offsite payment
@@ -167,7 +168,7 @@ class OmiseHelper extends AbstractHelper
      */
     private $labelByOmiseCode = [
         // card payment
-        Config::CODE => "Credit Card Payment",
+        Cc::CODE => "Credit Card Payment",
         CcGooglePay::CODE => "Google Pay Payment",
 
         // offsite payment
@@ -360,6 +361,7 @@ class OmiseHelper extends AbstractHelper
 
     /**
      * Check order payment processed using Omise payment methods.
+     *
      * @param \Magento\Sales\Model\Order $order
      * @return boolean
      */
@@ -400,14 +402,14 @@ class OmiseHelper extends AbstractHelper
     public function is3DSecureEnabled($charge)
     {
         $authorizeUri = $charge->authorize_uri;
-        if ($charge->status === "pending"
-        && !$charge->authorized
-        && !$charge->paid
-        && !empty($authorizeUri)) {
+        $notAuthorizedNorPaid = !$charge->authorized && !$charge->paid;
+        $isPending = $charge->status === "pending";
+
+        if ($isPending && $notAuthorizedNorPaid && !empty($authorizeUri)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

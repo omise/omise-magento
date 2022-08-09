@@ -1,0 +1,41 @@
+name: Unit Test
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+        php_version:
+          - 7.4
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create folder and file
+      run: |
+        mkdir -p app/etc && cd app/etc && touch vendor_path.php
+    - uses: graycoreio/github-actions-magento2/unit-test@main
+      with:
+        php_version: ${{ matrix.php_version }}
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
+    - uses: EndBug/add-and-commit@v9
+      if: github.ref == 'refs/heads/master'
+      with:
+        message: Code coverage report generated
+        default_author: github_actions
+        add: 'reports'
+    - name: Generate test coverage badge
+      uses: timkrase/phpunit-coverage-badge@v1.2.0
+      if: github.ref == 'refs/heads/master'
+      with:
+        coverage_badge_path: 'badge.svg'
+        report_type: 'html'
+        push_badge: true
+        report: 'reports/index.html'
+        repo_token: ${{ secrets.GITHUB_TOKEN }}

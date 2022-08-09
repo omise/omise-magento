@@ -146,7 +146,9 @@ class OrderSyncStatus
      */
     public function execute()
     {
-        if ($this->config->getValue('enable_cron_autoexpirysync')) {
+        $isCronEnabled = (bool)$this->config->getValue('enable_cron_autoexpirysync');
+
+        if ($isCronEnabled) {
             try {
                 $this->sync();
             } catch (\Exception $e) {
@@ -166,21 +168,30 @@ class OrderSyncStatus
         $this->lastProcessedOrderId = $this->scopeConfig->getValue(
             'payment/omise/cron_last_order_id'
         );
-        $orderIds    = $this->getOrderIds();
+
+        $orderIds = $this->getOrderIds();
+
         if (!empty($orderIds)) {
             foreach ($orderIds as $order) {
                 $this->lastProcessedOrderId = $order['entity_id'];
                 $this->order = $this->orderRepository->get($order['entity_id']);
+
+                // set the store to fetch configuration values from store specific to the order
+                $this->config->setStoreId($this->order->getStore()->getId());
+
                 $isExpired = $this->isExpired();
+
                 if ($isExpired) {
                     $this->syncStatus->cancelOrderInvoice($this->order);
-                    $this->order->registerCancellation(__('Omise: Payment expired. (manual sync).'))
-                      ->save();
+                    $this->order
+                        ->registerCancellation(__('Omise: Payment expired. (cron job sync).'))
+                        ->save();
                 }
             }
         } else {
             $this->lastProcessedOrderId = 0;
         }
+
         $this->saveLastOrderId();
     }
 
@@ -245,6 +256,7 @@ class OrderSyncStatus
         $isExpired = true;
         $payment    = $this->order->getPayment();
         $chargeId   = $payment->getAdditionalInformation('charge_id');
+
         if (isset($chargeId) && $this->refreshCounter > 0) {
             $this->charge = \OmiseCharge::retrieve(
                 $chargeId,
@@ -254,6 +266,7 @@ class OrderSyncStatus
             $isExpired = $this->charge['expired'];
             $this->refreshCounter--;
         }
+
         return (bool)$isExpired;
     }
 
