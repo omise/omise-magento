@@ -97,7 +97,7 @@ class OmiseHelper extends AbstractHelper
      */
     private $omiseCodeByOmiseId = [
         // card payment
-        Config::ID => Config::CODE,
+        Cc::ID => Cc::CODE,
         CcGooglePay::ID => CcGooglePay::CODE,
 
         // offsite payment
@@ -152,7 +152,7 @@ class OmiseHelper extends AbstractHelper
      */
     private $labelByOmiseCode = [
         // card payment
-        Config::CODE => "Credit Card Payment",
+        Cc::CODE => "Credit Card Payment",
         CcGooglePay::CODE => "Google Pay Payment",
 
         // offsite payment
