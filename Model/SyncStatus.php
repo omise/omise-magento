@@ -37,6 +37,7 @@ class SyncStatus
         $this->emailHelper = $emailHelper;
         $this->config = $config;
     }
+
     /**
      * @param Order $order
      * @return void
@@ -98,8 +99,15 @@ class SyncStatus
      */
     private function markPaymentSuccessful($order, $charge)
     {
-        if ($charge['refunds'] && $order->getState() != Order::STATE_CLOSED) {
-            return $this->refund($order, $charge);
+        $refundKeyExist = array_key_exists('refunds', $charge);
+        $orderStateNotClosed = $order->getState() != Order::STATE_CLOSED;
+
+        if ($refundKeyExist && $orderStateNotClosed) {
+            $dataKeyExist = array_key_exists('data', $charge['refunds']);
+
+            if ($dataKeyExist && $charge['refunds']['data']) {
+                return $this->refund($order, $charge);
+            }
         }
 
         // Payment will be already processed for the following states
