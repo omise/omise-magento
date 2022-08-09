@@ -58,6 +58,9 @@ class Event extends BaseObject
             case 'charge':
                 $data = $this->charge->find($data['id']);
                 break;
+            case 'refund':
+                $data = $this->charge->find($data['charge']);
+                break;
         }
 
         return $data;

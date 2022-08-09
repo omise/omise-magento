@@ -4,6 +4,9 @@ namespace Omise\Payment\Test\Unit\Model\Api;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * $covers \Omise\Payment\Model\Api\BaseObject
+ */
 class ObjectTest extends TestCase
 {
     /**
