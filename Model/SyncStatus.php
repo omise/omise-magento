@@ -105,7 +105,7 @@ class SyncStatus
         if ($refundKeyExist && $orderStateNotClosed) {
             $dataKeyExist = array_key_exists('data', $charge['refunds']);
 
-            if($dataKeyExist && $charge['refunds']['data']) {
+            if ($dataKeyExist && $charge['refunds']['data']) {
                 return $this->refund($order, $charge);
             }
         }
