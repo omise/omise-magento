@@ -99,7 +99,7 @@ class SyncStatus
      */
     private function markPaymentSuccessful($order, $charge)
     {
-        $refundKeyExist = array_key_exists('refunds', $charge);
+        $refundKeyExist = property_exists($charge, 'refunds');
         $orderStateNotClosed = $order->getState() != Order::STATE_CLOSED;
 
         if ($refundKeyExist && $orderStateNotClosed) {
