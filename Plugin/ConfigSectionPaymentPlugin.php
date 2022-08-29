@@ -144,9 +144,11 @@ class ConfigSectionPaymentPlugin
         // If keys are not updated then the CoreConfig won't have the value
         // so we have to pull it from the config
         return [
-             // this also handle inherit case
-            'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(),
-            'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey()
+            // this also handle inherit case
+            'public_key' => $hasPublicKeyUpdated ? 
+                $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(),
+            'secret_key' => $hasSecretKeyUpdated ? 
+                $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey()
         ];
     }
 
@@ -196,10 +198,11 @@ class ConfigSectionPaymentPlugin
             if ($active) {
                 /**
                  * Set payment list with display name
-                 * if omise label didn't exist 
+                 * if omise label didn't exist
                  * use title from config instead
                  */
-                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) ?? $this->config->getValue('title', $key);
+                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) 
+                    ?? $this->config->getValue('title', $key);
             }
         }
         return $paymentConfigList;
@@ -208,7 +211,7 @@ class ConfigSectionPaymentPlugin
     /**
      * Cheking and update the payment methods that merchant
      * trying to enable is supported or not and will showing
-     * error message if any non supported payment methods is got 
+     * error message if any non supported payment methods is got
      * enable and disable it before saving config
      *
      * @param array $paymentList
