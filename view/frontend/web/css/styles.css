@@ -155,6 +155,52 @@ div.fpx {
     background-repeat: no-repeat;
 }
 
+div.boost {
+    background: url('../images/boost.png');
+    width: 90px;
+    height: 40px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+div.duitnow_obw {
+    background: url('../images/logo-duitnow.png');
+    width: 68px;
+    height: 22px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+div.duitnow_qr {
+    background: url('../images/DuitNowQR_Primary.png');
+    width: 68px;
+    height: 22px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+div.mae_maybank {
+    background: url('../images/logo-mae-maybank.png');
+    width: 90px;
+    height: 40px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+div.shopeepay {
+    background: url('../images/logo-shopeepay.png');
+    width: 68px;
+    height: 22px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 #omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorePhoneNumber, #omise_offline_conveniencestoreCustomerName {
     width: 225px;
 }
@@ -287,4 +333,8 @@ div.fpx {
 
 .select-list-box > select.uob {
     background-image:url(../images/fpx-uob.svg);
+}
+
+.omise-payment-method-title > img {
+    float: right;
 }

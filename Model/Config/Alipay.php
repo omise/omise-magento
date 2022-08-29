@@ -9,4 +9,10 @@ class Alipay extends Config
      * @var string
      */
     const CODE = 'omise_offsite_alipay';
+   
+    /**
+     * Backends identifier
+     * @var string
+     */
+    const ID = 'alipay';
 }

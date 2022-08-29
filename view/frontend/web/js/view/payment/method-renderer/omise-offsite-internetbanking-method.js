@@ -56,6 +56,8 @@ define(
             code: 'omise_offsite_internetbanking',
             restrictedToCurrencies: ['thb'],
 
+            capabilities:null,
+
             /**
              * Initiate observable fields
              *
@@ -67,8 +69,9 @@ define(
                         'omiseOffsite'
                     ]);
 
+                this.capabilities = checkoutConfig.omise_payment_list[this.code];
                 // filter provider for checkout page
-                this.providers = this.get_available_providers()
+                this.providers = this.get_available_providers();
                 
                 return this;
             },
@@ -93,7 +96,7 @@ define(
             * @return {Array}
             */
             get_available_providers: function () {
-                let _providers = Object.values(window.checkoutConfig.internet_banking);
+                let _providers = Object.values(this.capabilities);
 
                 return ko.observableArray(providers.filter((a1) => _providers.find(a2 => a1.id === a2._id)))
             }

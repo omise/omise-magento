@@ -73,12 +73,22 @@ class Capabilities extends BaseObject
     }
 
     /**
-     * Get Installment capabilities array from Omise-PHP
+     * Retrieves details of payment backends from capabilities
      *
      * @return array
      */
     public function getBackends()
     {
         return $this->capabilities ? $this->capabilities->getBackends() : null;
+    }
+
+    /**
+     * Get information about tokenization methods
+     *
+     * @return array
+     */
+    public function getTokenizationMethods()
+    {
+        return $this->capabilities ? $this->capabilities['tokenization_methods'] : null;
     }
 }

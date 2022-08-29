@@ -37,6 +37,15 @@ define(
             },
 
             /**
+             * Get payment method logo object
+             *
+             * @return {object || null}
+             */
+            getLogo: function() {
+                return this.logo
+            },
+
+            /**
              * Is method available to display
              *
              * @return {boolean}

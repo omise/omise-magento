@@ -3,6 +3,7 @@ namespace Omise\Payment\Model;
 
 use Omise\Payment\Model\Api\Capabilities as OmiseCapabilitiesAPI;
 use Omise\Payment\Model\Omise;
+use Omise\Payment\Helper\OmiseHelper;
 
 class Capabilities
 {
@@ -16,12 +17,19 @@ class Capabilities
      */
     protected $capabilitiesAPI;
 
+    /**
+     * @var Omise\Payment\Helper\OmiseHelper
+     */
+    protected $helper;
+
     public function __construct(
         Omise $omise,
-        OmiseCapabilitiesAPI $capabilitiesAPI
+        OmiseCapabilitiesAPI $capabilitiesAPI,
+        OmiseHelper $helper
     ) {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
+        $this->helper = $helper;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -80,11 +88,58 @@ class Capabilities
 
     /**
      *
+     * @return object
+     */
+    public function getBackendsWithOmiseCode()
+    {
+        $backends = $this->capabilitiesAPI->getBackends();
+        $list = [];
+        if ($backends) {
+            foreach ($backends as $backend) {
+                $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
+                if (isset($code)) {
+                    $list[$code][] = $backend;
+                }
+            }
+        }
+        return $list;
+    }
+
+    /**
+     *
      * @return array|null
      */
     public function getCardBrands()
     {
         $card = $this->getBackendsByType("card");
         return $card ? current($card)->brands : [];
+    }
+
+    /**
+     *
+     * @return array|null
+     */
+    public function getTokenizationMethods()
+    {
+        return $this->capabilitiesAPI->getTokenizationMethods();
+    }
+
+    /**
+     *
+     * @return object
+     */
+    public function getTokenizationMethodsWithOmiseCode()
+    {
+        $methods = $this->capabilitiesAPI->getTokenizationMethods();
+        $list = [];
+        if ($methods) {
+            foreach ($methods as $method) {
+                $code = $this->helper->getOmiseCodeByOmiseId($method);
+                if (isset($code)) {
+                    $list[$code][] = $methods;
+                }
+            }
+        }
+        return $list;
     }
 }

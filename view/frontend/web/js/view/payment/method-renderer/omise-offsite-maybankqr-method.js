@@ -20,15 +20,14 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_touchngo',
-            restrictedToCurrencies: ['sgd', 'myr'],
+            code: 'omise_offsite_maybankqr',
+            restrictedToCurrencies: ['myr'],
             logo: {
-                file: "images/touchngo.png",
-                width: "80",
-                height: "30",
-                name: "touchngo"
-            },
+                file: "images/mae_maybank.png",
+                width: "60",
+                height: "40",
+                name: "mae_maybank"
+            }
         });
-        
     }
 );

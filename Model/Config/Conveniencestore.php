@@ -9,4 +9,10 @@ class Conveniencestore extends Config
      * @var string
      */
     const CODE = 'omise_offline_conveniencestore';
+
+    /**
+     * Backends identifier
+     * @var string
+     */
+    const ID = 'econtext';
 }

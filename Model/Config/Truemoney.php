@@ -9,4 +9,10 @@ class Truemoney extends Config
      * @var string
      */
     const CODE = 'omise_offsite_truemoney';
+
+    /**
+     * Backends identifier
+     * @var string
+     */
+    const ID = 'truemoney';
 }

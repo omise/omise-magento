@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_grabpay',
-            restrictedToCurrencies: ['thb', 'sgd', 'myr']
+            restrictedToCurrencies: ['thb', 'sgd', 'myr'],
+            logo: {
+                file: "images/grabpay.png",
+                width: "60",
+                height: "22",
+                name: "grabpay"
+            },
         });
     }
 );
