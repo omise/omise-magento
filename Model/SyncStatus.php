@@ -99,15 +99,10 @@ class SyncStatus
      */
     private function markPaymentSuccessful($order, $charge)
     {
-        $refundKeyExist = property_exists($charge, 'refunds');
         $orderStateNotClosed = $order->getState() != Order::STATE_CLOSED;
 
-        if ($refundKeyExist && $orderStateNotClosed) {
-            $dataKeyExist = array_key_exists('data', $charge['refunds']);
-
-            if ($dataKeyExist && $charge['refunds']['data']) {
-                return $this->refund($order, $charge);
-            }
+        if ($this->shouldRefund($charge) && $orderStateNotClosed) {
+            return $this->refund($order, $charge);
         }
 
         // Payment will be already processed for the following states
@@ -130,6 +125,17 @@ class SyncStatus
 
             $order->save();
         }
+    }
+
+    /**
+     * @param object $charge
+     * @return boolean
+     */
+    private function shouldRefund($charge)
+    {
+        return isset($charge['refunds']) &&
+            isset($charge['refunds']['data']) &&
+            count($charge['refunds']['data']) !== 0;
     }
 
     /**
