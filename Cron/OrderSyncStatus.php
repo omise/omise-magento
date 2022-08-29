@@ -35,6 +35,11 @@ class OrderSyncStatus
         "omise_offsite_rabbitlinepay",
         "omise_offsite_ocbcpao",
         "omise_offsite_grabpay",
+        "omise_offsite_boost",
+        "omise_offsite_duitnowobw",
+        "omise_offsite_duitnowqr",
+        "omise_offsite_maybankqr",
+        "omise_offsite_shopeepay",
     ];
 
     /**

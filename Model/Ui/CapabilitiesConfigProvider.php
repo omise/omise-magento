@@ -39,28 +39,27 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     {
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
         $configs = [];
+
+        // Retrieve available backends & methods from capabilities api
+        $backends = $this->capabilities->getBackendsWithOmiseCode();
+        $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
+        $backends = array_merge($backends, $tokenization_methods);
+
         foreach ($listOfActivePaymentMethods as $method) {
-            switch ($method->getCode()) {
+            $code = $method->getCode();
+            switch ($code) {
                 case OmiseInstallmentConfig::CODE:
-                    $configs['installment_backends'] = $this->capabilities->retrieveInstallmentBackends();
                     $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
-                    break;
-                case Fpx::CODE:
-                    $backendsFpx = $this->capabilities->getBackendsByType(Fpx::TYPE);
-                    $configs['fpx']['banks'] = $backendsFpx ? current($backendsFpx)->banks : [];
-                    break;
-                case Mobilebanking::CODE:
-                    $configs['mobile_banking'] = $this->capabilities->retrieveMobileBankingBackends();
-                    break;
-                case Internetbanking::CODE:
-                    $configs['internet_banking'] = $this->capabilities->getBackendsByType("internet_banking");
                     break;
                 case CcGooglePay::CODE:
                     $configs['card_brands'] = $this->capabilities->getCardBrands();
                     break;
             }
+            // filter only active backends
+            if (array_key_exists($code, $backends)) {
+                $configs['omise_payment_list'][$code]= $backends[$code];
+            }
         }
-
         return $configs;
     }
 }

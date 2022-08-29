@@ -20,6 +20,12 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Boost;
+use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\DuitnowQR;
+use Omise\Payment\Model\Config\MaybankQR;
+use Omise\Payment\Model\Config\Shopeepay;
+use Omise\Payment\Model\Config\Touchngo;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -211,8 +217,8 @@ class Offsite extends Action
                     case Alipayplus::KAKAOPAY_CODE:
                         $dispPaymentMethod = "Kakao Pay (Alipay+ Partner)";
                         break;
-                    case Alipayplus::TOUCHNGO_CODE:
-                        $dispPaymentMethod = "TNG eWallet (Alipay+ Partner)";
+                    case Touchngo::CODE:
+                        $dispPaymentMethod = "Touch`n Go eWallet";
                         break;
                     case Mobilebanking::CODE:
                         $dispPaymentMethod = "Mobile Banking";
@@ -225,6 +231,21 @@ class Offsite extends Action
                         break;
                     case Grabpay::CODE:
                         $dispPaymentMethod = "GrabPay";
+                        break;
+                    case Boost::CODE:
+                        $dispPaymentMethod = "Boost";
+                        break;
+                    case DuitnowOBW::CODE:
+                        $dispPaymentMethod = "DuitNow Online Banking/Wallets";
+                        break;
+                    case DuitnowQR::CODE:
+                        $dispPaymentMethod = "DuitNow QR";
+                        break;
+                    case MaybankQR::CODE:
+                        $dispPaymentMethod = "Maybank QR";
+                        break;
+                    case Shopeepay::CODE:
+                        $dispPaymentMethod = "ShopeePay";
                         break;
                 }
                 

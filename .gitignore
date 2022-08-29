@@ -1,6 +1,7 @@
 .buildpath
 .project
 .settings/
+.idea/
 .phpunit.cache
 .phpunit.result.cache
 .DS_Store

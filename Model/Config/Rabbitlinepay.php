@@ -9,4 +9,10 @@ class Rabbitlinepay extends Config
      * @var string
      */
     const CODE = 'omise_offsite_rabbitlinepay';
+
+    /**
+     * Backends identifier
+     * @var string
+     */
+    const ID = 'rabbit_linepay';
 }

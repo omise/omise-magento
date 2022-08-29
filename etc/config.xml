@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <tesco>
             <email>
@@ -212,7 +211,7 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 
             <omise_offsite_touchngo>
                 <active>0</active>
-                <title>TNG eWallet (Alipay+ Partner)</title>
+                <title>Touch`n Go eWallet</title>
                 <model>OmiseTouchngoAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
@@ -285,6 +284,66 @@ xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
             </omise_cc_googlepay>
+
+            <omise_offsite_boost>
+                <active>0</active>
+                <title>Boost</title>
+                <model>OmiseBoostAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_boost>
+
+            <omise_offsite_duitnowobw>
+                <active>0</active>
+                <title>DuitNow Online Banking/Wallets</title>
+                <model>OmiseDuitnowOBWAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_duitnowobw>
+
+            <omise_offsite_duitnowqr>
+                <active>0</active>
+                <title>DuitNow QR</title>
+                <model>OmiseDuitnowQRAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_duitnowqr>
+
+            <omise_offsite_maybankqr>
+                <active>0</active>
+                <title>Maybank QRPay</title>
+                <model>OmiseMaybankQRAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_maybankqr>
+
+            <omise_offsite_shopeepay>
+                <active>0</active>
+                <title>ShopeePay</title>
+                <model>OmiseShopeepayAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_shopeepay>
         </payment>
     </default>
 </config>
