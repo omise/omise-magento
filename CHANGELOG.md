@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v2.28.0 _(Aug 29, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.28.0)
+- Enhancements display payment options. (PR [#361](https://github.com/omise/omise-magento/pull/361))
+- Add support RMS wallet (PR [#366](https://github.com/omise/omise-magento/pull/366))
+
 ## [v2.27.0 _(Jun 30, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.27.0)
 - Added missing translation for Thai language. (PR [#356](https://github.com/omise/omise-magento/pull/356))
 - Items restored in the cart if the return URI is not triggered by Omise server. (PR [#357](https://github.com/omise/omise-magento/pull/357))
