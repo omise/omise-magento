@@ -188,12 +188,11 @@ class OmiseHelper extends AbstractHelper
         Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
         Ocbcpao::CODE => "OCBC Pay Anyone Payment",
         Grabpay::CODE => "GrabPay Payment",
-        Boost::CODE => "Boost Payment", 
+        Boost::CODE => "Boost Payment",
         DuitnowOBW::CODE => "DuitNow Online Banking/Wallets Payment",
         DuitnowQR::CODE => "DuitNow QR Payment",
         MaybankQR::CODE => "Maybank QRPay Payment",
         Shopeepay::CODE => "ShopeePay Payment",
-
 
         // offline payment
         Paynow::CODE => "PayNow QR Payment",

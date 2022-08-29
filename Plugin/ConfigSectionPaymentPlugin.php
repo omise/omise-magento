@@ -79,7 +79,7 @@ class ConfigSectionPaymentPlugin
             
             //the config data from website scope(sub-store support)
             //refer to Magento\Framework\App\Config\ScopeConfigInterface.php;
-            //on the admin setting page the setting value will inherit from website scope 
+            //on the admin setting page the setting value will inherit from website scope
             $this->parentScopeType = $this->retrieveParentScope($coreConfig);
             $omiseConfigData = $coreConfig->toArray()['groups']['omise'];
             $keys = $this->getKeys($omiseConfigData);
@@ -127,14 +127,11 @@ class ConfigSectionPaymentPlugin
         $configFields = $configData['fields'];
 
         // check if sandbox_status is inherit value
-        if( array_key_exists('inherit', $configFields['sandbox_status']) ) {
-            $sandboxStatus = $this->scopeConfig->getValue('payment/omise/sandbox_status',$this->parentScopeType);
-        } 
-        else {
+        if (array_key_exists('inherit', $configFields['sandbox_status'])) {
+            $sandboxStatus = $this->scopeConfig->getValue('payment/omise/sandbox_status', $this->parentScopeType);
+        } else {
         // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
-        $sandboxStatus = array_key_exists('value', $configFields['sandbox_status'])
-            ? $configFields['sandbox_status']['value']
-            : $configFields['sandbox_status'];
+            $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) ? $configFields['sandbox_status']['value'] : $configFields['sandbox_status'];
         }
 
         $publicKeyIndex = $sandboxStatus ? 'test_public_key' : 'live_public_key';
@@ -145,12 +142,8 @@ class ConfigSectionPaymentPlugin
 
         // If keys are not updated then the CoreConfig won't have the value so we have to pull it from the config
         return [
-            'public_key' => $hasPublicKeyUpdated
-                ? $configFields[$publicKeyIndex]['value']
-                : $this->config->getPublicKey(), //this also handle inherit case 
-            'secret_key' => $hasSecretKeyUpdated
-                ? $configFields[$secretKeyIndex]['value']
-                : $this->config->getSecretKey() //this also handle inherit case 
+            'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(), // this also handle inherit case
+            'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey() // this also handle inherit case
         ];
     }
 
@@ -209,10 +202,10 @@ class ConfigSectionPaymentPlugin
     }
 
     /**
-     * Cheking and update the payment methods that merchant trying
-     * to enable is supported or not and will showing error message
-     * if any non supported payment methods is got enable and
-     * disable it before saving config
+     * Cheking and update the payment methods that merchant 
+     * trying to enable is supported or not and will showing 
+     * error message if any non supported payment methods is got 
+     * enable and disable it before saving config
      *
      * @param array $paymentList
      * @param array $omiseConfigPaymentList
