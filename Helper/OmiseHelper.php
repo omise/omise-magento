@@ -5,6 +5,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
 use Magento\Sales\Model\Order;
+use Magento\Framework\App\RequestInterface;
 
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
@@ -87,16 +88,20 @@ class OmiseHelper extends AbstractHelper
     ];
 
     /**
-     * @var Config
+     * @param Header $header
+     * @param Config $config
+     * @param RequestInterface $httpRequest
      */
     protected $config;
 
     public function __construct(
         Header $header,
-        Config $config
+        Config $config,
+        RequestInterface $httpRequest
     ) {
         $this->header = $header;
         $this->config = $config;
+        $this->httpRequest = $httpRequest;
     }
 
     /**
@@ -372,7 +377,8 @@ class OmiseHelper extends AbstractHelper
      */
     public function isUserOriginated()
     {
+        $fetchSite = $this->httpRequest->getServer('HTTP_SEC_FETCH_SITE');
         // "none" means the request is a user-originated operation
-        return 'none' === $_SERVER['HTTP_SEC_FETCH_SITE'];
+        return 'none' === $fetchSite;
     }
 }
