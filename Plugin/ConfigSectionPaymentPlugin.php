@@ -131,7 +131,7 @@ class ConfigSectionPaymentPlugin
             $sandboxStatus = $this->scopeConfig->getValue('payment/omise/sandbox_status', $this->parentScopeType);
         } else {
         // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
-            $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) ? 
+            $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) ?
             $configFields['sandbox_status']['value'] : $configFields['sandbox_status'];
         }
 
@@ -141,11 +141,12 @@ class ConfigSectionPaymentPlugin
         $hasPublicKeyUpdated = array_key_exists('value', $configFields[$publicKeyIndex]);
         $hasSecretKeyUpdated = array_key_exists('value', $configFields[$secretKeyIndex]);
 
-            // If keys are not updated then the CoreConfig won't have the value
-            // so we have to pull it from the config
+        // If keys are not updated then the CoreConfig won't have the value
+        // so we have to pull it from the config
         return [
-            'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(), // this also handle inherit case
-            'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey() // this also handle inherit case
+             // this also handle inherit case
+            'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(),
+            'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey()
         ];
     }
 
@@ -175,7 +176,7 @@ class ConfigSectionPaymentPlugin
      * and map omise title for displaying error message
      *
      * @param \Magento\Config\Model\Config ['groups']['omise'] $omiseConfigData
-     *            
+     *
      * @return array
      */
     private function getActivePaymentMethods($configData)
@@ -195,7 +196,8 @@ class ConfigSectionPaymentPlugin
             if ($active) {
                 /**
                  * Set payment list with display name
-                 * if omise label didn't exist use title from config instead
+                 * if omise label didn't exist 
+                 * use title from config instead
                  */
                 $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) ?? $this->config->getValue('title', $key);
             }
@@ -205,7 +207,7 @@ class ConfigSectionPaymentPlugin
  
     /**
      * Cheking and update the payment methods that merchant
-     * trying to enable is supported or not and will showing 
+     * trying to enable is supported or not and will showing
      * error message if any non supported payment methods is got 
      * enable and disable it before saving config
      *
@@ -234,7 +236,8 @@ class ConfigSectionPaymentPlugin
 
         // show error message by using title from omise helper
         if (! empty($nonSupportPayments)) {
-            $this->messageManager->addError(__("This Omise account does not support " . implode(", ", $nonSupportPayments)));
+            $this->messageManager->
+                addError(__("This Omise account does not support " . implode(", ", $nonSupportPayments)));
         }
         return $data;
     }
