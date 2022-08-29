@@ -432,10 +432,10 @@
     </virtualType>
     <!-- /Value Handler -->
 
-    <!-- Touchngo (Alipayplus) payment solution -->
+    <!-- Touchngo payment solution -->
     <virtualType name="OmiseTouchngoAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TOUCHNGO_CODE</argument>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Touchngo::CODE</argument>
             <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
             <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
             <argument name="valueHandlerPool" xsi:type="object">OmiseAPMTouchngoValueHandlerPool</argument>
@@ -444,7 +444,7 @@
         </arguments>
     </virtualType>
 
-    <!-- Touchngo (Alipayplus) :: Value Handler Pool -->
+    <!-- Touchngo :: Value Handler Pool -->
     <virtualType name="OmiseAPMTouchngoValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -475,7 +475,7 @@
 
     <virtualType name="OmiseAPMTouchngoConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Alipayplus::TOUCHNGO_CODE</argument>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Touchngo::CODE</argument>
         </arguments>
     </virtualType>
     <!-- /Value Handler -->
@@ -910,7 +910,247 @@
             <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Grabpay::CODE</argument>
         </arguments>
     </virtualType>
-    <!-- /Value Handler -->
+    <!-- /Grabpay payment :: Value Handler -->
+    
+    <!-- Boost payment solution -->
+    <virtualType name="OmiseBoostAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Boost::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMBoostValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMBoostValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Boost :: Value Handler Pool -->
+    <virtualType name="OmiseAPMBoostValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMBoostConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMBoostValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMBoostCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMBoostCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMBoostConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMBoostConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMBoostConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMBoostConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Boost::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Boost payment :: Value Handler -->
+
+    <!-- DuitnowOBW payment solution -->
+    <virtualType name="OmiseDuitnowOBWAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\DuitnowOBW::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMDuitnowOBWValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMDuitnowOBWValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- DuitnowOBW :: Value Handler Pool -->
+    <virtualType name="OmiseAPMDuitnowOBWValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMDuitnowOBWConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowOBWValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMDuitnowOBWCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowOBWCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMDuitnowOBWConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowOBWConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMDuitnowOBWConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowOBWConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\DuitnowOBW::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /DuitnowOBW payment :: Value Handler -->
+
+    <!-- DuitnowQR payment solution -->
+    <virtualType name="OmiseDuitnowQRAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\DuitnowQR::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMDuitnowQRValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMDuitnowQRValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- DuitnowQR :: Value Handler Pool -->
+    <virtualType name="OmiseAPMDuitnowQRValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMDuitnowQRConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowQRValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMDuitnowQRCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowQRCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMDuitnowQRConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowQRConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMDuitnowQRConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMDuitnowQRConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\DuitnowQR::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /DuitnowQR payment :: Value Handler -->
+    
+    <!-- MaybankQR payment solution -->
+    <virtualType name="OmiseMaybankQRAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\MaybankQR::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMMaybankQRValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMMaybankQRValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- MaybankQR :: Value Handler Pool -->
+    <virtualType name="OmiseAPMMaybankQRValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMMaybankQRConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMaybankQRValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMMaybankQRCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMaybankQRCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMMaybankQRConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMaybankQRConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMMaybankQRConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMMaybankQRConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\MaybankQR::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /MaybankQR payment :: Value Handler -->
+
+    <!-- Shopeepay payment solution -->
+    <virtualType name="OmiseShopeepayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Shopeepay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMShopeepayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMShopeepayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Shopeepay :: Value Handler Pool -->
+    <virtualType name="OmiseAPMShopeepayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMShopeepayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMShopeepayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMShopeepayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMShopeepayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMShopeepayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMShopeepayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMShopeepayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMShopeepayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Shopeepay::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /Shopeepay payment :: Value Handler -->
 
     <!--  Convenience Store payment solution-->
     <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">

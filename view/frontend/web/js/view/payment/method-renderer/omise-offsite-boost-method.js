@@ -20,15 +20,14 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_touchngo',
-            restrictedToCurrencies: ['sgd', 'myr'],
+            code: 'omise_offsite_boost',
+            restrictedToCurrencies: ['myr'],
             logo: {
-                file: "images/touchngo.png",
-                width: "80",
-                height: "30",
-                name: "touchngo"
-            },
+                file: "images/boost.png",
+                width: "60",
+                height: "20",
+                name: "boost"
+            }
         });
-        
     }
 );

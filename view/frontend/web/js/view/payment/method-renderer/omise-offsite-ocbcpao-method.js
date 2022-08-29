@@ -15,13 +15,19 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-ocbcpao-form'
+                template: 'Omise_Payment/payment/offsite-common-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_ocbcpao',
-            restrictedToCurrencies: ['sgd']
+            restrictedToCurrencies: ['sgd'],
+            logo: {
+                file: "images/payment_ocbc_pao.png",
+                width: "80",
+                height: "32",
+                name: "ocbcpao"
+            }
         });
     }
 );

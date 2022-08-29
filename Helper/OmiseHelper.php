@@ -11,6 +11,7 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Touchngo;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Promptpay;
@@ -20,6 +21,11 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Boost;
+use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\DuitnowQR;
+use Omise\Payment\Model\Config\MaybankQR;
+use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
@@ -50,11 +56,16 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::DANA_CODE,
         Alipayplus::GCASH_CODE,
         Alipayplus::KAKAOPAY_CODE,
-        Alipayplus::TOUCHNGO_CODE,
+        Touchngo::CODE,
         Mobilebanking::CODE,
         Rabbitlinepay::CODE,
         Ocbcpao::CODE,
-        Grabpay::CODE
+        Grabpay::CODE,
+        Boost::CODE,
+        DuitnowOBW::CODE,
+        DuitnowQR::CODE,
+        MaybankQR::CODE,
+        Shopeepay::CODE
     ];
 
     /**
@@ -110,10 +121,15 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::DANA_ID => Alipayplus::DANA_CODE,
         Alipayplus::GCASH_ID => Alipayplus::GCASH_CODE,
         Alipayplus::KAKAOPAY_ID => Alipayplus::KAKAOPAY_CODE,
-        Alipayplus::TOUCHNGO_ID => Alipayplus::TOUCHNGO_CODE,
+        Touchngo::ID => Touchngo::CODE,
         Rabbitlinepay::ID => Rabbitlinepay::CODE,
         Ocbcpao::ID => Ocbcpao::CODE,
         Grabpay::ID => Grabpay::CODE,
+        Boost::ID => Boost::CODE,
+        DuitnowOBW::ID => DuitnowOBW::CODE,
+        DuitnowQR::ID => DuitnowQR::CODE,
+        MaybankQR::ID => MaybankQR::CODE,
+        Shopeepay::ID => Shopeepay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -167,11 +183,17 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::DANA_CODE => "DANA (Alipay+ Partner) Payment",
         Alipayplus::GCASH_CODE => "GCash (Alipay+ Partner) Payment",
         Alipayplus::KAKAOPAY_CODE => "Kakao Pay (Alipay+ Partner) Payment",
-        Alipayplus::TOUCHNGO_CODE => "TNG eWallet (Alipay+ Partner) Payment",
+        Touchngo::CODE => "Touch`n Go eWallet Payment",
         Mobilebanking::CODE => "Mobile Banking Payment",
         Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
         Ocbcpao::CODE => "OCBC Pay Anyone Payment",
         Grabpay::CODE => "GrabPay Payment",
+        Boost::CODE => "Boost Payment", 
+        DuitnowOBW::CODE => "DuitNow Online Banking/Wallets Payment",
+        DuitnowQR::CODE => "DuitNow QR Payment",
+        MaybankQR::CODE => "Maybank QRPay Payment",
+        Shopeepay::CODE => "ShopeePay Payment",
+
 
         // offline payment
         Paynow::CODE => "PayNow QR Payment",

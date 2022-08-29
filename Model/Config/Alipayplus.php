@@ -13,7 +13,6 @@ class Alipayplus extends Config
     const DANA_CODE = 'omise_offsite_dana';
     const GCASH_CODE = 'omise_offsite_gcash';
     const KAKAOPAY_CODE = 'omise_offsite_kakaopay';
-    const TOUCHNGO_CODE = 'omise_offsite_touchngo';
 
     /**
      * Backends identifier
@@ -24,5 +23,4 @@ class Alipayplus extends Config
     const DANA_ID = 'dana';
     const GCASH_ID = 'gcash';
     const KAKAOPAY_ID = 'kakaopay';
-    const TOUCHNGO_ID = 'touch_n_go';
 }
