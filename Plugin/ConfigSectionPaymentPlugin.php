@@ -145,9 +145,9 @@ class ConfigSectionPaymentPlugin
         // so we have to pull it from the config
         return [
             // this also handle inherit case
-            'public_key' => $hasPublicKeyUpdated ? 
+            'public_key' => $hasPublicKeyUpdated ?
                 $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(),
-            'secret_key' => $hasSecretKeyUpdated ? 
+            'secret_key' => $hasSecretKeyUpdated ?
                 $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey()
         ];
     }
@@ -201,7 +201,7 @@ class ConfigSectionPaymentPlugin
                  * if omise label didn't exist
                  * use title from config instead
                  */
-                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key) 
+                $paymentConfigList[$key] = $this->helper->getOmiseLabelByOmiseCode($key)
                     ?? $this->config->getValue('title', $key);
             }
         }
