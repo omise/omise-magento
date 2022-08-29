@@ -179,52 +179,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test the function validate3DSReferer() returns true when
-     * the referer is either Omise staging or production
-     *
-     * @covers \Omise\Payment\Helper\OmiseHelper
-     * @test
-     */
-    public function validate3DSRefererReturnsTrueWhenRefererIsOmise()
-    {
-        // Referer from staging
-        $mockHelperMockStaging = $this->omiseHelperMock;
-        $mockHelperMockStaging->method('getHttpReferer')
-            ->willReturn('https://api.staging-omise.co');
-        
-        $isStaging = $this->model->validate3DSReferer();
-
-        $this->assertTrue($isStaging);
-
-        // Referer from production
-        $mockHelperMockProd = $this->omiseHelperMock;
-        $mockHelperMockProd->method('getHttpReferer')
-            ->willReturn('https://api.omise.co');
-        
-        $isProd = $this->model->validate3DSReferer();
-
-        $this->assertTrue($isProd);
-    }
-
-    /**
-     * Test the function validate3DSReferer() returns false when
-     * the referer neither Omise staging nor production
-     *
-     * @covers \Omise\Payment\Helper\OmiseHelper
-     * @test
-     */
-    public function validate3DSRefererReturnsFalseWhenReferIsNotOmise()
-    {
-        $mockHelperMock = $this->omiseHelperMock;
-        $mockHelperMock->method('getHttpReferer')
-            ->willReturn('https://abc.co');
-        
-        $result = $this->model->validate3DSReferer();
-
-        $this->assertFalse($result);
-    }
-
-    /**
      * Test the function getPlatformType() return correct platform as per user agent
      *
      * @dataProvider platformTypeProvider

@@ -65,7 +65,7 @@ class Threedsecure extends Action
      */
     public function execute()
     {
-        if (!$this->helper->validate3DSReferer()) {
+        if ($this->helper->isUserOriginated()) {
             return $this->redirect(self::PATH_CART);
         }
 

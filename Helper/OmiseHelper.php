@@ -370,12 +370,9 @@ class OmiseHelper extends AbstractHelper
     /**
      * Validate whether the a URI was triggered by Omise server or not
      */
-    public function validate3DSReferer()
+    public function isUserOriginated()
     {
-        $refererValue = $this->header->getHttpReferer();
-        $isProduction = strpos($refererValue, 'https://api.omise.co') === 0;
-        $isStaging = strpos($refererValue, 'https://api.staging-omise.co') === 0;
-
-        return $isProduction || $isStaging;
+        // "none" means the request is a user-originated operation
+        return 'none' === $_SERVER['HTTP_SEC_FETCH_SITE'];
     }
 }
