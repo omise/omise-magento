@@ -211,7 +211,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($fetchSite);
     }
 
-
     /**
      * Test the function getPlatformType() return correct platform as per user agent
      *
