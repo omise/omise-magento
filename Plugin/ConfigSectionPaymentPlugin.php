@@ -131,7 +131,8 @@ class ConfigSectionPaymentPlugin
             $sandboxStatus = $this->scopeConfig->getValue('payment/omise/sandbox_status', $this->parentScopeType);
         } else {
         // if sandbox status is updated the updated value will be under 'value' key else it won't have the value key
-            $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) ? $configFields['sandbox_status']['value'] : $configFields['sandbox_status'];
+            $sandboxStatus = array_key_exists('value', $configFields['sandbox_status']) ? 
+            $configFields['sandbox_status']['value'] : $configFields['sandbox_status'];
         }
 
         $publicKeyIndex = $sandboxStatus ? 'test_public_key' : 'live_public_key';
@@ -140,7 +141,8 @@ class ConfigSectionPaymentPlugin
         $hasPublicKeyUpdated = array_key_exists('value', $configFields[$publicKeyIndex]);
         $hasSecretKeyUpdated = array_key_exists('value', $configFields[$secretKeyIndex]);
 
-        // If keys are not updated then the CoreConfig won't have the value so we have to pull it from the config
+            // If keys are not updated then the CoreConfig won't have the value
+            // so we have to pull it from the config
         return [
             'public_key' => $hasPublicKeyUpdated ? $configFields[$publicKeyIndex]['value'] : $this->config->getPublicKey(), // this also handle inherit case
             'secret_key' => $hasSecretKeyUpdated ? $configFields[$secretKeyIndex]['value'] : $this->config->getSecretKey() // this also handle inherit case
@@ -200,9 +202,9 @@ class ConfigSectionPaymentPlugin
         }
         return $paymentConfigList;
     }
-
+ 
     /**
-     * Cheking and update the payment methods that merchant 
+     * Cheking and update the payment methods that merchant
      * trying to enable is supported or not and will showing 
      * error message if any non supported payment methods is got 
      * enable and disable it before saving config
