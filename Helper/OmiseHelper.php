@@ -5,7 +5,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
 use Magento\Sales\Model\Order;
-use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\Http;
 
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
@@ -90,14 +90,14 @@ class OmiseHelper extends AbstractHelper
     /**
      * @param Header $header
      * @param Config $config
-     * @param RequestInterface $httpRequest
+     * @param Http $httpRequest
      */
     protected $config;
 
     public function __construct(
         Header $header,
         Config $config,
-        RequestInterface $httpRequest
+        Http $httpRequest
     ) {
         $this->header = $header;
         $this->config = $config;

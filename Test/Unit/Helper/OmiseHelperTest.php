@@ -24,7 +24,7 @@ use Omise\Payment\Model\Config\Conveniencestore;
 
 class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 {
-    protected $omiseHelperMock;
+    protected $headerMock;
 
     protected $configMock;
 
@@ -37,9 +37,10 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->omiseHelperMock = $mockStaging = $this->createMock('Magento\Framework\HTTP\Header');
-        $this->configMock = $mockStaging = $this->createMock('Omise\Payment\Model\Config\Config');
-        $this->model = new OmiseHelper($this->omiseHelperMock, $this->configMock);
+        $this->headerMock = $this->createMock('Magento\Framework\HTTP\Header');
+        $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
+        $this->requestMock = $this->createMock('Magento\Framework\App\Request\Http');
+        $this->model = new OmiseHelper($this->headerMock, $this->configMock, $this->requestMock);
     }
 
     /**
@@ -179,6 +180,39 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test the function validate3DSReferer() returns true when
+     * the referer is either Omise staging or production
+     *
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isUserOriginatedReturnsTrueIfRequestIsInitiatedByUser()
+    {
+        $this->requestMock->method('getServer')
+            ->willReturn('none');
+
+        $fetchSite = $this->model->isUserOriginated();
+        $this->assertTrue($fetchSite);
+    }
+
+    /**
+     * Test the function validate3DSReferer() returns false when
+     * the referer neither Omise staging nor production
+     *
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isUserOriginatedReturnsFalseIfRequestIsInitiatedByUser()
+    {
+        $this->requestMock->method('getServer')
+            ->willReturn('cross-site');
+
+        $fetchSite = $this->model->isUserOriginated();
+        $this->assertFalse($fetchSite);
+    }
+
+
+    /**
      * Test the function getPlatformType() return correct platform as per user agent
      *
      * @dataProvider platformTypeProvider
@@ -187,8 +221,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      */
     public function getPlatformTypeReturnsCorrectPlatform($platform, $expectedValue)
     {
-        $omiseHelperMock = $this->omiseHelperMock;
-        $omiseHelperMock->method('getHttpUserAgent')
+        $headerMock = $this->headerMock;
+        $headerMock->method('getHttpUserAgent')
             ->willReturn($platform);
 
         $result = $this->model->getPlatformType();
