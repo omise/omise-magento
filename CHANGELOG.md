@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [v2.28.0 _(Aug 30, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.28.0)
+- Order status will be updated via webhook when charge status is updated manually by Operations Team. (PR [#359](https://github.com/omise/omise-magento/pull/359))
+- Enhanced manual sync button to manually update order status to reflect refunds. (PR [#362](https://github.com/omise/omise-magento/pull/362))
+- Enhance webhook flow to capture refund.create event. (PR [#363](https://github.com/omise/omise-magento/pull/363))
+- Fix trim do not accept null value in php 8. (PR [#365](https://github.com/omise/omise-magento/pull/365))
+- Added unit tests for OmiseHelper.php and Github workflow to run unit tests. (PR [#364](https://github.com/omise/omise-magento/pull/364))
+- Fix the issue of an order getting canceled citing Payment expired when the charge was completed successfully. (PR [#368](https://github.com/omise/omise-magento/pull/368))
+- Enhancements display payment options. (PR [#361](https://github.com/omise/omise-magento/pull/361))
+- Add support RMS wallet (PR [#366](https://github.com/omise/omise-magento/pull/366))
+- Fix the issue of Sync Order Status button not working. (PR [#374](https://github.com/omise/omise-magento/pull/374))
+
 ## [v2.27.0 _(Jun 30, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.27.0)
 - Added missing translation for Thai language. (PR [#356](https://github.com/omise/omise-magento/pull/356))
 - Items restored in the cart if the return URI is not triggered by Omise server. (PR [#357](https://github.com/omise/omise-magento/pull/357))
