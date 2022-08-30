@@ -8,6 +8,7 @@
 - Added unit tests for OmiseHelper.php and Github workflow to run unit tests. (PR [#364](https://github.com/omise/omise-magento/pull/364))
 - Fix the issue of an order getting canceled citing Payment expired when the charge was completed successfully. (PR [#368](https://github.com/omise/omise-magento/pull/368))
 - Enhancements display payment options. (PR [#361](https://github.com/omise/omise-magento/pull/361))
+- Add support RMS wallet (PR [#366](https://github.com/omise/omise-magento/pull/366))
 - Fix the issue of Sync Order Status button not working. (PR [#374](https://github.com/omise/omise-magento/pull/374))
 
 ## [v2.27.0 _(Jun 30, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.27.0)
