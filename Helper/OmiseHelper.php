@@ -519,11 +519,11 @@ class OmiseHelper extends AbstractHelper
     {
         $userAgent = $this->httpRequest->getServer('HTTP_USER_AGENT');
         return preg_match('/Safari/i', $userAgent) &&
-            !preg_match('/OPR/i',$userAgent) &&
+            !preg_match('/OPR/i', $userAgent) &&
             !preg_match('/Firefox/i', $userAgent) &&
             !preg_match('/MSIE/i', $userAgent) &&
             !preg_match('/Chrome/i', $userAgent) &&
-            !preg_match('/Edge/i',$userAgent);
+            !preg_match('/Edge/i', $userAgent);
     }
 
     public function getOmiseLabelByOmiseCode(string $code)
