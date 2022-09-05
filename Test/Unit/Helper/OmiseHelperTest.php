@@ -24,7 +24,7 @@ use Omise\Payment\Model\Config\Conveniencestore;
 
 class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 {
-    protected $omiseHelperMock;
+    protected $headerMock;
 
     protected $configMock;
 
@@ -37,9 +37,10 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->omiseHelperMock = $mockStaging = $this->createMock('Magento\Framework\HTTP\Header');
-        $this->configMock = $mockStaging = $this->createMock('Omise\Payment\Model\Config\Config');
-        $this->model = new OmiseHelper($this->omiseHelperMock, $this->configMock);
+        $this->headerMock = $this->createMock('Magento\Framework\HTTP\Header');
+        $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
+        $this->requestMock = $this->createMock('Magento\Framework\App\Request\Http');
+        $this->model = new OmiseHelper($this->headerMock, $this->configMock, $this->requestMock);
     }
 
     /**
@@ -185,25 +186,13 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
-    public function validate3DSRefererReturnsTrueWhenRefererIsOmise()
+    public function isUserOriginatedReturnsTrueIfRequestIsInitiatedByUser()
     {
-        // Referer from staging
-        $mockHelperMockStaging = $this->omiseHelperMock;
-        $mockHelperMockStaging->method('getHttpReferer')
-            ->willReturn('https://api.staging-omise.co');
-        
-        $isStaging = $this->model->validate3DSReferer();
+        $this->requestMock->method('getServer')
+            ->willReturn('none');
 
-        $this->assertTrue($isStaging);
-
-        // Referer from production
-        $mockHelperMockProd = $this->omiseHelperMock;
-        $mockHelperMockProd->method('getHttpReferer')
-            ->willReturn('https://api.omise.co');
-        
-        $isProd = $this->model->validate3DSReferer();
-
-        $this->assertTrue($isProd);
+        $fetchSite = $this->model->isUserOriginated();
+        $this->assertTrue($fetchSite);
     }
 
     /**
@@ -213,15 +202,13 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
-    public function validate3DSRefererReturnsFalseWhenReferIsNotOmise()
+    public function isUserOriginatedReturnsFalseIfRequestIsInitiatedByUser()
     {
-        $mockHelperMock = $this->omiseHelperMock;
-        $mockHelperMock->method('getHttpReferer')
-            ->willReturn('https://abc.co');
-        
-        $result = $this->model->validate3DSReferer();
+        $this->requestMock->method('getServer')
+            ->willReturn('cross-site');
 
-        $this->assertFalse($result);
+        $fetchSite = $this->model->isUserOriginated();
+        $this->assertFalse($fetchSite);
     }
 
     /**
@@ -233,8 +220,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      */
     public function getPlatformTypeReturnsCorrectPlatform($platform, $expectedValue)
     {
-        $omiseHelperMock = $this->omiseHelperMock;
-        $omiseHelperMock->method('getHttpUserAgent')
+        $headerMock = $this->headerMock;
+        $headerMock->method('getHttpUserAgent')
             ->willReturn($platform);
 
         $result = $this->model->getPlatformType();

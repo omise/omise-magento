@@ -5,6 +5,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\HTTP\Header;
 use Magento\Sales\Model\Order;
+use Magento\Framework\App\Request\Http;
 
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Alipay;
@@ -206,12 +207,20 @@ class OmiseHelper extends AbstractHelper
      */
     protected $config;
 
+    /**
+     * @param Header $header
+     * @param Config $config
+     * @param Http $httpRequest
+     */
     public function __construct(
         Header $header,
-        Config $config
+        Config $config,
+        Http $httpRequest
     ) {
         $this->header = $header;
         $this->config = $config;
+        $this->httpRequest = $httpRequest;
+
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -482,15 +491,39 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Validate whether the a URI was triggered by Omise server or not
+     * Validate whether the a URI was triggered by end user or not
      */
-    public function validate3DSReferer()
+    public function isUserOriginated()
     {
-        $refererValue = $this->header->getHttpReferer();
-        $isProduction = strpos($refererValue, 'https://api.omise.co') === 0;
-        $isStaging = strpos($refererValue, 'https://api.staging-omise.co') === 0;
+        // HTTP_SEC_FETCH_SITE is not available in Safari so we have
+        // to rely on HTTP_REFERER even though it's less reliable
+        if ($this->isBrowserSafari()) {
+            $refererValue = $this->header->getHttpReferer();
+            $isProduction = strpos($refererValue, 'https://api.omise.co') === 0;
+            $isStaging = strpos($refererValue, 'https://api.staging-omise.co') === 0;
 
-        return $isProduction || $isStaging;
+            return $isProduction || $isStaging;
+        }
+
+        // For other browsers, we check HTTP_SEC_FETCH_SITE header
+        $fetchSite = $this->httpRequest->getServer('HTTP_SEC_FETCH_SITE');
+
+        // "none" means the request is a user-originated operation
+        return 'none' === $fetchSite;
+    }
+
+    /**
+     * @return boolean
+     */
+    private function isBrowserSafari()
+    {
+        $userAgent = $this->httpRequest->getServer('HTTP_USER_AGENT');
+        return preg_match('/Safari/i', $userAgent) &&
+            !preg_match('/OPR/i', $userAgent) &&
+            !preg_match('/Firefox/i', $userAgent) &&
+            !preg_match('/MSIE/i', $userAgent) &&
+            !preg_match('/Chrome/i', $userAgent) &&
+            !preg_match('/Edge/i', $userAgent);
     }
 
     public function getOmiseLabelByOmiseCode(string $code)
