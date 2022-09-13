@@ -6,3 +6,7 @@
 .phpunit.result.cache
 .DS_Store
 coverage.xml
+reports
+vendor
+composer.lock
+vendor_path.php

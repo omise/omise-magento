@@ -1,0 +1,28 @@
+name: Code Coverage
+on:
+  push:
+    branches: [ 'master' ]
+
+  pull_request:
+    branches: [ 'master' ]
+
+jobs:
+  static:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create folder and file
+        run: mkdir -p app/etc && cd app/etc && touch vendor_path.php
+
+      - name: Composer Install
+        run: composer install --no-interaction
+
+      - name: Generate code coverage
+        run: composer test
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: reports
