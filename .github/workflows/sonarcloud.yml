@@ -2,7 +2,7 @@ name: SonarCloud
 on:
   workflow_run:
     workflows: [Code Coverage]
-    branches: [master, feature/ENGA3-280-code-coverage]
+    branches: [master, swathi/sonarcloud]
     types: 
       - completed
       
