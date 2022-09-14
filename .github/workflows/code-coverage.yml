@@ -7,7 +7,7 @@ on:
   
 jobs:
   tests:
-      name: Tests
+      name: Code Coverage
  
       runs-on: ubuntu-latest
       
@@ -23,16 +23,16 @@ jobs:
             php-version: '8.1'
             coverage: xdebug
 
-        - name: Create folder and file
+        - name: Create Folder and File for Vendor Path
           run: mkdir -p app/etc && cd app/etc && touch vendor_path.php
           
         - name: Install dependencies with composer
           run: composer update --no-ansi --no-interaction --no-progress
           
-        - name: Run tests with phpunit/phpunit
+        - name: Generate Code Coverage
           run: vendor/bin/phpunit --coverage-clover=coverage.xml Test/Unit
           
-        - name: Fix code coverage paths
+        - name: Fix Code Coverage Paths
           run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
           
         - name: SonarCloud Scan
