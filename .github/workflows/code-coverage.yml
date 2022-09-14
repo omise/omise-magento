@@ -1,51 +1,39 @@
 name: Code Coverage
+
 on:
   push:
     branches: [ 'master' ]
   pull_request:
-
+  
 jobs:
-  static:
-    name: Code Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Create folder and file
-        run: mkdir -p app/etc && cd app/etc && touch vendor_path.php
-
-      - name: Composer Install
-        run: composer install --no-interaction
-
-      - name: Generate code coverage
-        run: composer test
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage
-          path: reports
+  tests:
+      name: Tests
+ 
+      runs-on: ubuntu-latest
+      
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
           
-  sonarcloud:
-    runs-on: ubuntu-latest
-    needs: static
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - uses: actions/download-artifact@master
-        with:
-          name: code-coverage
-          path: reports
-
-      - name: 'List Files'
-        run: ls -la
-
-      - name: 'Unzip artifact'
-        run: unzip ./reports/code-coverage.zip 
-    
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        - name: Setup PHP with Xdebug
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.1'
+            coverage: xdebug
+            
+        - name: Install dependencies with composer
+          run: composer update --no-ansi --no-interaction --no-progress
+          
+        - name: Run tests with phpunit/phpunit
+          run: vendor/bin/phpunit --coverage-clover=coverage.xml Test/Unit
+          
+        - name: Fix code coverage paths
+          run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
+          
+        - name: SonarCloud Scan
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
