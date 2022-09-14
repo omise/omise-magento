@@ -39,7 +39,7 @@ jobs:
          path: reports
 
      - name: 'Unzip artifact'
-       run: unzip code-coverage.zip 
+       run: unzip reports/code-coverage.zip 
   
      - name: SonarCloud Scan
        uses: sonarsource/sonarcloud-github-action@master
