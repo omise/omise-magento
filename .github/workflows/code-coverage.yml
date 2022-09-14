@@ -22,7 +22,10 @@ jobs:
           with:
             php-version: '8.1'
             coverage: xdebug
-            
+
+        - name: Create folder and file
+          run: mkdir -p app/etc && cd app/etc && touch vendor_path.php
+          
         - name: Install dependencies with composer
           run: composer update --no-ansi --no-interaction --no-progress
           
