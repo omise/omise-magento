@@ -38,6 +38,9 @@ jobs:
          name: code-coverage
          path: reports
 
+    - name: 'List Files'
+       run: ls -la
+
      - name: 'Unzip artifact'
        run: unzip ./reports/code-coverage.zip 
   
