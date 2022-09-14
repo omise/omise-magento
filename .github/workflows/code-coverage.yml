@@ -2,7 +2,6 @@ name: Code Coverage
 on:
   push:
     branches: [ 'master' ]
-
   pull_request:
 
 jobs:
@@ -25,3 +24,25 @@ jobs:
         with:
           name: code-coverage
           path: reports
+          
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: static
+    steps:
+     - uses: actions/checkout@v2
+       with:
+          fetch-depth: 0
+
+     - uses: actions/download-artifact@master
+       with:
+         name: code-coverage
+         path: reports
+
+     - name: 'Unzip artifact'
+       run: unzip code-coverage.zip 
+  
+     - name: SonarCloud Scan
+       uses: sonarsource/sonarcloud-github-action@master
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
