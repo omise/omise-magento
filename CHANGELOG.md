@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.29.0 _(Sept 19, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.0)
+- Upgraded Omise PHP to version 2.16.0 (PR [#375] https://github.com/omise/omise-magento/pull/375)
+- Fix the issue of not redirecting to Thank you page. (PR [#376] https://github.com/omise/omise-magento/pull/376)
+- Added pipeline to deploy on staging. (PR [#380] https://github.com/omise/omise-magento/pull/380)
+- Added pipeline for code coverage with sonarcloud. (PR [#379] https://github.com/omise/omise-magento/pull/379)
+
 ## [v2.28.0 _(Aug 30, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.28.0)
 - Order status will be updated via webhook when charge status is updated manually by Operations Team. (PR [#359](https://github.com/omise/omise-magento/pull/359))
 - Enhanced manual sync button to manually update order status to reflect refunds. (PR [#362](https://github.com/omise/omise-magento/pull/362))
