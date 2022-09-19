@@ -150,9 +150,7 @@ class Charge extends BaseObject
      */
     public function isPaid()
     {
-        $paid = $this->paid != null ? $this->paid : $this->captured;
-
-        return $paid;
+        return $this->paid != null ? $this->paid : $this->captured;
     }
 
     /**

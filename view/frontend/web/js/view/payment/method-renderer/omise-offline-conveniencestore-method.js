@@ -124,9 +124,9 @@ define(
             validate: function () {
                 $('#' + this.getCode() + 'Form').validation();
 
-                var isCustomerNameValid = $('#' + this.getCode() + 'CustomerName').valid();
-                var isEmailValid        = $('#' + this.getCode() + 'Email').valid();
-                var isPhoneNumberValid  = $('#' + this.getCode() + 'PhoneNumber').valid();
+                const isCustomerNameValid = $('#' + this.getCode() + 'CustomerName').valid();
+                const isEmailValid        = $('#' + this.getCode() + 'Email').valid();
+                const isPhoneNumberValid  = $('#' + this.getCode() + 'PhoneNumber').valid();
 
                 return isPhoneNumberValid && isCustomerNameValid && isEmailValid;
             },
@@ -138,7 +138,7 @@ define(
              * @return {boolean}
              */
             placeOrder: function(data, event) {
-                var self = this;
+                const self = this;
 
                 if (event) {
                     event.preventDefault();

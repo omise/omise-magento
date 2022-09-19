@@ -18,7 +18,7 @@ define(
              * @return {boolean}
              */
             placeOrder: function (data, event) {
-                var failHandler = this.buildFailHandler(this);
+                let failHandler = this.buildFailHandler(this);
 
                 event && event.preventDefault();
 

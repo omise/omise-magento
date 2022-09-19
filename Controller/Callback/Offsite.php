@@ -247,6 +247,8 @@ class Offsite extends Action
                     case Shopeepay::CODE:
                         $dispPaymentMethod = "ShopeePay";
                         break;
+                    default:
+                        $dispPaymentMethod = "Unknown";
                 }
                 
                 // Add transaction.

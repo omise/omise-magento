@@ -47,6 +47,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
+
             switch ($code) {
                 case OmiseInstallmentConfig::CODE:
                     $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
@@ -55,6 +56,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                     $configs['card_brands'] = $this->capabilities->getCardBrands();
                     break;
             }
+
             // filter only active backends
             if (array_key_exists($code, $backends)) {
                 $configs['omise_payment_list'][$code]= $backends[$code];

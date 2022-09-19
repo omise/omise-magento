@@ -151,19 +151,19 @@ define(
              * @return {void}
              */
             generateTokenAndPerformPlaceOrderAction: function() {
-                var self = this;
-                var failHandler = this.buildFailHandler(self);
+                const self = this;
+                let failHandler = this.buildFailHandler(self);
 
                 this.startPerformingPlaceOrderAction();
 
-                var card = {
+                let card = {
                     number           : this.omiseCardNumber(),
                     name             : this.omiseCardHolderName(),
                     expiration_month : this.omiseCardExpirationMonth(),
                     expiration_year  : this.omiseCardExpirationYear(),
                     security_code    : this.omiseCardSecurityCode()
                 };
-                var selectedBillingAddress = quote.billingAddress();
+                let selectedBillingAddress = quote.billingAddress();
                 if(self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
                     Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress));
                 }
@@ -174,7 +174,7 @@ define(
                         self.getPlaceOrderDeferredObject()
                             .fail(failHandler)
                             .done(function(order_id) {
-                                var serviceUrl = self.getMagentoReturnUrl(order_id);
+                                let serviceUrl = self.getMagentoReturnUrl(order_id);
                                 storage.get(serviceUrl, false)
                                     .fail(failHandler)
                                     .done(function (response) {
@@ -210,7 +210,7 @@ define(
                     return false;
                 }
 
-                var card = this.omiseCard();
+                let card = this.omiseCard();
                 if (card) {
                     this.processOrderWithCard(card);
                     return true;
@@ -232,8 +232,7 @@ define(
              * @return {boolean}
              */
             validate: function () {
-                var
-                    prefix = '#' + this.getCode(),
+                let prefix = '#' + this.getCode(),
                     fields = [
                         'CardNumber',
                         'CardHolderName',
@@ -248,13 +247,13 @@ define(
             },
 
             processOrderWithCard: function () {
-                var self = this;
-                var failHandler = this.buildFailHandler(self);
+                const self = this;
+                let failHandler = this.buildFailHandler(self);
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function(order_id) {
-                        var serviceUrl = self.getMagentoReturnUrl(order_id);
+                        let serviceUrl = self.getMagentoReturnUrl(order_id);
                         storage.get(serviceUrl, false)
                             .fail(failHandler)
                             .done(function (response) {
@@ -272,17 +271,19 @@ define(
             },
 
             getSelectedTokenBillingAddress: function(selectedBillingAddress) {
-                var address = {
+                let address = {
                     state          : selectedBillingAddress.region,
                     postal_code    : selectedBillingAddress.postcode,
                     phone_number   : selectedBillingAddress.telephone,
                     country        : selectedBillingAddress.countryId,
-                    city           : selectedBillingAddress.city
+                    city           : selectedBillingAddress.city,
+                    street1        : selectedBillingAddress.street[0]
                 }
-                address.street1 = selectedBillingAddress.street[0]
+
                 if(selectedBillingAddress.street[1]) {
                     address.street2 = selectedBillingAddress.street[1]
                 }
+
                 return address
             }
         });

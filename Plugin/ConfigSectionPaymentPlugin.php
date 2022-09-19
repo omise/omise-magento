@@ -10,6 +10,7 @@ use Omise\Payment\Helper\OmiseHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Exception;
 
 class ConfigSectionPaymentPlugin
 {

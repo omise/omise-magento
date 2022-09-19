@@ -20,8 +20,7 @@ define(
              * @return {boolean}
              */
             placeOrder: function (data, event) {
-                var
-                    self = this,
+                let self = this,
                     buildFailHandler = this.buildFailHandler,
                     failHandler = buildFailHandler(self)
                 ;
@@ -31,8 +30,7 @@ define(
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function (order_id) {
-                        var
-                            storageFailHandler = buildFailHandler(this),
+                        let storageFailHandler = buildFailHandler(this),
                             serviceUrl = self.getMagentoReturnUrl(order_id)
                         ;
                         storage.get(serviceUrl, false)
