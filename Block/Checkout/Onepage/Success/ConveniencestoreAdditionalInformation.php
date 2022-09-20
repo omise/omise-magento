@@ -30,11 +30,9 @@ class ConveniencestoreAdditionalInformation extends \Magento\Framework\View\Elem
     protected function _toHtml()
     {
         $paymentData = $this->_checkoutSession->getLastRealOrder()->getPayment()->getData();
+        $paymentType = $paymentData['additional_information']['payment_type'];
 
-        if (
-            !isset($paymentData['additional_information']['payment_type']) ||
-            $paymentData['additional_information']['payment_type'] !== 'econtext'
-        ) {
+        if (!isset($paymentType) || $paymentType !== 'econtext') {
             return;
         }
 

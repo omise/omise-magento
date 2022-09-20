@@ -163,7 +163,6 @@ class SyncStatus
         );
 
         $order->save();
-        return;
     }
 
     /**

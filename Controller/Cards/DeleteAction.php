@@ -80,8 +80,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
         $this->messageManager->addErrorMessage(
             $this->errorsMap[$errorCode]
         );
-
-        return;
     }
 
     private function createSuccessMessage()
@@ -89,8 +87,6 @@ class DeleteAction extends \Magento\Framework\App\Action\Action
         $this->messageManager->addSuccessMessage(
             __('Saved credit/debit card was successfully removed')
         );
-
-        return;
     }
 
     /**
