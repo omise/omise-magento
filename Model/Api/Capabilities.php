@@ -13,12 +13,10 @@ class Capabilities extends BaseObject
     /**
      * Injecting dependencies
      * @param \Omise\Payment\Model\Config\Config $config
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(Config $config)
     {
         $this->config = $config;
-
         $this->init();
     }
 
