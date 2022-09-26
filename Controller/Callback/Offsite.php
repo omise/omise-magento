@@ -32,9 +32,12 @@ use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
+use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
 
 class Offsite extends Action
 {
+    use FailedChargeTrait;
+
     /**
      * @var string
      */
@@ -290,24 +293,6 @@ class Offsite extends Action
 
             return $this->redirect(self::PATH_CART);
         }
-    }
-
-    /**
-     * @param string $errorMessage
-     */
-    private function processFailedCharge($errorMessage)
-    {
-        if ($this->config->isWebhookEnabled()) {
-            $this->logger->debug($errorMessage);
-            $this->messageManager->addErrorMessage($errorMessage);
-            return $this->redirect(self::PATH_CART);
-        }
-
-        // If webhook is not enabled then this will
-        // 1. Cancel the order
-        // 2. Set the error message to display in cart page
-        // 3. Log the error message
-        throw new LocalizedException($errorMessage);
     }
 
     /**

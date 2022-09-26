@@ -15,9 +15,13 @@ use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Helper\OmiseHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Psr\Log\LoggerInterface;
+use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
 
 class Threedsecure extends Action
 {
+    use FailedChargeTrait;
+
     /**
      * @var string
      */
@@ -49,7 +53,8 @@ class Threedsecure extends Action
         Config  $config,
         OmiseEmailHelper $emailHelper,
         OmiseHelper $helper,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
 
@@ -58,6 +63,7 @@ class Threedsecure extends Action
         $this->emailHelper = $emailHelper;
         $this->helper = $helper;
         $this->checkoutSession  = $checkoutSession;
+        $this->logger  = $logger;
     }
 
     /**
@@ -128,7 +134,7 @@ class Threedsecure extends Action
             if ($result instanceof Invalid) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
-                throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
+                return $this->processFailedCharge($result->getMessage());
             }
 
             // Do not proceed if webhook is enabled
