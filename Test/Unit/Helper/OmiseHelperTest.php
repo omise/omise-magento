@@ -30,6 +30,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     protected $model;
 
+    private $authorizeUri = 'https://somefakeuri.com/redirect';
+
     /**
      * This function is called before the test runs.
      * Ideal for setting the values to variables or objects.
@@ -260,7 +262,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
             'status' => 'pending',
             'authorized' => false,
             'paid' => false,
-            'authorize_uri' => 'https://somefakeuri.com/redirect'
+            'authorize_uri' => $this->authorizeUri
         ];
 
         $result = $this->model->is3DSecureEnabled($charge);
@@ -289,19 +291,19 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
                 'status' => 'canceled',
                 'authorized' => false,
                 'paid' => false,
-                'authorize_uri' => 'https://somefakeuri.com/redirect'
+                'authorize_uri' => $this->authorizeUri
             ]],
             [(object)[
                 'status' => 'pending',
                 'authorized' => true,
                 'paid' => false,
-                'authorize_uri' => 'https://somefakeuri.com/redirect'
+                'authorize_uri' => $this->authorizeUri
             ]],
             [(object)[
                 'status' => 'pending',
                 'authorized' => false,
                 'paid' => true,
-                'authorize_uri' => 'https://somefakeuri.com/redirect'
+                'authorize_uri' => $this->authorizeUri
             ]],
             [(object)[
                 'status' => 'pending',

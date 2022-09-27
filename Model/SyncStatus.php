@@ -112,7 +112,7 @@ class SyncStatus
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['id']);
+            $this->helper->createInvoiceAndMarkAsPaid($order, $charge['id']);
             $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
             $order->addStatusHistoryComment(
