@@ -25,13 +25,8 @@ define(
             banks: ko.observable(checkoutConfig.omise_payment_list['omise_offsite_fpx'][0].banks),
             selectedFpxBank: ko.observable(),
             bankLabel: function(name, active) {
-                let bankLabel = name;
-
-                if(!active){
-                    bankLabel = bankLabel + " (offline)";
-                }
-
-                return bankLabel;
+                const suffix = active ? "" : " (offline)";
+                return name + suffix;
             },
 
             /**
@@ -47,7 +42,6 @@ define(
                     }
                 };
             },
-
         });
     }
 );

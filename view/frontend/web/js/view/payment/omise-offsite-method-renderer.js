@@ -12,7 +12,6 @@ define(
         'use strict';
 
         return Object.assign({}, Base, {
-
             /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
@@ -20,19 +19,17 @@ define(
              * @return {boolean}
              */
             placeOrder: function (data, event) {
-                let self = this,
+                const self = this,
                     buildFailHandler = this.buildFailHandler,
-                    failHandler = buildFailHandler(self)
-                ;
+                    failHandler = buildFailHandler(self);
 
                 event && event.preventDefault();
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function (order_id) {
-                        let storageFailHandler = buildFailHandler(this),
-                            serviceUrl = self.getMagentoReturnUrl(order_id)
-                        ;
+                        const storageFailHandler = buildFailHandler(this),
+                            serviceUrl = self.getMagentoReturnUrl(order_id);
                         storage.get(serviceUrl, false)
                             .fail(storageFailHandler)
                             .done(function (response) {
@@ -46,8 +43,6 @@ define(
 
                 return true;
             }
-
         });
-
     }
 );

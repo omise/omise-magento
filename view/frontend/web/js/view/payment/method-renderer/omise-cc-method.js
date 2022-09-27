@@ -152,7 +152,7 @@ define(
              */
             generateTokenAndPerformPlaceOrderAction: function() {
                 const self = this;
-                let failHandler = this.buildFailHandler(self);
+                const failHandler = this.buildFailHandler(self);
 
                 this.startPerformingPlaceOrderAction();
 
@@ -164,9 +164,11 @@ define(
                     security_code    : this.omiseCardSecurityCode()
                 };
                 let selectedBillingAddress = quote.billingAddress();
+
                 if(self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
                     Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress));
                 }
+
                 Omise.setPublicKey(this.getPublicKey());
                 Omise.createToken('card', card, function(statusCode, response) {
                     if (statusCode === 200) {
@@ -211,6 +213,7 @@ define(
                 }
 
                 let card = this.omiseCard();
+
                 if (card) {
                     this.processOrderWithCard(card);
                     return true;
@@ -248,12 +251,12 @@ define(
 
             processOrderWithCard: function () {
                 const self = this;
-                let failHandler = this.buildFailHandler(self);
+                const failHandler = this.buildFailHandler(self);
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function(order_id) {
-                        let serviceUrl = self.getMagentoReturnUrl(order_id);
+                        const serviceUrl = self.getMagentoReturnUrl(order_id);
                         storage.get(serviceUrl, false)
                             .fail(failHandler)
                             .done(function (response) {
@@ -281,10 +284,10 @@ define(
                 }
 
                 if(selectedBillingAddress.street[1]) {
-                    address.street2 = selectedBillingAddress.street[1]
+                    address.street2 = selectedBillingAddress.street[1];
                 }
 
-                return address
+                return address;
             }
         });
     }

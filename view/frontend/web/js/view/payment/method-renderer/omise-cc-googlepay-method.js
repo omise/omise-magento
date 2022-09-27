@@ -349,12 +349,12 @@ define(
              * Send charge creation request and finalize payment.
              */
             processPayment: function() {
-                let failHandler = klass.buildFailHandler(klass);
+                const failHandler = klass.buildFailHandler(klass);
                 klass.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done(function(orderId) {
-                        let serviceUrl = klass.getMagentoReturnUrl(orderId);
-                        let storageFailHandler = klass.buildFailHandler(klass);
+                        const serviceUrl = klass.getMagentoReturnUrl(orderId);
+                        const storageFailHandler = klass.buildFailHandler(klass);
                         storage.get(serviceUrl, false)
                             .fail(storageFailHandler)
                             .done(function (response) {
