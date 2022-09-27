@@ -293,7 +293,7 @@ define(
              * @return {array}
              */
             getInstallmentTerms: function (id) {
-                const installmentBackends = checkoutConfig.installment_backends;
+                const installmentBackends = this.capabilities;
                 const templateLabel = $.mage.__('%terms months (%amount / month)');
 
                 for (const key in installmentBackends) {

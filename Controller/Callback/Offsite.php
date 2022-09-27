@@ -31,9 +31,13 @@ use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Psr\Log\LoggerInterface;
+use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
 
 class Offsite extends Action
 {
+    use FailedChargeTrait;
+
     /**
      * @var string
      */
@@ -73,7 +77,8 @@ class Offsite extends Action
         OmiseHelper $helper,
         OmiseEmailHelper $emailHelper,
         Config $config,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
 
@@ -84,6 +89,7 @@ class Offsite extends Action
         $this->emailHelper = $emailHelper;
         $this->config = $config;
         $this->checkoutSession  = $checkoutSession;
+        $this->logger  = $logger;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -160,11 +166,12 @@ class Offsite extends Action
             if ($charge->isFailed()) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
-
-                throw new LocalizedException(
-                    __('Payment failed. ' . ucfirst($charge->failure_message) . ', please contact our support
-                    if you have any questions.')
+                $failureMessage = ucfirst($charge->failure_message);
+                $errorMessage = __(
+                    "Payment failed. $failureMessage, please contact our support if you have any questions."
                 );
+
+                return $this->processFailedCharge($errorMessage);
             }
 
             // Do not proceed if webhook is enabled
