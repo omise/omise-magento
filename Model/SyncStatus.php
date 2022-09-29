@@ -178,7 +178,7 @@ class SyncStatus
                 $charge['failure_message'],
                 $charge['failure_code']
             )
-        )->save();
+        )
         $order->save();
     }
 
@@ -214,9 +214,7 @@ class SyncStatus
     private function markPaymentReversed($order)
     {
         $this->cancelOrderInvoice($order);
-        $order->registerCancellation(
-            __('Omise: Payment reversed. (manual sync).')
-        )->save();
-        $order->save();
+        $order->registerCancellation(__('Omise: Payment reversed. (manual sync).'))
+            ->save();
     }
 }
