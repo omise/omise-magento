@@ -178,8 +178,7 @@ class SyncStatus
                 $charge['failure_message'],
                 $charge['failure_code']
             )
-        )
-        $order->save();
+        )->save();
     }
 
     /**
