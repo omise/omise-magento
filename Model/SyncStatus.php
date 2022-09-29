@@ -213,12 +213,10 @@ class SyncStatus
      */
     private function markPaymentReversed($order)
     {
-        $order->addStatusHistoryComment(__('Omise: Payment reversed. (manual sync).'));
-
-        if ($order->getState() != Order::STATE_CANCELED) {
-            $order->setState(Order::STATE_CANCELED)->setStatus(Order::STATE_CANCELED);
-        }
-
+        $this->cancelOrderInvoice($order);
+        $order->registerCancellation(
+            __('Omise: Payment reversed. (manual sync).')
+        )->save();
         $order->save();
     }
 }
