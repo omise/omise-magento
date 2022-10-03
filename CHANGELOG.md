@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v2.29.1 _(Oct 03, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.1)
+- Fixed an issue of syncing order status from Magento after reversing a charge not updating the product’s quantity. (PR: [#385] https://github.com/omise/omise-magento/pull/385)
+- Fixed the issue of duplicate cancelled event. (PR [#384](https://github.com/omise/omise-magento/pull/384))
+- Fixed blocker and serious issues alerted by SonarCloud. (PR [#383](https://github.com/omise/omise-magento/pull/383))
+
 ## [v2.29.0 _(Sept 19, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.0)
 - Upgraded Omise PHP to version 2.16.0 (PR [#375](https://github.com/omise/omise-magento/pull/375))
 - Fix the issue of not redirecting to Thank you page. (PR [#376](https://github.com/omise/omise-magento/pull/376))
