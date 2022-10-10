@@ -11,7 +11,7 @@
             <omise>
                 <sandbox_status>0</sandbox_status>
                 <model>OmiseAdapter</model>
-                <generate_invoice_at_order_status>\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT</generate_invoice_at_order_status>
+                <generate_invoice_at_order_status>pending_payment</generate_invoice_at_order_status>
                 <webhook_status>1</webhook_status>
             </omise>
 

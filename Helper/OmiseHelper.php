@@ -453,8 +453,7 @@ class OmiseHelper extends AbstractHelper
             return;
         }
 
-        $statusToSendInvoice = $this->config->getSendInvoiceAtOrderStatus();
-        $isOrderStatusPending = substr(strrchr($statusToSendInvoice, '\\'), 1) === 'Order::STATE_PENDING_PAYMENT';
+        $isOrderStatusPending = $this->config->getSendInvoiceAtOrderStatus() === Order::STATE_PENDING_PAYMENT;
 
         if ($order->hasInvoices() && $isOrderStatusPending) {
             $invoice = $order->getInvoiceCollection()->getLastItem();

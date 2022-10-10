@@ -5,6 +5,7 @@ namespace Omise\Payment\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface as MagentoScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface as MagentoScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Sales\Model\Order;
 
 class Config
 {
@@ -181,6 +182,16 @@ class Config
      */
     public function getSendInvoiceAtOrderStatus()
     {
-        return $this->getValue('generate_invoice_at_order_status');
+        $orderStatus = $this->getValue('generate_invoice_at_order_status');
+
+        // Previously, our default value of 'Generate invoice at order status' was
+        // '\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT'. So, this is for the
+        // merchants who have already installed our module so that they don't have
+        // to update the `Generate invoice at order status` setting
+        if($orderStatus === '\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT') {
+            return Order::STATE_PENDING_PAYMENT;
+        }
+
+        return $orderStatus;
     }
 }
