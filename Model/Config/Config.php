@@ -188,7 +188,7 @@ class Config
         // '\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT'. So, this is for the
         // merchants who have already installed our module so that they don't have
         // to update the `Generate invoice at order status` setting
-        if($orderStatus === '\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT') {
+        if ($orderStatus === '\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT') {
             return Order::STATE_PENDING_PAYMENT;
         }
 
