@@ -95,7 +95,9 @@ class Threedsecure extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($payment->getAdditionalInformation('token') !== rtrim($this->request->getParam('token'), "/")) {
+        $token = $this->request->getParam('token');
+
+        if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
             $this->invalid(
                 $order,
                 __('Invalid token. Please contact our support if you have any questions.')

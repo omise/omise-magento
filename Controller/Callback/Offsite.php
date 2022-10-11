@@ -113,17 +113,6 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($order->getState() === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
-        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
-            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
-            support if you have any questions.'));
-
-            return $this->redirect(self::PATH_CART);
-        }
-
         if (! $payment = $order->getPayment()) {
             $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
             support if you have any questions.'));
@@ -131,11 +120,24 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($payment->getAdditionalInformation('token') !== rtrim($this->request->getParam('token'), "/")) {
+        $token = $this->request->getParam('token');
+
+        if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
             $this->invalid(
                 $order,
                 __('Invalid token. Please contact our support if you have any questions.')
             );
+
+            return $this->redirect(self::PATH_CART);
+        }
+
+        if ($order->getState() === Order::STATE_PROCESSING) {
+            return $this->redirect(self::PATH_SUCCESS);
+        }
+
+        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
+            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
+            support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }

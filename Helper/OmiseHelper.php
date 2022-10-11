@@ -492,42 +492,6 @@ class OmiseHelper extends AbstractHelper
         return in_array($paymentMethod, $this->cardPaymentMethods);
     }
 
-    /**
-     * Validate whether the a URI was triggered by end user or not
-     */
-    public function isUserOriginated()
-    {
-        // HTTP_SEC_FETCH_SITE is not available in Safari so we have
-        // to rely on HTTP_REFERER even though it's less reliable
-        if ($this->isBrowserSafari()) {
-            $refererValue = $this->header->getHttpReferer();
-            $isProduction = strpos($refererValue, 'https://api.omise.co') === 0;
-            $isStaging = strpos($refererValue, 'https://api.staging-omise.co') === 0;
-
-            return $isProduction || $isStaging;
-        }
-
-        // For other browsers, we check HTTP_SEC_FETCH_SITE header
-        $fetchSite = $this->httpRequest->getServer('HTTP_SEC_FETCH_SITE');
-
-        // "none" means the request is a user-originated operation
-        return 'none' === $fetchSite;
-    }
-
-    /**
-     * @return boolean
-     */
-    private function isBrowserSafari()
-    {
-        $userAgent = $this->httpRequest->getServer('HTTP_USER_AGENT');
-        return preg_match('/Safari/i', $userAgent) &&
-            !preg_match('/OPR/i', $userAgent) &&
-            !preg_match('/Firefox/i', $userAgent) &&
-            !preg_match('/MSIE/i', $userAgent) &&
-            !preg_match('/Chrome/i', $userAgent) &&
-            !preg_match('/Edge/i', $userAgent);
-    }
-
     public function getOmiseLabelByOmiseCode(string $code)
     {
         if (array_key_exists($code, $this->labelByOmiseCode)) {
