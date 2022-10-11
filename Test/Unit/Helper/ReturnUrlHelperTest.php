@@ -17,7 +17,7 @@ class ReturnUrlHelperTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->tokenMock = $this->createMock('Omise\Payment\Helper\TokenHelper'); 
+        $this->tokenMock = $this->createMock('Omise\Payment\Helper\TokenHelper');
         $this->urlMock = $this->createMock('Magento\Framework\UrlInterface');
         $this->model = new ReturnUrlHelper($this->urlMock, $this->tokenMock);
     }

@@ -85,8 +85,8 @@ class APMBuilder implements BuilderInterface
     const RETURN_URI = 'return_uri';
 
     /**
-    * @var \Omise\Payment\Helper\ReturnUrlHelper
-    */
+     * @var \Omise\Payment\Helper\ReturnUrlHelper
+     */
     protected $returnUrl;
 
     /**

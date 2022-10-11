@@ -18,7 +18,7 @@ class CreditCardThreeDSecureBuilder implements BuilderInterface
 
     /**
      * Injecting dependencies
-     * 
+     *
      * @param $returnUrl ReturnUrlHelper
      */
     public function __construct(ReturnUrlHelper $returnUrl)
