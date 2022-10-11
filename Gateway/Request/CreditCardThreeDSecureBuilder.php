@@ -1,8 +1,8 @@
 <?php
 namespace Omise\Payment\Gateway\Request;
 
-use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
+use Omise\Payment\Helper\ReturnUrlHelper;
 
 class CreditCardThreeDSecureBuilder implements BuilderInterface
 {
@@ -12,13 +12,18 @@ class CreditCardThreeDSecureBuilder implements BuilderInterface
     const RETURN_URI = 'return_uri';
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var \Omise\Payment\Helper\ReturnUrlHelper
      */
-    protected $url;
+    protected $returnUrl;
 
-    public function __construct(UrlInterface $url)
+    /**
+     * Injecting dependencies
+     * 
+     * @param $returnUrl ReturnUrlHelper
+     */
+    public function __construct(ReturnUrlHelper $returnUrl)
     {
-        $this->url = $url;
+        $this->returnUrl = $returnUrl;
     }
 
     /**
@@ -28,8 +33,11 @@ class CreditCardThreeDSecureBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
-        return [
-            self::RETURN_URI => $this->url->getUrl('omise/callback/threedsecure', ['_secure' => true])
-        ];
+        $returnUrl = $this->returnUrl->create('omise/callback/threedsecure');
+
+        $payment = $buildSubject['payment']->getPayment();
+        $payment->setAdditionalInformation('token', $returnUrl['token']);
+
+        return [ self::RETURN_URI => $returnUrl['url'] ];
     }
 }
