@@ -125,7 +125,7 @@ class Offsite extends Action
         if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
             $this->invalid(
                 $order,
-                __('Invalid token. Please contact our support if you have any questions.')
+                __('The URL is invalid. Please contact our support if you have any questions.')
             );
 
             return $this->redirect(self::PATH_CART);
