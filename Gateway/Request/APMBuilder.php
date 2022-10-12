@@ -1,7 +1,6 @@
 <?php
 namespace Omise\Payment\Gateway\Request;
 
-use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
@@ -34,8 +33,8 @@ use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\MobilebankingDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
-
 use Omise\Payment\Helper\OmiseHelper as Helper;
+use Omise\Payment\Helper\ReturnUrlHelper;
 
 class APMBuilder implements BuilderInterface
 {
@@ -86,19 +85,23 @@ class APMBuilder implements BuilderInterface
     const RETURN_URI = 'return_uri';
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var \Omise\Payment\Helper\ReturnUrlHelper
      */
-    protected $url;
+    protected $returnUrl;
 
     /**
      * @var Helper
      */
     protected $helper;
 
-    public function __construct(UrlInterface $url, Helper $helper)
+    /**
+     * @param $helper    \Omise\Payment\Helper\OmiseHelper
+     * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
+     */
+    public function __construct(Helper $helper, ReturnUrlHelper $returnUrl)
     {
-        $this->url = $url;
         $this->helper = $helper;
+        $this->returnUrl = $returnUrl;
     }
 
     /**
@@ -108,11 +111,11 @@ class APMBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
-        $paymentInfo = [
-            self::RETURN_URI => $this->url->getUrl('omise/callback/offsite', [
-                '_secure' => true
-            ])
-        ];
+        $returnUrl = $this->returnUrl->create('omise/callback/offsite');
+        $payment = $buildSubject['payment']->getPayment();
+        $payment->setAdditionalInformation('token', $returnUrl['token']);
+
+        $paymentInfo = [ self::RETURN_URI => $returnUrl['url'] ];
 
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();

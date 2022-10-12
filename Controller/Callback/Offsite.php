@@ -33,6 +33,7 @@ use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
 use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
+use Magento\Framework\App\Request\Http;
 
 class Offsite extends Action
 {
@@ -78,7 +79,8 @@ class Offsite extends Action
         OmiseEmailHelper $emailHelper,
         Config $config,
         CheckoutSession $checkoutSession,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Http $request
     ) {
         parent::__construct($context);
 
@@ -90,6 +92,7 @@ class Offsite extends Action
         $this->config = $config;
         $this->checkoutSession  = $checkoutSession;
         $this->logger  = $logger;
+        $this->request = $request;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -110,19 +113,30 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
+        if (! $payment = $order->getPayment()) {
+            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
+            support if you have any questions.'));
+
+            return $this->redirect(self::PATH_CART);
+        }
+
+        $token = $this->request->getParam('token');
+
+        if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
+            $this->invalid(
+                $order,
+                __('The URL is invalid. Please contact our support if you have any questions.')
+            );
+
+            return $this->redirect(self::PATH_CART);
+        }
+
         if ($order->getState() === Order::STATE_PROCESSING) {
             return $this->redirect(self::PATH_SUCCESS);
         }
 
         if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
-            support if you have any questions.'));
-
-            return $this->redirect(self::PATH_CART);
-        }
-
-        if (! $payment = $order->getPayment()) {
-            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
             support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);

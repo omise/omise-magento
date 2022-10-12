@@ -17,6 +17,7 @@ use Omise\Payment\Helper\OmiseHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
 use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
+use Magento\Framework\App\Request\Http;
 
 class Threedsecure extends Action
 {
@@ -54,7 +55,8 @@ class Threedsecure extends Action
         OmiseEmailHelper $emailHelper,
         OmiseHelper $helper,
         CheckoutSession $checkoutSession,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Http $request
     ) {
         parent::__construct($context);
 
@@ -64,6 +66,7 @@ class Threedsecure extends Action
         $this->helper = $helper;
         $this->checkoutSession  = $checkoutSession;
         $this->logger  = $logger;
+        $this->request = $request;
     }
 
     /**
@@ -71,10 +74,6 @@ class Threedsecure extends Action
      */
     public function execute()
     {
-        if ($this->helper->isUserOriginated()) {
-            return $this->redirect(self::PATH_CART);
-        }
-
         $order = $this->session->getLastRealOrder();
 
         if (! $order->getId()) {
@@ -91,6 +90,17 @@ class Threedsecure extends Action
                 $order,
                 __('Cannot retrieve a payment detail from the request. Please contact our support if you have
                 any questions.')
+            );
+
+            return $this->redirect(self::PATH_CART);
+        }
+
+        $token = $this->request->getParam('token');
+
+        if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
+            $this->invalid(
+                $order,
+                __('The URL is invalid. Please contact our support if you have any questions.')
             );
 
             return $this->redirect(self::PATH_CART);

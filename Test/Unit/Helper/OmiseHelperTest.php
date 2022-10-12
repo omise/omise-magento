@@ -182,38 +182,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test the function validate3DSReferer() returns true when
-     * the referer is either Omise staging or production
-     *
-     * @covers \Omise\Payment\Helper\OmiseHelper
-     * @test
-     */
-    public function isUserOriginatedReturnsTrueIfRequestIsInitiatedByUser()
-    {
-        $this->requestMock->method('getServer')
-            ->willReturn('none');
-
-        $fetchSite = $this->model->isUserOriginated();
-        $this->assertTrue($fetchSite);
-    }
-
-    /**
-     * Test the function validate3DSReferer() returns false when
-     * the referer neither Omise staging nor production
-     *
-     * @covers \Omise\Payment\Helper\OmiseHelper
-     * @test
-     */
-    public function isUserOriginatedReturnsFalseIfRequestIsInitiatedByUser()
-    {
-        $this->requestMock->method('getServer')
-            ->willReturn('cross-site');
-
-        $fetchSite = $this->model->isUserOriginated();
-        $this->assertFalse($fetchSite);
-    }
-
-    /**
      * Test the function getPlatformType() return correct platform as per user agent
      *
      * @dataProvider platformTypeProvider
