@@ -91,7 +91,7 @@ class Offsite extends Action
         $this->emailHelper = $emailHelper;
         $this->config = $config;
         $this->checkoutSession  = $checkoutSession;
-        $this->logger  = $logger;
+        $this->logger = $logger;
         $this->request = $request;
 
         $this->omise->defineUserAgent();
@@ -131,17 +131,19 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        if ($order->getState() === Order::STATE_PROCESSING) {
+        $orderState = $order->getState()
+
+        if ($orderState === Order::STATE_PROCESSING) {
             return $this->redirect(self::PATH_SUCCESS);
         }
 
-        if ($order->getState() !== Order::STATE_PENDING_PAYMENT) {
+        if ($orderState !== Order::STATE_PENDING_PAYMENT && $orderState !== Order::STATE_CANCELED) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
             support if you have any questions.'));
 
             return $this->redirect(self::PATH_CART);
         }
-        
+
         $paymentMethod = $payment->getMethod();
 
         if (!$this->helper->isOffsitePaymentMethod($paymentMethod)) {
@@ -163,6 +165,8 @@ class Offsite extends Action
         }
 
         try {
+            // adding delay to cover the delay in updating the charge status in the Omise backend
+            usleep(500000);
             $charge = $this->charge->find($charge_id);
 
             if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
