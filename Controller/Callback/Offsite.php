@@ -131,7 +131,7 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        $orderState = $order->getState()
+        $orderState = $order->getState();
 
         if ($orderState === Order::STATE_PROCESSING) {
             return $this->redirect(self::PATH_SUCCESS);
