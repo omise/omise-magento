@@ -137,6 +137,8 @@ class Threedsecure extends Action
         }
 
         try {
+            // adding delay to cover the delay in updating the charge status in the Omise backend
+            usleep(500000);
             $charge = \OmiseCharge::retrieve($charge_id, $this->config->getPublicKey(), $this->config->getSecretKey());
 
             $result = $this->validate($charge);
