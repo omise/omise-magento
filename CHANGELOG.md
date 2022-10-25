@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.29.2 _(Oct 25, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.2)
+- Issue of two invoices of the same order has been fixed. (PR: [#387] https://github.com/omise/omise-magento/pull/387)
+- Improve the implementation to prevent the customer entering redirect URL directly in the address bar of the browser. (PR: [#388] https://github.com/omise/omise-magento/pull/388)
+- Fixed the issue of FPX redirecting to cart page with invalid order status. Also added a delay in redirect process before fetching charge status. (PR: [#389] https://github.com/omise/omise-magento/pull/389)
+- Fixed conflict between COD with the plugin. (PR: [#390] https://github.com/omise/omise-magento/pull/390)
+
 ## [v2.29.1 _(Oct 03, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.1)
 - Fixed an issue of syncing order status from Magento after reversing a charge not updating the product’s quantity. (PR: [#385] https://github.com/omise/omise-magento/pull/385)
 - Fixed the issue of duplicate cancelled event. (PR [#384](https://github.com/omise/omise-magento/pull/384))
