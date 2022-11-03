@@ -39,6 +39,10 @@
         <observer name="omise_end_order" instance="Omise\Payment\Observer\PaymentCreationObserver" />
     </event>
 
+    <event name="sales_order_payment_refund">
+        <observer name="sales_order_payment_refund" instance="Omise\Payment\Observer\SaleOrderPaymentRefund" />
+    </event>
+
     <!-- Webhook -->
     <event name="omise_payment_webhook_charge_complete">
         <observer name="omise_payment_webhook_charge_complete_observer" instance="Omise\Payment\Observer\WebhookObserver\WebhookCompleteObserver" />
