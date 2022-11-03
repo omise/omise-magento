@@ -48,13 +48,20 @@ class SaleOrderPaymentRefund implements ObserverInterface
                 if (!$chargeId) {
                     return $this;
                 }
-                $charge = OmiseCharge::retrieve($chargeId, $this->config->getPublicKey(), $this->config->getSecretKey());
-                $amountToRefund = $this->helper->omiseAmountFormat($charge['currency'], $payment['base_amount_refunded']);
+                $charge = OmiseCharge::retrieve(
+                    $chargeId,
+                    $this->config->getPublicKey(),
+                    $this->config->getSecretKey()
+                );
+                $amountToRefund = $this->helper->omiseAmountFormat(
+                    $charge['currency'],
+                    $payment['base_amount_refunded']
+                );
                 $charge->refund(['amount' => $amountToRefund]);
             }
             return $this;
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw $e;
         }
     }
 }
