@@ -3,7 +3,7 @@
     <system>
         <section id="payment">
             <group id="omise" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Omise Payment Gateway</label>
+                <label>Opn Payments Gateway</label>
                 <fieldset_css>omise-section</fieldset_css>
                 <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
                 <attribute type="displayIn">recommended_solutions</attribute>
@@ -18,19 +18,19 @@
                 </field>
                 <field id="test_public_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for test</label>
-                    <comment>The "Test" mode public key can be found in Omise Dashboard.</comment>
+                    <comment>The "Test" mode public key can be found in Opn Payments Dashboard.</comment>
                 </field>
                 <field id="test_secret_key" translate="label" type="password" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Secret key for test</label>
-                    <comment>The "Test" mode secret key can be found in Omise Dashboard.</comment>
+                    <comment>The "Test" mode secret key can be found in Opn Payments Dashboard.</comment>
                 </field>
                 <field id="live_public_key" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for live</label>
-                    <comment>The "Live" mode public key can be found in Omise Dashboard.</comment>
+                    <comment>The "Live" mode public key can be found in Opn Payments Dashboard.</comment>
                 </field>
                 <field id="live_secret_key" translate="label" type="password" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Secret key for live</label>
-                    <comment>The "Live" mode secret key can be found in Omise Dashboard.</comment>
+                    <comment>The "Live" mode secret key can be found in Opn Payments Dashboard.</comment>
                 </field>
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Webhook</label>
@@ -40,7 +40,7 @@
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Webhook endpoint</label>
                     <comment>
-                        <![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Omise dashboard</strong></a> <em>(HTTPS only)</em>.]]>
+                        <![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Opn Payments dashboard</strong></a> <em>(HTTPS only)</em>.]]>
                     </comment>
                     <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook</frontend_model>
                 </field>
@@ -60,7 +60,7 @@
                     <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Omise Credit Card Solution.</comment>
+                        <comment>Enable Credit Card Solution.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc/active</config_path>
                     </field>
@@ -94,7 +94,7 @@
                     <comment>Enable customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Omise Internet Banking payment method.</comment>
+                        <comment>Enable Internet Banking payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_internetbanking/active</config_path>
                     </field>

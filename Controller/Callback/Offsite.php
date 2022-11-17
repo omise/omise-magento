@@ -280,7 +280,7 @@ class Offsite extends Action
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
                     __(
-                        "Amount of %1 has been paid via Omise $dispPaymentMethod payment",
+                        "Amount of %1 has been paid via Opn Payments $dispPaymentMethod payment",
                         $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                     )
                 );
@@ -300,7 +300,7 @@ class Offsite extends Action
                 $transaction,
                 __('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds
                 or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been 
-                updated (you can check at Omise Dashboard).')
+                updated (you can check at Opn Payments Dashboard).')
             );
 
             $order->save();
