@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v2.30.0 _(Nov 21, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.30.0)
+- Add support omise refund after offline refund is triggered. (PR: [#392]) https://github.com/omise/omise-magento/pull/392)
+- Fixed duitnowobw bank list not showing. (PR: [#393]) https://github.com/omise/omise-magento/pull/393)
+
 ## [v2.29.2 _(Oct 25, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.2)
 - Issue of two invoices of the same order has been fixed. (PR: [#387] https://github.com/omise/omise-magento/pull/387)
 - Improve the implementation to prevent the customer entering redirect URL directly in the address bar of the browser. (PR: [#388] https://github.com/omise/omise-magento/pull/388)
