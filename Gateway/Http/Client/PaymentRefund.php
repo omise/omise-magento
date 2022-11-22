@@ -16,6 +16,12 @@ class PaymentRefund extends AbstractPayment
         $transferObjectBody = $transferObject->getBody();
         if (isset($transferObjectBody[self::TRANSACTION_ID])) {
             $charge = $this->apiCharge->find($transferObjectBody[self::TRANSACTION_ID]);
+            if (!$charge->refundable) {
+                $sourceType = $charge->source['type'] ?? 'credit_card';
+                $method = str_replace('_', ' ', $sourceType);
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Payment with omise %1 cannot be refunded.', $method));
+            }
             unset($transferObjectBody[self::TRANSACTION_ID]);
             return [self::REFUND => $charge->refund($transferObjectBody)];
         } else {
