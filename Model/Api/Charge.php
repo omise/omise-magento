@@ -108,7 +108,7 @@ class Charge extends BaseObject
     public function refund($refundData)
     {
         try {
-            $refund = $this->object->refunds()->create($refundData);
+            $refund = $this->object->refund($refundData);
         } catch (Exception $e) {
             return new Error([
                 'code'    => 'failed_refund',
@@ -126,7 +126,7 @@ class Charge extends BaseObject
      */
     public function getMetadata($field)
     {
-        return ( $this->metadata != null && isset($this->metadata[$field])) ? $this->metadata[$field] : null;
+        return ($this->metadata != null && isset($this->metadata[$field])) ? $this->metadata[$field] : null;
     }
 
     /**
@@ -142,7 +142,7 @@ class Charge extends BaseObject
      */
     public function isUnauthorized()
     {
-        return ! $this->isAuthorized();
+        return !$this->isAuthorized();
     }
 
     /**
@@ -158,7 +158,7 @@ class Charge extends BaseObject
      */
     public function isUnpaid()
     {
-        return ! $this->isPaid();
+        return !$this->isPaid();
     }
 
     /**
@@ -207,7 +207,7 @@ class Charge extends BaseObject
         }
 
         foreach ($this->refunds['data'] as $refund) {
-            $refundedAmount += ($refund['amount']/100);
+            $refundedAmount += ($refund['amount'] / 100);
         }
 
         return $refundedAmount;
@@ -215,6 +215,6 @@ class Charge extends BaseObject
 
     public function isFullyRefunded()
     {
-        return (($this->amount/100) - $this->getRefundedAmount()) === 0;
+        return (($this->amount / 100) - $this->getRefundedAmount()) === 0;
     }
 }

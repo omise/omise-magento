@@ -11,7 +11,7 @@ use Omise\Payment\Helper\OmiseHelper;
 class RefundDataBuilder implements BuilderInterface
 {
     use Formatter;
-    
+
     /**
      * @var SubjectReader
      */
@@ -49,8 +49,9 @@ class RefundDataBuilder implements BuilderInterface
         /** @var Payment $payment */
         $payment = $paymentDO->getPayment();
         $order = $paymentDO->getOrder();
-        
+
         return [
+            'store_id' => $order->getStoreId(),
             'transaction_id' => $payment->getParentTransactionId(),
             PaymentDataBuilder::AMOUNT => $this->omiseHelper->omiseAmountFormat(
                 $order->getCurrencyCode(),

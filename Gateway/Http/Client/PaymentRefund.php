@@ -19,7 +19,8 @@ class PaymentRefund extends AbstractPayment
             throw new \Magento\Framework\Exception\LocalizedException(__('Unable to process refund.'));
         }
 
-        $charge = $this->apiCharge->find($transferObjectBody[self::TRANSACTION_ID]);
+        $storeId = $transferObjectBody['store_id'];
+        $charge = $this->apiCharge->find($transferObjectBody[self::TRANSACTION_ID], $storeId);
 
         if (!$charge->refundable) {
             $sourceType = $charge->source['type'] ?? 'credit_card';
@@ -30,6 +31,6 @@ class PaymentRefund extends AbstractPayment
         }
 
         unset($transferObjectBody[self::TRANSACTION_ID]);
-        return [self::REFUND => $charge->refund($transferObjectBody)];
+        return [self::REFUND => $charge->refund($transferObjectBody, $storeId)];
     }
 }
