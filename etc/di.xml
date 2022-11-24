@@ -1340,6 +1340,7 @@
                 <item name="initialize" xsi:type="string">OmiseCreditCardInitializeCommand</item>
                 <item name="charge_authorize" xsi:type="string">OmiseChargeAuthorizeCommand</item>
                 <item name="capture" xsi:type="string">OmiseCaptureCommand</item>
+                <item name="refund" xsi:type="string">OmiseRefundCommand</item>
                 <item name="charge_capture" xsi:type="string">OmiseChargeCaptureCommand</item>
             </argument>
         </arguments>
