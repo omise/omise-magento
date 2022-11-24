@@ -31,6 +31,7 @@ class PaymentRefund extends AbstractPayment
         }
 
         unset($transferObjectBody[self::TRANSACTION_ID]);
-        return [self::REFUND => $charge->refund($transferObjectBody, $storeId)];
+        unset($transferObjectBody['store_id']);
+        return [self::REFUND => $charge->refund($transferObjectBody)];
     }
 }
