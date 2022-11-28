@@ -46,8 +46,8 @@ class ConfigSectionPaymentPlugin
      * @var array
      */
     private $errorCodes = [
-        'authentication_failure' => 'The keys for Omise Payment are invalid',
-        'key_expired_error' => 'The keys for Omise Payment are expired.',
+        'authentication_failure' => 'The keys for Opn Payments are invalid',
+        'key_expired_error' => 'The keys for Opn Payments are expired.',
         'locked_account_error' => 'The account is locked. Please contact support@omise.co.',
         'not_authorized' => 'An attempt was made to perform an unauthorized action.',
     ];
@@ -241,7 +241,7 @@ class ConfigSectionPaymentPlugin
         // show error message by using title from omise helper
         if (! empty($nonSupportPayments)) {
             $this->messageManager->
-                addError(__("This Omise account does not support " . implode(", ", $nonSupportPayments)));
+                addError(__("This Opn Payments account does not support " . implode(", ", $nonSupportPayments)));
         }
         return $data;
     }
