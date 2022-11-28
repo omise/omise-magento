@@ -3,7 +3,7 @@
     <system>
         <section id="payment">
             <group id="omise" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Opn Payments Gateway</label>
+                <label>Opn Payments</label>
                 <fieldset_css>omise-section</fieldset_css>
                 <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
                 <attribute type="displayIn">recommended_solutions</attribute>
