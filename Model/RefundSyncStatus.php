@@ -79,7 +79,7 @@ class RefundSyncStatus
     {
         $invoices = $order->getInvoiceCollection();
 
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $invoice = $this->invoice->loadByIncrementId($invoice->getIncrementId());
             $creditMemo = $this->creditMemoFactory->createByOrder($order);
 
