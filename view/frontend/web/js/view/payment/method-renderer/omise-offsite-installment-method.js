@@ -68,6 +68,13 @@ define(
                 logo: 'uob',
                 active: true
             },
+            {
+                id: "installment_mbb",
+                title: $.mage.__('MayBank'),
+                code: 'mbb',
+                logo: 'mbb',
+                active: true
+            },
 
         ]
 
@@ -96,6 +103,7 @@ define(
                         'installmentTermsBAY',
                         'installmentTermsSCB',
                         'installmentTermsUOB',
+                        'installmentTermsMBB',
                     ]);
 
                 this.capabilities = checkoutConfig.omise_payment_list[this.code];
@@ -153,7 +161,8 @@ define(
                     'first_choice': 300,
                     'ktc': 300,
                     'scb': 500,
-                    'uob': 500
+                    'uob': 500,
+                    'mbb': 150,
                 }[id];
             },
 
@@ -173,7 +182,8 @@ define(
                     'first_choice': 0.013,
                     'ktc': 0.008,
                     'scb': 0.0074,
-                    'uob': 0.0064
+                    'uob': 0.0064,
+                    'mbb': 0.004,
                 }[id];
             },
 
@@ -229,7 +239,8 @@ define(
                     this.installmentTermsKTC() ||
                     this.installmentTermsBAY() ||
                     this.installmentTermsSCB() ||
-                    this.installmentTermsUOB()
+                    this.installmentTermsUOB() ||
+                    this.installmentTermsMBB()
                 );
             },
 
@@ -254,6 +265,8 @@ define(
                         return this.observe().installmentTermsKTC
                     case 'installment_bay':
                         return this.observe().installmentTermsBAY
+                    case 'installment_mbb':
+                        return this.observe().installmentTermsMBB
                     default:
                         return null
                 }
@@ -270,6 +283,7 @@ define(
                 this.installmentTermsBAY(null);
                 this.installmentTermsSCB(null);
                 this.installmentTermsUOB(null);
+                this.installmentTermsMBB(null);
             },
 
             /**
@@ -303,6 +317,7 @@ define(
 
                     let dispTerms = [];
                     const terms = installmentBackends[key].allowed_installment_terms;
+                    console.log(installmentBackends[key]);
                     const minSingleInstallment = this.getInstallmentMinimum(id);
 
                     for (let i = 0; i < terms.length; i++) {

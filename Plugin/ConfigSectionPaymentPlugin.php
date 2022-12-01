@@ -11,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 
 class ConfigSectionPaymentPlugin
 {
@@ -61,14 +62,17 @@ class ConfigSectionPaymentPlugin
         Config $config,
         OmiseHelper $helper,
         ManagerInterface $messageManager,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger
     ) {
         $this->config = $config;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
         $this->scopeConfig = $scopeConfig;
+        $this->logger = $logger;
         // using same version as omise-php 2.13(2017-11-02)
-        define('OMISE_API_VERSION', '2017-11-02');
+        // define('OMISE_API_VERSION', '2017-11-02');
+        define('OMISE_API_VERSION', '2019-05-29');
     }
 
     /**
@@ -91,18 +95,19 @@ class ConfigSectionPaymentPlugin
                     // Fetching capabilities to check the supplied keys validity
                     $this->capabilities = OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
 
+                    $this->logger->debug(print_r($this->capabilities, true));
+
                     /** when using test mode is will fetch all available payment methods
                      *  that omise is supported
                      * */
                     $paymentList  = $this->getBackends();
-                    $omiseConfigPaymentList=$this->getActivePaymentMethods($omiseConfigData);
+                    $omiseConfigPaymentList = $this->getActivePaymentMethods($omiseConfigData);
 
                     // filter and update config payment method data that omise account is supported
                     $data = $this->validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig);
 
                     // still save other payment methods that api support
                     $coreConfig->setData('groups', $data);
-                    
                 } catch (OmiseAuthenticationFailureException $e) {
                     $errors = $e->getOmiseError();
 
@@ -166,6 +171,7 @@ class ConfigSectionPaymentPlugin
         $backendNames = array_map(function ($payment) {
             return key($payment);
         }, $this->capabilities['payment_backends']);
+
         $backendNames = array_merge($backendNames, $this->capabilities['tokenization_methods']);
 
         // filter not support payment method from backends list
@@ -185,9 +191,11 @@ class ConfigSectionPaymentPlugin
     private function getActivePaymentMethods($configData)
     {
         $paymentConfigList = [];
+
         foreach ($configData['groups'] as $key => $value) {
-            // filter only oayment that merchant is active
+            // filter only payment that merchant is active
             $configFields = $value['fields']['active'];
+
             // possible key is inherit|value
             if (array_key_exists('inherit', $configFields)) {
                 // in case inherit value need to get the active value from parent

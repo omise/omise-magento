@@ -32,4 +32,6 @@ class Installment extends Config
     const TTB_ID = "installment_ttb";
 
     const UOB_ID = "installment_uob";
+
+    const MBB_ID = "installment_mbb";
 }
