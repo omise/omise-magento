@@ -4,7 +4,8 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseHelper;
-use Psr\Log\LoggerInterface;
+use Omise\Payment\Observer\InstallmentDataAssignObserver;
+use Omise\Payment\Model\Config\Installment;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -29,12 +30,16 @@ class PaymentDataBuilder implements BuilderInterface
     const METADATA = 'metadata';
 
     /**
+     * @var string
+     */
+    const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
+
+    /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      */
     public function __construct(OmiseHelper $omiseHelper)
     {
         $this->omiseHelper = $omiseHelper;
-        // $this->logger = $logger;
     }
 
     /**
@@ -44,16 +49,16 @@ class PaymentDataBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
-        // $this->logger->debug(print_r($buildSubject, true));
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
+        $method  = $payment->getPayment();
 
         $store_id = $order->getStoreId();
         $om = \Magento\Framework\App\ObjectManager::getInstance();
         $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
         $store_name = $manager->getStore($store_id)->getName();
 
-        return [
+        $requestBody = [
             self::AMOUNT      => $this->omiseHelper->omiseAmountFormat(
                 $order->getCurrencyCode(),
                 $order->getGrandTotalAmount()
@@ -66,5 +71,17 @@ class PaymentDataBuilder implements BuilderInterface
                 'store_name' => $store_name
             ]
         ];
+
+        if (Installment::CODE === $method->getMethod()) {
+            $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = $this->isZeroInterestInstallment($method);
+        }
+
+        return $requestBody;
+    }
+
+    public function isZeroInterestInstallment($method)
+    {
+        $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
+        return ('installment_mbb' === $installmentId);
     }
 }

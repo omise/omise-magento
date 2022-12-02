@@ -10,7 +10,6 @@ use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
-use Psr\Log\LoggerInterface;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface
 {
@@ -24,13 +23,11 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     public function __construct(
         Capabilities               $capabilities,
         PaymentMethodListInterface $paymentLists,
-        StoreManagerInterface      $storeManager,
-        LoggerInterface $logger
+        StoreManagerInterface      $storeManager
     ) {
         $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -47,9 +44,6 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $backends = $this->capabilities->getBackendsWithOmiseCode();
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
-
-        // $this->logger->debug(print_r($listOfActivePaymentMethods, true));
-        // $this->logger->debug(print_r($backends, true));
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();

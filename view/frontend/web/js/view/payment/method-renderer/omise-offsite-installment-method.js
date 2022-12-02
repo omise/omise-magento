@@ -332,8 +332,6 @@ define(
                         }
                     }
 
-                    console.log(dispTerms)
-
                     return ko.observableArray(
                         dispTerms
                     );
@@ -356,7 +354,6 @@ define(
             */
             get_available_providers: function () {
                 let _providers = Object.values(this.capabilities);
-                console.log(_providers);
 
                 return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {

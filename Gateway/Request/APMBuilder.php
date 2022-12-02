@@ -85,6 +85,11 @@ class APMBuilder implements BuilderInterface
     const RETURN_URI = 'return_uri';
 
     /**
+     * @var string
+     */
+    const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
+
+    /**
      * @var \Omise\Payment\Helper\ReturnUrlHelper
      */
     protected $returnUrl;
@@ -143,7 +148,7 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(
                         InstallmentDataAssignObserver::TERMS
                     ),
-                    'zero_interest_installments' => ('installment_mbb' === $installmentId)
+                    self::ZERO_INTEREST_INSTALLMENTS => ('installment_mbb' === $installmentId)
                 ];
                 break;
             case Truemoney::CODE:

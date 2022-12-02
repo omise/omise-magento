@@ -11,7 +11,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Exception;
-use Psr\Log\LoggerInterface;
 
 class ConfigSectionPaymentPlugin
 {
@@ -62,17 +61,14 @@ class ConfigSectionPaymentPlugin
         Config $config,
         OmiseHelper $helper,
         ManagerInterface $messageManager,
-        ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->config = $config;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
         $this->scopeConfig = $scopeConfig;
-        $this->logger = $logger;
         // using same version as omise-php 2.13(2017-11-02)
         define('OMISE_API_VERSION', '2017-11-02');
-        // define('OMISE_API_VERSION', '2019-05-29');
     }
 
     /**
@@ -94,8 +90,6 @@ class ConfigSectionPaymentPlugin
                 try {
                     // Fetching capabilities to check the supplied keys validity
                     $this->capabilities = OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
-
-                    // $this->logger->debug(print_r($this->capabilities, true));
 
                     /** when using test mode is will fetch all available payment methods
                      *  that omise is supported
