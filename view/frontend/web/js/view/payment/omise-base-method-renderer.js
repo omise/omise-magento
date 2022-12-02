@@ -91,13 +91,14 @@ define(
              *
              * @return {boolean}
              */
-             buildFailHandler(context) {
+            buildFailHandler(context) {
+                console.log(context);
                 return function (response) {
                     errorProcessor.process(response, context.messageContainer);
                     fullScreenLoader.stopLoader();
                     context.isPlaceOrderActionAllowed(true);
                 }
-             }
+            }
 
         };
 

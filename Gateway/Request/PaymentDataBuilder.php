@@ -4,6 +4,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseHelper;
+use Psr\Log\LoggerInterface;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -33,6 +34,7 @@ class PaymentDataBuilder implements BuilderInterface
     public function __construct(OmiseHelper $omiseHelper)
     {
         $this->omiseHelper = $omiseHelper;
+        // $this->logger = $logger;
     }
 
     /**
@@ -42,6 +44,7 @@ class PaymentDataBuilder implements BuilderInterface
      */
     public function build(array $buildSubject)
     {
+        // $this->logger->debug(print_r($buildSubject, true));
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
 

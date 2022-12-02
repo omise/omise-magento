@@ -48,8 +48,8 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
 
-        $this->logger->debug(print_r($listOfActivePaymentMethods, true));
-        $this->logger->debug(print_r($backends, true));
+        // $this->logger->debug(print_r($listOfActivePaymentMethods, true));
+        // $this->logger->debug(print_r($backends, true));
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();

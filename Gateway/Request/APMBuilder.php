@@ -137,13 +137,13 @@ class APMBuilder implements BuilderInterface
                 ];
                 break;
             case Installment::CODE:
+                $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE              => $method->getAdditionalInformation(
-                        InstallmentDataAssignObserver::OFFSITE
-                    ),
+                    self::SOURCE_TYPE              => $installmentId,
                     self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(
                         InstallmentDataAssignObserver::TERMS
                     ),
+                    'zero_interest_installments' => ('installment_mbb' === $installmentId)
                 ];
                 break;
             case Truemoney::CODE:

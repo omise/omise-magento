@@ -16,7 +16,10 @@ define(
         priceUtils
     ) {
         'use strict';
-        const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
+        const INSTALLMENT_MIN_PURCHASE_AMOUNT  = {
+            'thb': 2000,
+            'myr': 3000
+        };
         const CAPTION = $.mage.__('Choose number of monthly payments');
         const providers = [
             {
@@ -83,7 +86,7 @@ define(
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
             code: 'omise_offsite_installment',
-            restrictedToCurrencies: ['thb'],
+            restrictedToCurrencies: ['thb', 'myr'],
 
             capabilities: null,
 
@@ -132,7 +135,7 @@ define(
              * @return {string}
              */
             getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT[this.getStoreCurrency()]));
             },
 
             /**
@@ -162,7 +165,7 @@ define(
                     'ktc': 300,
                     'scb': 500,
                     'uob': 500,
-                    'mbb': 150,
+                    'mbb': 500,
                 }[id];
             },
 
@@ -183,7 +186,7 @@ define(
                     'ktc': 0.008,
                     'scb': 0.0074,
                     'uob': 0.0064,
-                    'mbb': 0.004,
+                    'mbb': 0,
                 }[id];
             },
 
@@ -213,7 +216,6 @@ define(
 
                 const rate = this.getInstallmentInterestRate(id);
                 const interest = rate * terms * total;
-
                 return + (((total + interest) / terms).toFixed(2));
             },
 
@@ -317,7 +319,6 @@ define(
 
                     let dispTerms = [];
                     const terms = installmentBackends[key].allowed_installment_terms;
-                    console.log(installmentBackends[key]);
                     const minSingleInstallment = this.getInstallmentMinimum(id);
 
                     for (let i = 0; i < terms.length; i++) {
@@ -331,6 +332,8 @@ define(
                         }
                     }
 
+                    console.log(dispTerms)
+
                     return ko.observableArray(
                         dispTerms
                     );
@@ -343,7 +346,7 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT;
+                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT[this.getStoreCurrency()];
             },
 
             /**
@@ -353,6 +356,7 @@ define(
             */
             get_available_providers: function () {
                 let _providers = Object.values(this.capabilities);
+                console.log(_providers);
 
                 return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {
