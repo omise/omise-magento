@@ -24,6 +24,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize</payment_action>
             </omise_cc>
@@ -38,6 +39,7 @@
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
                 <payment_action>authorize_capture</payment_action>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
             </omise_offsite_internetbanking>
 
@@ -50,6 +52,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_alipay>
@@ -59,6 +62,7 @@
                 <title>PayNow QR Payment</title>
                 <model>OmisePaynowAdapter</model>
                 <is_gateway>1</is_gateway>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <can_initialize>1</can_initialize>
                 <can_use_checkout>1</can_use_checkout>
@@ -76,6 +80,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>0</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>order</payment_action>
             </omise_offline_promptpay>
@@ -89,6 +94,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_pointsciti>
@@ -102,6 +108,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_installment>
@@ -115,6 +122,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_truemoney>
@@ -129,6 +137,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>0</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>order</payment_action>
             </omise_offsite_fpx>
@@ -142,6 +151,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>0</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>order</payment_action>
             </omise_offline_conveniencestore>
@@ -155,6 +165,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>0</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>order</payment_action>
             </omise_offline_tesco>
@@ -168,6 +179,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_alipaycn>
@@ -181,6 +193,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_alipayhk>
@@ -194,6 +207,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_dana>
@@ -207,6 +221,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_gcash>
@@ -220,6 +235,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_kakaopay>
@@ -233,6 +249,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_touchngo>
@@ -246,6 +263,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_mobilebanking>
@@ -260,6 +278,7 @@
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_rabbitlinepay>
@@ -273,6 +292,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_ocbcpao>
@@ -286,6 +306,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_grabpay>
@@ -302,6 +323,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_cc_googlepay>
@@ -315,6 +337,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_boost>
@@ -328,6 +351,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_duitnowobw>
@@ -341,6 +365,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_duitnowqr>
@@ -354,6 +379,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_maybankqr>
@@ -367,6 +393,7 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_capture>1</can_capture>
                 <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_shopeepay>

@@ -6,6 +6,7 @@ use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 use Magento\Sales\Model\Order;
 use Omise\Payment\Model\Config\Cc as Config;
+use Omise\Payment\Model\RefundSyncStatus;
 
 class SyncStatus
 {
@@ -31,11 +32,13 @@ class SyncStatus
     public function __construct(
         Helper $helper,
         EmailHelper $emailHelper,
-        Config $config
+        Config $config,
+        RefundSyncStatus $refundSyncStatus
     ) {
         $this->helper = $helper;
         $this->emailHelper = $emailHelper;
         $this->config = $config;
+        $this->refundSyncStatus = $refundSyncStatus;
     }
 
     /**
@@ -101,8 +104,8 @@ class SyncStatus
     {
         $orderStateNotClosed = $order->getState() != Order::STATE_CLOSED;
 
-        if ($this->shouldRefund($charge) && $orderStateNotClosed) {
-            return $this->refund($order, $charge);
+        if ($this->refundSyncStatus->shouldRefund($charge) && $orderStateNotClosed) {
+            return $this->refundSyncStatus->refund($order, $charge);
         }
 
         // Payment will be already processed for the following states
@@ -125,44 +128,6 @@ class SyncStatus
 
             $order->save();
         }
-    }
-
-    /**
-     * @param object $charge
-     * @return boolean
-     */
-    private function shouldRefund($charge)
-    {
-        return isset($charge['refunds']) &&
-            isset($charge['refunds']['data']) &&
-            count($charge['refunds']['data']) !== 0;
-    }
-
-    /**
-     * @param Order $order
-     * @param array $charge
-     * @return void
-     */
-    private function refund($order, $charge)
-    {
-        $refundedAmount = isset($charge['refunded_amount'])
-            ? $charge['refunded_amount']
-            : $charge['refunded'];
-
-        if ($charge['funding_amount'] == $refundedAmount) {
-            $order->setState(Order::STATE_CLOSED);
-            $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
-        }
-
-        $order->addStatusHistoryComment(
-            __(
-                'Opn Payments: Payment refunded.<br/>An amount of %1 %2 has been refunded (manual sync).',
-                number_format($charge['refunded_amount']/100, 2, '.', ''),
-                $order->getOrderCurrencyCode()
-            )
-        );
-
-        $order->save();
     }
 
     /**
