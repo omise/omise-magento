@@ -110,12 +110,8 @@ class Charge extends BaseObject
         try {
             $refund = $this->object->refund($refundData);
         } catch (Exception $e) {
-            return new Error([
-                'code'    => 'failed_refund',
-                'message' => $e->getMessage()
-            ]);
+            throw new Exception('Failed to refund : ' . $e->getMessage());
         }
-
         return $refund;
     }
 
