@@ -53,7 +53,7 @@ class RefundSyncStatus
             $order->hasInvoices();
 
         if ($createCreditMemo) {
-            $this->createCredtMemo($order);
+            $this->createCreditMemo($order);
             $order->setState(Order::STATE_CLOSED);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
         }
@@ -75,7 +75,7 @@ class RefundSyncStatus
      *
      * @return void
      */
-    private function createCredtMemo($order)
+    private function createCreditMemo($order)
     {
         $invoices = $order->getInvoiceCollection();
 
