@@ -5,6 +5,7 @@ namespace Omise\Payment\Model\Api;
 use Exception;
 use OmiseCharge;
 use Omise\Payment\Model\Config\Config;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * @property string $object
@@ -110,12 +111,8 @@ class Charge extends BaseObject
         try {
             $refund = $this->object->refund($refundData);
         } catch (Exception $e) {
-            return new Error([
-                'code'    => 'failed_refund',
-                'message' => $e->getMessage()
-            ]);
+            throw new LocalizedException(__('Failed to refund : ' . $e->getMessage()));
         }
-
         return $refund;
     }
 

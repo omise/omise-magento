@@ -4,6 +4,7 @@ namespace Omise\Payment\Gateway\Request;
 
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Payment\Helper\Formatter;
 use Magento\Sales\Model\Order\Payment;
 use Omise\Payment\Helper\OmiseHelper;
@@ -48,14 +49,15 @@ class RefundDataBuilder implements BuilderInterface
 
         /** @var Payment $payment */
         $payment = $paymentDO->getPayment();
-        $order = $paymentDO->getOrder();
+        $order = $payment->getOrder();
+        $currency = $order->getOrderCurrency();
 
         return [
-            'store_id' => $order->getStoreId(),
+            'store_id' => $order->getStore()->getId(),
             'transaction_id' => $payment->getParentTransactionId(),
             PaymentDataBuilder::AMOUNT => $this->omiseHelper->omiseAmountFormat(
-                $order->getCurrencyCode(),
-                $order->getGrandTotalAmount()
+                $currency->getCode(),
+                $order->getTotalOnlineRefunded()
             )
         ];
     }
