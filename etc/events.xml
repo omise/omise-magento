@@ -40,8 +40,8 @@
     </event>
 
     <!-- Webhook -->
-    <event name="omise_payment_webhook_charge_complete">
-        <observer name="omise_payment_webhook_charge_complete_observer" instance="Omise\Payment\Observer\WebhookObserver\WebhookCompleteObserver" />
+    <event name="omise_payment_webhook_charge_capture">
+        <observer name="omise_payment_webhook_charge_capture_observer" instance="Omise\Payment\Observer\WebhookObserver\WebhookCompleteObserver" />
     </event>
 
     <event name="omise_payment_webhook_refund_create">

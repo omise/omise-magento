@@ -75,7 +75,7 @@ class RefundSyncStatus
      *
      * @return void
      */
-    private function createCreditMemo($order)
+    public function createCreditMemo($order)
     {
         $invoices = $order->getInvoiceCollection();
 
