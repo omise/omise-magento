@@ -3,15 +3,12 @@
 namespace Omise\Payment\Observer\WebhookObserver;
 
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Order;
-use Omise\Payment\Model\Event\Charge\Complete as EventChargeComplete;
 use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Omise\Payment\Observer\WebhookObserver\WebhookObserver;
-use Omise\Payment\Model\RefundSyncStatus;
+use Omise\Payment\Service\CreditMemoService;
 
 class WebhookRefundObserver extends WebhookObserver
 {
@@ -19,16 +16,16 @@ class WebhookRefundObserver extends WebhookObserver
      * @param \Omise\Payment\Model\Api\Event $apiEvent;
      * @param \Omise\Payment\Model\Order $order
      * @param \Omise\Payment\Model\Config\Config $config
-     * @param \Omise\Payment\Model\RefundSyncStatus $refundSyncStatus
+     * @param \Omise\Payment\Service\CreditMemoService $creditMemoService
      */
     public function __construct(
         ApiEvent $apiEvent,
         Order $order,
         Config $config,
-        RefundSyncStatus $refundSyncStatus
+        CreditMemoService $creditMemoService
     ) {
         parent::__construct($apiEvent, $order, $config);
-        $this->refundSyncStatus = $refundSyncStatus;
+        $this->creditMemoService = $creditMemoService;
     }
 
     /**
@@ -56,7 +53,7 @@ class WebhookRefundObserver extends WebhookObserver
     {
         if ($this->charge->isFullyRefunded()) {
             // Update order state and status.
-            $this->refundSyncStatus->createCreditMemo($this->orderData);
+            $this->creditMemoService->create($this->orderData);
             $this->orderData->setState(MagentoOrder::STATE_CLOSED);
             $defaultStatus = $this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_CLOSED);
             $this->orderData->setStatus($defaultStatus);
