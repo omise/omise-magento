@@ -7,7 +7,7 @@ use Magento\Sales\Model\Order;
 
 class RefundSyncStatus
 {
-    function __construct(CreditMemoService $creditMemoService)
+    public function __construct(CreditMemoService $creditMemoService)
     {
         $this->creditMemoService = $creditMemoService;
     }
