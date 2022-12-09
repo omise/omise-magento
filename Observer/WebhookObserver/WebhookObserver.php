@@ -7,7 +7,6 @@ use Magento\Framework\Event\ObserverInterface;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Order;
 use Omise\Payment\Model\Api\Event as ApiEvent;
-use Omise\Payment\Model\Event\Charge\Complete as EventChargeComplete;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 

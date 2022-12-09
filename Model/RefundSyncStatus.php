@@ -1,29 +1,15 @@
 <?php
+
 namespace Omise\Payment\Model;
 
-use Magento\Framework\Exception\LocalizedException;
-use Omise\Payment\Helper\OmiseHelper as Helper;
-use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
+use Omise\Payment\Service\CreditMemoService;
 use Magento\Sales\Model\Order;
-use Omise\Payment\Model\Config\Cc as Config;
-use Magento\Sales\Model\Order\CreditmemoFactory;
-use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Service\CreditmemoService;
 
 class RefundSyncStatus
 {
-    /**
-     * @param Helper $helper
-     * @param EmailHelper $emailHelper
-     */
-    public function __construct(
-        CreditmemoFactory $creditMemoFactory,
-        CreditmemoService $creditMemoService,
-        Invoice $invoice
-    ) {
-        $this->creditMemoFactory = $creditMemoFactory;
+    public function __construct(CreditMemoService $creditMemoService)
+    {
         $this->creditMemoService = $creditMemoService;
-        $this->invoice = $invoice;
     }
 
     /**
@@ -53,7 +39,7 @@ class RefundSyncStatus
             $order->hasInvoices();
 
         if ($createCreditMemo) {
-            $this->createCreditMemo($order);
+            $this->creditMemoService->create($order);
             $order->setState(Order::STATE_CLOSED);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
         }
@@ -67,27 +53,5 @@ class RefundSyncStatus
         );
 
         $order->save();
-    }
-
-    /**
-     * @param Invoice $invoice
-     * @param Order $order
-     *
-     * @return void
-     */
-    private function createCreditMemo($order)
-    {
-        $invoices = $order->getInvoiceCollection();
-
-        foreach ($invoices as $invoice) {
-            $invoice = $this->invoice->loadByIncrementId($invoice->getIncrementId());
-            $creditMemo = $this->creditMemoFactory->createByOrder($order);
-
-            // We don't set invoice as we want to do offline refund
-            $creditMemo->setCustomerNote(__('Your Order %1 has been refunded.', $order->getIncrementId()));
-            $creditMemo->setCustomerNoteNotify(false);
-            $creditMemo->addComment(__('Order has been refunded'));
-            $this->creditMemoService->refund($creditMemo);
-        }
     }
 }

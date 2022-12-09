@@ -53,11 +53,9 @@ class WebhookCompleteObserver extends WebhookObserver
                 return;
             }
 
-            $isAwaitingCapture = $this->charge->isAwaitCapture();
-
             // Successful payment
-            if ($this->charge->isSuccessful() || $isAwaitingCapture) {
-                $this->processOrder(!$isAwaitingCapture);
+            if ($this->charge->isSuccessful()) {
+                $this->processOrder();
             }
 
             return;

@@ -24,6 +24,7 @@ class Webhook extends Action
     protected $request;
 
     private $supportedEvents = [
+        'charge.capture',
         'charge.complete',
         'refund.create'
     ];
