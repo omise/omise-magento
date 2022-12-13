@@ -158,14 +158,38 @@ define(
              */
             getInstallmentMinimum: function (id) {
                 return {
-                    'kbank': 500,
-                    'bbl': 500,
-                    'bay': 300,
-                    'first_choice': 300,
-                    'ktc': 300,
-                    'scb': 500,
-                    'uob': 500,
-                    'mbb': 500,
+                    'kbank': {
+                        amount: 500,
+                        term: 'month',
+                    },
+                    'bbl': {
+                        amount: 500,
+                        term: 'month',
+                    },
+                    'bay': {
+                        amount: 300,
+                        term: 'month',
+                    },
+                    'first_choice': {
+                        amount: 300,
+                        term: 'month',
+                    },
+                    'ktc': {
+                        amount: 300,
+                        term: 'month',
+                    },
+                    'scb': {
+                        amount: 500,
+                        term: 'month',
+                    },
+                    'uob': {
+                        amount: 500,
+                        term: 'month',
+                    },
+                    'mbb': {
+                        amount: 500,
+                        term: '6 months',
+                    },
                 }[id];
             },
 
@@ -208,15 +232,21 @@ define(
              */
             calculateSingleInstallmentAmount: function (id, terms) {
                 const total = this.getTotal();
+                let term = terms;
+
+                // mbb installment should be 500 / 6 months
+                if('mbb' === id) {
+                    term = term / 6;
+                }
 
                 if (this.isZeroInterest()) {
                     //merchant pays interest
-                    return (total / terms).toFixed(2)
+                    return (total / term).toFixed(2)
                 }
 
                 const rate = this.getInstallmentInterestRate(id);
-                const interest = rate * terms * total;
-                return + (((total + interest) / terms).toFixed(2));
+                const interest = rate * term * total;
+                return + (((total + interest) / term).toFixed(2));
             },
 
             /**
@@ -310,7 +340,7 @@ define(
              */
             getInstallmentTerms: function (id) {
                 const installmentBackends = this.capabilities;
-                const templateLabel = $.mage.__('%terms months (%amount / month)');
+                const templateLabel = $.mage.__('%terms months (%amount / %term)');
 
                 for (const key in installmentBackends) {
                     if (installmentBackends[key]._id !== 'installment_' + id) {
@@ -319,14 +349,17 @@ define(
 
                     let dispTerms = [];
                     const terms = installmentBackends[key].allowed_installment_terms;
-                    const minSingleInstallment = this.getInstallmentMinimum(id);
+                    const bankInstallment = this.getInstallmentMinimum(id);
 
                     for (let i = 0; i < terms.length; i++) {
                         const amount = this.calculateSingleInstallmentAmount(id, terms[i]);
 
-                        if (amount >= minSingleInstallment) {
+                        if (amount >= bankInstallment.amount) {
                             dispTerms.push({
-                                label: templateLabel.replace('%terms', terms[i]).replace('%amount', this.getFormattedAmount(amount)),
+                                label: templateLabel
+                                    .replace('%terms', terms[i])
+                                    .replace('%amount', this.getFormattedAmount(amount))
+                                    .replace('%term', bankInstallment.term),
                                 key: terms[i]
                             });
                         }
