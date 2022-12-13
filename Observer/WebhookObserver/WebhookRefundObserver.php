@@ -51,13 +51,7 @@ class WebhookRefundObserver extends WebhookObserver
      */
     private function closeOrder()
     {
-        if ($this->charge->isFullyRefunded()) {
-            // Update order state and status.
-            $this->creditMemoService->create($this->orderData);
-            $this->orderData->setState(MagentoOrder::STATE_CLOSED);
-            $defaultStatus = $this->orderData->getConfig()->getStateDefaultStatus(MagentoOrder::STATE_CLOSED);
-            $this->orderData->setStatus($defaultStatus);
-        }
+        // Todo: Bring back the credit memo creation logic if we find way to restock the quantity
 
         $refundContextText = $this->charge->isFullyRefunded() ? 'fully' : 'partially';
 
