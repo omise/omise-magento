@@ -149,6 +149,7 @@ class OmiseHelper extends AbstractHelper
         Installment::SCB_ID => Installment::CODE,
         Installment::TTB_ID => Installment::CODE,
         Installment::UOB_ID => Installment::CODE,
+        Installment::MBB_ID => Installment::CODE,
 
         // offsite installment banking payment
         Mobilebanking::BAY_ID => Mobilebanking::CODE,

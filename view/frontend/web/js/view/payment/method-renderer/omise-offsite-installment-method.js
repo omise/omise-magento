@@ -16,7 +16,10 @@ define(
         priceUtils
     ) {
         'use strict';
-        const INSTALLMENT_MIN_PURCHASE_AMOUNT = 2000;
+        const INSTALLMENT_MIN_PURCHASE_AMOUNT  = {
+            'thb': 2000,
+            'myr': 500
+        };
         const CAPTION = $.mage.__('Choose number of monthly payments');
         const providers = [
             {
@@ -68,6 +71,13 @@ define(
                 logo: 'uob',
                 active: true
             },
+            {
+                id: "installment_mbb",
+                title: $.mage.__('MayBank'),
+                code: 'mbb',
+                logo: 'mbb',
+                active: true
+            },
 
         ]
 
@@ -76,7 +86,7 @@ define(
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
             code: 'omise_offsite_installment',
-            restrictedToCurrencies: ['thb'],
+            restrictedToCurrencies: ['thb', 'myr'],
 
             capabilities: null,
 
@@ -96,6 +106,7 @@ define(
                         'installmentTermsBAY',
                         'installmentTermsSCB',
                         'installmentTermsUOB',
+                        'installmentTermsMBB',
                     ]);
 
                 this.capabilities = checkoutConfig.omise_payment_list[this.code];
@@ -124,7 +135,7 @@ define(
              * @return {string}
              */
             getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT));
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT[this.getStoreCurrency()]));
             },
 
             /**
@@ -153,7 +164,8 @@ define(
                     'first_choice': 300,
                     'ktc': 300,
                     'scb': 500,
-                    'uob': 500
+                    'uob': 500,
+                    'mbb': 83.33,
                 }[id];
             },
 
@@ -173,7 +185,8 @@ define(
                     'first_choice': 0.013,
                     'ktc': 0.008,
                     'scb': 0.0074,
-                    'uob': 0.0064
+                    'uob': 0.0064,
+                    'mbb': 0,
                 }[id];
             },
 
@@ -203,7 +216,6 @@ define(
 
                 const rate = this.getInstallmentInterestRate(id);
                 const interest = rate * terms * total;
-
                 return + (((total + interest) / terms).toFixed(2));
             },
 
@@ -229,7 +241,8 @@ define(
                     this.installmentTermsKTC() ||
                     this.installmentTermsBAY() ||
                     this.installmentTermsSCB() ||
-                    this.installmentTermsUOB()
+                    this.installmentTermsUOB() ||
+                    this.installmentTermsMBB()
                 );
             },
 
@@ -254,6 +267,8 @@ define(
                         return this.observe().installmentTermsKTC
                     case 'installment_bay':
                         return this.observe().installmentTermsBAY
+                    case 'installment_mbb':
+                        return this.observe().installmentTermsMBB
                     default:
                         return null
                 }
@@ -270,6 +285,7 @@ define(
                 this.installmentTermsBAY(null);
                 this.installmentTermsSCB(null);
                 this.installmentTermsUOB(null);
+                this.installmentTermsMBB(null);
             },
 
             /**
@@ -328,7 +344,7 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT;
+                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT[this.getStoreCurrency()];
             },
 
             /**

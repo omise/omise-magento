@@ -136,6 +136,15 @@
     background: url('../images/bbl_mbank.png');
 }
 
+/** MayBank **/
+/* #omise_offsite_installmentForm .mbb {
+    background: #007bc4;
+} */
+
+#omise_offsite_installmentForm img.mbb {
+    background: url('../images/fpx-maybank.svg');
+}
+
 /** OCBC PAO **/
 div.ocbc_pao {
     background-image: url('../images/payment_ocbc_pao.png');

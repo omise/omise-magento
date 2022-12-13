@@ -95,14 +95,13 @@ class ConfigSectionPaymentPlugin
                      *  that omise is supported
                      * */
                     $paymentList  = $this->getBackends();
-                    $omiseConfigPaymentList=$this->getActivePaymentMethods($omiseConfigData);
+                    $omiseConfigPaymentList = $this->getActivePaymentMethods($omiseConfigData);
 
                     // filter and update config payment method data that omise account is supported
                     $data = $this->validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig);
 
                     // still save other payment methods that api support
                     $coreConfig->setData('groups', $data);
-                    
                 } catch (OmiseAuthenticationFailureException $e) {
                     $errors = $e->getOmiseError();
 
@@ -166,6 +165,7 @@ class ConfigSectionPaymentPlugin
         $backendNames = array_map(function ($payment) {
             return key($payment);
         }, $this->capabilities['payment_backends']);
+
         $backendNames = array_merge($backendNames, $this->capabilities['tokenization_methods']);
 
         // filter not support payment method from backends list
@@ -185,9 +185,11 @@ class ConfigSectionPaymentPlugin
     private function getActivePaymentMethods($configData)
     {
         $paymentConfigList = [];
+
         foreach ($configData['groups'] as $key => $value) {
-            // filter only oayment that merchant is active
+            // filter only payment that merchant is active
             $configFields = $value['fields']['active'];
+
             // possible key is inherit|value
             if (array_key_exists('inherit', $configFields)) {
                 // in case inherit value need to get the active value from parent
