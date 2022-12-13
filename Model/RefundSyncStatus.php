@@ -30,19 +30,10 @@ class RefundSyncStatus
      */
     public function refund($order, $charge)
     {
-        $refundedAmount = isset($charge['refunded_amount'])
-            ? $charge['refunded_amount']
-            : $charge['refunded'];
+        // Todo: Bring back the credit memo creation logic if we find way to restock the quantity
 
-        $createCreditMemo = $charge['funding_amount'] == $refundedAmount &&
-            $order->canCreditmemo() &&
-            $order->hasInvoices();
-
-        if ($createCreditMemo) {
-            $this->creditMemoService->create($order);
-            $order->setState(Order::STATE_CLOSED);
-            $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_CLOSED));
-        }
+        $order->setState(Order::STATE_PROCESSING);
+        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
         $order->addStatusHistoryComment(
             __(
