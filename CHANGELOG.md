@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [v2.30.0 _(Dec 14, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.30.0)
+- Rebranded Omise to Opn Payments. (PR: [#395] https://github.com/omise/omise-magento/pull/395)
+- Set order status from closed to processing on refund so that merchants can create credit memo. (PR: [#398] https://github.com/omise/omise-magento/pull/398)
+- Fixed duitnowobw bank list not showing. (PR: [#393] https://github.com/omise/omise-magento/pull/393)
+- Call omise refund after offline refund event triggered. (PR: [#392] https://github.com/omise/omise-magento/pull/392)
+- Use existing online refund function for all payment methods. (PR: [#397] https://github.com/omise/omise-magento/pull/397)
+- Bug fixed on partial refund. (PR: [#399] https://github.com/omise/omise-magento/pull/399)
+
 ## [v2.29.2 _(Oct 25, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.29.2)
 - Issue of two invoices of the same order has been fixed. (PR: [#387] https://github.com/omise/omise-magento/pull/387)
 - Improve the implementation to prevent the customer entering redirect URL directly in the address bar of the browser. (PR: [#388] https://github.com/omise/omise-magento/pull/388)
