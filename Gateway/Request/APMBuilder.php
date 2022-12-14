@@ -280,7 +280,7 @@ class APMBuilder implements BuilderInterface
                 break;
             case Shopeepay::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'shopeepay',
+                    self::SOURCE_TYPE => $this->helper->isMobilePlatform() ? 'shopeepay_jumpapp' : 'shopeepay',
                 ];
                 break;
         }

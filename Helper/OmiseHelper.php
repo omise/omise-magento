@@ -441,6 +441,14 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
+     * Check if current platform is mobile or not
+     */
+    public function isMobilePlatform()
+    {
+        return 'WEB' !== $this->getPlatformType();
+    }
+
+    /**
      * Depending on the setting of state to generate invoice, we will either create an invoice or return a created one.
      * Invoice will be marked as successfully paid and returned.
      * @param \Magento\Sales\Model\Order order
