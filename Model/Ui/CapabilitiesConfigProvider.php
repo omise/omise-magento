@@ -96,10 +96,15 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
         $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
 
+        // If user is in mobile and jump app is enabled then return jumpapp backend
         if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
             return $jumpAppBackend;
         }
 
+        // If above condition fails then it means either
+        // 1. User is using mobile device but jump app is not enabled
+        // 2. Jump app is enabled but user is not using mobile device
+        // In both cases we will want to show the shopeepay MPM backend first if MPM is not enabled.
         return $isShopeepayEnabled ? $mpmBackend : $jumpAppBackend;
     }
 }
