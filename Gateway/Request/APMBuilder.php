@@ -305,9 +305,17 @@ class APMBuilder implements BuilderInterface
         }
 
         // If above condition fails then it means either
-        // 1. User is using mobile device but jump app is not enabled
-        // 2. Jump app is enabled but user is not using mobile device
-        // In both cases we will want to show the shopeepay MPM first if MPM is not enabled.
+        //
+        // Case 1.
+        // User is using mobile device but jump app is not enabled.
+        // This means shopeepay direct is enabled otherwise this code would not execute.
+        //
+        // Case 2.
+        // Jump app is enabled but user is not using mobile device
+        //
+        // In both cases we will want to show the shopeepay MPM backend first if MPM is enabled.
+        // If MPM is not enabled then it means jump app is enabled because this code would never
+        // execute if none of the shopee backends were disabled.
         return $isShopeepayEnabled ? Shopeepay::ID : Shopeepay::JUMPAPP_ID;
     }
 }
