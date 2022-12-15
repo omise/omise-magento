@@ -38,8 +38,6 @@ use Omise\Payment\Helper\ReturnUrlHelper;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Capabilities;
 
-use Psr\Log\LoggerInterface;
-
 class APMBuilder implements BuilderInterface
 {
 
@@ -111,15 +109,13 @@ class APMBuilder implements BuilderInterface
         Helper $helper,
         ReturnUrlHelper $returnUrl,
         Config $config,
-        Capabilities $capabilities,
-        LoggerInterface $logger
+        Capabilities $capabilities
     )
     {
         $this->helper = $helper;
         $this->returnUrl = $returnUrl;
         $this->config = $config;
         $this->capabilities = $capabilities;
-        $this->logger = $logger;
     }
 
     /**
@@ -290,24 +286,25 @@ class APMBuilder implements BuilderInterface
                 ];
                 break;
             case Shopeepay::CODE:
-                $defaultSourceType = 'shopeepay';
-                $jumpAppSourceType = 'shopeepay_jumpapp';
-                $isJumpAppEnabled = $this->capabilities->isBackendEnabled($jumpAppSourceType);
-                $this->logger->debug('isJumpAppEnabled: ');
-                $this->logger->debug(print_r($isJumpAppEnabled, true));
-
-                if ($this->helper->isMobilePlatform() && $isJumpAppEnabled) {
-                    $defaultSourceType = $jumpAppSourceType;
-                }
-
-                $this->logger->debug('defaultSourceType: ' . $defaultSourceType);
-
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => $defaultSourceType
+                    self::SOURCE_TYPE => $this->getShopeepaySource()
                 ];
                 break;
         }
 
         return $paymentInfo;
+    }
+
+    private function getShopeepaySource()
+    {
+        $defaultSourceType = Shopeepay::ID;
+        $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
+        $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
+
+        if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
+            return Shopeepay::JUMPAPP_ID;
+        }
+
+        return $isShopeepayEnabled ? Shopeepay::ID : Shopeepay::JUMPAPP_ID;
     }
 }

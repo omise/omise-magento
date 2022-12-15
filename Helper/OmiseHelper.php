@@ -31,7 +31,6 @@ use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Model\Config\ShopeepayJumpApp;
 
 use SimpleXMLElement;
 use DOMDocument;
@@ -132,7 +131,7 @@ class OmiseHelper extends AbstractHelper
         DuitnowQR::ID => DuitnowQR::CODE,
         MaybankQR::ID => MaybankQR::CODE,
         Shopeepay::ID => Shopeepay::CODE,
-        ShopeepayJumpApp::ID => ShopeepayJumpApp::CODE,
+        Shopeepay::JUMPAPP_ID => Shopeepay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -447,7 +446,6 @@ class OmiseHelper extends AbstractHelper
      */
     public function isMobilePlatform()
     {
-        return true;
         return 'WEB' !== $this->getPlatformType();
     }
 

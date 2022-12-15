@@ -9,8 +9,8 @@ use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
-use Psr\Log\LoggerInterface;
 use Omise\Payment\Helper\OmiseHelper;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface
@@ -26,14 +26,12 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         Capabilities               $capabilities,
         PaymentMethodListInterface $paymentLists,
         StoreManagerInterface      $storeManager,
-        OmiseHelper $helper,
-        LoggerInterface $logger
+        OmiseHelper $helper
     ) {
         $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
         $this->helper = $helper;
-        $this->logger = $logger;
     }
 
     /**
@@ -50,11 +48,6 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $backends = $this->capabilities->getBackendsWithOmiseCode();
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
-
-        // $this->logger->debug('CapabilitiesConfigProvider Starts');
-        // $this->logger->debug(print_r($listOfActivePaymentMethods, true));
-        // $this->logger->debug(print_r($backends, true));
-        // $this->logger->debug('CapabilitiesConfigProvider Ends');
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
@@ -78,10 +71,6 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             }
         }
 
-        $this->logger->debug('CapabilitiesConfigProvider Starts');
-        $this->logger->debug(print_r($configs['omise_payment_list'], true));
-        $this->logger->debug('CapabilitiesConfigProvider Ends');
-
         return $configs;
     }
 
@@ -91,26 +80,26 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
      */
     private function getShopeeBackendByType($shopeeBackends)
     {
-        $jumpAppSourceType = 'shopeepay_jumpapp';
         $jumpAppBackend = [];
         $mpmBackend = [];
 
         // Since ShopeePay will have two types i.e shopeepay and shopeepay_jumpapp,
         // we split and store the type in separate variables.
         foreach($shopeeBackends as $backend) {
-            if ($backend->type === $jumpAppSourceType) {
+            if ($backend->type === Shopeepay::JUMPAPP_ID) {
                 $jumpAppBackend[] = $backend;
             } else {
                 $mpmBackend[] = $backend;
             }
         }
 
-        $isJumpAppEnabled = $this->capabilities->isBackendEnabled($jumpAppSourceType);
+        $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
+        $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
 
-        if ($this->helper->isMobilePlatform() && $isJumpAppEnabled) {
+        if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
             return $jumpAppBackend;
         }
 
-        return $mpmBackend;
+        return $isShopeepayEnabled ? $mpmBackend : $jumpAppBackend;
     }
 }

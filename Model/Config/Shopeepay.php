@@ -15,4 +15,6 @@ class Shopeepay extends Config
      * @var string
      */
     const ID = 'shopeepay';
+
+    const JUMPAPP_ID = 'shopeepay_jumpapp';
 }
