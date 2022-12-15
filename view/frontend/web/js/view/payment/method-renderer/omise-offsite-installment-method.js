@@ -78,7 +78,13 @@ define(
                 logo: 'mbb',
                 active: true
             },
-
+            {
+                id: "installment_ttb",
+                title: $.mage.__('TMBThanachart Bank'),
+                code: 'ttb',
+                logo: 'ttb',
+                active: true
+            },
         ]
 
         return Component.extend(Base).extend({
@@ -107,6 +113,7 @@ define(
                         'installmentTermsSCB',
                         'installmentTermsUOB',
                         'installmentTermsMBB',
+                        'installmentTermsTTB',
                     ]);
 
                 this.capabilities = checkoutConfig.omise_payment_list[this.code];
@@ -166,6 +173,7 @@ define(
                     'scb': 500,
                     'uob': 500,
                     'mbb': 83.33,
+                    'ttb': 500,
                 }[id];
             },
 
@@ -187,6 +195,7 @@ define(
                     'scb': 0.0074,
                     'uob': 0.0064,
                     'mbb': 0,
+                    'ttb': 0.008,
                 }[id];
             },
 
@@ -242,7 +251,8 @@ define(
                     this.installmentTermsBAY() ||
                     this.installmentTermsSCB() ||
                     this.installmentTermsUOB() ||
-                    this.installmentTermsMBB()
+                    this.installmentTermsMBB() ||
+                    this.installmentTermsTTB()
                 );
             },
 
@@ -269,6 +279,8 @@ define(
                         return this.observe().installmentTermsBAY
                     case 'installment_mbb':
                         return this.observe().installmentTermsMBB
+                    case 'installment_ttb':
+                        return this.observe().installmentTermsTTB
                     default:
                         return null
                 }
@@ -286,6 +298,7 @@ define(
                 this.installmentTermsSCB(null);
                 this.installmentTermsUOB(null);
                 this.installmentTermsMBB(null);
+                this.installmentTermsTTB(null);
             },
 
             /**

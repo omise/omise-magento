@@ -116,6 +116,15 @@
   background: url('../images/uob.svg')rgb(0, 36, 105);
 }
 
+/** TTB **/
+#omise_offsite_installmentForm .ttb {
+    background: #eeeeee;
+}
+#omise_offsite_installmentForm img.ttb {
+    background: url('../images/bank_ttb.png');
+    background-size: contain;
+}
+
 /** BAYKMA**/
 #omise_offsite_mobilebankingForm img.bay{
     background: url('../images/bay_kma.png');
