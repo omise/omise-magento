@@ -2,8 +2,9 @@
 namespace Omise\Payment\Model\Config;
 
 use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Config\ApmSourceInterface;
 
-class Alipay extends Config
+class Alipay extends Config implements ApmSourceInterface
 {
     /**
      * @var string
@@ -15,4 +16,9 @@ class Alipay extends Config
      * @var string
      */
     const ID = 'alipay';
+
+    public static function getSourceData()
+    {
+        return [ 'type' => self::ID ];
+    }
 }

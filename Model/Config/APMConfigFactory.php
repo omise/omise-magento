@@ -1,8 +1,6 @@
 <?php
-namespace Omise\Payment\Gateway\Request;
 
-use Magento\Payment\Gateway\Helper\SubjectReader;
-use Magento\Payment\Gateway\Request\BuilderInterface;
+namespace Omise\Payment\Model\Config;
 
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Conveniencestore;
@@ -26,122 +24,19 @@ use Omise\Payment\Model\Config\MaybankQR;
 use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Touchngo;
 
-use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
-use Omise\Payment\Observer\FpxDataAssignObserver;
-use Omise\Payment\Observer\DuitnowOBWDataAssignObserver;
-use Omise\Payment\Observer\InstallmentDataAssignObserver;
-use Omise\Payment\Observer\MobilebankingDataAssignObserver;
-use Omise\Payment\Observer\InternetbankingDataAssignObserver;
-use Omise\Payment\Observer\TruemoneyDataAssignObserver;
-use Omise\Payment\Helper\OmiseHelper as Helper;
-use Omise\Payment\Helper\ReturnUrlHelper;
-use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Model\Capabilities;
-
-use Psr\Log\LoggerInterface;
-
-class APMBuilder implements BuilderInterface
+class APMConfigFactory
 {
-
-    /**
-     * @var string
-     */
-    const SOURCE = 'source';
-
-    /**
-     * @var string
-     */
-    const SOURCE_TYPE = 'type';
-
-    /**
-     * @var string
-     */
-    const BANK = 'bank';
-
-    /**
-     * @var string
-     */
-    const PLATFORM_TYPE = 'platform_type';
-
-    /**
-     * @var string
-     */
-    const SOURCE_INSTALLMENT_TERMS = 'installment_terms';
-
-    /**
-     * @var string
-     */
-    const SOURCE_PHONE_NUMBER = 'phone_number';
-
-    /**
-     * @var string
-     */
-    const SOURCE_NAME = 'name';
-
-    /**
-     * @var string
-     */
-    const SOURCE_EMAIL = 'email';
-
-    /**
-     * @var string
-     */
-    const RETURN_URI = 'return_uri';
-
-    /**
-     * @var string
-     */
-    const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
-
-    /**
-     * @var \Omise\Payment\Helper\ReturnUrlHelper
-     */
-    protected $returnUrl;
-
-    /**
-     * @var Helper
-     */
-    protected $helper;
-
-    /**
-     * @param $helper    \Omise\Payment\Helper\OmiseHelper
-     * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
-     */
-    public function __construct(
-        Helper $helper,
-        ReturnUrlHelper $returnUrl,
-        Config $config,
-        Capabilities $capabilities,
-        LoggerInterface $logger
-    )
+    public function __construct(MagentoScopeConfigInterface $scopeConfig, StoreManagerInterface $storeManager)
     {
-        $this->helper = $helper;
-        $this->returnUrl = $returnUrl;
-        $this->config = $config;
-        $this->capabilities = $capabilities;
-        $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
     }
 
-    /**
-     * @param array $buildSubject
-     *
-     * @return array
-     */
-    public function build(array $buildSubject)
+    public function getAPM($apmCode)
     {
-        $returnUrl = $this->returnUrl->create('omise/callback/offsite');
-        $payment = $buildSubject['payment']->getPayment();
-        $payment->setAdditionalInformation('token', $returnUrl['token']);
-
-        $paymentInfo = [ self::RETURN_URI => $returnUrl['url'] ];
-
-        $payment = SubjectReader::readPayment($buildSubject);
-        $method  = $payment->getPayment();
-
         switch ($method->getMethod()) {
             case Alipay::CODE:
-                $paymentInfo[self::SOURCE] = Alipay::getSourceData();
-                break;
+                return new Alipay($this->scopeConfig, $this->storeManager);
             case Tesco::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'bill_payment_tesco_lotus'
@@ -307,7 +202,5 @@ class APMBuilder implements BuilderInterface
                 ];
                 break;
         }
-
-        return $paymentInfo;
     }
 }
