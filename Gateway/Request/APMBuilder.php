@@ -110,8 +110,7 @@ class APMBuilder implements BuilderInterface
         ReturnUrlHelper $returnUrl,
         Config $config,
         Capabilities $capabilities
-    )
-    {
+    ) {
         $this->helper = $helper;
         $this->returnUrl = $returnUrl;
         $this->config = $config;

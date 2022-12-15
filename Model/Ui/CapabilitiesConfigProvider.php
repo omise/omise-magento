@@ -85,7 +85,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
 
         // Since ShopeePay will have two types i.e shopeepay and shopeepay_jumpapp,
         // we split and store the type in separate variables.
-        foreach($shopeeBackends as $backend) {
+        foreach ($shopeeBackends as $backend) {
             if ($backend->type === Shopeepay::JUMPAPP_ID) {
                 $jumpAppBackend[] = $backend;
             } else {
