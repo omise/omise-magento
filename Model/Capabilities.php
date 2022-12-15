@@ -86,6 +86,11 @@ class Capabilities
         return $this->capabilitiesAPI->getBackends();
     }
 
+    public function isBackendEnabled($type)
+    {
+        return $this->getBackendsByType($type) ? true : false;
+    }
+
     /**
      *
      * @return object

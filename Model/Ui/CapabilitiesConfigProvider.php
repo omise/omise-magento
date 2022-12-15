@@ -9,7 +9,9 @@ use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
+use Omise\Payment\Helper\OmiseHelper;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface
 {
@@ -23,11 +25,13 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     public function __construct(
         Capabilities               $capabilities,
         PaymentMethodListInterface $paymentLists,
-        StoreManagerInterface      $storeManager
+        StoreManagerInterface      $storeManager,
+        OmiseHelper $helper
     ) {
         $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
+        $this->helper = $helper;
     }
 
     /**
@@ -59,9 +63,56 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
 
             // filter only active backends
             if (array_key_exists($code, $backends)) {
-                $configs['omise_payment_list'][$code]= $backends[$code];
+                if ($code === 'omise_offsite_shopeepay') {
+                    $configs['omise_payment_list'][$code] = $this->getShopeeBackendByType($backends[$code]);
+                } else {
+                    $configs['omise_payment_list'][$code]= $backends[$code];
+                }
             }
         }
+
         return $configs;
+    }
+
+    /**
+     * Return the right ShopeePay backend depending on the platform and availability of
+     * the backend in the capability
+     */
+    private function getShopeeBackendByType($shopeeBackends)
+    {
+        $jumpAppBackend = [];
+        $mpmBackend = [];
+
+        // Since ShopeePay will have two types i.e shopeepay and shopeepay_jumpapp,
+        // we split and store the type in separate variables.
+        foreach ($shopeeBackends as $backend) {
+            if ($backend->type === Shopeepay::JUMPAPP_ID) {
+                $jumpAppBackend[] = $backend;
+            } else {
+                $mpmBackend[] = $backend;
+            }
+        }
+
+        $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
+        $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
+
+        // If user is in mobile and jump app is enabled then return jumpapp backend
+        if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
+            return $jumpAppBackend;
+        }
+
+        // If above condition fails then it means either
+        //
+        // Case 1.
+        // User is using mobile device but jump app is not enabled.
+        // This means shopeepay direct is enabled otherwise this code would not execute.
+        //
+        // Case 2.
+        // Jump app is enabled but user is not using mobile device
+        //
+        // In both cases we will want to show the shopeepay MPM backend first if MPM is enabled.
+        // If MPM is not enabled then it means jump app is enabled because this code would never
+        // execute if none of the shopee backends were disabled.
+        return $isShopeepayEnabled ? $mpmBackend : $jumpAppBackend;
     }
 }

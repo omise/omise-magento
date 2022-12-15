@@ -35,6 +35,8 @@ use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Helper\ReturnUrlHelper;
+use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Capabilities;
 
 class APMBuilder implements BuilderInterface
 {
@@ -103,10 +105,16 @@ class APMBuilder implements BuilderInterface
      * @param $helper    \Omise\Payment\Helper\OmiseHelper
      * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
      */
-    public function __construct(Helper $helper, ReturnUrlHelper $returnUrl)
-    {
+    public function __construct(
+        Helper $helper,
+        ReturnUrlHelper $returnUrl,
+        Config $config,
+        Capabilities $capabilities
+    ) {
         $this->helper = $helper;
         $this->returnUrl = $returnUrl;
+        $this->config = $config;
+        $this->capabilities = $capabilities;
     }
 
     /**
@@ -127,9 +135,7 @@ class APMBuilder implements BuilderInterface
 
         switch ($method->getMethod()) {
             case Alipay::CODE:
-                $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'alipay'
-                ];
+                $paymentInfo[self::SOURCE] = Alipay::getSourceData();
                 break;
             case Tesco::CODE:
                 $paymentInfo[self::SOURCE] = [
@@ -280,11 +286,36 @@ class APMBuilder implements BuilderInterface
                 break;
             case Shopeepay::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'shopeepay',
+                    self::SOURCE_TYPE => $this->getShopeepaySource()
                 ];
                 break;
         }
 
         return $paymentInfo;
+    }
+
+    private function getShopeepaySource()
+    {
+        $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
+        $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
+
+        // If user is in mobile and jump app is enabled then return shopeepay_jumpapp as source
+        if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
+            return Shopeepay::JUMPAPP_ID;
+        }
+
+        // If above condition fails then it means either
+        //
+        // Case 1.
+        // User is using mobile device but jump app is not enabled.
+        // This means shopeepay direct is enabled otherwise this code would not execute.
+        //
+        // Case 2.
+        // Jump app is enabled but user is not using mobile device
+        //
+        // In both cases we will want to show the shopeepay MPM backend first if MPM is enabled.
+        // If MPM is not enabled then it means jump app is enabled because this code would never
+        // execute if none of the shopee backends were disabled.
+        return $isShopeepayEnabled ? Shopeepay::ID : Shopeepay::JUMPAPP_ID;
     }
 }

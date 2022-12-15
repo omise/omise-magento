@@ -131,6 +131,7 @@ class OmiseHelper extends AbstractHelper
         DuitnowQR::ID => DuitnowQR::CODE,
         MaybankQR::ID => MaybankQR::CODE,
         Shopeepay::ID => Shopeepay::CODE,
+        Shopeepay::JUMPAPP_ID => Shopeepay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -438,6 +439,14 @@ class OmiseHelper extends AbstractHelper
         }
 
         return "WEB";
+    }
+
+    /**
+     * Check if current platform is mobile or not
+     */
+    public function isMobilePlatform()
+    {
+        return 'WEB' !== $this->getPlatformType();
     }
 
     /**
