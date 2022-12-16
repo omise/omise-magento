@@ -112,6 +112,10 @@ class SyncStatus
         $orderStates = [Order::STATE_COMPLETE, Order::STATE_CLOSED, Order::STATE_PROCESSING];
 
         if (!in_array($order->getState(), $orderStates)) {
+            if ($order->getState() === Order::STATE_CANCELED) {
+                $this->reverseCancelledItems($order);
+            }
+
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
@@ -127,6 +131,21 @@ class SyncStatus
             );
 
             $order->save();
+        }
+    }
+
+    /**
+     * Setting the item status from cancelled to ordered to properly set the order status
+     *
+     * @return void
+     */
+    private function reverseCancelledItems($order)
+    {
+        $items = $order->getAllItems();
+
+        foreach ($items as $item) {
+            $item->setQtyCanceled(0);
+            $item->save();
         }
     }
 
