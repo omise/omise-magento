@@ -200,7 +200,7 @@ class OmiseHelper extends AbstractHelper
         // offline payment
         Paynow::CODE => "PayNow QR Payment",
         Promptpay::CODE => "PromptPay QR Payment",
-        Tesco::CODE => "Tesco Lotus Bill Payment",
+        Tesco::CODE => "Lotus's Bill Payment",
         Conveniencestore::CODE => "Convenience Store Payment"
     ];
 
