@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v2.31.0 _(Jan 24, 2023)_](https://github.com/omise/omise-magento/releases/tag/v2.31.0)
+- Added ShopeePay under Thailand and Singpaore. (PR: [#404] https://github.com/omise/omise-magento/pull/404)
+- Added installment TTB. (PR: [#405] https://github.com/omise/omise-magento/pull/405)
+- Added a logic to reverse the cancelled items before changing order status from cancelled to processing. (PR: [#406] https://github.com/omise/omise-magento/pull/406)
+- Rebrand Lotus's Bill Payment. (PR: [#407] https://github.com/omise/omise-magento/pull/407)
+
 ## [v2.30.0 _(Dec 14, 2022)_](https://github.com/omise/omise-magento/releases/tag/v2.30.0)
 - Rebranded Omise to Opn Payments. (PR: [#395] https://github.com/omise/omise-magento/pull/395)
 - Set order status from closed to processing on refund so that merchants can create credit memo. (PR: [#398] https://github.com/omise/omise-magento/pull/398)
