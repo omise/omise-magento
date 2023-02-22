@@ -157,6 +157,7 @@ class OmiseHelper extends AbstractHelper
         Mobilebanking::BBL_ID => Mobilebanking::CODE,
         Mobilebanking::KBANK_ID => Mobilebanking::CODE,
         Mobilebanking::SCB_ID => Mobilebanking::CODE,
+        Mobilebanking::KTB_ID => Mobilebanking::CODE,
 
         // offline payment
         Paynow::ID => Paynow::CODE,

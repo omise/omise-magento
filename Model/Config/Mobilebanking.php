@@ -24,4 +24,6 @@ class Mobilebanking extends Config
     const BBL_ID = "mobile_banking_bbl";
 
     const BAY_ID = "mobile_banking_bay";
+
+    const KTB_ID = "mobile_banking_ktb";
 }
