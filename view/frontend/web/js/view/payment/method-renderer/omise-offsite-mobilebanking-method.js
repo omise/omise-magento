@@ -48,6 +48,14 @@ define(
                 currencies: ['thb'],
                 active: true
             },
+            {
+                id: "mobile_banking_ktb",
+                title: $.mage.__('Krungthai NEXT'),
+                code: 'ktb',
+                logo: 'ktb',
+                currencies: ['thb'],
+                active: true
+            },
         ]
 
         return Component.extend(Base).extend({

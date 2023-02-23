@@ -145,6 +145,12 @@
     background: url('../images/bbl_mbank.png');
 }
 
+/** KTB Next**/
+#omise_offsite_mobilebankingForm img.ktb{
+    background: url('../images/ktb_mbank.png');
+    background-size: contain;
+}
+
 /** MayBank **/
 /* #omise_offsite_installmentForm .mbb {
     background: #007bc4;
