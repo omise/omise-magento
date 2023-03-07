@@ -3,6 +3,7 @@ namespace Omise\Payment\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
+use Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\Theme;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
 
@@ -40,16 +41,17 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
+        $customDesign = $this->omiseCcConfig->getCardThemeConfig();
+        $theme = $this->omiseCcConfig->getCardTheme();
         return [
             'payment' => [
-                'ccform' => [
-                    'months' => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcMonths()],
-                    'years'  => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcYears()],
-                ],
                 OmiseCcConfig::CODE => [
                     'publicKey'          => $this->omiseCcConfig->getPublicKey(),
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
+                    'locale'             => $this->omiseCcConfig->getStoreLocale(),
+                    'formDesign'         => Theme::getCustomizationDesign($theme, $customDesign),
+                    'theme'              => $theme
                 ],
             ]
         ];

@@ -15,4 +15,13 @@ class Cc extends Config
      * @var string
      */
     const ID ='credit_card';
+
+
+    public function getCardThemeConfig() {
+        return $this->getValue('card_form_theme_config', self::CODE);
+    }
+
+    public function getCardTheme() {
+        return $this->getValue('card_form_theme', self::CODE);
+    }
 }

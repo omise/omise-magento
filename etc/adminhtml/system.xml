@@ -74,6 +74,18 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_cc/title</config_path>
                     </field>
+                    <field id="card_form_theme" translate="label comment" type="select" sortOrder="111" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Card form theme</label>
+                        <config_path>payment/omise_cc/card_form_theme</config_path>
+                        <source_model>Omise\Payment\Model\Source\CardFormTheme</source_model>
+                        <comment>
+                            <![CDATA[Credit/debit card form design on checkout page. <a style="cursor:pointer" onclick="cardFormCustomization.showModal()"><b>Click here</b></a> for more card form customization.]]>
+                        </comment>
+                    </field>
+                    <field id="card_form_theme_config" sortOrder="111" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <config_path>payment/omise_cc/card_form_theme_config</config_path>
+                        <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\FormModal</frontend_model>
+                    </field>
                     <field id="allowspecific" translate="label comment" type="select" sortOrder="181" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_cc/allowspecific</config_path>

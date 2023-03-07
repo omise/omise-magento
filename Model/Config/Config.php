@@ -25,6 +25,7 @@ class Config
      * @var integer
      */
     private $storeId = null;
+    private $storeLocale = null;
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -43,7 +44,9 @@ class Config
     private function init()
     {
         $storeId = $this->storeManager->getStore()->getId();
+        $localeCode =  $this->scopeConfig->getValue('general/locale/code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId);
         $this->setStoreId($storeId);
+        $this->setStoreLocale($localeCode);
 
         // Initialize only if both keys are present
         if ($this->getPublicKey() && $this->getSecretKey()) {
@@ -65,6 +68,22 @@ class Config
     public function setStoreId($storeId = null)
     {
         $this->storeId = $storeId;
+    }
+
+     /**
+     * @return mixed
+     */
+    public function setStoreLocale($locale)
+    {
+        return $this->storeLocale = $locale;
+    }
+
+     /**
+     * @return mixed
+     */
+    public function getStoreLocale()
+    {
+        return $this->storeLocale;
     }
 
     /**
