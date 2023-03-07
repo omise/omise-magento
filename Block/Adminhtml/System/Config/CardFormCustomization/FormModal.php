@@ -14,6 +14,7 @@ class FormModal extends Field
     public $request;
     public $storeManager;
     public $localFileSystem;
+    public $theme;
 
     /**
      * URL for omise webhook.
@@ -40,6 +41,7 @@ class FormModal extends Field
         $this->storeManager = $storeManager;
         $this->request = $request;
         $this->localFileSystem = new File();
+        $this->theme = new Theme();
         parent::__construct($context, $data);
     }
 
@@ -62,6 +64,7 @@ class FormModal extends Field
      */
     public function getScript(AbstractElement $element)
     {
+
         $id = $element->getId();
         $value = $element->getData('value');
 
@@ -69,11 +72,11 @@ class FormModal extends Field
         $script .= sprintf('window.OMISE_CARD_CUSTOMIZATION_DESIGN = `%s`;', $value);
         $script .= sprintf(
             'window.OMISE_CARD_CUSTOMIZATION_DARK_THEME = `%s`;',
-            json_encode(Theme::getDarkTheme())
+            json_encode($this->theme->getDarkTheme())
         );
         $script .= sprintf(
             'window.OMISE_CARD_CUSTOMIZATION_LIGHT_THEME = `%s`;',
-            json_encode(Theme::getLightTheme())
+            json_encode($this->theme->getLightTheme())
         );
         $script .= $this->localFileSystem->fileGetContents(__DIR__ . '/js/script.js');
 

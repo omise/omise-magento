@@ -5,17 +5,17 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization;
 class Theme
 {
 
-    public static function getCustomizationDesign($theme, $customDesign)
+    public function getCustomizationDesign($theme, $customDesign)
     {
         if (!empty($customDesign)) {
             return json_decode($customDesign, true);
         }
         return (empty($theme) || $theme == 'light')
-            ? Theme::getLightTheme()
-            : Theme::getDarkTheme();
+            ? $this->getLightTheme()
+            : $this->getDarkTheme();
     }
 
-    public static function getLightTheme()
+    public function getLightTheme()
     {
         return [
             'font' => [
@@ -39,7 +39,7 @@ class Theme
         ];
     }
 
-    public static function getDarkTheme()
+    public function getDarkTheme()
     {
         return [
             'font' => [

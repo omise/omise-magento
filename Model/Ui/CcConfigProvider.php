@@ -1,4 +1,5 @@
 <?php
+
 namespace Omise\Payment\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
@@ -41,8 +42,9 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
+        $theme = new Theme();
         $customDesign = $this->omiseCcConfig->getCardThemeConfig();
-        $theme = $this->omiseCcConfig->getCardTheme();
+        $selectedTheme = $this->omiseCcConfig->getCardTheme();
         return [
             'payment' => [
                 OmiseCcConfig::CODE => [
@@ -50,8 +52,8 @@ class CcConfigProvider implements ConfigProviderInterface
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                     'locale'             => $this->omiseCcConfig->getStoreLocale(),
-                    'formDesign'         => Theme::getCustomizationDesign($theme, $customDesign),
-                    'theme'              => $theme
+                    'formDesign'         => $theme->getCustomizationDesign($selectedTheme, $customDesign),
+                    'theme'              => $selectedTheme
                 ],
             ]
         ];
@@ -62,13 +64,13 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     public function getCards()
     {
-        if (! $this->customer->getMagentoCustomerId() || ! $this->customer->getId()) {
+        if (!$this->customer->getMagentoCustomerId() || !$this->customer->getId()) {
             return [];
         }
 
         $cards = $this->customer->cards(['order' => 'reverse_chronological']);
 
-        if (! $cards) {
+        if (!$cards) {
             return [];
         }
 
