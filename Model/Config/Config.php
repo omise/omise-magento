@@ -44,7 +44,11 @@ class Config
     private function init()
     {
         $storeId = $this->storeManager->getStore()->getId();
-        $localeCode =  $this->scopeConfig->getValue('general/locale/code', \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId);
+        $localeCode =  $this->scopeConfig->getValue(
+            'general/locale/code',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
         $this->setStoreId($storeId);
         $this->setStoreLocale($localeCode);
 
@@ -70,7 +74,7 @@ class Config
         $this->storeId = $storeId;
     }
 
-     /**
+    /**
      * @return mixed
      */
     public function setStoreLocale($locale)
@@ -78,7 +82,7 @@ class Config
         return $this->storeLocale = $locale;
     }
 
-     /**
+    /**
      * @return mixed
      */
     public function getStoreLocale()

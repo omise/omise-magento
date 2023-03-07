@@ -6,20 +6,20 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization;
 class Theme
 {
 
-    public static function getCustomizationDesign($theme, $customDesign)
-    {
-        if (!empty($customDesign)) {
-            return json_decode($customDesign, true);
-        }
-        return (empty($theme) || $theme == 'light')
-            ? Theme::getLightTheme()
-            : Theme::getDarkTheme();
-    }
+	public static function getCustomizationDesign($theme, $customDesign)
+	{
+		if (!empty($customDesign)) {
+			return json_decode($customDesign, true);
+		}
+		return (empty($theme) || $theme == 'light')
+			? Theme::getLightTheme()
+			: Theme::getDarkTheme();
+	}
 
-    public static function getLightTheme()
-    {
-        return [
-            'font' => [
+	public static function getLightTheme()
+	{
+		return [
+			'font' => [
 				'name' => 'Poppins',
 				'size' => 16,
 			],
@@ -37,13 +37,13 @@ class Theme
 				'text_color' => '#1c2433',
 				'theme_color' => '#1451cc',
 			]
-        ];
-    }
+		];
+	}
 
-    public static function getDarkTheme()
-    {
-        return [
-            'font' => [
+	public static function getDarkTheme()
+	{
+		return [
+			'font' => [
 				'name' => 'Poppins',
 				'size' => 16,
 			],
@@ -61,6 +61,6 @@ class Theme
 				'text_color' => '#E6EAF2',
 				'theme_color' => '#1451CC',
 			]
-        ];
-    }
+		];
+	}
 }

@@ -7,11 +7,13 @@ use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\Filesystem\Driver\File;
 
 class FormModal extends Field
 {
     public $request;
     public $storeManager;
+    public $localFileSystem;
 
     /**
      * URL for omise webhook.
@@ -37,6 +39,7 @@ class FormModal extends Field
     ) {
         $this->storeManager = $storeManager;
         $this->request = $request;
+        $this->localFileSystem = new File();
         parent::__construct($context, $data);
     }
 
@@ -48,7 +51,7 @@ class FormModal extends Field
      */
     public function getCss(AbstractElement $element)
     {
-        return file_get_contents(__DIR__ . '/css/style.css');
+        return $this->localFileSystem->fileGetContents(__DIR__ . '/css/style.css');
     }
 
     /**
@@ -64,9 +67,15 @@ class FormModal extends Field
 
         $script = sprintf('window.OMISE_CARD_CUSTOMIZATION_INPUT_ID = `%s`;', $id);
         $script .= sprintf('window.OMISE_CARD_CUSTOMIZATION_DESIGN = `%s`;', $value);
-        $script .= sprintf('window.OMISE_CARD_CUSTOMIZATION_DARK_THEME = `%s`;', json_encode(Theme::getDarkTheme()));
-        $script .= sprintf('window.OMISE_CARD_CUSTOMIZATION_LIGHT_THEME = `%s`;', json_encode(Theme::getLightTheme()));
-        $script .= file_get_contents(__DIR__ . '/js/script.js');
+        $script .= sprintf(
+            'window.OMISE_CARD_CUSTOMIZATION_DARK_THEME = `%s`;',
+            json_encode(Theme::getDarkTheme())
+        );
+        $script .= sprintf(
+            'window.OMISE_CARD_CUSTOMIZATION_LIGHT_THEME = `%s`;',
+            json_encode(Theme::getLightTheme())
+        );
+        $script .= $this->localFileSystem->fileGetContents(__DIR__ . '/js/script.js');
 
         return $script;
     }
@@ -84,7 +93,7 @@ class FormModal extends Field
         $name = $element->getName();
 
         $html = '<input id="' . $id . '" name="' . $name . '" value="' . $value . '" type="hidden">';
-        $html .= file_get_contents(__DIR__ . '/form-modal.html');
+        $html .= $this->localFileSystem->fileGetContents(__DIR__ . '/form-modal.html');
         return $html;
     }
 
@@ -100,9 +109,5 @@ class FormModal extends Field
         $html .= $this->getHtml($element);
         $html .= '<script>' . $this->getScript($element) . '</script>';
         return $html;
-    }
-
-    public function getDefaultDesign() {
-
     }
 }
