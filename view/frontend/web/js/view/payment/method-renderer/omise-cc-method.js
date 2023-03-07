@@ -79,7 +79,7 @@ define(
                 return this
             },
 
-            openOmiseJs() {
+            openOmiseJs: function () {
                 const self = this
                 ko.bindingHandlers.omiseCardForm = {
                     init: function (element) {
@@ -138,7 +138,7 @@ define(
                                 self.createOrder(self, payload)
                             },
                             onError: (err) => {
-                                if(err.length > 0) {
+                                if (err.length > 0) {
                                     self.omiseCardError(err.length == 1 ? err[0] : 'Please enter required card information.')
                                 }
                                 else {
@@ -151,7 +151,7 @@ define(
                 }
             },
 
-            createOrder(self, payload) {
+            createOrder: function (self, payload) {
                 self.startPerformingPlaceOrderAction()
                 self.omiseCardToken(payload.token)
                 if (payload.remember) {
