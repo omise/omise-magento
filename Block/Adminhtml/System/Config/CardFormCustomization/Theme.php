@@ -2,7 +2,6 @@
 
 namespace Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization;
 
-
 class Theme
 {
 
