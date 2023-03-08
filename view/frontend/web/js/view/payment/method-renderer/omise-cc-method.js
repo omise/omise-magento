@@ -62,6 +62,15 @@ define(
             },
 
             /**
+             * Return the Omise Magento and Magento versions to be sent in user agent header
+             *
+             * @returns string
+             */
+            getUserAgent: function() {
+                return window.checkoutConfig.payment.omise_cc.omiseMagentoUserAgent;
+            },
+
+            /**
              * Initiate observable fields
              *
              * @return this
@@ -170,6 +179,7 @@ define(
                 }
 
                 Omise.setPublicKey(this.getPublicKey());
+                Omise.setUserAgent(this.getUserAgent());
                 Omise.createToken('card', card, function(statusCode, response) {
                     if (statusCode === 200) {
                         self.omiseCardToken(response.id);

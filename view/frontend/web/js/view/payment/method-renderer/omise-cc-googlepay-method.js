@@ -71,7 +71,7 @@ define(
             type: 'PAYMENT_GATEWAY',
             parameters: {
                 "gateway": "omise",
-                "gatewayMerchantId": window.checkoutConfig.payment.omise_cc.publicKey,
+                "gatewayMerchantId": this.getPublicKey()
             }
         };
         
@@ -304,6 +304,24 @@ define(
                         console.error(err);
                     });
             },
+
+            /**
+             * Get Omise public key
+             *
+             * @return {string}
+             */
+            getPublicKey: function() {
+                return window.checkoutConfig.payment.omise_cc.publicKey;
+            },
+
+            /**
+             * Return the Omise Magento and Magento versions to be sent in user agent header
+             *
+             * @returns string
+             */
+            getUserAgent: function() {
+                return window.checkoutConfig.payment.omise_cc.omiseMagentoUserAgent;
+            },
             
             /**
              * Create Omise token from the payment data returned by the Google Pay API.
@@ -333,7 +351,8 @@ define(
                     });
                 }
 
-                Omise.setPublicKey(window.checkoutConfig.payment.omise_cc.publicKey);
+                Omise.setPublicKey(this.getPublicKey());
+                Omise.setUserAgent(this.getUserAgent());
                 Omise.createToken('tokenization', tokenizationParams, function(statusCode, response) {
                     if (statusCode === 200) {
                         klass.omiseCardToken(response.id);
