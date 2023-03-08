@@ -52,7 +52,7 @@ class CcConfigProvider implements ConfigProviderInterface
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                     'locale'             => $this->omiseCcConfig->getStoreLocale(),
-                    'formDesign'         => $theme->getCustomizationDesign($selectedTheme, $customDesign),
+                    'formDesign'         => $theme->getFormDesign($selectedTheme, $customDesign),
                     'theme'              => $selectedTheme
                 ],
             ]

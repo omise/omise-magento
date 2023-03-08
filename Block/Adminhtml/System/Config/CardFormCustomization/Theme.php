@@ -4,8 +4,7 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization;
 
 class Theme
 {
-
-    public function getCustomizationDesign($theme, $customDesign)
+    public function getFormDesign($theme, $customDesign)
     {
         if (!empty($customDesign)) {
             return json_decode($customDesign, true);

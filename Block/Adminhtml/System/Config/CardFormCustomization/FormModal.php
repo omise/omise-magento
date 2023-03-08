@@ -17,16 +17,6 @@ class FormModal extends Field
     public $theme;
 
     /**
-     * URL for omise webhook.
-     */
-    const URI = 'omise/callback/webhook';
-
-    /**
-     * @var \Magento\Framework\Url
-     */
-    protected $urlHelper;
-
-    /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\App\Request\Http $http
@@ -64,7 +54,6 @@ class FormModal extends Field
      */
     public function getScript(AbstractElement $element)
     {
-
         $id = $element->getId();
         $value = $element->getData('value');
 
