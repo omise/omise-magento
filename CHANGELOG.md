@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v2.32.0 _(Mar 8, 2023)_](https://github.com/omise/omise-magento/releases/tag/v2.32.0)
+- Added Krungthai NEXT mobile banking (PR: [#409](https://github.com/omise/omise-magento/pull/409))
+
 ## [v2.31.0 _(Jan 24, 2023)_](https://github.com/omise/omise-magento/releases/tag/v2.31.0)
 - Added ShopeePay under Thailand and Singpaore. (PR: [#404](https://github.com/omise/omise-magento/pull/404))
 - Added installment TTB. (PR: [#405](https://github.com/omise/omise-magento/pull/405))
