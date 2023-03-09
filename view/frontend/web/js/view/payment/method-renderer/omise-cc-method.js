@@ -152,12 +152,11 @@ define(
             },
 
             createOrder: function (self, payload) {
-                self.startPerformingPlaceOrderAction()
                 self.omiseCardToken(payload.token)
                 if (payload.remember) {
                     self.omiseSaveCard(payload.remember)
                 }
-                const failHandler = self.buildFailHandler(this)
+                const failHandler = self.buildFailHandler(this, 300)
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done((order_id) => {
@@ -306,7 +305,7 @@ define(
 
             processOrderWithCard: function () {
                 const self = this
-                const failHandler = this.buildFailHandler(self)
+                const failHandler = this.buildFailHandler(self, 300)
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
