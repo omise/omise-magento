@@ -85,7 +85,7 @@ class FormModal extends Field
         $name = $element->getName();
 
         $html = sprintf(
-            "<input id='%s' name='%s' value='%s' type='text'>",
+            "<input id='%s' name='%s' value='%s' type='hidden'>",
             $id,
             $name,
             $value
