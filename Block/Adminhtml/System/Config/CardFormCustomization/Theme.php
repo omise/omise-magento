@@ -7,8 +7,17 @@ class Theme
     public function getFormDesign($theme, $customDesign)
     {
         if (!empty($customDesign)) {
-            return json_decode($customDesign, true);
+            $result = json_decode($customDesign, true);
+            if (!$result) {
+                return $this->getDefaultFormDesign($theme);
+            }
+            return $result;
         }
+        return $this->getDefaultFormDesign($theme);
+    }
+
+    public function getDefaultFormDesign($theme)
+    {
         return (empty($theme) || $theme == 'light')
             ? $this->getLightTheme()
             : $this->getDarkTheme();

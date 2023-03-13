@@ -84,7 +84,12 @@ class FormModal extends Field
         $id = $element->getId();
         $name = $element->getName();
 
-        $html = '<input id="' . $id . '" name="' . $name . '" value="' . $value . '" type="hidden">';
+        $html = sprintf(
+            "<input id='%s' name='%s' value='%s' type='text'>",
+            $id,
+            $name,
+            $value
+        );
         $html .= $this->localFileSystem->fileGetContents(__DIR__ . '/form-modal.html');
         return $html;
     }
