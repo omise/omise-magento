@@ -83,14 +83,14 @@
                         </comment>
                     </field>
                     <field id="card_form_theme" translate="label comment" type="select" sortOrder="112" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Card Form Theme</label>
+                        <label>Secure Form Theme</label>
                         <config_path>payment/omise_cc/card_form_theme</config_path>
                         <source_model>Omise\Payment\Model\Source\CardFormTheme</source_model>
                         <depends>
                             <field id="secure_form">yes</field>
                         </depends>
                         <comment>
-                            <![CDATA[Credit/debit card form design on checkout page. <a style="cursor:pointer" onclick="cardFormCustomization.showModal()"><b>Click here</b></a> for more card form customization.]]>
+                            <![CDATA[Credit/debit card secure form design on checkout page. <a style="cursor:pointer" onclick="cardFormCustomization.showModal()"><b>Click here</b></a> for more secure card form customization.]]>
                         </comment>
                     </field>
                     <field id="card_form_theme_config" sortOrder="113" showInDefault="1" showInWebsite="1" showInStore="1">
