@@ -70,7 +70,7 @@ class FormModal extends Field
 
     /**
      * add global javascript variables
-     * 
+     *
      * @param Array
      */
     private function addGlobalJsVariables($array)
@@ -84,7 +84,7 @@ class FormModal extends Field
 
     /**
      * get inherit input name (use website checkbox)
-     * 
+     *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      */
     protected function getInheritCheckboxName($element)
