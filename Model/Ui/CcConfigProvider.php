@@ -47,11 +47,16 @@ class CcConfigProvider implements ConfigProviderInterface
         $selectedTheme = $this->omiseCcConfig->getCardTheme();
         return [
             'payment' => [
+                'ccform' => [
+                    'months' => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcMonths()],
+                    'years'  => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcYears()],
+                ],
                 OmiseCcConfig::CODE => [
                     'publicKey'          => $this->omiseCcConfig->getPublicKey(),
                     'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
                     'cards'              => $this->getCards(),
                     'locale'             => $this->omiseCcConfig->getStoreLocale(),
+                    'secureForm'         => $this->omiseCcConfig->getSecureForm(),
                     'formDesign'         => $theme->getFormDesign($selectedTheme, $customDesign),
                     'theme'              => $selectedTheme
                 ],

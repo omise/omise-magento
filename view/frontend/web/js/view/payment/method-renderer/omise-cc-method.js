@@ -69,14 +69,24 @@ define(
             initObservable: function () {
                 this._super()
                     .observe([
+                        'omiseCardNumber',
+                        'omiseCardHolderName',
+                        'omiseCardExpirationMonth',
+                        'omiseCardExpirationYear',
+                        'omiseCardSecurityCode',
                         'omiseCardToken',
                         'omiseCard',
                         'omiseSaveCard',
                         'omiseCardError'
                     ])
-
-                this.openOmiseJs()
+                if (this.isSecureForm()) {
+                    this.openOmiseJs()
+                }
                 return this
+            },
+
+            isSecureForm: function () {
+                return window.checkoutConfig.payment.omise_cc.secureForm === 'yes'
             },
 
             openOmiseJs: function () {
@@ -241,11 +251,11 @@ define(
             },
 
             /**
-             * Generate Omise token before proceed the placeOrder process.
+             * Generate Omise token with embedded form before proceed the placeOrder process.
              *
              * @return {void}
              */
-            generateTokenAndPerformPlaceOrderAction: function () {
+            generateTokenWithEmbeddedFormAndPerformPlaceOrderAction: function () {
                 this.startPerformingPlaceOrderAction()
                 let billingAddress = {}
                 let selectedBillingAddress = quote.billingAddress()
@@ -253,6 +263,43 @@ define(
                     Object.assign(billingAddress, this.getSelectedTokenBillingAddress(selectedBillingAddress))
                 }
                 OmiseCard.requestCardToken(billingAddress)
+            },
+
+            /**
+             * Generate Omise token with omise.js before proceed the placeOrder process.
+             *
+             * @return {void}
+             */
+            generateTokenWithOmiseJsAndPerformPlaceOrderAction: function () {
+                if (! this.validate()) {
+                    return false;
+                }
+
+                const self = this
+                this.startPerformingPlaceOrderAction()
+
+                let card = {
+                    number: this.omiseCardNumber(),
+                    name: this.omiseCardHolderName(),
+                    expiration_month: this.omiseCardExpirationMonth(),
+                    expiration_year: this.omiseCardExpirationYear(),
+                    security_code: this.omiseCardSecurityCode()
+                }
+                let selectedBillingAddress = quote.billingAddress()
+
+                if (self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                    Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress))
+                }
+
+                Omise.setPublicKey(this.getPublicKey())
+                Omise.createToken('card', card, function (statusCode, response) {
+                    if (statusCode === 200) {
+                        self.createOrder(self, {token : response.id})
+                    } else {
+                        self.omiseCardError(response.message)
+                        self.stopPerformingPlaceOrderAction()
+                    }
+                })
             },
 
             /**
@@ -277,7 +324,11 @@ define(
                     return true
                 }
 
-                this.generateTokenAndPerformPlaceOrderAction()
+                if (this.isSecureForm()) {
+                    this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
+                } else {
+                    this.generateTokenWithOmiseJsAndPerformPlaceOrderAction()
+                }
 
                 return true
             },

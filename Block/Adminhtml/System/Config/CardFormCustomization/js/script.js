@@ -3,6 +3,23 @@ class CardFormCustomization {
         this.handleButtonClickEvent()
         this.handleColorInputChanges()
         this.showOmiseCardForm()
+        this.setUseWebsiteValue()
+    }
+
+    setUseWebsiteValue() {
+        if (OMISE_CC_INPUT_INHERIT_SHOULD_SHOW) {
+            const id = 'omise_use_website_form_design'
+            document.getElementById(id + '_checkbox').checked =
+                OMISE_CC_INPUT_INHERIT_VALUE == '1' ? true : false
+            document.getElementById(id).style.display = 'block'
+            document.getElementById(id + '_label').innerHTML = OMISE_CC_INPUT_INHERIT_LABEL
+        }
+    }
+
+    setOriginalUseWebsiteValue() {
+        const checked = document.getElementById("omise_use_website_form_design_checkbox").checked
+        const element = document.getElementById(OMISE_CC_INPUT_ID + '_inherit')
+        element.value = checked ? '1' : ''
     }
 
     showModal() {
@@ -32,9 +49,9 @@ class CardFormCustomization {
     }
 
     getInitialDesign() {
-        const design = this.parseJson(OMISE_CARD_CUSTOMIZATION_DESIGN)
-        const darkTheme = this.parseJson(OMISE_CARD_CUSTOMIZATION_DARK_THEME)
-        const lightTheme = this.parseJson(OMISE_CARD_CUSTOMIZATION_LIGHT_THEME)
+        const design = this.parseJson(OMISE_CC_DESIGN)
+        const darkTheme = this.parseJson(OMISE_CC_DARK_THEME)
+        const lightTheme = this.parseJson(OMISE_CC_LIGHT_THEME)
         if (!design) {
             return this.getSelectedTheme() == 'dark' ? darkTheme : lightTheme
         }
@@ -46,11 +63,11 @@ class CardFormCustomization {
     }
 
     getInputValue(name) {
-        const element = document.querySelector(`[name=${name}]`);
-        if(element) {
+        const element = document.querySelector(`[name=${name}]`)
+        if (element) {
             return element.value
         }
-        return null;
+        return null
     }
 
     setColorInputValue(element) {
@@ -79,7 +96,7 @@ class CardFormCustomization {
                     input = event.target.previousElementSibling
                 }
                 const clickEvent = new MouseEvent('click')
-                if(input) {
+                if (input) {
                     input.dispatchEvent(clickEvent)
                 }
             })
@@ -116,8 +133,9 @@ class CardFormCustomization {
     }
 
     submitForm(design) {
-        const element = document.getElementById(OMISE_CARD_CUSTOMIZATION_INPUT_ID)
-        element.value = design? JSON.stringify(design) : null;
+        const element = document.getElementById(OMISE_CC_INPUT_ID)
+        element.value = design ? JSON.stringify(design) : null
+        this.setOriginalUseWebsiteValue()
         const form = document.getElementById('config-edit-form')
         form.submit()
         this.hideModal()
@@ -127,13 +145,13 @@ class CardFormCustomization {
         const testPublicKey = this.getInputValue(`groups\\[omise\\]\\[fields\\]\\[test_public_key\\]\\[value\\]`)
         const livePublicKey = this.getInputValue(`groups\\[omise\\]\\[fields\\]\\[live_public_key\\]\\[value\\]`)
         const sandbox = this.getInputValue(`groups\\[omise\\]\\[fields\\]\\[sandbox_status\\]\\[value\\]`)
-        return sandbox ? testPublicKey: livePublicKey
+        return sandbox ? testPublicKey : livePublicKey
     }
 
     showOmiseCardForm() {
-        this.getOmisePublicKey();
+        this.getOmisePublicKey()
         const element = document.getElementById('omise-card')
-        const { input, checkbox, font } = this.getDesignFormValues();
+        const { input, checkbox, font } = this.getDesignFormValues()
         OmiseCard.configure({
             publicKey: this.getOmisePublicKey(),
             element,
@@ -160,7 +178,7 @@ class CardFormCustomization {
                 }
             }
         })
-        OmiseCard.open({});
+        OmiseCard.open({})
     }
 
     handleButtonClickEvent() {
@@ -176,7 +194,7 @@ class CardFormCustomization {
 
         document.getElementById('omise-card-form-customization-preview').addEventListener('click', (event) => {
             event.preventDefault()
-            this.showPreviewModal();
+            this.showPreviewModal()
             this.showOmiseCardForm()
         })
 
@@ -184,7 +202,6 @@ class CardFormCustomization {
             event.preventDefault()
             this.hidePreviewModal()
         })
-        
 
         document.getElementById('omise-card-form-customization-cancel').addEventListener('click', (event) => {
             event.preventDefault()

@@ -54,22 +54,43 @@ class FormModal extends Field
      */
     public function getScript(AbstractElement $element)
     {
-        $id = $element->getId();
-        $value = $element->getData('value');
+        $script = $this->addGlobalJsVariables([
+            'OMISE_CC_INPUT_ID' => $element->getId(),
+            'OMISE_CC_DESIGN' => $element->getData('value'),
+            'OMISE_CC_LIGHT_THEME' => json_encode($this->theme->getLightTheme()),
+            'OMISE_CC_DARK_THEME' => json_encode($this->theme->getDarkTheme()),
+            'OMISE_CC_INPUT_INHERIT_VALUE' => $element->getInherit(),
+            'OMISE_CC_INPUT_INHERIT_LABEL' => $this->_getInheritCheckboxLabel($element),
+            'OMISE_CC_INPUT_INHERIT_SHOULD_SHOW' => $this->_isInheritCheckboxRequired($element),
+        ]);
 
-        $script = sprintf('window.OMISE_CARD_CUSTOMIZATION_INPUT_ID = `%s`;', $id);
-        $script .= sprintf('window.OMISE_CARD_CUSTOMIZATION_DESIGN = `%s`;', $value);
-        $script .= sprintf(
-            'window.OMISE_CARD_CUSTOMIZATION_DARK_THEME = `%s`;',
-            json_encode($this->theme->getDarkTheme())
-        );
-        $script .= sprintf(
-            'window.OMISE_CARD_CUSTOMIZATION_LIGHT_THEME = `%s`;',
-            json_encode($this->theme->getLightTheme())
-        );
         $script .= $this->localFileSystem->fileGetContents(__DIR__ . '/js/script.js');
-
         return $script;
+    }
+
+    /**
+     * add global javascript variables
+     * 
+     * @param Array
+     */
+    private function addGlobalJsVariables($array)
+    {
+        $script = '';
+        foreach ($array as $key => $value) {
+            $script .= sprintf('window.%s = `%s`;', $key, $value);
+        }
+        return $script;
+    }
+
+    /**
+     * get inherit input name (use website checkbox)
+     * 
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     */
+    protected function getInheritCheckboxName($element)
+    {
+        $namePrefix = preg_replace('#\[value\](\[\])?$#', '', $element->getName());
+        return $namePrefix . '[inherit]';
     }
 
     /**
@@ -80,16 +101,24 @@ class FormModal extends Field
      */
     public function getHtml(AbstractElement $element)
     {
+        $isCheckboxRequired = $this->_isInheritCheckboxRequired($element);
         $value = $element->getData('value');
         $id = $element->getId();
         $name = $element->getName();
-
         $html = sprintf(
             "<input id='%s' name='%s' value='%s' type='hidden'>",
             $id,
             $name,
             $value
         );
+        if ($isCheckboxRequired) {
+            $html .= sprintf(
+                "<input id='%s' name='%s' value='%s' type='hidden'>",
+                $id . '_inherit',
+                $this->getInheritCheckboxName($element),
+                $element->getInherit()
+            );
+        }
         $html .= $this->localFileSystem->fileGetContents(__DIR__ . '/form-modal.html');
         return $html;
     }
