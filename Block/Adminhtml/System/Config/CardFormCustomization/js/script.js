@@ -16,16 +16,19 @@ class CardFormCustomization {
         }
     }
 
+    isUseWebsiteChecked() {
+        return document.getElementById("omise_use_website_form_design_checkbox").checked
+    }
+
     setOriginalUseWebsiteValue() {
-        const checked = document.getElementById("omise_use_website_form_design_checkbox").checked
         const element = document.getElementById(OMISE_CC_INPUT_ID + '_inherit')
-        element.value = checked ? '1' : ''
+        element.value = this.isUseWebsiteChecked() ? '1' : ''
     }
 
     showModal() {
         const element = document.getElementById('omise-modal')
         element.style.display = 'flex'
-        this.setDesignFormValues()
+        this.handleDesignInputState(true)
     }
 
     showPreviewModal() {
@@ -56,6 +59,14 @@ class CardFormCustomization {
             return this.getSelectedTheme() == 'dark' ? darkTheme : lightTheme
         }
         return design
+    }
+
+    setInputDisable(name) {
+        document.querySelector(`[name=${name}]`).disabled = true
+    }
+
+    setInputEnable(name) {
+        document.querySelector(`[name=${name}]`).disabled = false
     }
 
     setInputValue(name, val) {
@@ -103,14 +114,21 @@ class CardFormCustomization {
         })
     }
 
-    setDesignFormValues() {
+    handleDesignInputState(setValue) {
         const design = this.getInitialDesign()
         const self = this
         if (design) {
             Object.keys(design).forEach(function (componentKey) {
                 const componentValues = design[componentKey]
                 Object.keys(componentValues).forEach(function (key) {
-                    self.setInputValue(`${componentKey}\\[${key}\\]`, componentValues[key])
+                    if (setValue) {
+                        self.setInputValue(`${componentKey}\\[${key}\\]`, componentValues[key])
+                    }
+                    if (self.isUseWebsiteChecked()) {
+                        self.setInputDisable(`${componentKey}\\[${key}\\]`)
+                    } else {
+                        self.setInputEnable(`${componentKey}\\[${key}\\]`)
+                    }
                 })
             })
         }
@@ -206,6 +224,10 @@ class CardFormCustomization {
         document.getElementById('omise-card-form-customization-cancel').addEventListener('click', (event) => {
             event.preventDefault()
             this.hideModal()
+        })
+
+        document.getElementById('omise_use_website_form_design_checkbox').addEventListener('change', (event) => {
+            this.handleDesignInputState(false)
         })
     }
 

@@ -83,6 +83,11 @@
     height: 33px;
 }
 
+.omise-modal-content .omise-color-input-container:has(input:disabled) {
+    background-color: #f4f4f4;
+    border-color: #d6d6d6;
+}
+
 .omise-modal-content .omise-color-input {
     border: none !important;
     box-shadow: none !important;
@@ -94,6 +99,10 @@
 
 .omise-modal-content .omise-color-input:focus {
     box-shadow: none !important;
+}
+
+.omise-modal-content .omise-color-input-container:has(input:disabled)>span {
+    color: #979797 !important;
 }
 
 .omise-modal-content .omise-color-input-container>span {
