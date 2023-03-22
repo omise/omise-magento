@@ -91,8 +91,11 @@ define(
              *
              * @return {boolean}
              */
-            buildFailHandler(context) {
+            buildFailHandler(context, scrollTop = false) {
                 return function (response) {
+                    if (Number.isInteger(scrollTop)) {
+                        window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+                    }
                     errorProcessor.process(response, context.messageContainer);
                     fullScreenLoader.stopLoader();
                     context.isPlaceOrderActionAllowed(true);
