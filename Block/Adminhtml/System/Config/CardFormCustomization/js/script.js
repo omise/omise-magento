@@ -17,12 +17,15 @@ class CardFormCustomization {
     }
 
     isUseWebsiteChecked() {
-        return document.getElementById("omise_use_website_form_design_checkbox").checked
+        const element = document.getElementById("omise_use_website_form_design_checkbox")
+        return element ? element.checked : false
     }
 
     setOriginalUseWebsiteValue() {
         const element = document.getElementById(OMISE_CC_INPUT_ID + '_inherit')
-        element.value = this.isUseWebsiteChecked() ? '1' : ''
+        if(element) {
+            element.value = this.isUseWebsiteChecked() ? '1' : ''
+        }
     }
 
     showModal() {
