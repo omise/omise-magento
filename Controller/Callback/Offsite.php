@@ -181,10 +181,15 @@ class Offsite extends Action
                 throw new LocalizedException(__($charge->getMessage()));
             }
 
-            if ($charge->isFailed()) {
+            if (
+                $charge->isFailed() ||
+                $this->shopeepayFailed($paymentMethod, $charge->isSuccessful())
+            ) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
-                $failureMessage = ucfirst($charge->failure_message);
+                $failureMessage = $charge->failure_message ?
+                    ucfirst($charge->failure_message) :
+                    'Payment cancelled';
                 $errorMessage = __(
                     "Payment failed. $failureMessage, please contact our support if you have any questions."
                 );
@@ -313,6 +318,11 @@ class Offsite extends Action
 
             return $this->redirect(self::PATH_CART);
         }
+    }
+
+    private function shopeepayFailed($paymentMethod, $isChargeSuccess)
+    {
+        return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
     }
 
     /**
