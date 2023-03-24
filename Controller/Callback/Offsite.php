@@ -320,11 +320,6 @@ class Offsite extends Action
         }
     }
 
-    private function shopeepayFailed($paymentMethod, $isChargeSuccess)
-    {
-        return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
-    }
-
     /**
      * @param  \Magento\Sales\Model\Order $order
      *
