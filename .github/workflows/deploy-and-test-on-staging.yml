@@ -1,14 +1,17 @@
-name: Deploy to Staging
+name: Deploy and Test on Staging
 on:
   push:
     branches: [ 'master' ]
 
 jobs:
   static:
-    name: Deploy to Staging
+    name: Deploy and Test on Staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       
       - name: Trigger Buildkite Pipeline & Deploy On Staging
         run: sh .github/workflows/trigger-buildkite-pipeline.sh ${{ secrets.BUILDKITE_API_ACCESS_TOKEN }}
+
+      - name: Trigger E2E Tests On Staging
+        run: sh .github/workflows/trigger-e2e-tests.sh ${{ secrets.BUILDKITE_API_ACCESS_TOKEN }}
