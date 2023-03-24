@@ -10,8 +10,8 @@ trait FailedChargeTrait
      */
     public function processFailedCharge($errorMessage, $shopeePayFailed)
     {
-        // if payment method is shopee pay then the charge is neither success or failed
-        // then we should not trigger webhook because charge.failed webhook is not triggered
+        // if payment method is shopeepayand the charge is neither success or failed then
+        // webhook flow should be avoided because charge.failed webhook will not be triggered
         if (!$shopeePayFailed && $this->config->isWebhookEnabled()) {
             $this->logger->debug($errorMessage);
             $this->messageManager->addErrorMessage($errorMessage);
