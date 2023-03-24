@@ -518,4 +518,15 @@ class OmiseHelper extends AbstractHelper
         }
         return null;
     }
+
+    /**
+     * Check if Shopeepay payment is failed / cancelled
+     *
+     * @param string $paymentMethod
+     * @param boolean $isChargeSuccess
+     */
+    public function hasShopeepayFailed($paymentMethod, $isChargeSuccess)
+    {
+        return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
+    }
 }

@@ -181,10 +181,9 @@ class Offsite extends Action
                 throw new LocalizedException(__($charge->getMessage()));
             }
 
-            if (
-                $charge->isFailed() ||
-                $this->shopeepayFailed($paymentMethod, $charge->isSuccessful())
-            ) {
+            $shopeePayFailed = $this->helper->hasShopeepayFailed($paymentMethod, $charge->isSuccessful());
+
+            if ($charge->isFailed() || $shopeePayFailed) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
                 $failureMessage = $charge->failure_message ?
@@ -194,7 +193,8 @@ class Offsite extends Action
                     "Payment failed. $failureMessage, please contact our support if you have any questions."
                 );
 
-                return $this->processFailedCharge($errorMessage);
+                // pass shopeePayFailed to avoid webhook to cancel payment
+                return $this->processFailedCharge($errorMessage, $shopeePayFailed);
             }
 
             // Do not proceed if webhook is enabled

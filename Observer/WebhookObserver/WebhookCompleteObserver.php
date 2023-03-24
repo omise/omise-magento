@@ -3,14 +3,11 @@
 namespace Omise\Payment\Observer\WebhookObserver;
 
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Order;
-use Omise\Payment\Model\Event\Charge\Complete as EventChargeComplete;
 use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Omise\Payment\Observer\WebhookObserver\WebhookObserver;
 use Magento\Sales\Model\Order\Payment\Transaction;
