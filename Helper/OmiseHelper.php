@@ -136,8 +136,6 @@ class OmiseHelper extends AbstractHelper
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
         Internetbanking::BAY_ID => Internetbanking::CODE,
-        Internetbanking::KTB_ID => Internetbanking::CODE,
-        Internetbanking::SCB_ID => Internetbanking::CODE,
 
         // offsite installment banking payment
         Installment::BAY_ID => Installment::CODE,
