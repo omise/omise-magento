@@ -5,11 +5,14 @@ namespace Omise\Payment\Controller\Callback\Traits;
 trait FailedChargeTrait
 {
     /**
+     * @param boolean $shopeePayFaild This is temprorary param
      * @param string $errorMessage
      */
-    public function processFailedCharge($errorMessage)
+    public function processFailedCharge($errorMessage, $shopeePayFailed)
     {
-        if ($this->config->isWebhookEnabled()) {
+        // if payment method is shopeepayand the charge is neither success or failed then
+        // webhook flow should be avoided because charge.failed webhook will not be triggered
+        if (!$shopeePayFailed && $this->config->isWebhookEnabled()) {
             $this->logger->debug($errorMessage);
             $this->messageManager->addErrorMessage($errorMessage);
             return $this->redirect(self::PATH_CART);
