@@ -6,6 +6,7 @@ use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Cc;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -35,11 +36,23 @@ class PaymentDataBuilder implements BuilderInterface
     const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
 
     /**
-     * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
+     * @var \Omise\Payment\Helper\OmiseHelper
      */
-    public function __construct(OmiseHelper $omiseHelper)
+    private $omiseHelper;
+
+    /**
+     * @var \Omise\Payment\Model\Config\Cc
+     */
+    private $ccConfig;
+
+    /**
+     * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
+     * @param Omise\Payment\Model\Config\Cc $ccConfig
+     */
+    public function __construct(OmiseHelper $omiseHelper, Cc $ccConfig)
     {
         $this->omiseHelper = $omiseHelper;
+        $this->ccConfig = $ccConfig;
     }
 
     /**
@@ -74,6 +87,10 @@ class PaymentDataBuilder implements BuilderInterface
 
         if (Installment::CODE === $method->getMethod()) {
             $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = $this->isZeroInterestInstallment($method);
+        }
+
+        if(Cc::CODE === $method->getMethod()) {
+            $requestBody[self::METADATA]['embedded_form_enabled'] = $this->ccConfig->getSecureForm();
         }
 
         return $requestBody;
