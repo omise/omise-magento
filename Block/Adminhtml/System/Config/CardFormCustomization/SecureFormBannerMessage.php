@@ -9,13 +9,6 @@ class SecureFormBannerMessage implements MessageInterface
 {
 
     /**
-     * @var string
-     *
-     * Message identity
-     */
-    const MESSAGE_IDENTITY = 'opn_payments_secure_form_message';
-
-    /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     protected $omiseCcConfig;
@@ -38,7 +31,7 @@ class SecureFormBannerMessage implements MessageInterface
      */
     public function getIdentity()
     {
-        return self::MESSAGE_IDENTITY;
+        return 'opn_payments_secure_form_message';
     }
 
     /**
@@ -60,9 +53,13 @@ class SecureFormBannerMessage implements MessageInterface
     public function getText()
     {
         $text = '<b>Opn Payments</b> : ';
-        $text .= __('Update now to use the secure form to securely accept payment information.') . " ";
-        $text .= __('Note that you must re-customize the credit card checkout form after the upgrade.') . " ";
-        $text .= __('For more details, please click %1 here %2.', "<a target='blank' href='https://www.omise.co/magento-plugin'>", "</a>");
+        $text .= __('Update now to use the secure form to securely accept payment information.') . ' ';
+        $text .= __('Note that you must re-customize the credit card checkout form after the upgrade.') . ' ';
+        $text .= __(
+            'For more details, please click %1 here %2.',
+            '<a target="blank" href="https://www.omise.co/magento-plugin">',
+            '</a>'
+        );
         return $text;
     }
 
