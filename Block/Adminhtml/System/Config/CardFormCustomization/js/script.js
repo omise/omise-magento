@@ -4,28 +4,6 @@ class CardFormCustomization {
         this.handleColorInputChanges()
         this.showOmiseCardForm()
         this.setUseWebsiteValue()
-        this.showBannerMessage()
-    }
-
-    showBannerMessage() {
-        const secureFormInputName = `groups\\[omise\\]\\[groups\\]\\[omise_cc\\]\\[fields\\]\\[secure_form\\]\\[value\\]`
-        const secureFormInputValue = this.getInputValue(secureFormInputName)
-        if (secureFormInputValue === 'yes') return
-
-        const pageWrapper = document.querySelector('.page-wrapper')
-        const noticesWrapper = document.querySelector('.notices-wrapper')
-        if (!pageWrapper || !noticesWrapper) return
-
-        const notice = document.createElement('div')
-        notice.classList.add(['notices-wrapper'])
-        notice.innerHTML = `
-            <div class="opn-banner-message message message-warning message-system-inner">
-                <b>Opn Payments</b> : Update now to use the secure form to securely accept payment information. 
-                Note that you must re-customize the credit card checkout form after the upgrade. 
-                For more details, please click <a href="https://www.omise.co/magento-plugin">here</a>.
-            </div>
-        `
-        pageWrapper.insertBefore(notice, noticesWrapper)
     }
 
     setUseWebsiteValue() {

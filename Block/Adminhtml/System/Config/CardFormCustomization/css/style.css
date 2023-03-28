@@ -155,12 +155,3 @@
 #omise_use_website_form_design {
     display: none;
 }
-
-.opn-banner-message {
-    padding-left: 4.1rem;
-    padding-right: 0rem;
-}
-
-.opn-banner-message:before {
-    left: 1.1rem;
-}
