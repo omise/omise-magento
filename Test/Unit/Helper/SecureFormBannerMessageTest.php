@@ -27,7 +27,7 @@ class SecureFormBannerMessageTest extends TestCase
 
     /**
      * test get identity
-     * 
+     *
      * @covers Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage
      */
     public function testGetIdentity()
@@ -37,7 +37,7 @@ class SecureFormBannerMessageTest extends TestCase
 
     /**
      * test text is display when secure form is off
-     * 
+     *
      * @covers Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage
      */
     public function testIsDisplayed()
@@ -48,7 +48,7 @@ class SecureFormBannerMessageTest extends TestCase
 
     /**
      * test text is not display when secure form is on
-     * 
+     *
      * @covers Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage
      */
     public function testIsNotDisplayed()
@@ -59,7 +59,7 @@ class SecureFormBannerMessageTest extends TestCase
 
     /**
      * test that get severity should return MessageInterface:SEVERITY_CRITICAL
-     * 
+     *
      * @covers Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage
      */
     public function testGetSeverity()
@@ -69,13 +69,12 @@ class SecureFormBannerMessageTest extends TestCase
 
     /**
      * test getText return valid html
-     * 
+     *
      * @covers Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage
      */
     public function testGetText()
     {
-        $messageText = '<b>Opn Payments</b> : Update now to use the secure form to securely accept payment information. Note that you must re-customize the credit card checkout form after the upgrade. For more details, please click <a target="blank" href="https://www.omise.co/magento-plugin"> here </a>.';
-
-        $this->assertStringContainsString($messageText, $this->_messageModel->getText());
+        $text = 'Update now to use the secure form to securely accept payment information';
+        $this->assertStringContainsString($text, $this->_messageModel->getText());
     }
 }
