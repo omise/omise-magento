@@ -7,7 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 class PhoneNumberFormatterTest extends TestCase
 {
-    private PhoneNumberFormatter $helper;
+    private $helper;
+
     /**
      * This function is called before the test runs.
      * Ideal for setting the values to variables or objects.
@@ -88,7 +89,7 @@ class PhoneNumberFormatterTest extends TestCase
      */
     public function testInvalidCountryPhoneNumber()
     {
-        // not supported country will return the value from input 
+        // not supported country will return the value from input
         // function will only remove non numeric characters except for the "+" sign
         $numbers  = [
             '+81888888888' => '+81888888888',    // string with +countryCode
