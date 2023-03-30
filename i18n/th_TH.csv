@@ -36,4 +36,4 @@
 "Select a card to proceed", "เลือกบัตรเพื่อดำเนินการต่อ"
 "True Money Phone Number", "เบอร์โทรศัพท์ที่ใช้สมัครบัญชี TrueMoney Wallet"
 "Use a new card", "ใช้บัตรใหม่"
-"secure_form_banner_message", "Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. (TH) You will need to re-customize the credit card checkout form after the upgrade. <a target='blank' href='https://www.omise.co/magento-plugin'>Learn how to enable Secure Form.</a>"
+"secure_form_banner_message", "<b>Opn Payments</b> : Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target='blank' href='https://www.omise.co/magento-plugin'>Learn how to enable Secure Form.</a>"

@@ -52,17 +52,13 @@ class SecureFormBannerMessage implements MessageInterface
      */
     public function getText()
     {
-        $text = '<b>Opn Payments</b> : ';
-
-        $defaultMessage = "Update your plugin to the latest version to enable 
+        $defaultMessage = "<b>Opn Payments</b> : Update your plugin to the latest version to enable 
         Secure Form and maximize the security of your customers’ information. 
         You will need to re-customize the credit card checkout form after the upgrade. 
         <a target='blank' href='https://www.omise.co/magento-plugin'>
         Learn how to enable Secure Form.</a>";
 
-        $text .= $this->localize('secure_form_banner_message', $defaultMessage);
-
-        return $text;
+        return $this->localize('secure_form_banner_message', $defaultMessage);
     }
 
     /**
