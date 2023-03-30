@@ -249,22 +249,23 @@ class OmiseHelper extends AbstractHelper
      */
     public function omiseAmountFormat($currency, $amount)
     {
-        switch (strtoupper($currency)) {
-            case 'EUR':
-            case 'GBP':
-            case 'SGD':
-            case 'THB':
-            case 'USD':
-            case 'AUD':
-            case 'CAD':
-            case 'CHF':
-            case 'CNY':
-            case 'DKK':
-            case 'HKD':
-            case 'MYR':
-                // Convert to a small unit
-                $amount *= 100;
-                break;
+        $supportedCurrencies = [
+            'EUR',
+            'GBP',
+            'SGD',
+            'THB',
+            'USD',
+            'AUD',
+            'CAD',
+            'CHF',
+            'CNY',
+            'DKK',
+            'HKD',
+            'MYR',
+        ];
+
+        if (in_array($currency, $supportedCurrencies)) {
+            return $amount *= 100;
         }
 
         return $amount;
@@ -506,6 +507,7 @@ class OmiseHelper extends AbstractHelper
         if (array_key_exists($code, $this->labelByOmiseCode)) {
             return $this->labelByOmiseCode[$code];
         }
+
         return null;
     }
 

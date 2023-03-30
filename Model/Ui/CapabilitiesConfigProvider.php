@@ -52,13 +52,10 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
 
-            switch ($code) {
-                case OmiseInstallmentConfig::CODE:
-                    $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
-                    break;
-                case CcGooglePay::CODE:
-                    $configs['card_brands'] = $this->capabilities->getCardBrands();
-                    break;
+            if ($code === OmiseInstallmentConfig::CODE) {
+                $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
+            } else if ($code === CcGooglePay::CODE) {
+                $configs['card_brands'] = $this->capabilities->getCardBrands();
             }
 
             // filter only active backends

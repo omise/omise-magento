@@ -106,53 +106,14 @@ class Offsite extends Action
     {
         $order = $this->session->getLastRealOrder();
 
-        if (! $order->getId()) {
-            $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order
-            again or contact our support if you have any questions.'));
+        $isValid = $this->isValid($order);
 
+        if (!$isValid) {
             return $this->redirect(self::PATH_CART);
         }
 
-        if (! $payment = $order->getPayment()) {
-            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
-            support if you have any questions.'));
-
-            return $this->redirect(self::PATH_CART);
-        }
-
-        $token = $this->request->getParam('token');
-
-        if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
-            $this->invalid(
-                $order,
-                __('The URL is invalid. Please contact our support if you have any questions.')
-            );
-
-            return $this->redirect(self::PATH_CART);
-        }
-
-        $orderState = $order->getState();
-
-        if ($orderState === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_SUCCESS);
-        }
-
-        if ($orderState !== Order::STATE_PENDING_PAYMENT && $orderState !== Order::STATE_CANCELED) {
-            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
-            support if you have any questions.'));
-
-            return $this->redirect(self::PATH_CART);
-        }
-
+        $payment = $order->getPayment();
         $paymentMethod = $payment->getMethod();
-
-        if (!$this->helper->isOffsitePaymentMethod($paymentMethod)) {
-            $this->invalid(
-                $order,
-                __('Invalid payment method. Please contact our support if you have any questions.')
-            );
-            return $this->redirect(self::PATH_CART);
-        }
 
         if (! $charge_id = $payment->getAdditionalInformation('charge_id')) {
             $this->cancel(
@@ -162,6 +123,12 @@ class Offsite extends Action
             $this->session->restoreQuote();
 
             return $this->redirect(self::PATH_CART);
+        }
+
+        $orderState = $order->getState();
+
+        if ($orderState === Order::STATE_PROCESSING) {
+            return $this->redirect(self::PATH_SUCCESS);
         }
 
         try {
@@ -184,17 +151,7 @@ class Offsite extends Action
             $shopeePayFailed = $this->helper->hasShopeepayFailed($paymentMethod, $charge->isSuccessful());
 
             if ($charge->isFailed() || $shopeePayFailed) {
-                // restoring the cart
-                $this->checkoutSession->restoreQuote();
-                $failureMessage = $charge->failure_message ?
-                    ucfirst($charge->failure_message) :
-                    'Payment cancelled';
-                $errorMessage = __(
-                    "Payment failed. $failureMessage, please contact our support if you have any questions."
-                );
-
-                // pass shopeePayFailed to avoid webhook to cancel payment
-                return $this->processFailedCharge($errorMessage, $shopeePayFailed);
+                return $this->handleFailure($charge, $shopeePayFailed);
             }
 
             // Do not proceed if webhook is enabled
@@ -212,80 +169,13 @@ class Offsite extends Action
 
                 $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id);
                 $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
-                
-                switch ($paymentMethod) {
-                    case Internetbanking::CODE:
-                        $dispPaymentMethod = "Internet Banking";
-                        break;
-                    case Installment::CODE:
-                        $dispPaymentMethod = "Installment";
-                        break;
-                    case Alipay::CODE:
-                        $dispPaymentMethod = "Alipay";
-                        break;
-                    case Truemoney::CODE:
-                        $dispPaymentMethod = "True Money";
-                        break;
-                    case Pointsciti::CODE:
-                        $dispPaymentMethod = "Citi Pay with Points";
-                        break;
-                    case Fpx::CODE:
-                        $dispPaymentMethod = "FPX";
-                        break;
-                    case Alipayplus::ALIPAY_CODE:
-                        $dispPaymentMethod = "Alipay (Alipay+ Partner)";
-                        break;
-                    case Alipayplus::ALIPAYHK_CODE:
-                        $dispPaymentMethod = "AlipayHK (Alipay+ Partner)";
-                        break;
-                    case Alipayplus::DANA_CODE:
-                        $dispPaymentMethod = "DANA (Alipay+ Partner)";
-                        break;
-                    case Alipayplus::GCASH_CODE:
-                        $dispPaymentMethod = "GCash (Alipay+ Partner)";
-                        break;
-                    case Alipayplus::KAKAOPAY_CODE:
-                        $dispPaymentMethod = "Kakao Pay (Alipay+ Partner)";
-                        break;
-                    case Touchngo::CODE:
-                        $dispPaymentMethod = "Touch`n Go eWallet";
-                        break;
-                    case Mobilebanking::CODE:
-                        $dispPaymentMethod = "Mobile Banking";
-                        break;
-                    case Rabbitlinepay::CODE:
-                        $dispPaymentMethod = "Rabbit LINE Pay";
-                        break;
-                    case Ocbcpao::CODE:
-                        $dispPaymentMethod = "OCBC Pay Anyone";
-                        break;
-                    case Grabpay::CODE:
-                        $dispPaymentMethod = "GrabPay";
-                        break;
-                    case Boost::CODE:
-                        $dispPaymentMethod = "Boost";
-                        break;
-                    case DuitnowOBW::CODE:
-                        $dispPaymentMethod = "DuitNow Online Banking/Wallets";
-                        break;
-                    case DuitnowQR::CODE:
-                        $dispPaymentMethod = "DuitNow QR";
-                        break;
-                    case MaybankQR::CODE:
-                        $dispPaymentMethod = "Maybank QR";
-                        break;
-                    case Shopeepay::CODE:
-                        $dispPaymentMethod = "ShopeePay";
-                        break;
-                    default:
-                        $dispPaymentMethod = "Unknown";
-                }
-                
+
+                $paymentMethodLabel = $this->helper->getOmiseLabelByOmiseCode($paymentMethod);
                 // Add transaction.
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
                     __(
-                        "Amount of %1 has been paid via Opn Payments $dispPaymentMethod payment",
+                        "Amount of %1 has been paid via Opn Payments $paymentMethodLabel payment",
                         $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                     )
                 );
@@ -319,6 +209,73 @@ class Offsite extends Action
             return $this->redirect(self::PATH_CART);
         }
     }
+
+    private function handleFailure($charge, $shopeePayFailed)
+    {
+        // restoring the cart
+        $this->checkoutSession->restoreQuote();
+        $failureMessage = $charge->failure_message ?
+            ucfirst($charge->failure_message) :
+            'Payment cancelled';
+        $errorMessage = __(
+            "Payment failed. $failureMessage, please contact our support if you have any questions."
+        );
+
+        // pass shopeePayFailed to avoid webhook to cancel payment
+        return $this->processFailedCharge($errorMessage, $shopeePayFailed);
+    }
+
+    private function isValid($order)
+    {
+        if (! $order->getId()) {
+            $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order
+            again or contact our support if you have any questions.'));
+
+            return false;
+        }
+
+        $payment = $order->getPayment();
+
+        if (!$payment) {
+            $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
+            support if you have any questions.'));
+
+            return false;
+        }
+
+        $token = $this->request->getParam('token');
+
+        if (!$token || $payment->getAdditionalInformation('token') !== rtrim($token, "/")) {
+            $this->invalid(
+                $order,
+                __('The URL is invalid. Please contact our support if you have any questions.')
+            );
+
+            return false;
+        }
+
+        $orderState = $order->getState();
+
+        if ($orderState !== Order::STATE_PENDING_PAYMENT && $orderState !== Order::STATE_CANCELED && Order::STATE_PROCESSING !== $orderState) {
+            $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
+            support if you have any questions.'));
+
+            return $this->redirect(self::PATH_CART);
+        }
+
+        $paymentMethod = $payment->getMethod();
+
+        if (!$this->helper->isOffsitePaymentMethod($paymentMethod)) {
+            $this->invalid(
+                $order,
+                __('Invalid payment method. Please contact our support if you have any questions.')
+            );
+            return $this->redirect(self::PATH_CART);
+        }
+
+        return true;
+    }
+
 
     /**
      * @param  \Magento\Sales\Model\Order $order
