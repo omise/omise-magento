@@ -4,8 +4,6 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization;
 
 class Theme
 {
-    const DARK_COLOR = '#212121';
-
     public function getFormDesign($theme, $customDesign)
     {
         if (!empty($customDesign)) {
@@ -38,8 +36,8 @@ class Theme
                 'border_color' => '#ced3de',
                 'active_border_color' => '#1451cc',
                 'background_color' => '#ffffff',
-                'label_color' => self::DARK_COLOR,
-                'text_color' => self::DARK_COLOR,
+                'label_color' => '#212121',
+                'text_color' => '#212121',
                 'placeholder_color' => '#98a1b2',
             ],
             'checkbox' => [
@@ -63,7 +61,7 @@ class Theme
                 'active_border_color' => '#475266',
                 'background_color' => '#131926',
                 'label_color' => '#E6EAF2',
-                'text_color' => self::DARK_COLOR,
+                'text_color' => '#ffffff',
                 'placeholder_color' => '#DBDBDB',
             ],
             'checkbox' => [
