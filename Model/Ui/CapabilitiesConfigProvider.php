@@ -54,7 +54,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
 
             if ($code === OmiseInstallmentConfig::CODE) {
                 $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
-            } else if ($code === CcGooglePay::CODE) {
+            } elseif ($code === CcGooglePay::CODE) {
                 $configs['card_brands'] = $this->capabilities->getCardBrands();
             }
 
