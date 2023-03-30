@@ -32,8 +32,8 @@ use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Omise\Payment\Observer\FpxDataAssignObserver;
-use Omise\Payment\Observer\AtomeDataAssignObserver;
 use Magento\Payment\Gateway\Request\BuilderInterface;
+use Omise\Payment\Helper\PhoneNumberFormatter;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 use Omise\Payment\Observer\DuitnowOBWDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
@@ -145,6 +145,7 @@ class APMBuilder implements BuilderInterface
 
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
+        $order  = $payment->getOrder();
 
         switch ($method->getMethod()) {
             case Alipay::CODE:
@@ -304,10 +305,10 @@ class APMBuilder implements BuilderInterface
                 break;
             case Atome::CODE:
                 $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'atome',
-                    self::SOURCE_PHONE_NUMBER => $this->getPhoneNumber($payment),
-                    self::SOURCE_SHIPPING => $this->getShippingAddress($payment),
-                    self::SOURCE_ITEMS => $this->getOrderItems($payment),
+                    self::SOURCE_TYPE => Atome::ID,
+                    self::SOURCE_PHONE_NUMBER => $this->getPhoneNumber($order),
+                    self::SOURCE_SHIPPING => $this->getShippingAddress($order),
+                    self::SOURCE_ITEMS => $this->getOrderItems($order),
                 ];
                 break;
         }
@@ -340,9 +341,9 @@ class APMBuilder implements BuilderInterface
         return $isShopeepayEnabled ? Shopeepay::ID : Shopeepay::JUMPAPP_ID;
     }
 
-    public function getShippingAddress($payment)
+    private function getShippingAddress($order)
     {
-        $address = $payment->getOrder()->getShippingAddress();
+        $address = $order->getShippingAddress();
         return [
             'street1' => $address->getStreetLine1(),
             'street2' => $address->getStreetLine2(),
@@ -352,29 +353,30 @@ class APMBuilder implements BuilderInterface
         ];
     }
 
-    public function getPhoneNumber($payment)
+    private function getPhoneNumber($order)
     {
-        $address = $payment->getOrder()->getShippingAddress();
-        return $address->getTelephone();
+        $address = $order->getShippingAddress();
+        $countryCode = $address->getCountryId();
+        $number = $address->getTelephone();
+        return PhoneNumberFormatter::process($number, $countryCode);
     }
 
-    public function getOrderItems($payment)
+    private function getOrderItems($order)
     {
-        $array = [];
-        $order = $payment->getOrder();
+        $itemArray = [];
         $items = $order->getItems();
-        foreach ($items as $item) {
-            $itemArray = $item->toArray();
-            $array[] = [
-                'sku' => $itemArray['sku'],
-                'name' => $itemArray['name'],
+        foreach ($items as $itemObject) {
+            $item = $itemObject->toArray();
+            $itemArray[] = [
+                'sku' => $item['sku'],
+                'name' => $item['name'],
                 'amount' => $this->helper->omiseAmountFormat(
                     $order->getCurrencyCode(),
-                    $itemArray['base_original_price']
+                    $item['base_original_price']
                 ),
-                'quantity' => $itemArray['qty_ordered'],
+                'quantity' => $item['qty_ordered'],
             ];
         }
-        return $array;
+        return $itemArray;
     }
 }
