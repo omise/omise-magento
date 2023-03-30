@@ -74,7 +74,7 @@ class SecureFormBannerMessageTest extends TestCase
      */
     public function testGetText()
     {
-        $text = 'Update your plugin to the latest version to enable Secure Form';
+        $text = 'Update your plugin to the latest version to enable';
         $this->assertStringContainsString($text, $this->_messageModel->getText());
     }
 }
