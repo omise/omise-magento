@@ -4,7 +4,7 @@ namespace Omise\Payment\Helper;
 
 class PhoneNumberFormatter
 {
-    public static function process($phoneNumber, $countryCode)
+    public function process($phoneNumber, $countryCode)
     {
         $countryCode = strtoupper($countryCode);
         $countryCodes = self::getCountryCodes();
@@ -23,14 +23,14 @@ class PhoneNumberFormatter
         }
 
         // remove if string is leading with zero eg. 09xxxx
-        $phoneNumber = intval($phoneNumber);
+        $phoneNumber = (int) $phoneNumber;
 
         // Prepend the country code number to the phone number
         $formattedNumber = '+' . $countryCodes[$countryCode] . $phoneNumber;
         return $formattedNumber;
     }
 
-    public static function getCountryCodes()
+    public function getCountryCodes()
     {
         return [
             'AD' => '376',

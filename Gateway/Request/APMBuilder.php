@@ -358,7 +358,7 @@ class APMBuilder implements BuilderInterface
         $address = $order->getShippingAddress();
         $countryCode = $address->getCountryId();
         $number = $address->getTelephone();
-        return PhoneNumberFormatter::process($number, $countryCode);
+        return (new PhoneNumberFormatter)->process($number, $countryCode);
     }
 
     private function getOrderItems($order)

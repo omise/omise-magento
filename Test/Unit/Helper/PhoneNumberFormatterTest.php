@@ -7,6 +7,17 @@ use PHPUnit\Framework\TestCase;
 
 class PhoneNumberFormatterTest extends TestCase
 {
+    private PhoneNumberFormatter $helper;
+    /**
+     * This function is called before the test runs.
+     * Ideal for setting the values to variables or objects.
+     * @coversNothing
+     */
+    public function setUp(): void
+    {
+        $this->helper = new PhoneNumberFormatter();
+    }
+
     /**
      * Test TH phone number
      *
@@ -23,7 +34,7 @@ class PhoneNumberFormatterTest extends TestCase
         ];
 
         foreach ($numbers as $number) {
-            $result = PhoneNumberFormatter::process($number, 'TH');
+            $result = $this->helper->process($number, 'TH');
             $this->assertEquals('+66888888888', $result);
         }
     }
@@ -44,7 +55,7 @@ class PhoneNumberFormatterTest extends TestCase
         ];
 
         foreach ($numbers as $number) {
-            $result = PhoneNumberFormatter::process($number, 'SG');
+            $result = $this->helper->process($number, 'SG');
             $this->assertEquals('+65888888888', $result);
         }
     }
@@ -65,7 +76,7 @@ class PhoneNumberFormatterTest extends TestCase
         ];
 
         foreach ($numbers as $number) {
-            $result = PhoneNumberFormatter::process($number, 'JP');
+            $result = $this->helper->process($number, 'JP');
             $this->assertEquals('+81888888888', $result);
         }
     }
@@ -88,7 +99,7 @@ class PhoneNumberFormatterTest extends TestCase
         ];
 
         foreach ($numbers as $input => $expected) {
-            $result = PhoneNumberFormatter::process($input, 'ZZ');
+            $result = $this->helper->process($input, 'ZZ');
             $this->assertEquals($expected, $result);
         }
     }
