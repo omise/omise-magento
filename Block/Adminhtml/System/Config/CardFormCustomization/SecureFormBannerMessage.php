@@ -53,13 +53,15 @@ class SecureFormBannerMessage implements MessageInterface
     public function getText()
     {
         $text = '<b>Opn Payments</b> : ';
-        $text .= __("Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information.") . ' ';
-        $text .= __('You will need to re-customize the credit card checkout form after the upgrade.') . ' ';
-        $text .= __(
-            '%1 Learn how to enable Secure Form %2.',
-            '<a target="blank" href="https://www.omise.co/magento-plugin">',
-            '</a>'
-        );
+
+        $defaultMessage = "Update your plugin to the latest version to enable 
+        Secure Form and maximize the security of your customers’ information. 
+        You will need to re-customize the credit card checkout form after the upgrade. 
+        <a target='blank' href='https://www.omise.co/magento-plugin'>
+        Learn how to enable Secure Form.</a>";
+
+        $text .= $this->localize('secure_form_banner_message', $defaultMessage);
+
         return $text;
     }
 
@@ -71,5 +73,18 @@ class SecureFormBannerMessage implements MessageInterface
     public function getSeverity()
     {
         return self::SEVERITY_CRITICAL;
+    }
+
+    /**
+     * localize using translation key
+     *
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    public function localize($key, $default)
+    {
+        $result = __($key);
+        return $result == $key ? $default : $result;
     }
 }
