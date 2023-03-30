@@ -1,6 +1,6 @@
 <?php
 
-namespace Magento\AdminNotification\Test\Unit\Model\System\Message;
+namespace Omise\Payment\Test\Unit;
 
 use Magento\Framework\Notification\MessageInterface;
 use Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage;
@@ -74,7 +74,7 @@ class SecureFormBannerMessageTest extends TestCase
      */
     public function testGetText()
     {
-        $text = 'Update now to use the secure form to securely accept payment information';
+        $text = 'Update your plugin to the latest version to enable Secure Form';
         $this->assertStringContainsString($text, $this->_messageModel->getText());
     }
 }

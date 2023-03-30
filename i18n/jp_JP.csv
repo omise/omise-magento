@@ -13,5 +13,6 @@
 "Payment rejected by card issuer.", "決済がカード発行者によって拒否されました。"
 "Card stolen or lost.", "このカードは紛失/盗難が報告されています"
 "Payer did not take action before charge expiration.", "有効期限前に操作がありませんでした。"
-"Update now to use the secure form to securely accept payment information. Note that you must re-customize the credit card checkout form after the upgrade.", "Update now to use the secure form to securely accept payment information. Note that you must re-customize the credit card checkout form after the upgrade."
-"For more details, please click %1 here %2.", "For more details, please click %1 here %2."
+"Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information.", "Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information."
+"You will need to re-customize the credit card checkout form after the upgrade.", "You will need to re-customize the credit card checkout form after the upgrade."
+"%1 Learn how to enable Secure Form %2.", "%1 Learn how to enable Secure Form %2."

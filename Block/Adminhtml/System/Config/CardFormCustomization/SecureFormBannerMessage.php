@@ -53,10 +53,10 @@ class SecureFormBannerMessage implements MessageInterface
     public function getText()
     {
         $text = '<b>Opn Payments</b> : ';
-        $text .= __('Update now to use the secure form to securely accept payment information.') . ' ';
-        $text .= __('Note that you must re-customize the credit card checkout form after the upgrade.') . ' ';
+        $text .= __("Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information.") . ' ';
+        $text .= __('You will need to re-customize the credit card checkout form after the upgrade.') . ' ';
         $text .= __(
-            'For more details, please click %1 here %2.',
+            '%1 Learn how to enable Secure Form %2.',
             '<a target="blank" href="https://www.omise.co/magento-plugin">',
             '</a>'
         );
