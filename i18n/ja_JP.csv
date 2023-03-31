@@ -13,4 +13,4 @@
 "Payment rejected by card issuer.", "決済がカード発行者によって拒否されました。"
 "Card stolen or lost.", "このカードは紛失/盗難が報告されています"
 "Payer did not take action before charge expiration.", "有効期限前に操作がありませんでした。"
-"secure_form_banner_message", "<b>Opn Payments</b> : Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target='blank' href='https://www.omise.co/magento-plugin'>Learn how to enable Secure Form.</a>"
+"secure_form_banner_message", "<b>Opn Payments</b> : プラグインを最新バージョンにアップデートし、顧客情報の安全な管理に必要なSecure Formを有効にしてください。アップデート後、クレジットカードの決済フォームを再度カスタマイズする必要があります。<a target='blank' href='https://www.omise.co/magento-plugin'>Secure Formを有効にする方法はこちらをご確認ください。</a>"
