@@ -1274,6 +1274,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
+                <item name="requestValidator" xsi:type="string">Omise\Payment\Gateway\Validator\APMRequestValidator</item>
                 <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\APMBuilder</item>
             </argument>
         </arguments>
