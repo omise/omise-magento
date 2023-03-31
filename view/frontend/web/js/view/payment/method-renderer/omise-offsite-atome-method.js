@@ -21,7 +21,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_atome',
-            restrictedToCurrencies: ['thb', 'sgd', 'jpy']
+            restrictedToCurrencies: ['thb', 'sgd', 'myr']
         });
     }
 );
