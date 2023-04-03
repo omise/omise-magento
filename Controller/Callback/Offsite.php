@@ -163,8 +163,8 @@ class Offsite extends Action
     /**
      * Mark order as failed
      *
-     * @param obejct $charge
-     * @param boolean $shopeePayFaild {TODO: Remove this once backend issue is fixed}
+     * @param object $charge
+     * @param boolean $shopeePayFailed {TODO: Remove this once backend issue is fixed}
      */
     private function handleFailure($charge, $shopeePayFailed)
     {
@@ -213,7 +213,7 @@ class Offsite extends Action
     }
 
     /**
-     * Mark order a pending
+     * Mark order as pending
      *
      * @param object $order
      * @param object $payment
@@ -242,7 +242,7 @@ class Offsite extends Action
     }
 
     /**
-     * Check if the transation is valid
+     * Check if the transaction is valid
      *
      * @param object $order
      * @return boolean
