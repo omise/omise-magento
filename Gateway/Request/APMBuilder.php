@@ -350,6 +350,7 @@ class APMBuilder implements BuilderInterface
             'postal_code' => $address->getPostcode(),
             'country' => $address->getCountryId(),
             'city' => $address->getCity(),
+            'state' => $address->getRegionCode(),
         ];
     }
 
