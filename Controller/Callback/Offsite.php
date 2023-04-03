@@ -9,23 +9,6 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge;
-use Omise\Payment\Model\Config\Internetbanking;
-use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Pointsciti;
-use Omise\Payment\Model\Config\Installment;
-use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Config\Fpx;
-use Omise\Payment\Model\Config\Alipayplus;
-use Omise\Payment\Model\Config\Mobilebanking;
-use Omise\Payment\Model\Config\Rabbitlinepay;
-use Omise\Payment\Model\Config\Ocbcpao;
-use Omise\Payment\Model\Config\Grabpay;
-use Omise\Payment\Model\Config\Boost;
-use Omise\Payment\Model\Config\DuitnowOBW;
-use Omise\Payment\Model\Config\DuitnowQR;
-use Omise\Payment\Model\Config\MaybankQR;
-use Omise\Payment\Model\Config\Shopeepay;
-use Omise\Payment\Model\Config\Touchngo;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
@@ -229,9 +212,9 @@ class Offsite extends Action
         $transaction->setIsClosed(false);
         $payment->addTransactionCommentsToOrder(
             $transaction,
-            __('The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds
-            or up-to an hour. Please click "Accept" or "Deny" the payment manually once the result has been
-            updated (you can check at Opn Payments Dashboard).')
+            __('The payment is under processing.<br/>Due to Bank process, this might take up to an hour to
+            complete. Click "Accept" or "Deny" to accept or deny the payment manually, after the result of
+            the processing has been updated (check the result on the Opn Payments Dashboard).')
         );
 
         $order->save();
