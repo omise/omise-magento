@@ -11,11 +11,11 @@ class CardFormTheme implements ArrayInterface
         return [
             [
                 'value' => 'dark',
-                'label' => __('Dark Theme'),
+                'label' => __('Dark'),
             ],
             [
                 'value' => 'light',
-                'label' => __('Light Theme')
+                'label' => __('Light')
             ]
         ];
     }
