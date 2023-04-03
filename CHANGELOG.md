@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [v3.0.0 _(Apr 3, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.0.0)
+- Replace credit card form with secure form with a feature flag options to switch between credit card forms.  (PR: [#410](https://github.com/omise/omise-magento/pull/410))
+- Added an admin message to notify the user to update the current credit card form to embedded form. (PR: [#419](https://github.com/omise/omise-magento/pull/419))
+- Track the adoption of the secure form. (PR: [#420](https://github.com/omise/omise-magento/pull/420))
+- Removed deprecated ktb and scb internet banking.  (PR: [#417](https://github.com/omise/omise-magento/pull/417))
+- Bug fix: Hanlde ShopeePay cancel payment. (PR: [#415](https://github.com/omise/omise-magento/pull/415))
+
 ## [v2.32.0 _(Mar 8, 2023)_](https://github.com/omise/omise-magento/releases/tag/v2.32.0)
 - Added Krungthai NEXT mobile banking (PR: [#409](https://github.com/omise/omise-magento/pull/409))
 

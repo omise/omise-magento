@@ -21,7 +21,7 @@ define(
         redirectOnSuccessAction,
         quote
     ) {
-        'use strict';
+        'use strict'
 
         return Component.extend(Base).extend({
             defaults: {
@@ -41,7 +41,7 @@ define(
              *
              * @return {Object}
              */
-            getData: function() {
+            getData: function () {
                 return {
                     'method': this.item.method,
                     'additional_data': {
@@ -49,7 +49,7 @@ define(
                         'omise_card': this.omiseCard(),
                         'omise_save_card': this.omiseSaveCard()
                     }
-                };
+                }
             },
 
             /**
@@ -57,8 +57,8 @@ define(
              *
              * @return {string}
              */
-            getPublicKey: function() {
-                return window.checkoutConfig.payment.omise_cc.publicKey;
+            getPublicKey: function () {
+                return window.checkoutConfig.payment.omise_cc.publicKey
             },
 
             /**
@@ -66,7 +66,7 @@ define(
              *
              * @return this
              */
-            initObservable: function() {
+            initObservable: function () {
                 this._super()
                     .observe([
                         'omiseCardNumber',
@@ -76,10 +76,115 @@ define(
                         'omiseCardSecurityCode',
                         'omiseCardToken',
                         'omiseCard',
-                        'omiseSaveCard'
-                    ]);
+                        'omiseSaveCard',
+                        'omiseCardError'
+                    ])
+                if (this.isSecureForm()) {
+                    this.openOmiseJs()
+                }
+                return this
+            },
 
-                return this;
+            isSecureForm: function () {
+                return window.checkoutConfig.payment.omise_cc.secureForm === 'yes'
+            },
+
+            openOmiseJs: function () {
+                const self = this
+                ko.bindingHandlers.omiseCardForm = {
+                    init: function (element) {
+                        const hideRememberCard = !self.isCustomerLoggedIn()
+                        const iframeHeightMatching = {
+                            '40px': 258,
+                            '44px': 270,
+                            '48px': 282,
+                            '52px': 295,
+                        }
+
+                        const localeMatching = {
+                            en_US: 'en',
+                            ja_JP: 'ja',
+                            th_TH: 'th'
+                        }
+
+                        const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
+                        const { font, input, checkbox } = formDesign
+                        let iframeElementHeight = iframeHeightMatching[input.height]
+                        if (hideRememberCard) {
+                            iframeElementHeight = iframeElementHeight - 25
+                        }
+                        element.style.height = iframeElementHeight + 'px'
+
+                        OmiseCard.configure({
+                            publicKey: self.getPublicKey(),
+                            element,
+                            locale: localeMatching[locale] ?? 'en',
+                            customCardForm: true,
+                            customCardFormTheme: theme,
+                            style: {
+                                fontFamily: font.name,
+                                fontSize: font.size,
+                                input: {
+                                    height: input.height,
+                                    borderRadius: input.border_radius,
+                                    border: `1.2px solid ${input.border_color}`,
+                                    focusBorder: `1.2px solid ${input.active_border_color}`,
+                                    background: input.background_color,
+                                    color: input.text_color,
+                                    labelColor: input.label_color,
+                                    placeholderColor: input.placeholder_color,
+                                },
+                                checkBox: {
+                                    textColor: checkbox.text_color,
+                                    themeColor: checkbox.theme_color,
+                                    border: `1.2px solid ${input.border_color}`,
+                                }
+                            },
+                            customCardFormHideRememberCard: hideRememberCard
+                        })
+
+                        OmiseCard.open({
+                            onCreateTokenSuccess: (payload) => {
+                                self.createOrder(self, payload)
+                            },
+                            onError: (err) => {
+                                if (err.length > 0) {
+                                    self.omiseCardError(err.length == 1 ? err[0] : 'Please enter required card information.')
+                                }
+                                else {
+                                    self.omiseCardError('Something went wrong. Please refresh the page and try again.')
+                                }
+                                self.stopPerformingPlaceOrderAction()
+                            }
+                        })
+                    }
+                }
+            },
+
+            createOrder: function (self, payload) {
+                self.omiseCardToken(payload.token)
+                if (payload.remember) {
+                    self.omiseSaveCard(payload.remember)
+                }
+                const failHandler = self.buildFailHandler(this, 300)
+                self.getPlaceOrderDeferredObject()
+                    .fail(failHandler)
+                    .done((order_id) => {
+                        let serviceUrl = self.getMagentoReturnUrl(order_id)
+                        storage.get(serviceUrl, false)
+                            .fail(failHandler)
+                            .done(function (response) {
+                                if (response) {
+                                    if (self.isThreeDSecureEnabled(response))
+                                        $.mage.redirect(response.authorize_uri)
+                                    else if (self.redirectAfterPlaceOrder) {
+                                        redirectOnSuccessAction.execute()
+                                    }
+                                } else {
+                                    failHandler(response)
+                                }
+                            })
+                    })
             },
 
             /**
@@ -87,115 +192,114 @@ define(
              *
              * @return {boolean}
              */
-            isThreeDSecureEnabled: function(response) {
-                return !(response.authorize_uri === "") ;
+            isThreeDSecureEnabled: function (response) {
+                return !(response.authorize_uri === "")
             },
 
             /**
              * @return {boolean}
              */
-            isCustomerLoggedIn: function() {
-                return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn;
+            isCustomerLoggedIn: function () {
+                return window.checkoutConfig.payment.omise_cc.isCustomerLoggedIn
             },
 
             /**
              * @return {boolean}
              */
-            hasSavedCards: function() {
-                return !!this.getCustomerCards().length;
+            hasSavedCards: function () {
+                return !!this.getCustomerCards().length
             },
 
             /**
              * @return {array}
              */
-            getCustomerCards: function() {
-                return window.checkoutConfig.payment.omise_cc.cards;
+            getCustomerCards: function () {
+                return window.checkoutConfig.payment.omise_cc.cards
             },
 
             /**
              * @return {bool}
              */
-            chargeWithNewCard: function(element){
-                $('#payment_form_omise_cc').css({display: 'block'});
-                return true;
+            chargeWithNewCard: function (element) {
+                $('#payment_form_omise_cc').css({ display: 'block' })
+                return true
             },
 
             /**
              * @return {bool}
              */
-            chargeWithSavedCard: function(){
-                $('#payment_form_omise_cc').css({display: 'none'});
+            chargeWithSavedCard: function () {
+                $('#payment_form_omise_cc').css({ display: 'none' })
             },
 
             /**
              * Start performing place order action,
              * by disable a place order button and show full screen loader component.
              */
-            startPerformingPlaceOrderAction: function() {
-                this.isPlaceOrderActionAllowed(false);
-                fullScreenLoader.startLoader();
+            startPerformingPlaceOrderAction: function () {
+                this.isPlaceOrderActionAllowed(false)
+                fullScreenLoader.startLoader()
             },
 
             /**
              * Stop performing place order action,
              * by disable a place order button and show full screen loader component.
              */
-            stopPerformingPlaceOrderAction: function() {
-                fullScreenLoader.stopLoader();
-                this.isPlaceOrderActionAllowed(true);
+            stopPerformingPlaceOrderAction: function () {
+                fullScreenLoader.stopLoader()
+                this.isPlaceOrderActionAllowed(true)
             },
 
             /**
-             * Generate Omise token before proceed the placeOrder process.
+             * Generate Omise token with embedded form before proceed the placeOrder process.
              *
              * @return {void}
              */
-            generateTokenAndPerformPlaceOrderAction: function() {
-                const self = this;
-                const failHandler = this.buildFailHandler(self);
+            generateTokenWithEmbeddedFormAndPerformPlaceOrderAction: function () {
+                this.startPerformingPlaceOrderAction()
+                let billingAddress = {}
+                let selectedBillingAddress = quote.billingAddress()
+                if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                    Object.assign(billingAddress, this.getSelectedTokenBillingAddress(selectedBillingAddress))
+                }
+                OmiseCard.requestCardToken(billingAddress)
+            },
 
-                this.startPerformingPlaceOrderAction();
-
-                let card = {
-                    number           : this.omiseCardNumber(),
-                    name             : this.omiseCardHolderName(),
-                    expiration_month : this.omiseCardExpirationMonth(),
-                    expiration_year  : this.omiseCardExpirationYear(),
-                    security_code    : this.omiseCardSecurityCode()
-                };
-                let selectedBillingAddress = quote.billingAddress();
-
-                if(self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
-                    Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress));
+            /**
+             * Generate Omise token with omise.js before proceed the placeOrder process.
+             *
+             * @return {void}
+             */
+            generateTokenWithOmiseJsAndPerformPlaceOrderAction: function () {
+                if (! this.validate()) {
+                    return false;
                 }
 
-                Omise.setPublicKey(this.getPublicKey());
-                Omise.createToken('card', card, function(statusCode, response) {
+                const self = this
+                this.startPerformingPlaceOrderAction()
+
+                let card = {
+                    number: this.omiseCardNumber(),
+                    name: this.omiseCardHolderName(),
+                    expiration_month: this.omiseCardExpirationMonth(),
+                    expiration_year: this.omiseCardExpirationYear(),
+                    security_code: this.omiseCardSecurityCode()
+                }
+                let selectedBillingAddress = quote.billingAddress()
+
+                if (self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                    Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress))
+                }
+
+                Omise.setPublicKey(this.getPublicKey())
+                Omise.createToken('card', card, function (statusCode, response) {
                     if (statusCode === 200) {
-                        self.omiseCardToken(response.id);
-                        self.getPlaceOrderDeferredObject()
-                            .fail(failHandler)
-                            .done(function(order_id) {
-                                let serviceUrl = self.getMagentoReturnUrl(order_id);
-                                storage.get(serviceUrl, false)
-                                    .fail(failHandler)
-                                    .done(function (response) {
-                                        if (response) {
-                                            if(self.isThreeDSecureEnabled(response))
-                                                $.mage.redirect(response.authorize_uri);
-                                            else if (self.redirectAfterPlaceOrder) {
-                                                redirectOnSuccessAction.execute();
-                                            }
-                                        } else {
-                                            failHandler(response);
-                                        }
-                                    });
-                            });
+                        self.createOrder(self, {token : response.id})
                     } else {
-                        alert(response.message);
-                        self.stopPerformingPlaceOrderAction();
+                        self.omiseCardError(response.message)
+                        self.stopPerformingPlaceOrderAction()
                     }
-                });
+                })
             },
 
             /**
@@ -204,28 +308,29 @@ define(
              *
              * @return {boolean}
              */
-            placeOrder: function(data, event) {
-                event && event.preventDefault();
+            placeOrder: function (data, event) {
+                this.omiseCardError(null)
+                event && event.preventDefault()
 
                 if (typeof Omise === 'undefined') {
-                    alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'));
-                    return false;
+                    alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'))
+                    return false
                 }
 
-                let card = this.omiseCard();
+                let card = this.omiseCard()
 
                 if (card) {
-                    this.processOrderWithCard(card);
-                    return true;
+                    this.processOrderWithCard(card)
+                    return true
                 }
 
-                if (! this.validate()) {
-                    return false;
+                if (this.isSecureForm()) {
+                    this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
+                } else {
+                    this.generateTokenWithOmiseJsAndPerformPlaceOrderAction()
                 }
 
-                this.generateTokenAndPerformPlaceOrderAction();
-
-                return true;
+                return true
             },
 
             /**
@@ -243,52 +348,52 @@ define(
                         'CardExpirationYear',
                         'CardSecurityCode'
                     ]
-                ;
 
-                $(prefix + 'Form').validation();
-                return fields.map(f=>$(prefix+f).valid()).every(valid=>valid);
+
+                $(prefix + 'Form').validation()
+                return fields.map(f => $(prefix + f).valid()).every(valid => valid)
             },
 
             processOrderWithCard: function () {
-                const self = this;
-                const failHandler = this.buildFailHandler(self);
+                const self = this
+                const failHandler = this.buildFailHandler(self, 300)
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
-                    .done(function(order_id) {
-                        const serviceUrl = self.getMagentoReturnUrl(order_id);
+                    .done(function (order_id) {
+                        const serviceUrl = self.getMagentoReturnUrl(order_id)
                         storage.get(serviceUrl, false)
                             .fail(failHandler)
                             .done(function (response) {
                                 if (response) {
-                                    if(self.isThreeDSecureEnabled(response))
-                                        $.mage.redirect(response.authorize_uri);
+                                    if (self.isThreeDSecureEnabled(response))
+                                        $.mage.redirect(response.authorize_uri)
                                     else if (self.redirectAfterPlaceOrder) {
-                                        redirectOnSuccessAction.execute();
+                                        redirectOnSuccessAction.execute()
                                     }
                                 } else {
-                                    failHandler(response);
+                                    failHandler(response)
                                 }
-                            });
-                    });
+                            })
+                    })
             },
 
-            getSelectedTokenBillingAddress: function(selectedBillingAddress) {
+            getSelectedTokenBillingAddress: function (selectedBillingAddress) {
                 let address = {
-                    state          : selectedBillingAddress.region,
-                    postal_code    : selectedBillingAddress.postcode,
-                    phone_number   : selectedBillingAddress.telephone,
-                    country        : selectedBillingAddress.countryId,
-                    city           : selectedBillingAddress.city,
-                    street1        : selectedBillingAddress.street[0]
+                    state: selectedBillingAddress.region,
+                    postal_code: selectedBillingAddress.postcode,
+                    phone_number: selectedBillingAddress.telephone,
+                    country: selectedBillingAddress.countryId,
+                    city: selectedBillingAddress.city,
+                    street1: selectedBillingAddress.street[0]
                 }
 
-                if(selectedBillingAddress.street[1]) {
-                    address.street2 = selectedBillingAddress.street[1];
+                if (selectedBillingAddress.street[1]) {
+                    address.street2 = selectedBillingAddress.street[1]
                 }
 
-                return address;
+                return address
             }
-        });
+        })
     }
-);
+)

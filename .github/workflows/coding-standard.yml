@@ -1,7 +1,6 @@
 name: Magento Coding Standard
 on:
-  pull_request:
-    branches: [ master ]
+  push:
 
 jobs:
   static:

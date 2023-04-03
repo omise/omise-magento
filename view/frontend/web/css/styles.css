@@ -361,3 +361,23 @@ div.shopeepay {
 .omise-payment-method-title > img {
     float: right;
 }
+
+.omise-card-form {
+    margin-top: 15px;
+    width:100%; 
+    max-width: 400px;
+}
+
+.omise-card-error-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    max-width: 400px;
+}
+
+.omise-card-error-container .error-text {
+    color: #D90B0B;;
+    margin-bottom: 3px;
+    padding: 0px 12px;
+    font-size: 1.3rem;
+}

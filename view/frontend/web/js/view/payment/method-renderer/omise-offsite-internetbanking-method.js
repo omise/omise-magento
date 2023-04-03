@@ -17,20 +17,6 @@ define(
 
         const providers = [
             {
-                id: "internet_banking_scb",
-                title: $.mage.__('Siam Commercial Bank'),
-                code: 'scb',
-                logo: 'scb',
-                active: true
-            },
-            {
-                id: "internet_banking_ktb",
-                title: $.mage.__('Krungthai Bank'),
-                code: 'ktb',
-                logo: 'ktb',
-                active: true
-            },
-            {
                 id: "internet_banking_bay",
                 title: $.mage.__('Krungsri Bank'),
                 code: 'bay',

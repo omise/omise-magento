@@ -1,0 +1,157 @@
+#omise-modal {
+    position: fixed;
+    z-index: 999;
+    background: #00000078;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    justify-content: center;
+}
+
+.omise-modal-content {
+    width: 650px;
+    background: white;
+    margin: 50px 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.omise-modal-title {
+    border-bottom: 0.5px solid #adadad;
+    padding: 15px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.omise-modal-title .title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.omise-modal-body {
+    overflow: auto;
+    flex: 1;
+    padding: 15px;
+    padding-top: 0px;
+}
+
+.omise-modal-footer {
+    padding: 15px;
+    background: #f8f8f8;
+    display: flex;
+    justify-content: space-between;
+}
+
+.omise-modal-footer .left {
+   display: flex;
+   gap: 5px;
+}
+
+.omise-modal-footer .right {
+    display: flex;
+    gap: 5px;
+}
+
+.omise-modal-content .omise-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.omise-modal-content .omise-input-container .omise-label {
+    width: 250px;
+    font-weight: 600;
+}
+
+.omise-modal-content .omise-input-container .omise-input {
+    flex: 1;
+}
+
+.omise-modal-content .omise-color-input-container {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid #adadad;
+    border-radius: 0px;
+    padding: 0px 5px;
+    background: white;
+    height: 33px;
+}
+
+.omise-modal-content .omise-color-input-container:has(input:disabled) {
+    background-color: #f4f4f4;
+    border-color: #d6d6d6;
+}
+
+.omise-modal-content .omise-color-input {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    width: 25px !important;
+    height: 25px !important;
+    padding: 2px !important;
+}
+
+.omise-modal-content .omise-color-input:focus {
+    box-shadow: none !important;
+}
+
+.omise-modal-content .omise-color-input-container:has(input:disabled)>span {
+    color: #979797 !important;
+}
+
+.omise-modal-content .omise-color-input-container>span {
+    color: #131926 !important;
+}
+
+.omise-modal-content .omise-color-input::-moz-color-swatch {
+    border: 1px solid #CCCCCC !important;
+    border-radius: 3px !important;
+}
+
+.omise-modal-content .omise-color-input::-webkit-color-swatch-wrapper {
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+.omise-modal-content .omise-color-input::-webkit-color-swatch {
+    border: 1px solid #CCCCCC !important;
+    border-radius: 3px !important;
+}
+
+.omise-modal-content .description {
+  color: #475266;
+  font-size: 12px;
+  padding: 3px 0px 0px 10px;
+}
+
+#omise-preview-modal {
+    position: fixed;
+    z-index: 999;
+    background: #00000078;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    justify-content: center;
+}
+
+.omise-preview-modal-content {
+    width: 450px;
+    background: white;
+    margin: 100px 0px;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    height: 350px;
+}
+
+#omise_use_website_form_design {
+    display: none;
+}

@@ -63,111 +63,128 @@
                 </a>
             <!-- /ko -->
 
-            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !hasSavedCards()">
-                <div class="field number required">
-                    <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
-                        <span><!-- ko i18n: 'Card number'--><!-- /ko --></span>
-                    </label>
-                    <div class="control">
-                        <input type="number"
-                               class="input-text"
-                               data-bind="attr: {
-                               autocomplete: off,
-                               id: getCode() + 'CardNumber',
-                               'data-container': getCode() + '-cc-number',
-                               'data-validate': JSON.stringify({'validate-cc-number':'#' + getCode() + 'CardNumber'})
-                               },
-                               value: omiseCardNumber"/>
-                    </div>
+            <!-- ko if: omiseCardError() -->
+            <div class="omise-card-error-container">
+                <div aria-atomic="true" role="alert" class="message message-error error">
+                    <div data-ui-id="checkout-cart-validationmessages-message-error" data-bind="text: omiseCardError()"></div>
                 </div>
-                <div class="field holdername required">
-                    <label data-bind="attr: {for: getCode() + 'CardHolderName'}" class="label">
-                        <span><!-- ko text: $t('Name on card')--><!-- /ko --></span>
-                    </label>
-                    <div class="control">
-                        <input type="text"
-                               class="input-text"
-                               data-bind="attr: {
-                               autocomplete: off,
-                               id: getCode() + 'CardHolderName',
-                               'data-container': getCode() + '-cc-owner',
-                               'data-validate': JSON.stringify({'required-entry': '#' + getCode() + 'CardHolderName'})
-                               },
-                               value: omiseCardHolderName"/>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: isSecureForm() -->
+                <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !hasSavedCards()">
+                    <div class="omise-card-form" data-bind="omiseCardForm: true"></div>
+                </fieldset>
+            <!-- /ko -->
+
+            <!-- ko ifnot: isSecureForm() -->
+                <fieldset style="margin-top: 12px" data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !hasSavedCards()">
+                    <div class="field number required">
+                        <label data-bind="attr: {for: getCode() + 'CardNumber'}" class="label">
+                            <span><!-- ko i18n: 'Card number'--><!-- /ko --></span>
+                        </label>
+                        <div class="control">
+                            <input type="number"
+                                class="input-text"
+                                data-bind="attr: {
+                                autocomplete: off,
+                                id: getCode() + 'CardNumber',
+                                'data-container': getCode() + '-cc-number',
+                                'data-validate': JSON.stringify({'validate-cc-number':'#' + getCode() + 'CardNumber'})
+                                },
+                                value: omiseCardNumber"/>
+                        </div>
                     </div>
-                </div>
-                <div class="field date required" data-bind="attr: {id: getCode() + '_cc_type_exp_div'}">
-                    <label data-bind="attr: {for: getCode() + 'CardExpirationMonth'}" class="label">
-                        <span><!-- ko i18n: 'Expiry date'--><!-- /ko --></span>
-                    </label>
-                    <div class="control">
-                        <div class="fields group group-2">
-                            <div class="field no-label month">
-                                <div class="control">
-                                    <select class="select select-month"
-                                            data-bind="attr: {
-                                            id: getCode() + 'CardExpirationMonth',
-                                            'data-container': getCode() + '-cc-month',
-                                            },
-                                            value: omiseCardExpirationMonth,
-                                            options: getCcMonthsValues(),
-                                            optionsValue: 'value',
-                                            optionsText: 'month',
-                                            optionsCaption: $t('Month')"
-                                            data-validate="{required: true}">
-                                    </select>
+                    <div class="field holdername required">
+                        <label data-bind="attr: {for: getCode() + 'CardHolderName'}" class="label">
+                            <span><!-- ko text: $t('Name on card')--><!-- /ko --></span>
+                        </label>
+                        <div class="control">
+                            <input type="text"
+                                class="input-text"
+                                data-bind="attr: {
+                                autocomplete: off,
+                                id: getCode() + 'CardHolderName',
+                                'data-container': getCode() + '-cc-owner',
+                                'data-validate': JSON.stringify({'required-entry': '#' + getCode() + 'CardHolderName'})
+                                },
+                                value: omiseCardHolderName"/>
+                        </div>
+                    </div>
+                    <div class="field date required" data-bind="attr: {id: getCode() + '_cc_type_exp_div'}">
+                        <label data-bind="attr: {for: getCode() + 'CardExpirationMonth'}" class="label">
+                            <span><!-- ko i18n: 'Expiry date'--><!-- /ko --></span>
+                        </label>
+                        <div class="control">
+                            <div class="fields group group-2">
+                                <div class="field no-label month">
+                                    <div class="control">
+                                        <select class="select select-month"
+                                                data-bind="attr: {
+                                                id: getCode() + 'CardExpirationMonth',
+                                                'data-container': getCode() + '-cc-month',
+                                                },
+                                                value: omiseCardExpirationMonth,
+                                                options: getCcMonthsValues(),
+                                                optionsValue: 'value',
+                                                optionsText: 'month',
+                                                optionsCaption: $t('Month')"
+                                                data-validate="{required: true}">
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field no-label year">
-                                <div class="control">
-                                    <select class="select select-year"
-                                            data-bind="attr: {
-                                            id: getCode() + 'CardExpirationYear',
-                                            'data-container': getCode() + '-cc-year',
-                                            },
-                                            value: omiseCardExpirationYear,
-                                            options: getCcYearsValues(),
-                                            optionsValue: 'value',
-                                            optionsText: 'year',
-                                            optionsCaption: $t('Year')"
-                                            data-validate="{required: true}">
-                                    </select>
+                                <div class="field no-label year">
+                                    <div class="control">
+                                        <select class="select select-year"
+                                                data-bind="attr: {
+                                                id: getCode() + 'CardExpirationYear',
+                                                'data-container': getCode() + '-cc-year',
+                                                },
+                                                value: omiseCardExpirationYear,
+                                                options: getCcYearsValues(),
+                                                optionsValue: 'value',
+                                                optionsText: 'year',
+                                                optionsCaption: $t('Year')"
+                                                data-validate="{required: true}">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="field cvv required" data-bind="attr: {id: getCode() + '_cc_type_cvv_div'}">
-                    <label data-bind="attr: {for: getCode() + 'CardSecurityCode'}" class="label">
-                        <span><!-- ko i18n: 'Security code'--><!-- /ko --></span>
-                    </label>
-                    <div class="control">
-                        <input type="password"
-                               autocomplete="off"
-                               class="input-text cvv"
-                               data-bind="attr: {
-                               id: getCode() + 'CardSecurityCode',
-                               'data-container': getCode() + '-cc-cvv',
-                               'data-validate': JSON.stringify({
-                                   'required-number': true,
-                                   'validate-card-cvv': '#' + getCode() + 'CardSecurityCode'
-                               })
-                               },
-                               value: omiseCardSecurityCode"/>
-                    </div>
-                </div>
-
-                <!-- ko if: isCustomerLoggedIn() -->
-                    <div class="field">
-                        <input  type="checkbox"
+                    <div class="field cvv required" data-bind="attr: {id: getCode() + '_cc_type_cvv_div'}">
+                        <label data-bind="attr: {for: getCode() + 'CardSecurityCode'}" class="label">
+                            <span><!-- ko i18n: 'Security code'--><!-- /ko --></span>
+                        </label>
+                        <div class="control">
+                            <input type="password"
+                                autocomplete="off"
+                                class="input-text cvv"
                                 data-bind="attr: {
-                                id: getCode() + 'SaveCard',
+                                id: getCode() + 'CardSecurityCode',
+                                'data-container': getCode() + '-cc-cvv',
+                                'data-validate': JSON.stringify({
+                                    'required-number': true,
+                                    'validate-card-cvv': '#' + getCode() + 'CardSecurityCode'
+                                })
                                 },
-                                checked: omiseSaveCard"/>
-                        <label data-bind="attr: {for: getCode() + 'SaveCard'}"><!-- ko i18n: 'Remember this card' --><!-- /ko --></label>
+                                value: omiseCardSecurityCode"/>
+                        </div>
                     </div>
-                <!-- /ko -->
-            </fieldset>
+
+                    <!-- ko if: isCustomerLoggedIn() -->
+                        <div class="field">
+                            <input  type="checkbox"
+                                    data-bind="attr: {
+                                    id: getCode() + 'SaveCard',
+                                    },
+                                    checked: omiseSaveCard"/>
+                            <label data-bind="attr: {for: getCode() + 'SaveCard'}"><!-- ko i18n: 'Remember this card' --><!-- /ko --></label>
+                        </div>
+                    <!-- /ko -->
+                </fieldset>
+            <!-- /ko -->
+
         </form>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
