@@ -8,4 +8,12 @@
     <type name="\Magento\Config\Model\Config">
         <plugin name="admin_system_config_save_plugin" type="Omise\Payment\Plugin\ConfigSectionPaymentPlugin" sortOrder="1" />
     </type>
+
+    <type name="Magento\Framework\Notification\MessageList">
+       <arguments>
+           <argument name="messages" xsi:type="array">
+               <item name="opnPaymentsSecureFormBannerMessage" xsi:type="string">Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\SecureFormBannerMessage</item>
+           </argument>
+       </arguments>
+   </type>
 </config>

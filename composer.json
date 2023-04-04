@@ -9,7 +9,7 @@
             "email": "support@omise.co"
         }
     ],
-    "version": "2.32.0",
+    "version": "3.0.0",
     "minimum-stability": "stable",
     "type": "magento2-module",
     "license": "MIT",
@@ -33,10 +33,12 @@
             "magento/magento-composer-installer": true,
             "laminas/laminas-dependency-plugin": true,
             "magento/composer-dependency-version-audit-plugin": true,
-            "magento/composer-root-update-plugin": true
+            "magento/composer-root-update-plugin": true,
+            "php-http/discovery": true
         }
     },
     "scripts": {
-        "test": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=coverage.xml Test/Unit"
+        "test": "XDEBUG_MODE=coverage vendor/bin/phpunit Test/Unit --testdox --colors",
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text Test/Unit"
     }
 }

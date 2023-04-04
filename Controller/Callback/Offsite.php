@@ -17,6 +17,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
 use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
 use Magento\Framework\App\Request\Http;
+use Omise\Payment\Model\Config\Atome;
 
 class Offsite extends Action
 {

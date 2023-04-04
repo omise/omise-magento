@@ -23,7 +23,7 @@ class CardFormCustomization {
 
     setOriginalUseWebsiteValue() {
         const element = document.getElementById(OMISE_CC_INPUT_ID + '_inherit')
-        if(element) {
+        if (element) {
             element.value = this.isUseWebsiteChecked() ? '1' : ''
         }
     }

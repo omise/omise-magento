@@ -1,42 +1,45 @@
 <?php
+
 namespace Omise\Payment\Gateway\Request;
 
-use Magento\Payment\Gateway\Helper\SubjectReader;
-use Magento\Payment\Gateway\Request\BuilderInterface;
-
-use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\Fpx;
-use Omise\Payment\Model\Config\Pointsciti;
-use Omise\Payment\Model\Config\Internetbanking;
-use Omise\Payment\Model\Config\Installment;
-use Omise\Payment\Model\Config\Tesco;
-use Omise\Payment\Model\Config\Paynow;
-use Omise\Payment\Model\Config\Promptpay;
-use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Config\Alipayplus;
-use Omise\Payment\Model\Config\Mobilebanking;
-use Omise\Payment\Model\Config\Rabbitlinepay;
-use Omise\Payment\Model\Config\Ocbcpao;
-use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Capabilities;
+
+use Omise\Payment\Model\Config\Atome;
 use Omise\Payment\Model\Config\Boost;
-use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Config\Paynow;
+use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Ocbcpao;
+use Omise\Payment\Model\Config\Touchngo;
+use Omise\Payment\Helper\ReturnUrlHelper;
 use Omise\Payment\Model\Config\DuitnowQR;
 use Omise\Payment\Model\Config\MaybankQR;
+use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Shopeepay;
-use Omise\Payment\Model\Config\Touchngo;
+use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\Pointsciti;
+use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Rabbitlinepay;
 
-use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
+use Omise\Payment\Helper\OmiseHelper as Helper;
+use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Conveniencestore;
+use Magento\Payment\Gateway\Helper\SubjectReader;
 use Omise\Payment\Observer\FpxDataAssignObserver;
+use Magento\Payment\Gateway\Request\BuilderInterface;
+use Omise\Payment\Helper\PhoneNumberFormatter;
+use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 use Omise\Payment\Observer\DuitnowOBWDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\MobilebankingDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
-use Omise\Payment\Observer\TruemoneyDataAssignObserver;
-use Omise\Payment\Helper\OmiseHelper as Helper;
-use Omise\Payment\Helper\ReturnUrlHelper;
-use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
 {
@@ -92,6 +95,16 @@ class APMBuilder implements BuilderInterface
     const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
 
     /**
+     * @var string
+     */
+    const SOURCE_ITEMS = 'items';
+
+    /**
+     * @var string
+     */
+    const SOURCE_SHIPPING = 'shipping';
+
+    /**
      * @var \Omise\Payment\Helper\ReturnUrlHelper
      */
     protected $returnUrl;
@@ -128,10 +141,11 @@ class APMBuilder implements BuilderInterface
         $payment = $buildSubject['payment']->getPayment();
         $payment->setAdditionalInformation('token', $returnUrl['token']);
 
-        $paymentInfo = [ self::RETURN_URI => $returnUrl['url'] ];
+        $paymentInfo = [self::RETURN_URI => $returnUrl['url']];
 
         $payment = SubjectReader::readPayment($buildSubject);
         $method  = $payment->getPayment();
+        $order  = $payment->getOrder();
 
         switch ($method->getMethod()) {
             case Alipay::CODE:
@@ -289,6 +303,14 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_TYPE => $this->getShopeepaySource()
                 ];
                 break;
+            case Atome::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => Atome::ID,
+                    self::SOURCE_PHONE_NUMBER => $this->getPhoneNumber($order),
+                    self::SOURCE_SHIPPING => $this->getShippingAddress($order),
+                    self::SOURCE_ITEMS => $this->getOrderItems($order),
+                ];
+                break;
         }
 
         return $paymentInfo;
@@ -317,5 +339,45 @@ class APMBuilder implements BuilderInterface
         // If MPM is not enabled then it means jump app is enabled because this code would never
         // execute if none of the shopee backends were disabled.
         return $isShopeepayEnabled ? Shopeepay::ID : Shopeepay::JUMPAPP_ID;
+    }
+
+    private function getShippingAddress($order)
+    {
+        $address = $order->getShippingAddress();
+        return [
+            'street1' => $address->getStreetLine1(),
+            'street2' => $address->getStreetLine2(),
+            'postal_code' => $address->getPostcode(),
+            'country' => $address->getCountryId(),
+            'city' => $address->getCity(),
+            'state' => $address->getRegionCode(),
+        ];
+    }
+
+    private function getPhoneNumber($order)
+    {
+        $address = $order->getShippingAddress();
+        $countryCode = $address->getCountryId();
+        $number = $address->getTelephone();
+        return (new PhoneNumberFormatter)->process($number, $countryCode);
+    }
+
+    private function getOrderItems($order)
+    {
+        $itemArray = [];
+        $items = $order->getItems();
+        foreach ($items as $itemObject) {
+            $item = $itemObject->toArray();
+            $itemArray[] = [
+                'sku' => $item['sku'],
+                'name' => $item['name'],
+                'amount' => $this->helper->omiseAmountFormat(
+                    $order->getCurrencyCode(),
+                    $item['base_original_price']
+                ),
+                'quantity' => $item['qty_ordered'],
+            ];
+        }
+        return $itemArray;
     }
 }
