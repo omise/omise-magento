@@ -45,7 +45,6 @@ class APMRequestValidatorTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
-     * @covers Omise\Payment\Helper\PhoneNumberFormatter
      */
     public function testCurrencyNotSupported()
     {
@@ -61,7 +60,6 @@ class APMRequestValidatorTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
-     * @covers Omise\Payment\Helper\PhoneNumberFormatter
      */
     public function testMinAmountShouldThrowError()
     {
@@ -77,7 +75,6 @@ class APMRequestValidatorTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
-     * @covers Omise\Payment\Helper\PhoneNumberFormatter
      */
     public function testValidAmountShouldNotThrowError()
     {
@@ -92,7 +89,6 @@ class APMRequestValidatorTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
-     * @covers Omise\Payment\Helper\PhoneNumberFormatter
      */
     public function testMaxAmountShouldThrowError()
     {
@@ -108,7 +104,6 @@ class APMRequestValidatorTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
-     * @covers Omise\Payment\Helper\PhoneNumberFormatter
      */
     public function testInvalidAtomePhoneNumberValidation()
     {
@@ -124,7 +119,6 @@ class APMRequestValidatorTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
-     * @covers Omise\Payment\Helper\PhoneNumberFormatter
      */
     public function testValidAtomePhoneNumberValidation()
     {
