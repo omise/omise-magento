@@ -42,24 +42,13 @@ define(
              * @return {Object}
              */
             getData: function () {
-                let phoneNumber = this.atomePhoneNumber()
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'atome_phone_number': phoneNumber && phoneNumber !== '' ? phoneNumber : this.getCustomerSavedPhoneNumber()
+                        'atome_phone_number': this.atomePhoneNumber()
                     }
                 }
             },
-
-            /**
-             * Get customer phone number saved in profile
-             *
-             * @return {string}
-             */
-            getCustomerSavedPhoneNumber: function () {
-                let q = quote && quote.billingAddress()
-                return q ? q.telephone : ''
-            }
         })
     }
 )
