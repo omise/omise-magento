@@ -309,7 +309,7 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_TYPE => Atome::ID,
                     self::SOURCE_PHONE_NUMBER => (new PhoneNumberFormatter)->process(
                         $method->getAdditionalInformation(AtomeDataAssignObserver::PHONE_NUMBER),
-                        $this->getCountryCode($order)
+                        $order->getShippingAddress()->getCountryId()
                     ),
                     self::SOURCE_SHIPPING => $this->getShippingAddress($order),
                     self::SOURCE_ITEMS => $this->getOrderItems($order),
@@ -356,12 +356,6 @@ class APMBuilder implements BuilderInterface
             'city' => $address->getCity(),
             'state' => $address->getRegionCode(),
         ];
-    }
-
-    private function getCountryCode($order)
-    {
-        $address = $order->getShippingAddress();
-        return $address->getCountryId();
     }
 
     private function getOrderItems($order)

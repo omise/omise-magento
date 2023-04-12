@@ -6,6 +6,8 @@ use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Model\Config\Atome;
 use Magento\Framework\Exception\LocalizedException;
+use Omise\Payment\Helper\PhoneNumberFormatter;
+use Omise\Payment\Observer\AtomeDataAssignObserver;
 
 class APMRequestValidator implements BuilderInterface
 {
@@ -22,6 +24,7 @@ class APMRequestValidator implements BuilderInterface
 
         switch ($paymentInfo->getMethod()) {
             case Atome::CODE:
+                $this->validateAtomePhoneNumber($order, $paymentInfo);
                 $this->validateAtomeAmount($order);
                 break;
             default:
@@ -29,6 +32,26 @@ class APMRequestValidator implements BuilderInterface
         }
 
         return $buildSubject;
+    }
+
+    /**
+     * validate atome phone number
+     *
+     * @param $order
+     * @param $info
+     *
+     * @return void
+     */
+    private function validateAtomePhoneNumber($order, $info)
+    {
+        $number = (new PhoneNumberFormatter)->process(
+            $info->getAdditionalInformation(AtomeDataAssignObserver::PHONE_NUMBER),
+            $order->getShippingAddress()->getCountryId()
+        );
+        $phonePattern = "/^\+?[0-9]\d{10,13}$/";
+        if (!preg_match($phonePattern, $number)) {
+            throw new LocalizedException(__('Phone number should be a number in Atome'));
+        }
     }
 
     /**
