@@ -32,8 +32,8 @@ use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Omise\Payment\Observer\FpxDataAssignObserver;
+use Omise\Payment\Observer\AtomeDataAssignObserver;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Helper\PhoneNumberFormatter;
 use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 use Omise\Payment\Observer\DuitnowOBWDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
@@ -306,7 +306,9 @@ class APMBuilder implements BuilderInterface
             case Atome::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => Atome::ID,
-                    self::SOURCE_PHONE_NUMBER => $this->getPhoneNumber($order),
+                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(
+                        AtomeDataAssignObserver::PHONE_NUMBER
+                    ),
                     self::SOURCE_SHIPPING => $this->getShippingAddress($order),
                     self::SOURCE_ITEMS => $this->getOrderItems($order),
                 ];
@@ -352,14 +354,6 @@ class APMBuilder implements BuilderInterface
             'city' => $address->getCity(),
             'state' => $address->getRegionCode(),
         ];
-    }
-
-    private function getPhoneNumber($order)
-    {
-        $address = $order->getShippingAddress();
-        $countryCode = $address->getCountryId();
-        $number = $address->getTelephone();
-        return (new PhoneNumberFormatter)->process($number, $countryCode);
     }
 
     private function getOrderItems($order)
