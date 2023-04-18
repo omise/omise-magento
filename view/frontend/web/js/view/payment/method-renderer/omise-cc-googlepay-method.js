@@ -126,7 +126,7 @@ define(
             code: 'omise_cc_googlepay',
 
             logo: {
-                file: "images/googlepay.svg",
+                file: "images/googlepay.png",
                 width: "73",
                 height: "40",
                 name: "googlepay"

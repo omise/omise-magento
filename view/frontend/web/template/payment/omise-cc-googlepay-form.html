@@ -12,7 +12,9 @@
         <label data-bind="attr: {'for': getCode()}" class="omise-payment-method-title label">
             <span data-bind="text: getTitle()"></span>
             <!-- ko if: getLogo() -->
-            <img alt="Gpay logo" data-bind="attr: { src: require.toUrl('Omise_Payment/'+logo.file), alt: logo.name },
+            <img
+                alt="Google Pay logo"
+                data-bind="attr: { src: require.toUrl('Omise_Payment/'+logo.file), alt: logo.name },
                 style: { width: logo.width ? logo.width +'px' : '60px', maxHeight: '60px', marginTop: '-0.7em'}">
             <!-- /ko -->
         </label>
