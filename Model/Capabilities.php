@@ -130,6 +130,14 @@ class Capabilities
     }
 
     /**
+     * @return int
+     */
+    public function getInstallmentLimitAmount()
+    {
+        return $this->capabilitiesAPI->getInstallmentLimitAmount();
+    }
+
+    /**
      *
      * @return object
      */

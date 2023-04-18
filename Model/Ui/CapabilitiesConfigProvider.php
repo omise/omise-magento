@@ -1,21 +1,23 @@
 <?php
+
 namespace Omise\Payment\Model\Ui;
 
+use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Config\Shopeepay;
+use Omise\Payment\Model\Config\CcGooglePay;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use Omise\Payment\Model\Capabilities;
-use Omise\Payment\Model\Config\CcGooglePay;
-use Omise\Payment\Model\Config\Fpx;
-use Omise\Payment\Model\Config\Internetbanking;
-use Omise\Payment\Model\Config\Mobilebanking;
-use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
-use Omise\Payment\Helper\OmiseHelper;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface
 {
     private $_storeManager;
+
+    private $capabilities;
+
+    private $helper;
 
     /**
      * @var Magento\Payment\Api\PaymentMethodListInterface;
@@ -48,6 +50,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $backends = $this->capabilities->getBackendsWithOmiseCode();
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
+        $configs['omise_installment_limit_amount'] = $this->capabilities->getInstallmentLimitAmount();
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
@@ -63,7 +66,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                 if ($code === 'omise_offsite_shopeepay') {
                     $configs['omise_payment_list'][$code] = $this->getShopeeBackendByType($backends[$code]);
                 } else {
-                    $configs['omise_payment_list'][$code]= $backends[$code];
+                    $configs['omise_payment_list'][$code] = $backends[$code];
                 }
             }
         }
