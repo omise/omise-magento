@@ -48,7 +48,7 @@ class Capabilities extends BaseObject
         return $this->capabilities ? $this->capabilities->getBackends(
             $this->capabilities->makeBackendFilterType('installment')
         )
-        : null;
+            : null;
     }
 
     /**
@@ -103,6 +103,6 @@ class Capabilities extends BaseObject
             && isset($this->capabilities['limits'])
             && isset($this->capabilities['limits']['installment_amount'])
             ? $this->capabilities['limits']['installment_amount']
-            : 0;
+            : ['min' => 200000];
     }
 }
