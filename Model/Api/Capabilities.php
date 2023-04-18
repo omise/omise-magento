@@ -48,7 +48,7 @@ class Capabilities extends BaseObject
         return $this->capabilities ? $this->capabilities->getBackends(
             $this->capabilities->makeBackendFilterType('installment')
         )
-            : null;
+        : null;
     }
 
     /**
