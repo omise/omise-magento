@@ -125,6 +125,13 @@ define(
 
             code: 'omise_cc_googlepay',
 
+            logo: {
+                file: "images/googlepay.svg",
+                width: "73",
+                height: "40",
+                name: "googlepay"
+            },
+
             /**
              * Get a checkout form data.
              *
@@ -369,7 +376,7 @@ define(
                                 }
                             });
                     });
-            },
+            }
         });
     }
 );
