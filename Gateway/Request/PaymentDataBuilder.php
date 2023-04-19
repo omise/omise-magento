@@ -46,13 +46,20 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $ccConfig;
 
+  
+    /**
+     * @var OmiseMoney
+     */
+    private $money;
+
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      */
-    public function __construct(OmiseHelper $omiseHelper, Cc $ccConfig)
+    public function __construct(OmiseHelper $omiseHelper, Cc $ccConfig, OmiseMoney $money)
     {
         $this->omiseHelper = $omiseHelper;
+        $this->money = $money;
         $this->ccConfig = $ccConfig;
     }
 
@@ -74,7 +81,7 @@ class PaymentDataBuilder implements BuilderInterface
         $currency = $order->getCurrencyCode();
 
         $requestBody = [
-            self::AMOUNT      => OmiseMoney::parse($order->getGrandTotalAmount(), $currency)->toSubunit(),
+            self::AMOUNT      => $this->money->parse($order->getGrandTotalAmount(), $currency)->toSubunit(),
             self::CURRENCY    => $currency,
             self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
             self::METADATA    => [

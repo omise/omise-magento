@@ -116,6 +116,11 @@ class APMBuilder implements BuilderInterface
     protected $helper;
 
     /**
+     * @var OmiseMoney
+     */
+    protected $money;
+
+    /**
      * @param $helper    \Omise\Payment\Helper\OmiseHelper
      * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
      */
@@ -123,12 +128,14 @@ class APMBuilder implements BuilderInterface
         Helper $helper,
         ReturnUrlHelper $returnUrl,
         Config $config,
-        Capabilities $capabilities
+        Capabilities $capabilities,
+        OmiseMoney $money
     ) {
         $this->helper = $helper;
         $this->returnUrl = $returnUrl;
         $this->config = $config;
         $this->capabilities = $capabilities;
+        $this->money = $money;
     }
 
     /**
@@ -367,7 +374,7 @@ class APMBuilder implements BuilderInterface
             $itemArray[] = [
                 'sku' => $item['sku'],
                 'name' => $item['name'],
-                'amount' => OmiseMoney::parse($item['base_original_price'], $currency)->toSubunit(),
+                'amount' => $this->money->parse($item['base_original_price'], $currency)->toSubunit(),
                 'quantity' => $item['qty_ordered'],
             ];
         }

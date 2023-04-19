@@ -23,6 +23,11 @@ class RefundDataBuilder implements BuilderInterface
      */
     protected $omiseHelper;
 
+     /**
+     * @var OmiseMoney
+     */
+    protected $money;
+
     /**
      * Constructor
      *
@@ -31,10 +36,12 @@ class RefundDataBuilder implements BuilderInterface
      */
     public function __construct(
         SubjectReader $subjectReader,
-        OmiseHelper $omiseHelper
+        OmiseHelper $omiseHelper,
+        OmiseMoney $money
     ) {
         $this->subjectReader = $subjectReader;
         $this->omiseHelper = $omiseHelper;
+        $this->money = $money;
     }
 
     /**
@@ -56,7 +63,7 @@ class RefundDataBuilder implements BuilderInterface
         return [
             'store_id' => $order->getStore()->getId(),
             'transaction_id' => $payment->getParentTransactionId(),
-            PaymentDataBuilder::AMOUNT => OmiseMoney::parse($amountToRefund, $currency)->toSubunit(),
+            PaymentDataBuilder::AMOUNT => $this->money->parse($amountToRefund, $currency)->toSubunit(),
         ];
     }
 }

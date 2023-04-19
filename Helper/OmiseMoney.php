@@ -19,28 +19,20 @@ class OmiseMoney
 
     /**
      * @param integer|float $amount
-     * @param string $currency
+     * @param this
      */
-    public function __construct($amount, $currency)
+    public function parse($amount, $currency)
     {
         $this->amount = $amount;
         $this->currency = $currency;
-    }
-
-    /**
-     * @param integer|float $amount
-     * @param string $currency
-     */
-    public static function parse($amount, $currency)
-    {
-        return new self($amount, $currency);
+        return $this;
     }
 
     /**
      * convert currency unit to subunit
      * @return integer
      */
-    function toSubunit()
+    public function toSubunit()
     {
         if (in_array($this->currency, $this->zeroDecimalCurrencies)) {
             return $this->amount;
@@ -52,7 +44,7 @@ class OmiseMoney
      * convert subunit to currency unit
      * @return float|integer
      */
-    function toCurrencyUnit()
+    public function toCurrencyUnit()
     {
         if (in_array($this->currency, $this->zeroDecimalCurrencies)) {
             return $this->amount;

@@ -7,6 +7,20 @@ use Omise\Payment\Helper\OmiseMoney;
 class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * @var OmiseMoney;
+     */
+    private $model;
+    /**
+     * This function is called before the test runs.
+     * Ideal for setting the values to variables or objects.
+     * @coversNothing
+     */
+    public function setUp(): void
+    {
+        $this->model = new OmiseMoney();
+    }
+
+    /**
      * Test the function returns amount in correct format
      *
      * @dataProvider toSubunitProvider
@@ -15,7 +29,7 @@ class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
      */
     public function toSubunitReturnCorrectFormat($currency, $amount, $expected)
     {
-        $this->assertEquals($expected, OmiseMoney::parse($amount, $currency)->toSubunit());
+        $this->assertEquals($expected, $this->model->parse($amount, $currency)->toSubunit());
     }
 
     /**
@@ -27,7 +41,7 @@ class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
      */
     public function toCurrencyUnitReturnCorrectFormat($currency, $amount, $expected)
     {
-        $this->assertEquals($expected, OmiseMoney::parse($amount, $currency)->toCurrencyUnit());
+        $this->assertEquals($expected, $this->model->parse($amount, $currency)->toCurrencyUnit());
     }
 
     /**

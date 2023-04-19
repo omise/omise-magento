@@ -23,14 +23,21 @@ class Capabilities
      */
     protected $helper;
 
+    /**
+     * @var OmiseMoney;
+     */
+    protected $money;
+
     public function __construct(
         Omise $omise,
         OmiseCapabilitiesAPI $capabilitiesAPI,
-        OmiseHelper $helper
+        OmiseHelper $helper,
+        OmiseMoney $money
     ) {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
         $this->helper = $helper;
+        $this->money = $money;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -136,7 +143,7 @@ class Capabilities
     public function getInstallmentMinLimit($currency)
     {
         $amount = $this->capabilitiesAPI->getInstallmentMinLimit();
-        return OmiseMoney::parse($amount, $currency)->toCurrencyUnit();
+        return $this->money->parse($amount, $currency)->toCurrencyUnit();
     }
 
     /**
