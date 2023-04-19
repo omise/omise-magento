@@ -95,7 +95,7 @@ class Capabilities extends BaseObject
     /**
      * Get installment limit amount
      *
-     * @return int
+     * @return integer
      */
     public function getInstallmentMinLimit()
     {
