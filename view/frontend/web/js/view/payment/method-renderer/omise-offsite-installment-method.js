@@ -126,7 +126,7 @@ define(
              * @returns {number}
              */
             getInstallmentMinLimit: function () {
-                return checkoutConfig.omise_installment_limit_amount.min / 100;
+                return checkoutConfig.omise_installment_min_limit;
             },
 
             /**

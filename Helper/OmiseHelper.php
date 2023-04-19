@@ -277,6 +277,36 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
+     * @param  string  $currency
+     * @param  integer $amount
+     *
+     * @return string
+     */
+    public function currencyAmountFormat($currency, $amount)
+    {
+        $supportedCurrencies = [
+            'EUR',
+            'GBP',
+            'SGD',
+            'THB',
+            'USD',
+            'AUD',
+            'CAD',
+            'CHF',
+            'CNY',
+            'DKK',
+            'HKD',
+            'MYR',
+        ];
+
+        if (in_array($currency, $supportedCurrencies)) {
+            return $amount /= 100;
+        }
+
+        return $amount;
+    }
+
+    /**
      * Convert tesco code returned from Omise Backend in SVG format to HTML format
      *
      * @param  string  $svg

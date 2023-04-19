@@ -44,13 +44,14 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
+        $currency = $this->_storeManager->getStore()->getCurrentCurrencyCode();
         $configs = [];
 
         // Retrieve available backends & methods from capabilities api
         $backends = $this->capabilities->getBackendsWithOmiseCode();
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
-        $configs['omise_installment_limit_amount'] = $this->capabilities->getInstallmentLimitAmount();
+        $configs['omise_installment_min_limit'] = $this->capabilities->getInstallmentMinLimit($currency);
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();

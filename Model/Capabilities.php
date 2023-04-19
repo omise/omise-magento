@@ -132,9 +132,12 @@ class Capabilities
     /**
      * @return int
      */
-    public function getInstallmentLimitAmount()
+    public function getInstallmentMinLimit($currency)
     {
-        return $this->capabilitiesAPI->getInstallmentLimitAmount();
+        return $this->helper->currencyAmountFormat(
+            $currency,
+            $this->capabilitiesAPI->getInstallmentMinLimit()
+        );
     }
 
     /**
