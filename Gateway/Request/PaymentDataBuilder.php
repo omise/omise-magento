@@ -45,7 +45,6 @@ class PaymentDataBuilder implements BuilderInterface
      * @var \Omise\Payment\Model\Config\Cc
      */
     private $ccConfig;
-
   
     /**
      * @var OmiseMoney

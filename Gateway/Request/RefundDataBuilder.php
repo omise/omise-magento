@@ -23,7 +23,7 @@ class RefundDataBuilder implements BuilderInterface
      */
     protected $omiseHelper;
 
-     /**
+    /**
      * @var OmiseMoney
      */
     protected $money;
