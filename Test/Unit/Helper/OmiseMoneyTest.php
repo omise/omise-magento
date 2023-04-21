@@ -35,13 +35,13 @@ class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
     /**
      * Test the function returns amount in correct format
      *
-     * @dataProvider toCurrencyUnitProvider
+     * @dataProvider toUnitProvider
      * @covers \Omise\Payment\Helper\OmiseMoney
      * @test
      */
-    public function toCurrencyUnitReturnCorrectFormat($currency, $amount, $expected)
+    public function toUnitReturnCorrectFormat($currency, $amount, $expected)
     {
-        $this->assertEquals($expected, $this->model->parse($amount, $currency)->toCurrencyUnit());
+        $this->assertEquals($expected, $this->model->parse($amount, $currency)->toUnit());
     }
 
     /**
@@ -67,9 +67,9 @@ class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Data provider for toCurrencyUnitReturnCorrectFormat
+     * Data provider for toUnitReturnCorrectFormat
      */
-    public function toCurrencyUnitProvider()
+    public function toUnitProvider()
     {
         return [
             ['CNY', 2100, 21],

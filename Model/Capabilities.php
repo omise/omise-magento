@@ -143,7 +143,7 @@ class Capabilities
     public function getInstallmentMinLimit($currency)
     {
         $amount = $this->capabilitiesAPI->getInstallmentMinLimit();
-        return $this->money->parse($amount, $currency)->toCurrencyUnit();
+        return $this->money->parse($amount, $currency)->toUnit();
     }
 
     /**

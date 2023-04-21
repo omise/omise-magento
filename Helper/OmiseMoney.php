@@ -24,7 +24,7 @@ class OmiseMoney
     public function parse($amount, $currency)
     {
         $this->amount = $amount;
-        $this->currency = $currency;
+        $this->currency = strtoupper($currency);
         return $this;
     }
 
@@ -44,7 +44,7 @@ class OmiseMoney
      * convert subunit to currency unit
      * @return float|integer
      */
-    public function toCurrencyUnit()
+    public function toUnit()
     {
         if (in_array($this->currency, $this->zeroDecimalCurrencies)) {
             return $this->amount;
