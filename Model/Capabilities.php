@@ -145,7 +145,7 @@ class Capabilities
     {
         $amount = $this->capabilitiesAPI->getInstallmentMinLimit();
         return $this->money->setAmountAndCurrency(
-            $amount, 
+            $amount,
             $currency
         )->toUnit();
     }

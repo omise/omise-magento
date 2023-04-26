@@ -375,7 +375,7 @@ class APMBuilder implements BuilderInterface
                 'sku' => $item['sku'],
                 'name' => $item['name'],
                 'amount' => $this->money->setAmountAndCurrency(
-                    $item['base_original_price'], 
+                    $item['base_original_price'],
                     $currency
                 )->toSubunit(),
                 'quantity' => $item['qty_ordered'],

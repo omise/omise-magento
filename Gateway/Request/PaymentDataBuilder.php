@@ -81,7 +81,7 @@ class PaymentDataBuilder implements BuilderInterface
 
         $requestBody = [
             self::AMOUNT      => $this->money->setAmountAndCurrency(
-                $order->getGrandTotalAmount(), 
+                $order->getGrandTotalAmount(),
                 $currency
             )->toSubunit(),
             self::CURRENCY    => $currency,
