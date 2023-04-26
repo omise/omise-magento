@@ -19,9 +19,10 @@ class OmiseMoney
 
     /**
      * @param integer|float $amount
-     * @param this
+     * @param string $currency
+     * @return this
      */
-    public function parse($amount, $currency)
+    public function setAmountAndCurrency($amount, $currency)
     {
         $this->amount = $amount;
         $this->currency = strtoupper($currency);

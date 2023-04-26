@@ -80,7 +80,10 @@ class PaymentDataBuilder implements BuilderInterface
         $currency = $order->getCurrencyCode();
 
         $requestBody = [
-            self::AMOUNT      => $this->money->parse($order->getGrandTotalAmount(), $currency)->toSubunit(),
+            self::AMOUNT      => $this->money->setAmountAndCurrency(
+                $order->getGrandTotalAmount(), 
+                $currency
+            )->toSubunit(),
             self::CURRENCY    => $currency,
             self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
             self::METADATA    => [

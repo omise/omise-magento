@@ -1,4 +1,5 @@
 <?php
+
 namespace Omise\Payment\Model;
 
 use Omise\Payment\Model\Api\Capabilities as OmiseCapabilitiesAPI;
@@ -24,7 +25,7 @@ class Capabilities
     protected $helper;
 
     /**
-     * @var OmiseMoney;
+     * @var Omise\Payment\Helper\OmiseMoney;
      */
     protected $money;
 
@@ -84,7 +85,7 @@ class Capabilities
             }
         });
     }
-    
+
     /**
      *
      * @return array|null
@@ -143,7 +144,10 @@ class Capabilities
     public function getInstallmentMinLimit($currency)
     {
         $amount = $this->capabilitiesAPI->getInstallmentMinLimit();
-        return $this->money->parse($amount, $currency)->toUnit();
+        return $this->money->setAmountAndCurrency(
+            $amount, 
+            $currency
+        )->toUnit();
     }
 
     /**

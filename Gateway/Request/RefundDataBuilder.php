@@ -63,7 +63,10 @@ class RefundDataBuilder implements BuilderInterface
         return [
             'store_id' => $order->getStore()->getId(),
             'transaction_id' => $payment->getParentTransactionId(),
-            PaymentDataBuilder::AMOUNT => $this->money->parse($amountToRefund, $currency)->toSubunit(),
+            PaymentDataBuilder::AMOUNT => $this->money->setAmountAndCurrency(
+                $amountToRefund, 
+                $currency
+            )->toSubunit(),
         ];
     }
 }

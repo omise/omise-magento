@@ -374,7 +374,10 @@ class APMBuilder implements BuilderInterface
             $itemArray[] = [
                 'sku' => $item['sku'],
                 'name' => $item['name'],
-                'amount' => $this->money->parse($item['base_original_price'], $currency)->toSubunit(),
+                'amount' => $this->money->setAmountAndCurrency(
+                    $item['base_original_price'], 
+                    $currency
+                )->toSubunit(),
                 'quantity' => $item['qty_ordered'],
             ];
         }

@@ -29,7 +29,7 @@ class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
      */
     public function toSubunitReturnCorrectFormat($currency, $amount, $expected)
     {
-        $this->assertEquals($expected, $this->model->parse($amount, $currency)->toSubunit());
+        $this->assertEquals($expected, $this->model->setAmountAndCurrency($amount, $currency)->toSubunit());
     }
 
     /**
@@ -41,7 +41,7 @@ class OmiseMoneyTest extends \PHPUnit\Framework\TestCase
      */
     public function toUnitReturnCorrectFormat($currency, $amount, $expected)
     {
-        $this->assertEquals($expected, $this->model->parse($amount, $currency)->toUnit());
+        $this->assertEquals($expected, $this->model->setAmountAndCurrency($amount, $currency)->toUnit());
     }
 
     /**
