@@ -10,6 +10,8 @@ class Capabilities extends BaseObject
 {
     private $capabilities;
 
+    private $config;
+
     /**
      * Injecting dependencies
      * @param \Omise\Payment\Model\Config\Config $config
@@ -88,5 +90,15 @@ class Capabilities extends BaseObject
     public function getTokenizationMethods()
     {
         return $this->capabilities ? $this->capabilities['tokenization_methods'] : null;
+    }
+
+    /**
+     * Get installment limit amount
+     *
+     * @return integer
+     */
+    public function getInstallmentMinLimit()
+    {
+        return $this->capabilities['limits']['installment_amount']['min'];
     }
 }

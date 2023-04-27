@@ -27,6 +27,7 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 
+use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Conveniencestore;
@@ -115,6 +116,11 @@ class APMBuilder implements BuilderInterface
     protected $helper;
 
     /**
+     * @var OmiseMoney
+     */
+    protected $money;
+
+    /**
      * @param $helper    \Omise\Payment\Helper\OmiseHelper
      * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
      */
@@ -122,12 +128,14 @@ class APMBuilder implements BuilderInterface
         Helper $helper,
         ReturnUrlHelper $returnUrl,
         Config $config,
-        Capabilities $capabilities
+        Capabilities $capabilities,
+        OmiseMoney $money
     ) {
         $this->helper = $helper;
         $this->returnUrl = $returnUrl;
         $this->config = $config;
         $this->capabilities = $capabilities;
+        $this->money = $money;
     }
 
     /**
@@ -360,15 +368,16 @@ class APMBuilder implements BuilderInterface
     {
         $itemArray = [];
         $items = $order->getItems();
+        $currency = $order->getCurrencyCode();
         foreach ($items as $itemObject) {
             $item = $itemObject->toArray();
             $itemArray[] = [
                 'sku' => $item['sku'],
                 'name' => $item['name'],
-                'amount' => $this->helper->omiseAmountFormat(
-                    $order->getCurrencyCode(),
-                    $item['base_original_price']
-                ),
+                'amount' => $this->money->setAmountAndCurrency(
+                    $item['base_original_price'],
+                    $currency
+                )->toSubunit(),
                 'quantity' => $item['qty_ordered'],
             ];
         }
