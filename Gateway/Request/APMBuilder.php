@@ -26,6 +26,7 @@ use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
+use Omise\Payment\Model\Config\PayPay;
 
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\OmiseHelper as Helper;
@@ -319,6 +320,11 @@ class APMBuilder implements BuilderInterface
                     ),
                     self::SOURCE_SHIPPING => $this->getShippingAddress($order),
                     self::SOURCE_ITEMS => $this->getOrderItems($order),
+                ];
+                break;
+            case PayPay::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => PayPay::ID,
                 ];
                 break;
         }

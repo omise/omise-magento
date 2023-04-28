@@ -15,6 +15,7 @@ use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\Paynow;
+use Omise\Payment\Model\Config\PayPay;
 use Magento\Framework\App\Request\Http;
 use Magento\Store\Model\ScopeInterface;
 use Omise\Payment\Model\Config\Grabpay;
@@ -69,7 +70,8 @@ class OmiseHelper extends AbstractHelper
         DuitnowQR::CODE,
         MaybankQR::CODE,
         Shopeepay::CODE,
-        Atome::CODE
+        Atome::CODE,
+        PayPay::CODE
     ];
 
     /**
@@ -136,6 +138,7 @@ class OmiseHelper extends AbstractHelper
         Shopeepay::ID => Shopeepay::CODE,
         Shopeepay::JUMPAPP_ID => Shopeepay::CODE,
         Atome::ID => Atome::CODE,
+        PayPay::ID => PayPay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -200,6 +203,7 @@ class OmiseHelper extends AbstractHelper
         MaybankQR::CODE => "Maybank QRPay Payment",
         Shopeepay::CODE => "ShopeePay Payment",
         Atome::CODE => "Atome Payment",
+        PayPay::CODE => "PayPay Payment",
 
         // offline payment
         Paynow::CODE => "PayNow QR Payment",
