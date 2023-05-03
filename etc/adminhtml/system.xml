@@ -922,7 +922,7 @@
 
                 <group id="omise_offsite_paypay" translate="label" sortOrder="535" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable PayPay Payment</label>
-                    <comment>Enable customers to pay using PayPay QR payment method</comment>
+                    <comment>Enable customers to pay using PayPay payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="524" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
                         <comment>Enable PayPay payment method.</comment>
