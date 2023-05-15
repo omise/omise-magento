@@ -77,7 +77,10 @@ class Charge extends BaseObject
         try {
             $this->refresh(OmiseCharge::create($params));
         } catch (Exception $e) {
-            throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));
+            return new Error([
+                'code'    => 'bad_request',
+                'message' => $e->getMessage()
+            ]);
         }
 
         return $this;

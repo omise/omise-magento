@@ -104,9 +104,6 @@
                                                                         <item name="omise_offsite_shopeepay" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
-                                                                        <item name="omise_offsite_paypay" xsi:type="array">
-                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
-                                                                        </item>
                                                                     </item>
                                                                 </item>
                                                             </item>

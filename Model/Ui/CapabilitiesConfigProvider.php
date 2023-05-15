@@ -1,23 +1,21 @@
 <?php
-
 namespace Omise\Payment\Model\Ui;
 
-use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Model\Capabilities;
-use Omise\Payment\Model\Config\Shopeepay;
-use Omise\Payment\Model\Config\CcGooglePay;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Config\CcGooglePay;
+use Omise\Payment\Model\Config\Fpx;
+use Omise\Payment\Model\Config\Internetbanking;
+use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
+use Omise\Payment\Helper\OmiseHelper;
 
 class CapabilitiesConfigProvider implements ConfigProviderInterface
 {
     private $_storeManager;
-
-    private $capabilities;
-
-    private $helper;
 
     /**
      * @var Magento\Payment\Api\PaymentMethodListInterface;
@@ -44,22 +42,23 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
-        $currency = $this->_storeManager->getStore()->getCurrentCurrencyCode();
         $configs = [];
 
         // Retrieve available backends & methods from capabilities api
         $backends = $this->capabilities->getBackendsWithOmiseCode();
         $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $backends = array_merge($backends, $tokenization_methods);
-        $configs['omise_installment_min_limit'] = $this->capabilities->getInstallmentMinLimit($currency);
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
 
-            if ($code === OmiseInstallmentConfig::CODE) {
-                $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
-            } elseif ($code === CcGooglePay::CODE) {
-                $configs['card_brands'] = $this->capabilities->getCardBrands();
+            switch ($code) {
+                case OmiseInstallmentConfig::CODE:
+                    $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
+                    break;
+                case CcGooglePay::CODE:
+                    $configs['card_brands'] = $this->capabilities->getCardBrands();
+                    break;
             }
 
             // filter only active backends
@@ -67,7 +66,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                 if ($code === 'omise_offsite_shopeepay') {
                     $configs['omise_payment_list'][$code] = $this->getShopeeBackendByType($backends[$code]);
                 } else {
-                    $configs['omise_payment_list'][$code] = $backends[$code];
+                    $configs['omise_payment_list'][$code]= $backends[$code];
                 }
             }
         }

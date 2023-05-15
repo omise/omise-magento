@@ -55,6 +55,43 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test the function returns amount in correct format
+     *
+     * @dataProvider currencyProvider
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function omiseAmountFormatReturnCorrectFormat($currency)
+    {
+        $amount = 20;
+        $expectedAmount = 2000;
+        $formattedAmount = $this->model->omiseAmountFormat($currency, $amount);
+
+        $this->assertEquals($expectedAmount, $formattedAmount);
+    }
+
+    /**
+     * Data provider for the function omiseAmountFormatReturnCorrectFormat()
+     */
+    public function currencyProvider()
+    {
+        return [
+            ['EUR'],
+            ['GBP'],
+            ['SGD'],
+            ['THB'],
+            ['USD'],
+            ['AUD'],
+            ['CAD'],
+            ['CHF'],
+            ['CNY'],
+            ['DKK'],
+            ['HKD'],
+            ['MYR']
+        ];
+    }
+
+    /**
      * Test the function isPayableByImageCode() returns true when correct code is passed
      * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
