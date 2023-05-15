@@ -16,6 +16,10 @@ define(
         priceUtils
     ) {
         'use strict';
+        const INSTALLMENT_MIN_PURCHASE_AMOUNT  = {
+            'thb': 2000,
+            'myr': 500
+        };
         const CAPTION = $.mage.__('Choose number of monthly payments');
         const providers = [
             {
@@ -121,15 +125,6 @@ define(
             },
 
             /**
-             * Get installment min amount from capability
-             *
-             * @returns {number}
-             */
-            getInstallmentMinLimit: function () {
-                return checkoutConfig.omise_installment_min_limit;
-            },
-
-            /**
              * Format Price
              *
              * @param {float} amount - Amount to be formatted
@@ -147,7 +142,7 @@ define(
              * @return {string}
              */
             getMinimumOrderText: function () {
-                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(this.getInstallmentMinLimit()));
+                return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(INSTALLMENT_MIN_PURCHASE_AMOUNT[this.getStoreCurrency()]));
             },
 
             /**
@@ -362,7 +357,7 @@ define(
              * @return {boolean}
              */
             orderValueTooLow: function () {
-                return this.getTotal() < this.getInstallmentMinLimit();
+                return this.getTotal() < INSTALLMENT_MIN_PURCHASE_AMOUNT[this.getStoreCurrency()];
             },
 
             /**

@@ -1,14 +1,7 @@
 # CHANGELOG
 
-## [v3.1.0 _(May 15, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.1.0)
-- Added PayPay payment method. (PR: [#428](https://github.com/omise/omise-magento/pull/428))
-- Get installment minimum from capability API. (PR: [#427](https://github.com/omise/omise-magento/pull/427))
-- Added Google Pay logo in the checkout page. (PR: [#426](https://github.com/omise/omise-magento/pull/426))
-- Added Atome payment method. (PR: [#422](https://github.com/omise/omise-magento/pull/422))
-- Refactored functions to reduce cognitive complexity. (PR: [#421](https://github.com/omise/omise-magento/pull/421))
-
 ## [v3.0.0 _(Apr 3, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.0.0)
-- Replace credit card form with secure form with a feature flag options to switch between credit card forms. (PR: [#410](https://github.com/omise/omise-magento/pull/410))
+- Replace credit card form with secure form with a feature flag options to switch between credit card forms.  (PR: [#410](https://github.com/omise/omise-magento/pull/410))
 - Added an admin message to notify the user to update the current credit card form to embedded form. (PR: [#419](https://github.com/omise/omise-magento/pull/419))
 - Track the adoption of the secure form. (PR: [#420](https://github.com/omise/omise-magento/pull/420))
 - Removed deprecated ktb and scb internet banking.  (PR: [#417](https://github.com/omise/omise-magento/pull/417))

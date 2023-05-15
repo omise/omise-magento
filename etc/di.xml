@@ -1152,102 +1152,6 @@
     </virtualType>
     <!-- /Shopeepay payment :: Value Handler -->
 
-    <!-- Atome payment solution -->
-    <virtualType name="OmiseAtomeAdapter" type="Magento\Payment\Model\Method\Adapter">
-        <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\Atome::CODE</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
-            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMAtomeValueHandlerPool</argument>
-            <argument name="validatorPool" xsi:type="object">OmiseAPMAtomeValidatorPool</argument>
-            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
-        </arguments>
-    </virtualType>
-
-    <!-- Atome :: Value Handler Pool -->
-    <virtualType name="OmiseAPMAtomeValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
-        <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="default" xsi:type="string">OmiseAPMAtomeConfigValueHandler</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMAtomeValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
-        <arguments>
-            <argument name="validators" xsi:type="array">
-                <item name="country" xsi:type="string">OmiseAPMAtomeCountryValidator</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMAtomeCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
-        <arguments>
-            <argument name="config" xsi:type="object">OmiseAPMAtomeConfig</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMAtomeConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
-        <arguments>
-            <argument name="configInterface" xsi:type="object">OmiseAPMAtomeConfig</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMAtomeConfig" type="Magento\Payment\Gateway\Config\Config">
-        <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\Atome::CODE</argument>
-        </arguments>
-    </virtualType>
-    <!-- /Atome payment :: Value Handler -->
-
-    <!-- PayPay payment solution -->
-    <virtualType name="OmisePayPayAdapter" type="Magento\Payment\Model\Method\Adapter">
-        <arguments>
-            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\PayPay::CODE</argument>
-            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
-            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
-            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMPayPayValueHandlerPool</argument>
-            <argument name="validatorPool" xsi:type="object">OmiseAPMPayPayValidatorPool</argument>
-            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
-        </arguments>
-    </virtualType>
-
-    <!-- PayPay :: Value Handler Pool -->
-    <virtualType name="OmiseAPMPayPayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
-        <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="default" xsi:type="string">OmiseAPMPayPayConfigValueHandler</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMPayPayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
-        <arguments>
-            <argument name="validators" xsi:type="array">
-                <item name="country" xsi:type="string">OmiseAPMPayPayCountryValidator</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMPayPayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
-        <arguments>
-            <argument name="config" xsi:type="object">OmiseAPMPayPayConfig</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMPayPayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
-        <arguments>
-            <argument name="configInterface" xsi:type="object">OmiseAPMPayPayConfig</argument>
-        </arguments>
-    </virtualType>
-
-    <virtualType name="OmiseAPMPayPayConfig" type="Magento\Payment\Gateway\Config\Config">
-        <arguments>
-            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\PayPay::CODE</argument>
-        </arguments>
-    </virtualType>
-    <!-- /PayPay payment :: Value Handler -->
-
     <!--  Convenience Store payment solution-->
     <virtualType name="OmiseConveniencestoreAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
@@ -1322,7 +1226,6 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="payment" xsi:type="string">Omise\Payment\Gateway\Request\PaymentDataBuilder</item>
-                <item name="requestValidator" xsi:type="string">Omise\Payment\Gateway\Validator\APMRequestValidator</item>
                 <item name="offsite" xsi:type="string">Omise\Payment\Gateway\Request\APMBuilder</item>
             </argument>
         </arguments>

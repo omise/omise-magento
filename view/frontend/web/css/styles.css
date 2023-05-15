@@ -225,11 +225,11 @@ div.shopeepay {
     background-repeat: no-repeat;
 }
 
-#omise_offsite_atomephoneNumber, #omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorePhoneNumber, #omise_offline_conveniencestoreCustomerName {
+#omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreEmail, #omise_offline_conveniencestorePhoneNumber, #omise_offline_conveniencestoreCustomerName {
     width: 225px;
 }
 
-#omise_offsite_atomephoneNumber, #omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreForm {
+#omise_offsite_truemoneyphoneNumber, #omise_offline_conveniencestoreForm {
     margin-bottom: 18px;
 }
 

@@ -40,8 +40,6 @@ class OrderSyncStatus
         "omise_offsite_duitnowqr",
         "omise_offsite_maybankqr",
         "omise_offsite_shopeepay",
-        "omise_offsite_atome",
-        "omise_offsite_paypay",
     ];
 
     /**

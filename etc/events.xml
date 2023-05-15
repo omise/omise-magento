@@ -35,10 +35,6 @@
         <observer name="omise_data_assign_conveniencestore" instance="Omise\Payment\Observer\ConveniencestoreDataAssignObserver" />
     </event>
 
-    <event name="payment_method_assign_data_omise_offsite_atome">
-        <observer name="omise_data_assign_atome" instance="Omise\Payment\Observer\AtomeDataAssignObserver" />
-    </event>
-
     <event name="sales_order_place_after">
         <observer name="omise_end_order" instance="Omise\Payment\Observer\PaymentCreationObserver" />
     </event>
