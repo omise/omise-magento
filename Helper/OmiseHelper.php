@@ -1,39 +1,42 @@
 <?php
+
 namespace Omise\Payment\Helper;
 
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Store\Model\ScopeInterface;
-use Magento\Framework\HTTP\Header;
+use DOMDocument;
+use SimpleXMLElement;
 use Magento\Sales\Model\Order;
-use Magento\Framework\App\Request\Http;
+use Magento\Framework\HTTP\Header;
+use Omise\Payment\Model\Config\Cc;
 
-use Omise\Payment\Model\Config\Internetbanking;
-use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Pointsciti;
-use Omise\Payment\Model\Config\Installment;
-use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Config\Touchngo;
 use Omise\Payment\Model\Config\Fpx;
-use Omise\Payment\Model\Config\Paynow;
-use Omise\Payment\Model\Config\Promptpay;
-use Omise\Payment\Model\Config\Tesco;
-use Omise\Payment\Model\Config\Alipayplus;
-use Omise\Payment\Model\Config\Mobilebanking;
-use Omise\Payment\Model\Config\Rabbitlinepay;
-use Omise\Payment\Model\Config\Ocbcpao;
-use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Atome;
 use Omise\Payment\Model\Config\Boost;
-use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\Tesco;
+use Omise\Payment\Model\Config\Alipay;
+use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Config\Paynow;
+use Omise\Payment\Model\Config\PayPay;
+use Magento\Framework\App\Request\Http;
+use Magento\Store\Model\ScopeInterface;
+use Omise\Payment\Model\Config\Grabpay;
+use Omise\Payment\Model\Config\Ocbcpao;
+use Omise\Payment\Model\Config\Touchngo;
 use Omise\Payment\Model\Config\DuitnowQR;
 use Omise\Payment\Model\Config\MaybankQR;
+use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Config\Shopeepay;
-use Omise\Payment\Model\Config\Cc;
+use Omise\Payment\Model\Config\Truemoney;
+use Omise\Payment\Model\Config\Alipayplus;
+use Omise\Payment\Model\Config\DuitnowOBW;
+use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\CcGooglePay;
-use Omise\Payment\Model\Config\Conveniencestore;
-use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Model\Config\Mobilebanking;
+use Omise\Payment\Model\Config\Rabbitlinepay;
 
-use SimpleXMLElement;
-use DOMDocument;
+use Omise\Payment\Model\Config\Internetbanking;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Omise\Payment\Model\Config\Conveniencestore;
 
 class OmiseHelper extends AbstractHelper
 {
@@ -66,7 +69,9 @@ class OmiseHelper extends AbstractHelper
         DuitnowOBW::CODE,
         DuitnowQR::CODE,
         MaybankQR::CODE,
-        Shopeepay::CODE
+        Shopeepay::CODE,
+        Atome::CODE,
+        PayPay::CODE
     ];
 
     /**
@@ -132,6 +137,8 @@ class OmiseHelper extends AbstractHelper
         MaybankQR::ID => MaybankQR::CODE,
         Shopeepay::ID => Shopeepay::CODE,
         Shopeepay::JUMPAPP_ID => Shopeepay::CODE,
+        Atome::ID => Atome::CODE,
+        PayPay::ID => PayPay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -195,6 +202,8 @@ class OmiseHelper extends AbstractHelper
         DuitnowQR::CODE => "DuitNow QR Payment",
         MaybankQR::CODE => "Maybank QRPay Payment",
         Shopeepay::CODE => "ShopeePay Payment",
+        Atome::CODE => "Atome Payment",
+        PayPay::CODE => "PayPay Payment",
 
         // offline payment
         Paynow::CODE => "PayNow QR Payment",
@@ -239,35 +248,6 @@ class OmiseHelper extends AbstractHelper
         $path = 'payment/omise/' . $fieldId;
 
         return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
-    }
-
-    /**
-     * @param  string  $currency
-     * @param  integer $amount
-     *
-     * @return string
-     */
-    public function omiseAmountFormat($currency, $amount)
-    {
-        switch (strtoupper($currency)) {
-            case 'EUR':
-            case 'GBP':
-            case 'SGD':
-            case 'THB':
-            case 'USD':
-            case 'AUD':
-            case 'CAD':
-            case 'CHF':
-            case 'CNY':
-            case 'DKK':
-            case 'HKD':
-            case 'MYR':
-                // Convert to a small unit
-                $amount *= 100;
-                break;
-        }
-
-        return $amount;
     }
 
     /**
@@ -506,6 +486,7 @@ class OmiseHelper extends AbstractHelper
         if (array_key_exists($code, $this->labelByOmiseCode)) {
             return $this->labelByOmiseCode[$code];
         }
+
         return null;
     }
 

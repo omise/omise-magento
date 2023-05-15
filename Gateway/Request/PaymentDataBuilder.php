@@ -4,6 +4,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Cc;
@@ -44,14 +45,20 @@ class PaymentDataBuilder implements BuilderInterface
      * @var \Omise\Payment\Model\Config\Cc
      */
     private $ccConfig;
+  
+    /**
+     * @var OmiseMoney
+     */
+    private $money;
 
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      */
-    public function __construct(OmiseHelper $omiseHelper, Cc $ccConfig)
+    public function __construct(OmiseHelper $omiseHelper, Cc $ccConfig, OmiseMoney $money)
     {
         $this->omiseHelper = $omiseHelper;
+        $this->money = $money;
         $this->ccConfig = $ccConfig;
     }
 
@@ -70,13 +77,14 @@ class PaymentDataBuilder implements BuilderInterface
         $om = \Magento\Framework\App\ObjectManager::getInstance();
         $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
         $store_name = $manager->getStore($store_id)->getName();
+        $currency = $order->getCurrencyCode();
 
         $requestBody = [
-            self::AMOUNT      => $this->omiseHelper->omiseAmountFormat(
-                $order->getCurrencyCode(),
-                $order->getGrandTotalAmount()
-            ),
-            self::CURRENCY    => $order->getCurrencyCode(),
+            self::AMOUNT      => $this->money->setAmountAndCurrency(
+                $order->getGrandTotalAmount(),
+                $currency
+            )->toSubunit(),
+            self::CURRENCY    => $currency,
             self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
             self::METADATA    => [
                 'order_id' => $order->getOrderIncrementId(),
