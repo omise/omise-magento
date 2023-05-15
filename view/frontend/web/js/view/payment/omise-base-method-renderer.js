@@ -101,8 +101,6 @@ define(
                     context.isPlaceOrderActionAllowed(true);
                 }
             }
-
         };
-
     }
 );

@@ -1,9 +1,11 @@
 <?php
+
 namespace Omise\Payment\Model;
 
 use Omise\Payment\Model\Api\Capabilities as OmiseCapabilitiesAPI;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\OmiseMoney;
 
 class Capabilities
 {
@@ -22,14 +24,21 @@ class Capabilities
      */
     protected $helper;
 
+    /**
+     * @var Omise\Payment\Helper\OmiseMoney;
+     */
+    protected $money;
+
     public function __construct(
         Omise $omise,
         OmiseCapabilitiesAPI $capabilitiesAPI,
-        OmiseHelper $helper
+        OmiseHelper $helper,
+        OmiseMoney $money
     ) {
         $this->omise = $omise;
         $this->capabilitiesAPI = $capabilitiesAPI;
         $this->helper = $helper;
+        $this->money = $money;
 
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -76,7 +85,7 @@ class Capabilities
             }
         });
     }
-    
+
     /**
      *
      * @return array|null
@@ -127,6 +136,18 @@ class Capabilities
     public function getTokenizationMethods()
     {
         return $this->capabilitiesAPI->getTokenizationMethods();
+    }
+
+    /**
+     * @return integer
+     */
+    public function getInstallmentMinLimit($currency)
+    {
+        $amount = $this->capabilitiesAPI->getInstallmentMinLimit();
+        return $this->money->setAmountAndCurrency(
+            $amount,
+            $currency
+        )->toUnit();
     }
 
     /**
