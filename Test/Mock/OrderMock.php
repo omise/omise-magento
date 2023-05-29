@@ -8,7 +8,6 @@ class OrderMock implements OrderAdapterInterface
 {
     public function getCurrencyCode()
     {
-        return 'THB';
     }
 
     public function getOrderIncrementId()
