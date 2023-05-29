@@ -5,10 +5,10 @@ namespace Omise\Payment\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Config\Atome;
 use Omise\Payment\Test\Mock\InfoMock;
+use Omise\Payment\Test\Mock\OrderMock;
 use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Payment\Gateway\Data\PaymentDataObject;
-use Magento\Payment\Gateway\Data\OrderAdapterInterface;
 use Omise\Payment\Gateway\Validator\APMRequestValidator;
 
 class APMRequestValidatorTest extends TestCase
@@ -19,8 +19,6 @@ class APMRequestValidatorTest extends TestCase
 
     private $addressMock;
 
-    private $paymentDataObject;
-
     private $model;
 
     protected function setUp(): void
@@ -28,19 +26,32 @@ class APMRequestValidatorTest extends TestCase
         $this->addressMock = $this->getMockBuilder(AddressInterface::class)->getMock();
         $this->addressMock->method('getCountryId')->willReturn('TH');
 
-        $this->orderMock = $this->getMockBuilder(OrderAdapterInterface::class)
-            ->getMockForAbstractClass();
+        $this->orderMock = $this->getMockBuilder(OrderMock::class)->getMock();
         $this->orderMock->method('getShippingAddress')->willReturn($this->addressMock);
 
         $this->infoMock = $this->getMockBuilder(InfoMock::class)->getMock();
         $this->infoMock->method('getMethod')->willReturn(Atome::CODE);
-
-        $this->paymentDataObject = new PaymentDataObject(
-            $this->orderMock,
-            $this->infoMock
-        );
+        $this->infoMock->method('getOrder')->willReturn($this->orderMock);
 
         $this->model = new APMRequestValidator();
+    }
+
+    /**
+     * @covers Omise\Payment\Gateway\Validator\APMRequestValidator
+     */
+    public function testComplimentaryProducts()
+    {
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('Complimentary products cannot be billed');
+        $this->orderMock->method('getSubTotal')->willReturn(0.0);
+        $this->orderMock->method('getCurrencyCode')->willReturn("THB");
+        $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
+        $this->model->build([
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
+        ]);
     }
 
     /**
@@ -51,10 +62,12 @@ class APMRequestValidatorTest extends TestCase
         $this->expectException(LocalizedException::class);
         $this->expectExceptionMessage('Currency not supported');
         $this->orderMock->method('getCurrencyCode')->willReturn("USD");
-        $this->orderMock->method('getGrandTotalAmount')->willReturn(100);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build([
-            'payment' => $this->paymentDataObject,
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
         ]);
     }
 
@@ -69,7 +82,10 @@ class APMRequestValidatorTest extends TestCase
         $this->orderMock->method('getGrandTotalAmount')->willReturn(10);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build([
-            'payment' => $this->paymentDataObject,
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
         ]);
     }
 
@@ -83,7 +99,10 @@ class APMRequestValidatorTest extends TestCase
         $this->orderMock->method('getGrandTotalAmount')->willReturn(20);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build([
-            'payment' => $this->paymentDataObject,
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
         ]);
     }
 
@@ -98,7 +117,10 @@ class APMRequestValidatorTest extends TestCase
         $this->orderMock->method('getGrandTotalAmount')->willReturn(200000);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build([
-            'payment' => $this->paymentDataObject,
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
         ]);
     }
 
@@ -113,7 +135,10 @@ class APMRequestValidatorTest extends TestCase
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(100);
         $this->model->build([
-            'payment' => $this->paymentDataObject,
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
         ]);
     }
 
@@ -127,7 +152,10 @@ class APMRequestValidatorTest extends TestCase
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(100);
         $this->model->build([
-            'payment' => $this->paymentDataObject,
+            'payment' => new PaymentDataObject(
+                $this->orderMock,
+                $this->infoMock
+            ),
         ]);
     }
 }
