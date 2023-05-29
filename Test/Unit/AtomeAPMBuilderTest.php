@@ -77,6 +77,7 @@ class AtomeAPMBuilderTest extends TestCase
     /**
      * @covers Omise\Payment\Gateway\Request\APMBuilder
      * @covers Omise\Payment\Model\Config\Atome
+     * @covers Omise\Payment\Helper\OmiseMoney
      */
     public function testApmBuilderWithItemPriceGreaterThanZero()
     {
