@@ -82,7 +82,7 @@ class APMRequestValidator implements BuilderInterface
         $currency = strtoupper($order->getCurrencyCode());
         $amount = $order->getGrandTotalAmount();
 
-        if($subTotal === 0.0) {
+        if ($subTotal === 0.0) {
             throw new LocalizedException(__('Complimentary products cannot be billed'));
         }
 
