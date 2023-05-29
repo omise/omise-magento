@@ -6,9 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Config\Atome;
 use Omise\Payment\Test\Mock\InfoMock;
 use Omise\Payment\Test\Mock\OrderMock;
-use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Gateway\Validator\APMRequestValidator;
+use Magento\Payment\Gateway\Data\AddressAdapterInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 
 class APMRequestValidatorTest extends TestCase
@@ -25,7 +25,7 @@ class APMRequestValidatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->addressMock = $this->getMockBuilder(AddressInterface::class)->getMock();
+        $this->addressMock = $this->getMockBuilder(AddressAdapterInterface::class)->getMock();
         $this->addressMock->method('getCountryId')->willReturn('TH');
 
         $this->orderMock = $this->getMockBuilder(OrderMock::class)->getMock();
