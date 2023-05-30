@@ -22,6 +22,12 @@ define(
 
             code: 'omise_offsite_atome',
             restrictedToCurrencies: ['thb', 'sgd', 'myr'],
+            logo: {
+                file: "images/atome.png",
+                width: "30",
+                height: "30",
+                name: "atome"
+            },
 
             /**
              * Initiate observable fields

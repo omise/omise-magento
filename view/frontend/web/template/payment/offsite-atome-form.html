@@ -9,8 +9,12 @@
                click: selectPaymentMethod,
                visible: isRadioButtonVisible(),
                enable: isActive()" />
-        <label data-bind="attr: {'for': getCode()}" class="label">
+        <label data-bind="attr: {'for': getCode()}" class="omise-payment-method-title label">
             <span data-bind="text: getTitle()"></span>
+            <!-- ko if: getLogo() -->
+            <img data-bind="attr: { src: require.toUrl('Omise_Payment/'+logo.file), alt: logo.name } ,
+                style: { width: logo.width ? logo.width +'px' : '60px', maxHeight: '60px'}" />
+            <!-- /ko -->
         </label>
         <div data-bind="visible: isSandboxOn()" class="page messages">
             <div role="alert" class="messages">
