@@ -14,3 +14,7 @@
 "Card stolen or lost.", "このカードは紛失/盗難が報告されています"
 "Payer did not take action before charge expiration.", "有効期限前に操作がありませんでした。"
 "secure_form_banner_message", "<b>Opn Payments</b> : プラグインを最新バージョンにアップデートし、顧客情報の安全な管理に必要なSecure Formを有効にしてください。アップデート後、クレジットカードの決済フォームを再度カスタマイズする必要があります。<a target='blank' href='https://www.omise.co/magento-plugin'>Secure Formを有効にする方法はこちらをご確認ください。</a>"
+"Complimentary products cannot be billed", "無償提供商品は課金の対象外です"
+"Currency not supported", "サポートされていない通貨です",
+"Amount must be greater than %1 %2", "金額は %1 %2を超える必要があります"
+"Amount must be less than %1 %2", "金額は %1 %2を下回る必要があります"
