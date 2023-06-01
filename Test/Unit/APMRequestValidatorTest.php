@@ -63,6 +63,7 @@ class APMRequestValidatorTest extends TestCase
         $this->expectException(LocalizedException::class);
         $this->expectExceptionMessage('Currency not supported');
         $this->orderMock->method('getCurrencyCode')->willReturn("USD");
+        $this->orderMock->method('getSubTotal')->willReturn(100);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build(['payment' => $this->paymentDataObjectMock]);
     }
@@ -76,6 +77,7 @@ class APMRequestValidatorTest extends TestCase
         $this->expectExceptionMessage('Amount must be greater than 20.00 THB');
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(10);
+        $this->orderMock->method('getSubTotal')->willReturn(10);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build(['payment' => $this->paymentDataObjectMock]);
     }
@@ -88,6 +90,7 @@ class APMRequestValidatorTest extends TestCase
         $this->expectNotToPerformAssertions();
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(20);
+        $this->orderMock->method('getSubTotal')->willReturn(20);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build(['payment' => $this->paymentDataObjectMock]);
     }
@@ -101,6 +104,7 @@ class APMRequestValidatorTest extends TestCase
         $this->expectExceptionMessage('Amount must be less than 150,000.00 THB');
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(200000);
+        $this->orderMock->method('getSubTotal')->willReturn(200000);
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987654321');
         $this->model->build(['payment' => $this->paymentDataObjectMock]);
     }
@@ -115,6 +119,7 @@ class APMRequestValidatorTest extends TestCase
         $this->infoMock->method('getAdditionalInformation')->willReturn('0987');
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(100);
+        $this->orderMock->method('getSubTotal')->willReturn(100);
         $this->model->build(['payment' => $this->paymentDataObjectMock]);
     }
 
@@ -127,6 +132,7 @@ class APMRequestValidatorTest extends TestCase
         $this->infoMock->method('getAdditionalInformation')->willReturn('+66987654321');
         $this->orderMock->method('getCurrencyCode')->willReturn("THB");
         $this->orderMock->method('getGrandTotalAmount')->willReturn(100);
+        $this->orderMock->method('getSubTotal')->willReturn(100);
         $this->model->build(['payment' => $this->paymentDataObjectMock]);
     }
 }
