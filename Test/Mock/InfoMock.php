@@ -41,4 +41,8 @@ class InfoMock implements InfoInterface
     public function getPayment()
     {
     }
+
+    public function getOrder()
+    {
+    }
 }
