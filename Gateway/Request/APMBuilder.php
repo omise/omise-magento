@@ -382,6 +382,8 @@ class APMBuilder implements BuilderInterface
             if ($item->getParentItem()) {
                 continue;
             }
+            // since core-api validation failed for item with price zero,
+            // removing item with price zero
             if ((float) $price === 0.0) {
                 continue;
             }
