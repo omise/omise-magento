@@ -378,6 +378,12 @@ class APMBuilder implements BuilderInterface
 
         foreach ($items as $item) {
             $price = $item->getPrice();
+            // if item has parent item, it mean it's sub product
+            if ($item->getParentItem()) {
+                continue;
+            }
+            // since core-api validation failed for item with price zero,
+            // removing item with price zero
             if ((float) $price === 0.0) {
                 continue;
             }
