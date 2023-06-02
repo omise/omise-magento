@@ -106,7 +106,7 @@ class AtomeAPMBuilderTest extends TestCase
         $this->assertEquals('https://omise.co/complete', $result['return_uri']);
     }
 
-     /**
+    /**
      * @covers Omise\Payment\Gateway\Request\APMBuilder
      * @covers Omise\Payment\Model\Config\Atome
      * @covers Omise\Payment\Helper\OmiseMoney

@@ -379,7 +379,7 @@ class APMBuilder implements BuilderInterface
         foreach ($items as $item) {
             $price = $item->getPrice();
             // if item have parent item, it mean it's sub product
-            if($item->getParentItem()) {
+            if ($item->getParentItem()) {
                 continue;
             }
             if ((float) $price === 0.0) {
