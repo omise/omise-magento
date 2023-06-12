@@ -375,16 +375,23 @@ class APMBuilder implements BuilderInterface
         $itemArray = [];
         $items = $order->getItems();
         $currency = $order->getCurrencyCode();
-        foreach ($items as $itemObject) {
-            $item = $itemObject->toArray();
+
+        foreach ($items as $item) {
+            $price = $item->getPrice();
+            // if item has parent item, it mean it's sub product
+            if ($item->getParentItem()) {
+                continue;
+            }
+            // since core-api validation failed for item with price zero,
+            // removing item with price zero
+            if ((float) $price === 0.0) {
+                continue;
+            }
             $itemArray[] = [
-                'sku' => $item['sku'],
-                'name' => $item['name'],
-                'amount' => $this->money->setAmountAndCurrency(
-                    $item['base_original_price'],
-                    $currency
-                )->toSubunit(),
-                'quantity' => $item['qty_ordered'],
+                'sku' => $item->getSku(),
+                'name' => $item->getName(),
+                'amount' => $this->money->setAmountAndCurrency($price, $currency)->toSubunit(),
+                'quantity' => $item->getQtyOrdered(),
             ];
         }
         return $itemArray;

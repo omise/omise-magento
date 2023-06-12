@@ -20,11 +20,12 @@ class APMRequestValidator implements BuilderInterface
         $paymentDataObject = SubjectReader::readPayment($buildSubject);
         $order = $paymentDataObject->getOrder();
         $paymentInfo = $paymentDataObject->getPayment();
+        $subTotal = $paymentInfo->getOrder()->getSubTotal();
 
         switch ($paymentInfo->getMethod()) {
             case Atome::CODE:
-                $this->validateAtomePhoneNumber($order, $paymentInfo);
-                $this->validateAtomeAmount($order);
+                $this->validateAtomePhoneNumber($paymentInfo);
+                $this->validateAtomeAmount($order, $subTotal);
                 break;
             default:
                 break;
@@ -41,7 +42,7 @@ class APMRequestValidator implements BuilderInterface
      *
      * @return void
      */
-    private function validateAtomePhoneNumber($order, $info)
+    private function validateAtomePhoneNumber($info)
     {
         $number = $info->getAdditionalInformation(AtomeDataAssignObserver::PHONE_NUMBER);
         $phonePattern = "/(\+)?([0-9]{10,13})/";
@@ -61,7 +62,7 @@ class APMRequestValidator implements BuilderInterface
      *
      * @return void
      */
-    private function validateAtomeAmount($order)
+    private function validateAtomeAmount($order, $subTotal)
     {
         $limits = [
             'THB' => [
@@ -80,6 +81,10 @@ class APMRequestValidator implements BuilderInterface
 
         $currency = strtoupper($order->getCurrencyCode());
         $amount = $order->getGrandTotalAmount();
+
+        if ((float) $subTotal === 0.0) {
+            throw new LocalizedException(__('Complimentary products cannot be billed'));
+        }
 
         if (!isset($limits[$currency])) {
             throw new LocalizedException(__('Currency not supported'));
