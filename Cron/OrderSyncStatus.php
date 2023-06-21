@@ -206,7 +206,7 @@ class OrderSyncStatus
     {
         $collection = $this->_orderCollectionFactory->create()
             ->addAttributeToSort('entity_id', 'desc')
-            ->setPageSize(50)
+            ->setPageSize($this->refreshCounter)
             ->setCurPage(1);
 
         $collection->getSelect()
