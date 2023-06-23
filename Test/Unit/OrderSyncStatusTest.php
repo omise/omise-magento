@@ -58,7 +58,7 @@ class OrderSyncStatusTest extends TestCase
     {
         $orderIds = [];
 
-        for ($i=1; $i <= $times; $i++) { 
+        for ($i=1; $i <= $times; $i++) {
             $orderIds[] = ['entity_id' => $i];
         }
 
@@ -66,8 +66,8 @@ class OrderSyncStatusTest extends TestCase
     }
 
     /**
-     * Data provider for test_is_expired_method method
-     */ 
+     * Data provider for testExecuteMethod method
+     */
     public function executeMethodDataProvier()
     {
         return [
@@ -107,7 +107,7 @@ class OrderSyncStatusTest extends TestCase
     }
 
     /**
-     * Data provider for test_is_expired_method method
+     * Data provider for testIsExpiredMethod method
      */
     public function isExpiredDataProvier()
     {
@@ -119,14 +119,14 @@ class OrderSyncStatusTest extends TestCase
 
     /**
      * @dataProvider executeMethodDataProvier
+     * @covers Omise\Payment\Cron\OrderSyncStatus
      */
-    public function test_when_all_orders_charge_are_expired(
+    public function testExecuteMethod(
         $order_count,
         $is_expired,
         $execution_times,
         $conditional_execution_times
-    )
-    {
+    ) {
         $this->mockScopeConfig();
 
         $orderMock = $this->mockOrder($execution_times, $conditional_execution_times);
@@ -169,9 +169,10 @@ class OrderSyncStatusTest extends TestCase
 
     /**
      * @dataProvider isExpiredDataProvier
+     * @covers Omise\Payment\Cron\OrderSyncStatus
      */
-    public function test_is_expired_method($isExpired, $expected)
-    {   
+    public function testIsExpiredMethod($isExpired, $expected)
+    {
         $orderMock = m::mock(stdClass::class);
         $this->mockOrderPayment($orderMock, 1);
 
