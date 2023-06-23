@@ -15,6 +15,8 @@ use Omise\Payment\Cron\OrderSyncStatus;
 use ReflectionClass;
 use stdClass;
 use Mockery as m;
+use Exception;
+use ReflectionMethod;
 
 class OrderSyncStatusTest extends TestCase
 {
@@ -168,6 +170,42 @@ class OrderSyncStatusTest extends TestCase
     }
 
     /**
+     * @covers Omise\Payment\Cron\OrderSyncStatus
+     */
+    public function testExceptionOnExecuteMethod()
+    {
+        $this->config->shouldReceive('getValue')
+            ->once()
+            ->with('enable_cron_autoexpirysync')
+            ->andReturn(true);
+
+        $this->scopeConfig->shouldReceive('getValue')
+            ->once()
+            ->with('payment/omise/cron_last_order_id')
+            ->andThrow(new Exception('Error message'));
+
+        $mockCron = m::mock(
+            OrderSyncStatus::class,
+            [
+                $this->orderCollectionFactory,
+                $this->orderRepository,
+                $this->scopeConfig,
+                $this->syncStatus,
+                $this->configWriter,
+                $this->config,
+                $this->cacheTypeList,
+                $this->cacheFrontendPool
+            ]
+        )->makePartial();
+
+        $mockCron->shouldReceive('saveLastOrderId')
+            ->once();
+
+        $result = $mockCron->execute();
+        $this->assertEquals(get_class($result), get_class($mockCron));
+    }
+
+    /**
      * @dataProvider isExpiredDataProvier
      * @covers Omise\Payment\Cron\OrderSyncStatus
      */
@@ -204,6 +242,74 @@ class OrderSyncStatusTest extends TestCase
         $result = $method->invokeArgs($mockCron, []);
 
         $this->assertEquals($result, $expected);
+    }
+
+    /**
+     * @covers Omise\Payment\Cron\OrderSyncStatus
+     */
+    public function testGetOrderIds()
+    {
+        $orderCount = 10;
+        $this->mockOrderCollectionFactory($orderCount);
+
+        $mockCron = m::mock(
+            OrderSyncStatus::class,
+            [
+                $this->orderCollectionFactory,
+                $this->orderRepository,
+                $this->scopeConfig,
+                $this->syncStatus,
+                $this->configWriter,
+                $this->config,
+                $this->cacheTypeList,
+                $this->cacheFrontendPool
+            ]
+        )->makePartial();
+
+        $orders = $mockCron->getOrderIds();
+        $this->assertEquals(count($orders), $orderCount);
+        $this->assertArrayHasKey('entity_id', $orders[0]);
+    }
+
+    public function mockOrderCollectionFactory($order_count)
+    {
+        $this->orderCollectionFactory->shouldReceive('create')
+            ->once()
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('addAttributeToSort')
+            ->once()
+            ->with('entity_id', 'desc')
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('setPageSize')
+            ->once()
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('setCurPage')
+            ->once()
+            ->with(1)
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('getSelect')
+            ->once()
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('join')
+            ->once()
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('getTable')
+            ->once()
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('where')
+            ->times(2)
+            ->andReturn($this->orderCollectionFactory);
+
+        $this->orderCollectionFactory->shouldReceive('getData')
+            ->once()
+            ->andReturn($this->getOrderIdsMock($order_count));
     }
 
     public function mockScopeConfig()

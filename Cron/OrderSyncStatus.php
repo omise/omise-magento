@@ -75,11 +75,6 @@ class OrderSyncStatus
     private $syncStatus;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
-     */
-    private $timezone;
-
-    /**
      * @var \Omise\Payment\Model\Api\Charge
      */
     protected $apiCharge;
