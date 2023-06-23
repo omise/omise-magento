@@ -253,6 +253,7 @@ class OrderSyncStatus
                 $this->lastProcessedOrderId
             );
             $this->cacheTypeList->cleanType('config');
+
             foreach ($this->cacheFrontendPool as $cacheFrontend) {
                 $cacheFrontend->getBackend()->clean();
             }

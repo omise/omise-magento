@@ -15,7 +15,6 @@ use Omise\Payment\Cron\OrderSyncStatus;
 use ReflectionClass;
 use stdClass;
 use Mockery as m;
-use Omise\Payment\Test\Mock\PoolMock;
 
 class OrderSyncStatusTest extends TestCase
 {
@@ -43,7 +42,7 @@ class OrderSyncStatusTest extends TestCase
         $this->configWriter = m::mock(WriterInterface::class);
         $this->config = m::mock(Config::class);
         $this->cacheTypeList = m::mock(TypeListInterface::class);
-        $this->cacheFrontendPool = m::mock(PoolMock::class);
+        $this->cacheFrontendPool = m::mock(Pool::class);
         $this->scopeConfig = m::mock(ScopeConfigInterface::class);
 
         parent::setUp();
@@ -140,28 +139,32 @@ class OrderSyncStatusTest extends TestCase
 
         $this->mockSyncStatus($conditional_execution_times, $orderMock);
 
-        $this->mockOrderCollectionFactory($order_count);
+        $mockCron = m::mock(
+            OrderSyncStatus::class,
+            [
+                $this->orderCollectionFactory,
+                $this->orderRepository,
+                $this->scopeConfig,
+                $this->syncStatus,
+                $this->configWriter,
+                $this->config,
+                $this->cacheTypeList,
+                $this->cacheFrontendPool
+            ]
+        )->makePartial();
 
-        $this->mockConfigWriter();
+        // Mocking `saveLastOrderId` method
+        $mockCron->shouldReceive('saveLastOrderId')
+            ->once();
 
-        $this->mockCacheTypeList();
+        // Mocking `getOrderIds` method
+        $mockCron->shouldReceive('getOrderIds')
+            ->once()
+            ->andReturn($this->getOrderIdsMock($order_count));
 
-        $this->mockCacheFrontendPool();
+        $result = $mockCron->execute();
 
-        $cron = new OrderSyncStatus(
-            $this->orderCollectionFactory,
-            $this->orderRepository,
-            $this->scopeConfig,
-            $this->syncStatus,
-            $this->configWriter,
-            $this->config,
-            $this->cacheTypeList,
-            $this->cacheFrontendPool
-        );
-
-        $result = $cron->execute();
-
-        $this->assertEquals(get_class($result), get_class($cron));
+        $this->assertEquals(get_class($result), get_class($mockCron));
     }
 
     /**
@@ -175,26 +178,29 @@ class OrderSyncStatusTest extends TestCase
         $this->mockConfigPublicKeyAndPrivateKey(1);
         $this->mockOmiseCharge(1, $isExpired);
 
-        $cron = new OrderSyncStatus(
-            $this->orderCollectionFactory,
-            $this->orderRepository,
-            $this->scopeConfig,
-            $this->syncStatus,
-            $this->configWriter,
-            $this->config,
-            $this->cacheTypeList,
-            $this->cacheFrontendPool
-        );
+        $mockCron = m::mock(
+            OrderSyncStatus::class,
+            [
+                $this->orderCollectionFactory,
+                $this->orderRepository,
+                $this->scopeConfig,
+                $this->syncStatus,
+                $this->configWriter,
+                $this->config,
+                $this->cacheTypeList,
+                $this->cacheFrontendPool
+            ]
+        )->makePartial();
 
         $reflection = new ReflectionClass(OrderSyncStatus::class);
         $property = $reflection->getProperty('order');
         $property->setAccessible(true);
-        $property->setValue($cron, $orderMock);
+        $property->setValue($mockCron, $orderMock);
 
         $method = $reflection->getMethod('isExpired');
         $method->setAccessible(true);
 
-        $result = $method->invokeArgs($cron, []);
+        $result = $method->invokeArgs($mockCron, []);
 
         $this->assertEquals($result, $expected);
     }
@@ -275,47 +281,6 @@ class OrderSyncStatusTest extends TestCase
             ->andReturn('secret_key_123');
     }
 
-    public function mockOrderCollectionFactory($order_count)
-    {
-        $this->orderCollectionFactory->shouldReceive('create')
-            ->once()
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('addAttributeToSort')
-            ->once()
-            ->with('entity_id', 'desc')
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('setPageSize')
-            ->once()
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('setCurPage')
-            ->once()
-            ->with(1)
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('getSelect')
-            ->once()
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('join')
-            ->once()
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('getTable')
-            ->once()
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('where')
-            ->times(2)
-            ->andReturn($this->orderCollectionFactory);
-
-        $this->orderCollectionFactory->shouldReceive('getData')
-            ->once()
-            ->andReturn($this->getOrderIdsMock($order_count));
-    }
-
     public function mockOmiseCharge($times, $is_expired)
     {
         $omiseChargeMock = m::mock('overload:OmiseCharge');
@@ -331,40 +296,5 @@ class OrderSyncStatusTest extends TestCase
         $this->syncStatus->shouldReceive('cancelOrderInvoice')
             ->times($times)
             ->with($orderMock);
-    }
-
-    public function mockConfigWriter()
-    {
-        $this->configWriter->shouldReceive('save')
-            ->once();
-    }
-
-    public function mockCacheTypeList()
-    {
-        $this->cacheTypeList->shouldReceive('cleanType')
-            ->once()
-            ->with('config');
-    }
-
-    public function mockCacheFrontendPool()
-    {
-        $this->cacheFrontendPool->shouldReceive('getBackend')
-            ->once()
-            ->andReturn($this->cacheFrontendPool);
-        $this->cacheFrontendPool->shouldReceive('rewind')
-            ->once()
-            ->andReturn($this->cacheFrontendPool);
-        $this->cacheFrontendPool->shouldReceive('valid')
-            ->once()
-            ->andReturn($this->cacheFrontendPool);
-        $this->cacheFrontendPool->shouldReceive('current')
-            ->once()
-            ->andReturn($this->cacheFrontendPool);
-        $this->cacheFrontendPool->shouldReceive('next')
-            ->once()
-            ->andReturn($this->cacheFrontendPool);
-        $this->cacheFrontendPool->shouldReceive('clean')
-            ->once()
-            ->andReturn(null);
     }
 }
