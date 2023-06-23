@@ -119,24 +119,18 @@ class OrderSyncStatus
     public function __construct(
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
-        \Omise\Payment\Model\Api\Charge $apiCharge,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Omise\Payment\Model\SyncStatus $syncStatus,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
         \Magento\Framework\App\Config\Storage\WriterInterface $configWriter,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Omise\Payment\Model\Config\Config $config,
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
         \Magento\Framework\App\Cache\Frontend\Pool $cacheFrontendPool
     ) {
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->orderRepository = $orderRepository;
-        $this->apiCharge = $apiCharge;
         $this->scopeConfig = $scopeConfig;
         $this->syncStatus = $syncStatus;
-        $this->timezone = $timezone;
         $this->configWriter = $configWriter;
-        $this->_storeManager = $storeManager;
         $this->config = $config;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheFrontendPool = $cacheFrontendPool;
@@ -222,30 +216,6 @@ class OrderSyncStatus
         }
 
         return $collection->getData();
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order $order
-     * @return string
-     * @deprecated
-     *  - Method to be removed once new logic is confirmed as stable
-     */
-    private function refreshExpiryDate($order)
-    {
-        $payment    = $this->order->getPayment();
-        $chargeId   = $payment->getAdditionalInformation('charge_id');
-        $expiryDate = $payment->getAdditionalInformation('omise_expiry_date');
-        if (!isset($expiryDate) && isset($chargeId) && $this->refreshCounter > 0) {
-            $this->charge = \OmiseCharge::retrieve(
-                $chargeId,
-                $this->config->getPublicKey(),
-                $this->config->getSecretKey()
-            );
-            $expiryDate = date("Y-m-d H:i:s", strtotime($this->charge['expires_at']));
-            $payment->setAdditionalInformation('omise_expiry_date', $expiryDate);
-            $this->refreshCounter--;
-        }
-        return $expiryDate;
     }
 
     /**
