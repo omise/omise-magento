@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.1.2 _(Jun, 23, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.1.2)
+- Fetch the same number of orders as the value of refresh counter in the cron job. (PR: [#437](https://github.com/omise/omise-magento/pull/437))
+
 ## [v3.1.1 _(Jun, 12, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.1.1)
 - Bug fixed: Atome failed to create charge with bundle product. (PR: [#433](https://github.com/omise/omise-magento/pull/433))
 
