@@ -21,7 +21,7 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_kakaopay',
-            restrictedToCurrencies: ['sgd']
+            restrictedToCurrencies: ['sgd', 'thb']
         });
     }
 );
