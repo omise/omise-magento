@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.2.0 _(Aug, 22, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.2.0)
+- Enabled AlipayHK, Kakaopay and Touch 'N Go for Thailand PSP. (PR: [#440](https://github.com/omise/omise-magento/pull/440))
+
 ## [v3.1.2 _(Jun, 23, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.1.2)
 - Fetch the same number of orders as the value of refresh counter in the cron job. (PR: [#437](https://github.com/omise/omise-magento/pull/437))
 
