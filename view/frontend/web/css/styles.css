@@ -162,7 +162,16 @@
 
 /** OCBC PAO **/
 div.ocbc_pao {
-    background-image: url('../images/payment_ocbc_pao.png');
+    background-image: url('../images/ocbc_pao.png');
+    width: 30px;
+    height: 30px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+div.ocbc_digital {
+    background-image: url('../images/ocbc_digital.png');
     width: 30px;
     height: 30px;
     float: right;

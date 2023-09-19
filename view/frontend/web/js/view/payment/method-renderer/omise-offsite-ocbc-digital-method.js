@@ -20,13 +20,13 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_ocbcpao',
+            code: 'omise_offsite_ocbc',
             restrictedToCurrencies: ['sgd'],
             logo: {
-                file: "images/ocbc_pao.png",
-                width: "30",
+                file: "images/ocbc_digital.png",
+                width: "80",
                 height: "30",
-                name: "ocbcpao"
+                name: "ocbc_digital"
             }
         });
     }
