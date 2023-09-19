@@ -36,7 +36,7 @@ class OcbcDigitalAPMBuilderTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Request\APMBuilder
-     * @covers Omise\Payment\Model\Config\PayPay
+     * @covers Omise\Payment\Model\Config\OcbcDigital
      */
     public function testApmBuilder()
     {
@@ -64,7 +64,7 @@ class OcbcDigitalAPMBuilderTest extends TestCase
     }
 
     /**
-     * @covers Omise\Payment\Model\Config\PayPay
+     * @covers Omise\Payment\Model\Config\OcbcDigital
      */
     public function testConstants()
     {
