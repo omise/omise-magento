@@ -20,7 +20,7 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
-            code: 'omise_offsite_ocbc',
+            code: 'omise_offsite_ocbc_digital',
             restrictedToCurrencies: ['sgd'],
             logo: {
                 file: "images/ocbc_digital.png",
