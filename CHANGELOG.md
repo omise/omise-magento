@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.3.0 _(Sep, 21, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.3.0)
+- Added OCBC Digital Payment. (PR: [#440](https://github.com/omise/omise-magento/pull/443))
+
 ## [v3.2.0 _(Aug, 22, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.2.0)
 - Enabled AlipayHK, Kakaopay and Touch 'N Go for Thailand PSP. (PR: [#440](https://github.com/omise/omise-magento/pull/440))
 
