@@ -159,7 +159,9 @@ class APMBuilder implements BuilderInterface
 
         switch ($method->getMethod()) {
             case Alipay::CODE:
-                $paymentInfo[self::SOURCE] = Alipay::getSourceData();
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => Alipay::ID
+                ];
                 break;
             case Tesco::CODE:
                 $paymentInfo[self::SOURCE] = [
