@@ -2,6 +2,9 @@
 
 namespace Omise\Payment\Test\Mock;
 
-class PaymentMock {
-    public function getData() {}
+class PaymentMock
+{
+    public function getData()
+    {
+    }
 }
