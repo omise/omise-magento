@@ -27,9 +27,9 @@ class PromptpayAdditionalInformationTest extends TestCase
         $this->contextMock = $this->getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
         $this->checkoutSessionMock = $this->getMockBuilder(Session::class)->disableOriginalConstructor()->getMock();
         $this->orderMock = $this->getMockBuilder(Order::class)->disableOriginalConstructor()->getMock();
-        $this->paymentMock = $this->getMockBuilder(PaymentMock::class)->disableOriginalConstructor()->getMock();
-        $this->eventManagerMock = $this->getMockBuilder(ManagerInterface::class)->disableOriginalConstructor()->getMock();
-        $this->scopeConfigMock = $this->getMockBuilder(ScopeConfigInterface::class)->disableOriginalConstructor()->getMock();
+        $this->paymentMock = $this->getMockBuilder(PaymentMock::class)->getMock();
+        $this->eventManagerMock = $this->getMockBuilder(ManagerInterface::class)->getMock();
+        $this->scopeConfigMock = $this->getMockBuilder(ScopeConfigInterface::class)->getMock();
         $this->currencyMock = $this->getMockBuilder(Currency::class)->disableOriginalConstructor()->getMock();
     }
 
