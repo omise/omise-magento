@@ -32,9 +32,9 @@ class PaymentDetailsHandlerTest extends TestCase
         $this->paymentMock = m::mock(PaymentDataObjectInterface::class);
         $this->infoMock = m::mock(OrderPaymentInterface::class);
         $this->orderMock = m::mock(OrderInterface::class);
-        $this->currencyMock = m::mock(stdClass::class);
+        $this->currencyMock = m::mock();
 
-        $this->chargeMock = m::mock(stdClass::class);
+        $this->chargeMock = m::mock();
         $this->chargeMock->id = 'charge_xxx';
         $this->chargeMock->authorize_uri = 'https://omise.co/authorized';
         $this->chargeMock->expires_at = '2023-09-29T06:49:35Z';

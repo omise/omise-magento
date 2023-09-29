@@ -5,7 +5,6 @@ namespace Omise\Payment\Test\Unit;
 use Magento\Sales\Model\Order;
 use PHPUnit\Framework\TestCase;
 use Magento\Checkout\Model\Session;
-use Omise\Payment\Test\Mock\PaymentMock;
 use Magento\Framework\View\Element\Template\Context;
 use Omise\Payment\Block\Checkout\Onepage\Success\PromptpayAdditionalInformation;
 use Magento\Framework\Event\ManagerInterface;
@@ -28,10 +27,10 @@ class PromptpayAdditionalInformationTest extends TestCase
         $this->contextMock =  m::mock(Context::class)->makePartial();
         $this->checkoutSessionMock =  m::mock(Session::class);
         $this->orderMock =  m::mock(Order::class);
-        $this->paymentMock =  m::mock(PaymentMock::class);
         $this->eventManagerMock =  m::mock(ManagerInterface::class);
         $this->scopeConfigMock =  m::mock(ScopeConfigInterface::class);
         $this->currencyMock =  m::mock(Currency::class)->makePartial();
+        $this->paymentMock =  m::mock();
     }
 
     /**
