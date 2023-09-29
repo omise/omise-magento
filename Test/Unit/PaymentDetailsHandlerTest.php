@@ -41,7 +41,7 @@ class PaymentDetailsHandlerTest extends TestCase
     }
 
     /**
-     *@covers Omise\Payment\Gateway\Response\PaymentDetailsHandler
+     * @covers Omise\Payment\Gateway\Response\PaymentDetailsHandler
      */
     public function testHandler()
     {
