@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v3.3.1 _(Oct, 03, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.3.1)
+- Added Promptpay QR payment instructions. (PR: [#447](https://github.com/omise/omise-magento/pull/447))
+- Bug fixed on Alipay. (PR: [#446](https://github.com/omise/omise-magento/pull/446))
+
 ## [v3.3.0 _(Sep, 21, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.3.0)
 - Added OCBC Digital Payment. (PR: [#440](https://github.com/omise/omise-magento/pull/443))
 
