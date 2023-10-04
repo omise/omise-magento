@@ -33,19 +33,18 @@
                     <comment>The "Live" mode secret key can be found in Opn Payments Dashboard.</comment>
                 </field>
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Webhook</label>
+                    <label>Enable webhook</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Use webhook.</comment>
+                    <comment>
+                        <![CDATA[Enable webhook to let the system automatically configure it. To learn about webhooks, see <a href="https://www.omise.co/api-webhooks">here</a>.]]>
+                    </comment>
                 </field>
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Webhook endpoint</label>
-                    <comment>
-                        <![CDATA[To enable <a href="https://www.omise.co/api-webhooks">WebHooks</a> feature, you must copy the above url to setup an endpoint at <a href="https://dashboard.omise.co/test/webhooks/edit"><strong>Opn Payments dashboard</strong></a> <em>(HTTPS only)</em>.]]>
-                    </comment>
                     <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook</frontend_model>
                 </field>
                 <field id="enable_cron_autoexpirysync" translate="label comment" type="select" sortOrder="71" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Cron Autosync Order Status</label>
+                    <label>Enable cron autosync order status</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enabling cron allows Magento to check orders with expired charge status and mark them as canceled.</comment>
                 </field>
