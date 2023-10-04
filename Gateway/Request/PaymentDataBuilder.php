@@ -1,13 +1,15 @@
 <?php
+
 namespace Omise\Payment\Gateway\Request;
 
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Cc;
+use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -20,7 +22,7 @@ class PaymentDataBuilder implements BuilderInterface
      * @var string
      */
     const CURRENCY = 'currency';
-    
+
     /**
      * @var string
      */
@@ -37,15 +39,20 @@ class PaymentDataBuilder implements BuilderInterface
     const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
 
     /**
-     * @var \Omise\Payment\Helper\OmiseHelper
+     * @var string
      */
-    private $omiseHelper;
+    const WEBHOOKS_ENDPOINT = 'webhook_endpoints';
 
     /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     private $ccConfig;
-  
+
+    /**
+     * @var \Omise\Payment\Model\Config\Config
+     */
+    private $config;
+
     /**
      * @var OmiseMoney
      */
@@ -55,11 +62,11 @@ class PaymentDataBuilder implements BuilderInterface
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      */
-    public function __construct(OmiseHelper $omiseHelper, Cc $ccConfig, OmiseMoney $money)
+    public function __construct(Cc $ccConfig, OmiseMoney $money, Config $config)
     {
-        $this->omiseHelper = $omiseHelper;
         $this->money = $money;
         $this->ccConfig = $ccConfig;
+        $this->config = $config;
     }
 
     /**
@@ -92,6 +99,11 @@ class PaymentDataBuilder implements BuilderInterface
                 'store_name' => $store_name
             ]
         ];
+
+        if ($this->config->isWebhookEnabled()) {
+            $webhookUrl = $manager->getStore()->getBaseUrl() . Webhook::URI;
+            $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
+        }
 
         if (Installment::CODE === $method->getMethod()) {
             $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = $this->isZeroInterestInstallment($method);
