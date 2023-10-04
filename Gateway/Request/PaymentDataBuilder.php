@@ -49,11 +49,6 @@ class PaymentDataBuilder implements BuilderInterface
     private $ccConfig;
 
     /**
-     * @var \Omise\Payment\Model\Config\Config
-     */
-    private $config;
-
-    /**
      * @var OmiseMoney
      */
     private $money;
@@ -62,11 +57,10 @@ class PaymentDataBuilder implements BuilderInterface
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      */
-    public function __construct(Cc $ccConfig, OmiseMoney $money, Config $config)
+    public function __construct(Cc $ccConfig, OmiseMoney $money)
     {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
-        $this->config = $config;
     }
 
     /**
@@ -83,7 +77,7 @@ class PaymentDataBuilder implements BuilderInterface
         $store_id = $order->getStoreId();
         $om = \Magento\Framework\App\ObjectManager::getInstance();
         $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
-        $store_name = $manager->getStore($store_id)->getName();
+        $store = $manager->getStore($store_id);
         $currency = $order->getCurrencyCode();
 
         $requestBody = [
@@ -96,12 +90,12 @@ class PaymentDataBuilder implements BuilderInterface
             self::METADATA    => [
                 'order_id' => $order->getOrderIncrementId(),
                 'store_id' => $order->getStoreId(),
-                'store_name' => $store_name
+                'store_name' => $store->getName()
             ]
         ];
 
-        if ($this->config->isWebhookEnabled()) {
-            $webhookUrl = $manager->getStore()->getBaseUrl() . Webhook::URI;
+        if ($this->ccConfig->isWebhookEnabled()) {
+            $webhookUrl = $store->getBaseUrl() . Webhook::URI;
             $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
         }
 

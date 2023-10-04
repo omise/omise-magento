@@ -18,7 +18,6 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Promptpay;
-use Omise\Payment\Model\Config\Config as ConfigModel;
 
 class PaymentDataBuilderTest extends TestCase
 {
@@ -37,7 +36,6 @@ class PaymentDataBuilderTest extends TestCase
     {
         $this->factoryMock = m::mock(FactoryInterface::class);
         $this->configMock = m::mock(ConfigInterface::class);
-        $this->configModelMock = m::mock(ConfigModel::class);
         $this->omiseMoneyMock = m::mock(OmiseMoney::class);
         $this->ccConfigMock = m::mock(Cc::class);
         $this->paymentMock = m::mock(OrderPaymentInterface::class);
@@ -80,7 +78,7 @@ class PaymentDataBuilderTest extends TestCase
         $this->paymentMock->shouldReceive('getAdditionalInformation')->andReturn('installment_mbb');
 
         $this->ccConfigMock->shouldReceive('getSecureForm')->andReturn($secureFormEnabled);
-        $this->configModelMock->shouldReceive('isWebhookEnabled')->andReturn(true);
+        $this->ccConfigMock->shouldReceive('isWebhookEnabled')->andReturn(true);
 
         $this->omiseMoneyMock->shouldReceive('setAmountAndCurrency')->andReturn($this->omiseMoneyMock);
         $this->omiseMoneyMock->shouldReceive('toSubunit')->andReturn($amount * 100);
@@ -100,7 +98,7 @@ class PaymentDataBuilderTest extends TestCase
         $this->paymentDataMock->shouldReceive('getOrder')->andReturn($this->orderMock);
         $this->paymentDataMock->shouldReceive('getPayment')->andReturn($this->paymentMock);
 
-        $model = new PaymentDataBuilder($this->ccConfigMock, $this->omiseMoneyMock, $this->configModelMock);
+        $model = new PaymentDataBuilder($this->ccConfigMock, $this->omiseMoneyMock);
         $result = $model->build(['payment' => $this->paymentDataMock]);
 
         $this->assertEquals(100000, $result['amount']);
