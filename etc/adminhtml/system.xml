@@ -33,10 +33,10 @@
                     <comment>The "Live" mode secret key can be found in Opn Payments Dashboard.</comment>
                 </field>
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable webhook</label>
+                    <label>Enable webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
-                        <![CDATA[Enable webhook to let the system automatically configure it. To learn about webhooks, see <a href="https://www.omise.co/api-webhooks">here</a>.]]>
+                        <![CDATA[Enable webhooks to receive updates when updates to charges and refunds occur. To learn more, see <a href="https://docs.opn.ooo/api-webhooks">our webhooks documentation</a>. No additional configuration necessary.]]>
                     </comment>
                 </field>
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
