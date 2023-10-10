@@ -199,6 +199,16 @@ class Config
     }
 
     /**
+     * Check if using dynamic webhooks or not
+     *
+     * @return bool
+     */
+    public function isDynamicWebhooksEnabled()
+    {
+        return $this->isWebhookEnabled() && $this->getValue('dynamic_webhooks');
+    }
+
+    /**
      * Retrieve the order status in which to generate invoice at
      *
      * @return string

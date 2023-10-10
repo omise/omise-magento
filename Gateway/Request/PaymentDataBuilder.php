@@ -94,7 +94,7 @@ class PaymentDataBuilder implements BuilderInterface
             ]
         ];
 
-        if ($this->ccConfig->isWebhookEnabled()) {
+        if ($this->ccConfig->isDynamicWebhooksEnabled()) {
             $webhookUrl = $store->getBaseUrl() . Webhook::URI;
             $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
         }

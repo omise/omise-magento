@@ -13,6 +13,7 @@
                 <model>OmiseAdapter</model>
                 <generate_invoice_at_order_status>pending_payment</generate_invoice_at_order_status>
                 <webhook_status>1</webhook_status>
+                <dynamic_webhooks>0</dynamic_webhooks>
             </omise>
 
             <omise_cc>

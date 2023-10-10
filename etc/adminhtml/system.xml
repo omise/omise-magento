@@ -36,7 +36,19 @@
                     <label>Enable webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
-                        <![CDATA[Enable webhooks to receive updates when charge and refund events occur. To learn more, see <a href="https://docs.opn.ooo/api-webhooks">our webhooks documentation</a>. No additional configuration necessary.]]>
+                        <![CDATA[Enable webhooks to receive updates when charge and refund events occur. To learn more, see <a href="https://docs.opn.ooo/api-webhooks">our webhooks documentation</a>. </br></br>
+                        Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="https://dashboard.omise.co/v2/settings/webhooks">Opn Payments dashboard</a> (HTTPS only).
+                        ]]>
+                    </comment>
+                </field>
+                <field id="dynamic_webhooks" translate="label comment" type="select" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable dynamic webhooks</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="webhook_status">1</field>
+                    </depends>
+                    <comment>
+                        <![CDATA[If enabled, charge and refund events will be automatically set to be received at the URL below. This can be useful when you need multiple webhook endpoints on the same account.]]>
                     </comment>
                 </field>
                 <field id="webhook" translate="label" type="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
