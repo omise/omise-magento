@@ -44,7 +44,6 @@ class ConfigTest extends TestCase
             ->with('payment/omise/test_secret_key', m::any(), m::any())
             ->andReturn('pkey_test_xx');
 
-
         $this->scopeConfigMock->shouldReceive('getValue')
             ->with('payment/omise/dynamic_webhooks', m::any(), m::any())
             ->andReturn($dynamicWebhooksEnabled);
