@@ -78,7 +78,7 @@ class PaymentDataBuilderTest extends TestCase
         $this->paymentMock->shouldReceive('getAdditionalInformation')->andReturn('installment_mbb');
 
         $this->ccConfigMock->shouldReceive('getSecureForm')->andReturn($secureFormEnabled);
-        $this->ccConfigMock->shouldReceive('isWebhookEnabled')->andReturn(true);
+        $this->ccConfigMock->shouldReceive('isDynamicWebhooksEnabled')->andReturn(true);
 
         $this->omiseMoneyMock->shouldReceive('setAmountAndCurrency')->andReturn($this->omiseMoneyMock);
         $this->omiseMoneyMock->shouldReceive('toSubunit')->andReturn($amount * 100);
