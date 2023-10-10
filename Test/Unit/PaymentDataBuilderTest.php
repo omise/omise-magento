@@ -23,7 +23,6 @@ class PaymentDataBuilderTest extends TestCase
 {
     private $omiseMoneyMock;
     private $ccConfigMock;
-    private $configModelMock;
     private $paymentDataMock;
     private $paymentMock;
     private $orderMock;
