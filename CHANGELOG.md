@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.4.0 _(Oct, 11, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.4.0)
+- Added dynamic webhooks with feature flag. (PR: [#450](https://github.com/omise/omise-magento/pull/450))
+
 ## [v3.3.1 _(Oct, 03, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.3.1)
 - Added Promptpay QR payment instructions. (PR: [#447](https://github.com/omise/omise-magento/pull/447))
 - Bug fixed on Alipay. (PR: [#446](https://github.com/omise/omise-magento/pull/446))
