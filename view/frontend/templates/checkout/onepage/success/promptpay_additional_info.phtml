@@ -1,4 +1,4 @@
-<div id="qr-info">
+<div id="qr-info" style="margin-bottom: 10px;">
     <p>
         <?= $block->escapeHtml(__('Amount to pay')) ?>: 
         <strong>
@@ -44,9 +44,9 @@
         return num.toString().padStart(2, '0');
     }
 
-    function hideQrInfo() {
+    function hideQrInfoAndShowPaymentExpired() {
         const element = document.getElementById('qr-info')
-        element.style.display = 'none'
+        element.innerHTML = 'Payment Expired.'
     }
 
     function updateCountdown() {
@@ -61,7 +61,7 @@
             if(countDownInterval) {
                 clearInterval(countDownInterval)
             }
-            hideQrInfo()
+            hideQrInfoAndShowPaymentExpired()
             return;
         }
 
