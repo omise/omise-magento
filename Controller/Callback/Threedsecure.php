@@ -146,7 +146,7 @@ class Threedsecure extends Action
             if ($result instanceof Invalid) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
-                return $this->processFailedCharge($result->getMessage(), false);
+                return $this->processFailedCharge($result->getMessage());
             }
 
             // Do not proceed if webhook is enabled
