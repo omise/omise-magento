@@ -57,9 +57,9 @@ class PromptpayAdditionalInformationTest extends TestCase
         $this->checkoutSessionMock->shouldReceive('getLastRealOrder')->andReturn($this->orderMock);
         $model = new PromptpayAdditionalInformation($this->contextMock, $this->checkoutSessionMock, []);
 
-        $this->assertEquals("Sep 29, 2023 01:49 PM", $model->getChargeExpiryDate());
-
         $html = $model->toHtml();
         $this->assertNotNull($html);
+
+        $this->assertEquals("2023-09-29T06:49:35Z", $model->getChargeExpiresAt());
     }
 }
