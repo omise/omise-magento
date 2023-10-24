@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.5.0 _(Oct, 24, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.5.0)
+- Added QR expires count down for promptpay. (PR: [#453](https://github.com/omise/omise-magento/pull/453))
+
 ## [v3.4.0 _(Oct, 11, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.4.0)
 - Added dynamic webhooks with feature flag. (PR: [#450](https://github.com/omise/omise-magento/pull/450))
 
