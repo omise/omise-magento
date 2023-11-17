@@ -151,11 +151,6 @@
     background-size: contain;
 }
 
-/** MayBank **/
-/* #omise_offsite_installmentForm .mbb {
-    background: #007bc4;
-} */
-
 #omise_offsite_installmentForm img.mbb {
     background: url('../images/fpx-maybank.svg');
 }
