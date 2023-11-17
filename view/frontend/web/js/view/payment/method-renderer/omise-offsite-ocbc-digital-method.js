@@ -23,8 +23,8 @@ define(
             code: 'omise_offsite_ocbc_digital',
             restrictedToCurrencies: ['sgd'],
             logo: {
-                file: "images/ocbc_digital.png",
-                width: "80",
+                file: "images/ocbc_digital.svg",
+                width: "30",
                 height: "30",
                 name: "ocbc_digital"
             }
