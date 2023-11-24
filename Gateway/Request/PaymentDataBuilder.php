@@ -63,9 +63,8 @@ class PaymentDataBuilder implements BuilderInterface
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
-        Capabilities $capabilities,
-    )
-    {
+        Capabilities $capabilities
+    ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
         $this->capabilities = $capabilities;
