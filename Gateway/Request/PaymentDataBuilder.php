@@ -107,7 +107,8 @@ class PaymentDataBuilder implements BuilderInterface
             $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
         }
 
-        if ($this->enableZeroInstallments($method)) {
+        // Set zero_interest_installment to true for installment Maybank only
+        if ($this->enableZeroInterestInstallments($method)) {
             $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = true;
         }
 
@@ -118,7 +119,10 @@ class PaymentDataBuilder implements BuilderInterface
         return $requestBody;
     }
 
-    public function enableZeroInstallments($method)
+    /**
+     * Set zero_interest_installment to true for installment Maybank
+     */
+    public function enableZeroInterestInstallments($method)
     {
         $isInstallment = Installment::CODE === $method->getMethod();
         $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
