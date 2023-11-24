@@ -179,8 +179,7 @@ class APMBuilder implements BuilderInterface
                     self::SOURCE_TYPE              => $installmentId,
                     self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(
                         InstallmentDataAssignObserver::TERMS
-                    ),
-                    self::ZERO_INTEREST_INSTALLMENTS => ('installment_mbb' === $installmentId)
+                    )
                 ];
                 break;
             case Truemoney::CODE:
