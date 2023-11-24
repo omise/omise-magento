@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v3.5.1 _(Nov, 24, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.5.1)
+- Updated OCBC digital logo. (PR: [#457](https://github.com/omise/omise-magento/pull/457))
+- Remove zero_interest_installments option from installment banks other than Maybank. (PR: [#458](https://github.com/omise/omise-magento/pull/458))
+
 ## [v3.5.0 _(Oct, 24, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.5.0)
 - Added QR expires count down for promptpay. (PR: [#453](https://github.com/omise/omise-magento/pull/453))
 

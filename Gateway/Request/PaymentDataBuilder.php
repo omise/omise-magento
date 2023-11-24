@@ -10,6 +10,7 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
+use Omise\Payment\Model\Capabilities;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -53,14 +54,20 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $money;
 
+    private $capabilities;
+
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      */
-    public function __construct(Cc $ccConfig, OmiseMoney $money)
-    {
+    public function __construct(
+        Cc $ccConfig,
+        OmiseMoney $money,
+        Capabilities $capabilities
+    ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
+        $this->capabilities = $capabilities;
     }
 
     /**
@@ -99,8 +106,9 @@ class PaymentDataBuilder implements BuilderInterface
             $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
         }
 
-        if (Installment::CODE === $method->getMethod()) {
-            $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = $this->isZeroInterestInstallment($method);
+        // Set zero_interest_installment to true for installment Maybank only
+        if ($this->enableZeroInterestInstallments($method)) {
+            $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = true;
         }
 
         if (Cc::CODE === $method->getMethod()) {
@@ -110,9 +118,13 @@ class PaymentDataBuilder implements BuilderInterface
         return $requestBody;
     }
 
-    public function isZeroInterestInstallment($method)
+    /**
+     * Set zero_interest_installment to true for installment Maybank
+     */
+    public function enableZeroInterestInstallments($method)
     {
+        $isInstallment = Installment::CODE === $method->getMethod();
         $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
-        return ('installment_mbb' === $installmentId);
+        return $isInstallment && (Installment::MBB_ID === $installmentId);
     }
 }
