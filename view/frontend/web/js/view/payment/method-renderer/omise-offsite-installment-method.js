@@ -193,10 +193,10 @@ define(
             getInstallmentInterestRate: function (id) {
                 return {
                     'kbank': 0.0065,
-                    'bbl': 0.008,
-                    'bay': 0.008,
-                    'first_choice': 0.013,
-                    'ktc': 0.008,
+                    'bbl': 0.0074,
+                    'bay': 0.0074,
+                    'first_choice': 0.0116,
+                    'ktc': 0.0074,
                     'scb': 0.0074,
                     'uob': 0.0064,
                     'mbb': 0,
