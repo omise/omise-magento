@@ -1,5 +1,5 @@
 <!--- KEEP START --->
-[![Opn](https://www.opn.ooo/assets/svg/logo-opn-full.svg)
+[![Opn Payments](https://www.opn.ooo/assets/svg/logo-opn-full.svg)](https://www.opn.ooo)
 
 [Opn](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
 Opn Payments provides a set of APIs that help merchants of any size accept payments online.  
