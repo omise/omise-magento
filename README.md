@@ -2,10 +2,10 @@
 [![Opn](https://www.opn.ooo/assets/svg/logo-opn-full.svg)
 
 [Opn](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
-Omise provides a set of APIs that help merchants of any size accept payments online.  
+Opn Payments provides a set of APIs that help merchants of any size accept payments online.  
 <!--- KEEP END --->
 
-**Omise Magento** is our official plugin providing support for processing payments on Magento through Opn.
+**Omise Magento** is our official plugin providing support for processing payments on Magento through Opn Payments.
 
 ## Usage
 
