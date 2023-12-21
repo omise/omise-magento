@@ -1,8 +1,6 @@
 <!--- KEEP START --->
 [![Opn](https://www.opn.ooo/assets/svg/logo-opn-full.svg)
 
-![Code Coverage Badge](./badge.svg) 
-
 [Opn](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
 Omise provides a set of APIs that help merchants of any size accept payments online.  
 <!--- KEEP END --->
