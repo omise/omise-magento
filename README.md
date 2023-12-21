@@ -1,17 +1,17 @@
 <!--- KEEP START --->
-[![Omise](https://cdn.omise.co/assets/omise.png)](https://www.omise.co/developers)
+[![Opn](https://www.opn.ooo/assets/svg/logo-opn-full.svg)
 
 ![Code Coverage Badge](./badge.svg) 
 
-[Omise](https://www.omise.co/) is a payment service provider operating in Thailand, Japan, and Singapore. 
+[Opn](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
 Omise provides a set of APIs that help merchants of any size accept payments online.  
 <!--- KEEP END --->
 
-**Omise Magento** is our official plugin providing support for processing payments on Magento through Omise.
+**Omise Magento** is our official plugin providing support for processing payments on Magento through Opn.
 
 ## Usage
 
-See our [official docs](https://www.omise.co/magento-plugin) for details on installation and configuration.
+See our [official docs](https://docs.opn.ooo/magento-plugin) for details on installation and configuration.
 
 ## Contributing
 
