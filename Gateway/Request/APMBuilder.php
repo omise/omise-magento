@@ -46,7 +46,6 @@ use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 
 class APMBuilder implements BuilderInterface
 {
-
     /**
      * @var string
      */
@@ -123,6 +122,16 @@ class APMBuilder implements BuilderInterface
     protected $money;
 
     /**
+     * @var Capabilities
+     */
+    protected $capabilities;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * @param $helper    \Omise\Payment\Helper\OmiseHelper
      * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
      */
@@ -183,12 +192,7 @@ class APMBuilder implements BuilderInterface
                 ];
                 break;
             case Truemoney::CODE:
-                $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE         => 'truemoney',
-                    self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(
-                        TruemoneyDataAssignObserver::PHONE_NUMBER
-                    ),
-                ];
+                $paymentInfo[self::SOURCE] = $this->getTruemoneySourceData($method);
                 break;
             case Conveniencestore::CODE:
                 $paymentInfo[self::SOURCE] = [
@@ -403,5 +407,26 @@ class APMBuilder implements BuilderInterface
             ];
         }
         return $itemArray;
+    }
+
+    public function getTruemoneySourceData($method)
+    {
+        $isJumpAppEnabled = $this->capabilities->isBackendEnabled(Truemoney::JUMPAPP_ID);
+        $isWalletEnabled = $this->capabilities->isBackendEnabled(Truemoney::ID);
+
+        if (!$isJumpAppEnabled && $isWalletEnabled) {
+            return [
+                self::SOURCE_TYPE         => Truemoney::ID,
+                self::SOURCE_PHONE_NUMBER => $method->getAdditionalInformation(
+                    TruemoneyDataAssignObserver::PHONE_NUMBER
+                )
+            ];
+        }
+
+        // Returning JUMP APP for the following cases:
+		// Case 1: Both jumpapp and wallet are enabled
+		// Case 2: jumpapp is enabled and wallet is disabled
+		// Case 3: Both are disabled.
+        return [ self::SOURCE_TYPE => Truemoney::JUMPAPP_ID ];
     }
 }

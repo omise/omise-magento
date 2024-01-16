@@ -5,6 +5,7 @@ namespace Omise\Payment\Model\Ui;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Shopeepay;
+use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Checkout\Model\ConfigProviderInterface;
@@ -33,7 +34,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
-        $this->helper = $helper;
+        $this->helper          = $helper;
     }
 
     /**
@@ -66,6 +67,8 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             if (array_key_exists($code, $backends)) {
                 if ($code === 'omise_offsite_shopeepay') {
                     $configs['omise_payment_list'][$code] = $this->getShopeeBackendByType($backends[$code]);
+                } else if ($code === 'omise_offsite_shopeepay') {
+                    $configs['omise_payment_list'][$code] = $this->getTruemoneyBackendByType($backends[$code]);
                 } else {
                     $configs['omise_payment_list'][$code] = $backends[$code];
                 }
@@ -115,5 +118,34 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         // If MPM is not enabled then it means jump app is enabled because this code would never
         // execute if none of the shopee backends were disabled.
         return $isShopeepayEnabled ? $mpmBackend : $jumpAppBackend;
+    }
+
+    private function getTruemoneyBackendByType($truemoneyBackends)
+    {
+        $jumpAppBackend = [];
+        $walletBackend = [];
+
+        // Since Truemoney will have two types i.e truemoney and truemoney_jumpapp,
+        // we split and store the type in separate variables.
+        foreach ($truemoneyBackends as $backend) {
+            if ($backend->type === Truemoney::JUMPAPP_ID) {
+                $jumpAppBackend[] = $backend;
+            } else {
+                $walletBackend[] = $backend;
+            }
+        }
+
+        $isJumpAppEnabled = $this->capabilities->isBackendEnabled(Truemoney::JUMPAPP_ID);
+        $isWalletEnabled = $this->capabilities->isBackendEnabled(Truemoney::ID);
+
+        if (!$isJumpAppEnabled && $isWalletEnabled) {
+            return $walletBackend;
+        }
+
+        // Returning JUMP APP for the following cases:
+		// Case 1: Both jumpapp and wallet are enabled
+		// Case 2: jumpapp is enabled and wallet is disabled
+		// Case 3: Both are disabled.
+        return $jumpAppBackend;
     }
 }
