@@ -1,6 +1,6 @@
 <?php
 
-namespace Omise\Payment\Test\Unit;
+namespace Omise\Payment\Test\Unit\Gateway\Request\APMBuilders;
 
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObject;
@@ -9,12 +9,12 @@ use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\ReturnUrlHelper;
 use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Config;
 use PHPUnit\Framework\TestCase;
-use Omise\Payment\Model\Config\PayPay;
 use Omise\Payment\Test\Mock\InfoMock;
 
-class PayPayAPMBuilderTest extends TestCase
+class AlipayAPMBuilderTest extends TestCase
 {
     private $builder;
     private $helper;
@@ -36,11 +36,11 @@ class PayPayAPMBuilderTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Request\APMBuilder
-     * @covers Omise\Payment\Model\Config\PayPay
+     * @covers Omise\Payment\Model\Config\Alipay
      */
     public function testApmBuilder()
     {
-        $this->infoMock->method('getMethod')->willReturn(PayPay::CODE);
+        $this->infoMock->method('getMethod')->willReturn(Alipay::CODE);
         $this->returnUrlHelper->method('create')->willReturn([
             'url' => 'https://omise.co/complete',
             'token' => '1234'
@@ -59,16 +59,16 @@ class PayPayAPMBuilderTest extends TestCase
             $this->infoMock
         )]);
 
-        $this->assertEquals('paypay', $result['source']['type']);
+        $this->assertEquals('alipay', $result['source']['type']);
         $this->assertEquals('https://omise.co/complete', $result['return_uri']);
     }
 
     /**
-     * @covers Omise\Payment\Model\Config\PayPay
+     * @covers Omise\Payment\Model\Config\Alipay
      */
     public function testConstants()
     {
-        $this->assertEquals('omise_offsite_paypay', PayPay::CODE);
-        $this->assertEquals('paypay', PayPay::ID);
+        $this->assertEquals('omise_offsite_alipay', Alipay::CODE);
+        $this->assertEquals('alipay', Alipay::ID);
     }
 }

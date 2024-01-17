@@ -1,6 +1,6 @@
 <?php
 
-namespace Omise\Payment\Test\Unit;
+namespace Omise\Payment\Test\Unit\Gateway\Request\APMBuilders;
 
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObject;
@@ -9,12 +9,12 @@ use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\ReturnUrlHelper;
 use Omise\Payment\Model\Capabilities;
-use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Config;
+use Omise\Payment\Model\Config\Truemoney;
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Test\Mock\InfoMock;
 
-class AlipayAPMBuilderTest extends TestCase
+class TruemoneyAPMBuilderTest extends TestCase
 {
     private $builder;
     private $helper;
@@ -36,11 +36,10 @@ class AlipayAPMBuilderTest extends TestCase
 
     /**
      * @covers Omise\Payment\Gateway\Request\APMBuilder
-     * @covers Omise\Payment\Model\Config\Alipay
      */
     public function testApmBuilder()
     {
-        $this->infoMock->method('getMethod')->willReturn(Alipay::CODE);
+        $this->infoMock->method('getMethod')->willReturn(Truemoney::CODE);
         $this->returnUrlHelper->method('create')->willReturn([
             'url' => 'https://omise.co/complete',
             'token' => '1234'
@@ -59,16 +58,7 @@ class AlipayAPMBuilderTest extends TestCase
             $this->infoMock
         )]);
 
-        $this->assertEquals('alipay', $result['source']['type']);
+        $this->assertEquals(Truemoney::JUMPAPP_ID, $result['source']['type']);
         $this->assertEquals('https://omise.co/complete', $result['return_uri']);
-    }
-
-    /**
-     * @covers Omise\Payment\Model\Config\Alipay
-     */
-    public function testConstants()
-    {
-        $this->assertEquals('omise_offsite_alipay', Alipay::CODE);
-        $this->assertEquals('alipay', Alipay::ID);
     }
 }
