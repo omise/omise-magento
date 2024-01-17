@@ -424,9 +424,9 @@ class APMBuilder implements BuilderInterface
         }
 
         // Returning JUMP APP for the following cases:
-		// Case 1: Both jumpapp and wallet are enabled
-		// Case 2: jumpapp is enabled and wallet is disabled
-		// Case 3: Both are disabled.
+        // Case 1: Both jumpapp and wallet are enabled
+        // Case 2: jumpapp is enabled and wallet is disabled
+        // Case 3: Both are disabled.
         return [ self::SOURCE_TYPE => Truemoney::JUMPAPP_ID ];
     }
 }

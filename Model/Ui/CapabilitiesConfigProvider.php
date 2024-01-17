@@ -67,7 +67,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             if (array_key_exists($code, $backends)) {
                 if ($code === 'omise_offsite_shopeepay') {
                     $configs['omise_payment_list'][$code] = $this->getShopeeBackendByType($backends[$code]);
-                } else if ($code === 'omise_offsite_shopeepay') {
+                } elseif ($code === 'omise_offsite_shopeepay') {
                     $configs['omise_payment_list'][$code] = $this->getTruemoneyBackendByType($backends[$code]);
                 } else {
                     $configs['omise_payment_list'][$code] = $backends[$code];
@@ -142,10 +142,6 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             return $walletBackend;
         }
 
-        // Returning JUMP APP for the following cases:
-		// Case 1: Both jumpapp and wallet are enabled
-		// Case 2: jumpapp is enabled and wallet is disabled
-		// Case 3: Both are disabled.
         return $jumpAppBackend;
     }
 }
