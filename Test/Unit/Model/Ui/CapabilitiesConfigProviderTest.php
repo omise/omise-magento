@@ -5,11 +5,7 @@ namespace Omise\Payment\Test\Unit\Model\Ui;
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capabilities;
-use Omise\Payment\Model\Config\Shopeepay;
-use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Config\CcGooglePay;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
 use Omise\Payment\Model\Ui\CapabilitiesConfigProvider;
 
@@ -36,6 +32,9 @@ class CapabilitiesConfigProviderTest extends TestCase
             ->getMock();
     }
 
+    /**
+     * @covers Omise\Payment\Model\Ui\CapabilitiesConfigProvider
+     */
     public function testGetTruemoneyBackendByType()
     {
         $provider = new CapabilitiesConfigProvider(
