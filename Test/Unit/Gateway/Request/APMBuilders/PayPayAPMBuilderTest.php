@@ -2,38 +2,14 @@
 
 namespace Omise\Payment\Test\Unit\Gateway\Request\APMBuilders;
 
-use Magento\Payment\Gateway\Data\OrderAdapterInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObject;
 use Omise\Payment\Gateway\Request\APMBuilder;
-use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseMoney;
-use Omise\Payment\Helper\ReturnUrlHelper;
-use Omise\Payment\Model\Capabilities;
-use Omise\Payment\Model\Config\Config;
-use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Config\PayPay;
-use Omise\Payment\Test\Mock\InfoMock;
+use Omise\Payment\Test\Unit\Gateway\Request\APMBuilders\APMBuilderTest;
 
-class PayPayAPMBuilderTest extends TestCase
+class PayPayAPMBuilderTest extends APMBuilderTest
 {
-    private $builder;
-    private $helper;
-    private $returnUrlHelper;
-    private $config;
-    private $capabilities;
-    private $orderMock;
-    private $infoMock;
-
-    protected function setUp(): void
-    {
-        $this->helper = $this->getMockBuilder(OmiseHelper::class)->disableOriginalConstructor()->getMock();
-        $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
-        $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
-        $this->capabilities = $this->getMockBuilder(Capabilities::class)->disableOriginalConstructor()->getMock();
-        $this->orderMock = $this->getMockBuilder(OrderAdapterInterface::class)->getMock();
-        $this->infoMock = $this->getMockBuilder(InfoMock::class)->getMock();
-    }
-
     /**
      * @covers Omise\Payment\Gateway\Request\APMBuilder
      * @covers Omise\Payment\Model\Config\PayPay

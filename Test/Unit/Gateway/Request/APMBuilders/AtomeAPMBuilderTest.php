@@ -2,45 +2,25 @@
 
 namespace Omise\Payment\Test\Unit\Gateway\Request\APMBuilders;
 
-use PHPUnit\Framework\TestCase;
 use Omise\Payment\Helper\OmiseMoney;
-use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Atome;
-use Omise\Payment\Test\Mock\InfoMock;
-use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Helper\ReturnUrlHelper;
 use Omise\Payment\Gateway\Request\APMBuilder;
-use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObject;
-use Magento\Payment\Gateway\Data\OrderAdapterInterface;
+use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Payment\Gateway\Data\AddressAdapterInterface;
+use Omise\Payment\Test\Unit\Gateway\Request\APMBuilders\APMBuilderTest;
 
-class AtomeAPMBuilderTest extends TestCase
+class AtomeAPMBuilderTest extends APMBuilderTest
 {
-    private $builder;
-    private $helper;
-    private $returnUrlHelper;
-    private $config;
-    private $capabilities;
-    private $orderMock;
-    private $infoMock;
-    private $addressMock;
-    private $itemMock;
-
     protected function setUp(): void
     {
+        parent::setup();
+
         $this->itemMock = $this->getMockBuilder(OrderItemInterface::class)->getMock();
         $this->addressMock = $this->getMockBuilder(AddressAdapterInterface::class)->getMock();
-        $this->helper = $this->getMockBuilder(OmiseHelper::class)->disableOriginalConstructor()->getMock();
-        $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
-        $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
-        $this->capabilities = $this->getMockBuilder(Capabilities::class)->disableOriginalConstructor()->getMock();
-        $this->orderMock = $this->getMockBuilder(OrderAdapterInterface::class)->getMock();
         $this->orderMock->method('getShippingAddress')->willReturn($this->addressMock);
         $this->orderMock->method('getItems')->willReturn([$this->itemMock]);
         $this->orderMock->method('getCurrencyCode')->willReturn('THB');
-        $this->infoMock = $this->getMockBuilder(InfoMock::class)->getMock();
     }
 
     /**
