@@ -34,7 +34,7 @@
 "Expiry date",  "วันหมดอายุ"
 "Security code", "รหัสหลังบัตร"
 "Select a card to proceed", "เลือกบัตรเพื่อดำเนินการต่อ"
-"True Money Phone Number", "เบอร์โทรศัพท์ที่ใช้สมัครบัญชี TrueMoney Wallet"
+"True Money Phone Number", "เบอร์โทรศัพท์ที่ใช้สมัครบัญชี TrueMoney"
 "Use a new card", "ใช้บัตรใหม่"
 "secure_form_banner_message", "<b>Opn Payments</b> : อัปเดตปลั๊กอินของคุณเป็นเวอร์ชันล่าสุดเพื่อเปิดใช้งาน Secure Form และมอบความปลอดภัยสูงสุดให้กับข้อมูลของลูกค้า โดยหลังจากทำการอัปเกรด คุณจะต้องปรับแต่งแบบฟอร์มการชำระเงินด้วยบัตรเครดิตใหม่อีกครั้ง <a target='blank' href='https://www.omise.co/magento-plugin'>เรียนรู้เพิ่มเติมเกี่ยวกับการเปิดใช้งาน Secure Form</a>"
 "Complimentary products cannot be billed", "สินค้าที่ระลึกไม่สามารถเรียกเก็บเงินได้"
