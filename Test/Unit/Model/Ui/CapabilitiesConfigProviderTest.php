@@ -83,8 +83,9 @@ class CapabilitiesConfigProviderTest extends TestCase
             $this->helperMock
         );
 
-        $result = $this->invokeMethod($provider, 'filterActiveBackends', [$code]);
-        $this->assertEquals($expected, $result);
+        $paymentList = [];
+        $this->invokeMethod($provider, 'filterActiveBackends', [$code, &$paymentList]);
+        $this->assertEquals($expected, $paymentList);
     }
 
     /**

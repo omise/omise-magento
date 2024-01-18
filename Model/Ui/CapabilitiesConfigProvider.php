@@ -59,17 +59,18 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                 $configs['card_brands'] = $this->capabilities->getCardBrands();
             }
 
-            $configs['omise_payment_list'] = array_merge(
-                $configs['omise_payment_list'],
-                $this->filterActiveBackends($code)
-            );
+            $this->filterActiveBackends($code, $configs['omise_payment_list']);
         }
 
         return $configs;
     }
 
-    // filter only active backends
-    private function filterActiveBackends($code)
+    /**
+     * filter only active backends
+     * @param $code         Payment method code
+     * @param $paymentList  Reference of the payment list
+     */
+    private function filterActiveBackends($code, &$paymentList)
     {
         // Retrieve available backends & methods from capabilities api
         $backends = $this->capabilities->getBackendsWithOmiseCode();
@@ -78,7 +79,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
 
         // filter only active backends
         if (!array_key_exists($code, $backends)) {
-            return [];
+            return;
         }
 
         if ($code === Shopeepay::CODE) {
@@ -89,7 +90,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
             $backend = $configs['omise_payment_list'][$code] = $backends[$code];
         }
 
-        return [ $code => $backend ];
+        $paymentList[$code] = $backend;
     }
 
     /**
