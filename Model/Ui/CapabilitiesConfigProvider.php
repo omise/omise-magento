@@ -47,12 +47,8 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
         $currency = $this->_storeManager->getStore()->getCurrentCurrencyCode();
         $configs = [];
-
-        // Retrieve available backends & methods from capabilities api
-        $backends = $this->capabilities->getBackendsWithOmiseCode();
-        $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
-        $backends = array_merge($backends, $tokenization_methods);
         $configs['omise_installment_min_limit'] = $this->capabilities->getInstallmentMinLimit($currency);
+        $configs['omise_payment_list'] = [];
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
@@ -63,19 +59,37 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
                 $configs['card_brands'] = $this->capabilities->getCardBrands();
             }
 
-            // filter only active backends
-            if (array_key_exists($code, $backends)) {
-                if ($code === 'omise_offsite_shopeepay') {
-                    $configs['omise_payment_list'][$code] = $this->getShopeeBackendByType($backends[$code]);
-                } elseif ($code === 'omise_offsite_shopeepay') {
-                    $configs['omise_payment_list'][$code] = $this->getTruemoneyBackendByType($backends[$code]);
-                } else {
-                    $configs['omise_payment_list'][$code] = $backends[$code];
-                }
-            }
+            $configs['omise_payment_list'] = array_merge(
+                $configs['omise_payment_list'],
+                $this->filterActiveBackends($code)
+            );
         }
 
         return $configs;
+    }
+
+    // filter only active backends
+    private function filterActiveBackends($code)
+    {
+        // Retrieve available backends & methods from capabilities api
+        $backends = $this->capabilities->getBackendsWithOmiseCode();
+        $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
+        $backends = array_merge($backends, $tokenization_methods);
+
+        // filter only active backends
+        if (!array_key_exists($code, $backends)) {
+            return [];
+        }
+
+        if ($code === Shopeepay::CODE) {
+            $backend = $this->getShopeeBackendByType($backends[$code]);
+        } elseif ($code === Truemoney::CODE) {
+            $backend = $this->getTruemoneyBackendByType($backends[$code]);
+        } else {
+            $backend = $configs['omise_payment_list'][$code] = $backends[$code];
+        }
+
+        return [ $code => $backend ];
     }
 
     /**

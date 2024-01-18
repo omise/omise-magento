@@ -7,6 +7,9 @@ use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capabilities;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
+use Omise\Payment\Model\Config\Rabbitlinepay;
+use Omise\Payment\Model\Config\Shopeepay;
+use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Ui\CapabilitiesConfigProvider;
 
 class CapabilitiesConfigProviderTest extends TestCase
@@ -61,6 +64,30 @@ class CapabilitiesConfigProviderTest extends TestCase
     }
 
     /**
+     * @dataProvider activeBackends
+     * @covers Omise\Payment\Model\Ui\CapabilitiesConfigProvider
+     */
+    public function testFilterActiveBackends($code, $backend)
+    {
+        $expected = [ $code => $backend ];
+        $this->capabilitiesMock->method('getBackendsWithOmiseCode')
+            ->willReturn($expected);
+
+        $this->capabilitiesMock->method('getTokenizationMethodsWithOmiseCode')
+            ->willReturn([]);
+
+        $provider = new CapabilitiesConfigProvider(
+            $this->capabilitiesMock,
+            $this->paymentListsMock,
+            $this->storeManagerMock,
+            $this->helperMock
+        );
+
+        $result = $this->invokeMethod($provider, 'filterActiveBackends', [$code]);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
      * Call protected/private method of a class.
      *
      * @param object &$object    Instantiated object that we will run method on.
@@ -76,5 +103,53 @@ class CapabilitiesConfigProviderTest extends TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+    /**
+     * Data provider for testFilterActiveBackends
+     */
+    public function activeBackends()
+    {
+        return [
+            [
+                Truemoney::CODE,
+                [
+                    (object)[
+                        'type' => Truemoney::JUMPAPP_ID,
+                        'currencies' => [ 'thb' ],
+                        'amount' => [
+                            'min' => 2000,
+                            'max' => 500000000000
+                        ]
+                    ]
+                ]
+            ],
+            [
+                Shopeepay::CODE,
+                [
+                    (object)[
+                        'type' => Shopeepay::JUMPAPP_ID,
+                        'currencies' => [ 'thb', 'sgd', 'myr' ],
+                        'amount' => [
+                            'min' => 2000,
+                            'max' => 500000000000
+                        ]
+                    ]
+                ]
+            ],
+            [
+                Rabbitlinepay::CODE,
+                [
+                    (object)[
+                        'type' => Rabbitlinepay::ID,
+                        'currencies' => [ 'thb' ],
+                        'amount' => [
+                            'min' => 2000,
+                            'max' => 500000000000
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 }
