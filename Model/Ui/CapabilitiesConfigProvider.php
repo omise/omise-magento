@@ -73,21 +73,21 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
     private function filterActiveBackends($code, &$paymentList)
     {
         // Retrieve available backends & methods from capabilities api
-        $backends = $this->capabilities->getBackendsWithOmiseCode();
-        $tokenization_methods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
-        $backends = array_merge($backends, $tokenization_methods);
+        $paymentBackends = $this->capabilities->getBackendsWithOmiseCode();
+        $tokenizationMethods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
+        $mergedBackends = array_merge($paymentBackends, $tokenizationMethods);
 
         // filter only active backends
-        if (!array_key_exists($code, $backends)) {
+        if (!array_key_exists($code, $mergedBackends)) {
             return;
         }
 
         if ($code === Shopeepay::CODE) {
-            $backend = $this->getShopeeBackendByType($backends[$code]);
+            $backend = $this->getShopeeBackendByType($mergedBackends[$code]);
         } elseif ($code === Truemoney::CODE) {
-            $backend = $this->getTruemoneyBackendByType($backends[$code]);
+            $backend = $this->getTruemoneyBackendByType($mergedBackends[$code]);
         } else {
-            $backend = $configs['omise_payment_list'][$code] = $backends[$code];
+            $backend = $configs['omise_payment_list'][$code] = $mergedBackends[$code];
         }
 
         $paymentList[$code] = $backend;
