@@ -122,6 +122,7 @@ class OmiseHelper extends AbstractHelper
         // offsite payment
         Alipay::ID => Alipay::CODE,
         Truemoney::ID => Truemoney::CODE,
+        Truemoney::JUMPAPP_ID => Truemoney::CODE,
         Pointsciti::ID => Pointsciti::CODE,
         Fpx::ID => Fpx::CODE,
         Alipayplus::ALIPAY_ID => Alipayplus::ALIPAY_CODE,
@@ -187,7 +188,7 @@ class OmiseHelper extends AbstractHelper
         Alipay::CODE => "Alipay",
         Internetbanking::CODE => "Internet Banking Payment",
         Installment::CODE => "Installment Payment",
-        Truemoney::CODE => "TrueMoney Wallet Payment",
+        Truemoney::CODE => "TrueMoney Payment",
         Pointsciti::CODE => "Citi Pay with Points",
         Fpx::CODE => "FPX Payment",
         Alipayplus::ALIPAY_CODE => "Alipay (Alipay+ Partner) Payment",

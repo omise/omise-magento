@@ -267,11 +267,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_truemoney" translate="label" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable TrueMoney Wallet Payment</label>
-                    <comment>Enable customers to pay using TrueMoney wallet payment method</comment>
+                    <label>Enable TrueMoney Payment</label>
+                    <comment>Enable customers to pay using TrueMoney payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="290" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable TrueMoney wallet payment method.</comment>
+                        <comment>Enable TrueMoney payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_truemoney/active</config_path>
                     </field>
