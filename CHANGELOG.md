@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v3.6.0 _(Jan, 23, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.6.0)
+- Add truemoney jumpapp. (PR: [#466](https://github.com/omise/omise-magento/pull/466))
+- Updated README.md. (PR: [#464](https://github.com/omise/omise-magento/pull/464))
+
 ## [v3.5.2 _(Dec, 7, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.5.2)
 - Updated installment interest rates. (PR: [#460](https://github.com/omise/omise-magento/pull/460))
 
