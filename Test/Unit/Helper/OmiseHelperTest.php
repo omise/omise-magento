@@ -2,23 +2,9 @@
 
 namespace Omise\Payment\Test\Unit\Helper;
 
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Model\Config\Internetbanking;
-use Omise\Payment\Model\Config\Alipay;
-use Omise\Payment\Model\Config\Pointsciti;
-use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Config\Fpx;
 use Omise\Payment\Model\Config\Paynow;
-use Omise\Payment\Model\Config\Promptpay;
-use Omise\Payment\Model\Config\Tesco;
-use Omise\Payment\Model\Config\Alipayplus;
-use Omise\Payment\Model\Config\Mobilebanking;
-use Omise\Payment\Model\Config\Rabbitlinepay;
-use Omise\Payment\Model\Config\Ocbcpao;
-use Omise\Payment\Model\Config\Grabpay;
-use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
 

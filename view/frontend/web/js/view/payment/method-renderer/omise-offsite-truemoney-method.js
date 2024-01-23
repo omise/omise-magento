@@ -59,8 +59,13 @@ define(
             getCustomerSavedPhoneNumber: function () {
                 let q = quote && quote.billingAddress();
                 return q ? q.telephone : '';
-            }
+            },
 
+            isWalletEnabled: function () {
+                const truemoneyArrays = checkoutConfig.omise_payment_list['omise_offsite_truemoney']
+                    .map(truemoney => truemoney.type)
+                return !truemoneyArrays.includes('truemoney_jumpapp');
+            }
         });
     }
 );

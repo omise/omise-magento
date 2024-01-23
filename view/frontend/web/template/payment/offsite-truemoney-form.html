@@ -2,13 +2,14 @@
     <div class="payment-method-title field choice">
         <input type="radio" name="payment[method]" class="radio"
             data-bind="attr: {
-               'id': getCode()
-               },
-               value: getCode(),
-               checked: isChecked,
-               click: selectPaymentMethod,
-               visible: isRadioButtonVisible(),
-               enable: isActive()" />
+                    'id': getCode()
+                },
+                value: getCode(),
+                checked: isChecked,
+                click: selectPaymentMethod,
+                visible: isRadioButtonVisible(),
+                enable: isActive()"
+            />
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
         </label>
@@ -21,24 +22,22 @@
         </div>
     </div>
     <div class="payment-method-content">
-        <!-- ko foreach: getRegion('messages') -->
-        <!-- ko template: getTemplate() -->
-        <!-- /ko -->
-        <!--/ko-->
+        <!-- ko if: isWalletEnabled() -->
         <div class="field number">
             <label data-bind="attr: {for: getCode() + 'phoneNumber'}" class="label">
                 <h4><!-- ko i18n: 'True Money Phone Number'--><!-- /ko --></h4>
             </label>
             <div class="control">
                 <input type="text" class="input-text"
-                       data-bind="attr: {
-                       id: getCode() + 'phoneNumber',
-                       placeholder: getCustomerSavedPhoneNumber()
-                       },
-                       value: trueMoneyPhoneNumber,
-                    "/>
+                    data-bind="attr: {
+                    id: getCode() + 'phoneNumber',
+                    placeholder: getCustomerSavedPhoneNumber()
+                    },
+                    value: trueMoneyPhoneNumber,
+                "/>
             </div>
         </div>
+        <!-- /ko -->
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() -->

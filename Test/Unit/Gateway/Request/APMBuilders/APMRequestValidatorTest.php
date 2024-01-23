@@ -1,6 +1,6 @@
 <?php
 
-namespace Omise\Payment\Test\Unit;
+namespace Omise\Payment\Test\Unit\Gateway\Request\APMBuilders;
 
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Config\Atome;
