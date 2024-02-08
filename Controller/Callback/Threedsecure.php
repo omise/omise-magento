@@ -146,7 +146,9 @@ class Threedsecure extends Action
             if ($result instanceof Invalid) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
-                return $this->processFailedCharge($result->getMessage());
+
+                // This cancels the order, logs error and displays message in cart page
+                throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
             }
 
             // Do not proceed if webhook is enabled

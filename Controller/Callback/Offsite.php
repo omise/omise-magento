@@ -118,10 +118,9 @@ class Offsite extends Action
             }
 
             $paymentMethod = $payment->getMethod();
-            $shopeePayFailed = $this->helper->hasShopeepayFailed($paymentMethod, $charge->isSuccessful());
 
-            if ($charge->isFailed() || $shopeePayFailed) {
-                return $this->handleFailure($charge, $shopeePayFailed);
+            if ($charge->isFailed()) {
+                return $this->handleFailure($charge);
             }
 
             // Do not proceed if webhook is enabled
@@ -148,9 +147,8 @@ class Offsite extends Action
      * Mark order as failed
      *
      * @param object $charge
-     * @param boolean $shopeePayFailed {TODO: Remove this once backend issue is fixed}
      */
-    private function handleFailure($charge, $shopeePayFailed)
+    private function handleFailure($charge)
     {
         // restoring the cart
         $this->checkoutSession->restoreQuote();
@@ -161,8 +159,8 @@ class Offsite extends Action
             "Payment failed. $failureMessage, please contact our support if you have any questions."
         );
 
-        // pass shopeePayFailed to avoid webhook to cancel payment
-        return $this->processFailedCharge($errorMessage, $shopeePayFailed);
+        // This cancels the order, logs error and displays message in cart page
+        throw new \Magento\Framework\Exception\LocalizedException($errorMessage);
     }
 
     /**
