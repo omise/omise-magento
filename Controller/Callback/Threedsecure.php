@@ -9,20 +9,16 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Gateway\Validator\Message\Invalid;
 use Omise\Payment\Model\Config\Cc as Config;
-use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Validator\Payment\AuthorizeResultValidator;
 use Omise\Payment\Model\Validator\Payment\CaptureResultValidator;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Helper\OmiseHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
-use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
 use Magento\Framework\App\Request\Http;
 
 class Threedsecure extends Action
 {
-    use FailedChargeTrait;
-
     /**
      * @var string
      */
@@ -146,7 +142,9 @@ class Threedsecure extends Action
             if ($result instanceof Invalid) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
-                return $this->processFailedCharge($result->getMessage());
+
+                // This cancels the order, logs error and displays message in cart page
+                throw new \Magento\Framework\Exception\LocalizedException($result->getMessage());
             }
 
             // Do not proceed if webhook is enabled

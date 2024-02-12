@@ -15,14 +15,10 @@ use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
-use Omise\Payment\Controller\Callback\Traits\FailedChargeTrait;
 use Magento\Framework\App\Request\Http;
-use Omise\Payment\Model\Config\Atome;
 
 class Offsite extends Action
 {
-    use FailedChargeTrait;
-
     /**
      * @var string
      */
@@ -118,10 +114,9 @@ class Offsite extends Action
             }
 
             $paymentMethod = $payment->getMethod();
-            $shopeePayFailed = $this->helper->hasShopeepayFailed($paymentMethod, $charge->isSuccessful());
 
-            if ($charge->isFailed() || $shopeePayFailed) {
-                return $this->handleFailure($charge, $shopeePayFailed);
+            if ($charge->isFailed()) {
+                return $this->handleFailure($charge);
             }
 
             // Do not proceed if webhook is enabled
@@ -148,9 +143,8 @@ class Offsite extends Action
      * Mark order as failed
      *
      * @param object $charge
-     * @param boolean $shopeePayFailed {TODO: Remove this once backend issue is fixed}
      */
-    private function handleFailure($charge, $shopeePayFailed)
+    private function handleFailure($charge)
     {
         // restoring the cart
         $this->checkoutSession->restoreQuote();
@@ -161,8 +155,8 @@ class Offsite extends Action
             "Payment failed. $failureMessage, please contact our support if you have any questions."
         );
 
-        // pass shopeePayFailed to avoid webhook to cancel payment
-        return $this->processFailedCharge($errorMessage, $shopeePayFailed);
+        // This cancels the order, logs error and displays message in cart page
+        throw new \Magento\Framework\Exception\LocalizedException($errorMessage);
     }
 
     /**
