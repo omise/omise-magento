@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.6.1 _(Feb, 12, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.6.1)
+- Fixed redirect issue on cancelled card payment. (PR: [#470](https://github.com/omise/omise-magento/pull/470))
+
 ## [v3.6.0 _(Jan, 23, 2023)_](https://github.com/omise/omise-magento/releases/tag/v3.6.0)
 - Add truemoney jumpapp. (PR: [#466](https://github.com/omise/omise-magento/pull/466))
 - Updated README.md. (PR: [#464](https://github.com/omise/omise-magento/pull/464))
