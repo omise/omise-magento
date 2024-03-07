@@ -9,7 +9,7 @@ Opn Payments provides a set of APIs that help merchants of any size accept payme
 
 ## Security Warning
 
-**Please do NOT use Omise Magento library versions less than 2.18.6, as they are outdated and have security vulnerabilities.**
+**Please do NOT use Omise Magento plugin versions less than 2.18.6, as they are outdated and have security vulnerabilities.**
 
 ## Usage
 
