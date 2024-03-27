@@ -28,6 +28,7 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\PayPay;
+use Omise\Payment\Model\Config\WeChatPay;
 
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\OmiseHelper as Helper;
@@ -105,6 +106,11 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const SOURCE_SHIPPING = 'shipping';
+
+    /**
+     * @var string
+     */
+    const SOURCE_IP = 'ip';
 
     /**
      * @var \Omise\Payment\Helper\ReturnUrlHelper
@@ -337,6 +343,12 @@ class APMBuilder implements BuilderInterface
             case PayPay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => PayPay::ID,
+                ];
+                break;
+            case WeChatPay::CODE:
+                $paymentInfo[self::SOURCE] = [
+                    self::SOURCE_TYPE => WeChatPay::ID,
+                    self::SOURCE_IP => $this->helper->getClientIp()
                 ];
                 break;
         }

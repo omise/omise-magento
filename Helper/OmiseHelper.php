@@ -38,6 +38,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Internetbanking;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Omise\Payment\Model\Config\WeChatPay;
 
 class OmiseHelper extends AbstractHelper
 {
@@ -73,7 +74,8 @@ class OmiseHelper extends AbstractHelper
         MaybankQR::CODE,
         Shopeepay::CODE,
         Atome::CODE,
-        PayPay::CODE
+        PayPay::CODE,
+        WeChatPay::CODE
     ];
 
     /**
@@ -143,6 +145,7 @@ class OmiseHelper extends AbstractHelper
         Shopeepay::JUMPAPP_ID => Shopeepay::CODE,
         Atome::ID => Atome::CODE,
         PayPay::ID => PayPay::CODE,
+        WeChatPay::ID => WeChatPay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -209,6 +212,7 @@ class OmiseHelper extends AbstractHelper
         Shopeepay::CODE => "ShopeePay Payment",
         Atome::CODE => "Atome Payment",
         PayPay::CODE => "PayPay Payment",
+        WeChatPay::CODE => "WeChat Pay Payment",
 
         // offline payment
         Paynow::CODE => "PayNow QR Payment",
@@ -512,5 +516,46 @@ class OmiseHelper extends AbstractHelper
     public function hasShopeepayFailed($paymentMethod, $isChargeSuccess)
     {
         return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
+    }
+
+    public function getClientIp()
+    {
+        $headersToCheck = [
+            // Check for a client using a shared internet connection
+            'HTTP_CLIENT_IP',
+
+            // Check if the proxy is used for IP/IPs
+            'HTTP_X_FORWARDED_FOR',
+
+            // check for other possible forwarded IP headers
+            'HTTP_X_FORWARDED',
+            'HTTP_FORWARDED_FOR',
+            'HTTP_FORWARDED',
+        ];
+
+        foreach($headersToCheck as $header) {
+            if (empty($_SERVER[$header])) {
+                continue;
+            }
+
+            if ($header === 'HTTP_X_FORWARDED_FOR') {
+                return $this->processForwardedForHeader($_SERVER[$header]);
+            }
+
+            return $_SERVER[$header];
+        }
+
+        // return default remote IP address
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+    private function processForwardedForHeader($forwardedForHeader)
+    {
+        // Split if multiple IP addresses exist and get the last IP address
+        if (strpos($forwardedForHeader, ',') !== false) {
+            $multiple_ips = explode(",", $forwardedForHeader);
+            return trim(current($multiple_ips));
+        }
+        return $forwardedForHeader;
     }
 }

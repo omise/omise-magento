@@ -443,6 +443,20 @@
                 <can_refund>1</can_refund>
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_paypay>
+
+            <omise_offsite_wechat_pay>
+                <active>0</active>
+                <title>WeChat Pay</title>
+                <model>OmiseWeChatPayAdapter</model>
+                <is_gateway>1</is_gateway>
+                <can_initialize>1</can_initialize>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>1</can_capture>
+                <can_review_payment>1</can_review_payment>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_refund>1</can_refund>
+                <payment_action>authorize_capture</payment_action>
+            </omise_offsite_wechat_pay>
         </payment>
     </default>
 </config>
