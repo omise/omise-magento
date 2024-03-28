@@ -1466,6 +1466,54 @@
     </virtualType>
     <!-- /Google Pay :: Config -->
 
+    <!-- WeChatPay payment solution -->
+    <virtualType name="OmiseWeChatPayAdapter" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Omise\Payment\Model\Config\WeChatPay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">OmiseAPMWeChatPayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">OmiseAPMWeChatPayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">OmiseAPMCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- WeChatPay :: Value Handler Pool -->
+    <virtualType name="OmiseAPMWeChatPayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">OmiseAPMWeChatPayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMWeChatPayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">OmiseAPMWeChatPayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMWeChatPayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">OmiseAPMWeChatPayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMWeChatPayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">OmiseAPMWeChatPayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="OmiseAPMWeChatPayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Omise\Payment\Model\Config\WeChatPay::CODE</argument>
+        </arguments>
+    </virtualType>
+    <!-- /WeChatPay payment :: Value Handler -->
+
     <!-- Credit Card payment solution -->
     <virtualType name="OmiseCcAdapter" type="Magento\Payment\Model\Method\Adapter">
         <arguments>

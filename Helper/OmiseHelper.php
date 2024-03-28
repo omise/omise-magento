@@ -16,7 +16,6 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\PayPay;
-use Magento\Framework\App\Request\Http;
 use Magento\Store\Model\ScopeInterface;
 use Omise\Payment\Model\Config\Grabpay;
 use Omise\Payment\Model\Config\Ocbcpao;
@@ -38,14 +37,10 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Internetbanking;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Omise\Payment\Model\Config\WeChatPay;
 
 class OmiseHelper extends AbstractHelper
 {
-    /**
-     * @var \Magento\Framework\HTTP\Header
-     */
-    protected $header;
-
     /**
      * @var array
      */
@@ -73,7 +68,8 @@ class OmiseHelper extends AbstractHelper
         MaybankQR::CODE,
         Shopeepay::CODE,
         Atome::CODE,
-        PayPay::CODE
+        PayPay::CODE,
+        WeChatPay::CODE
     ];
 
     /**
@@ -143,6 +139,7 @@ class OmiseHelper extends AbstractHelper
         Shopeepay::JUMPAPP_ID => Shopeepay::CODE,
         Atome::ID => Atome::CODE,
         PayPay::ID => PayPay::CODE,
+        WeChatPay::ID => WeChatPay::CODE,
 
         // offsite internet banking payment
         Internetbanking::BBL_ID => Internetbanking::CODE,
@@ -209,6 +206,7 @@ class OmiseHelper extends AbstractHelper
         Shopeepay::CODE => "ShopeePay Payment",
         Atome::CODE => "Atome Payment",
         PayPay::CODE => "PayPay Payment",
+        WeChatPay::CODE => "WeChat Pay Payment",
 
         // offline payment
         Paynow::CODE => "PayNow QR Payment",
@@ -225,16 +223,10 @@ class OmiseHelper extends AbstractHelper
     /**
      * @param Header $header
      * @param Config $config
-     * @param Http $httpRequest
      */
-    public function __construct(
-        Header $header,
-        Config $config,
-        Http $httpRequest
-    ) {
-        $this->header = $header;
+    public function __construct(Config $config)
+    {
         $this->config = $config;
-        $this->httpRequest = $httpRequest;
 
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
@@ -404,33 +396,6 @@ class OmiseHelper extends AbstractHelper
         }
 
         return false;
-    }
-
-    /**
-     * Get platform Type of WEB, IOS or ANDROID to add to source API parameter.
-     * @return string
-     */
-    public function getPlatformType()
-    {
-        $userAgent = $this->header->getHttpUserAgent();
-
-        if (preg_match("/(Android)/i", $userAgent)) {
-            return "ANDROID";
-        }
-
-        if (preg_match("/(iPad|iPhone|iPod)/i", $userAgent)) {
-            return "IOS";
-        }
-
-        return "WEB";
-    }
-
-    /**
-     * Check if current platform is mobile or not
-     */
-    public function isMobilePlatform()
-    {
-        return 'WEB' !== $this->getPlatformType();
     }
 
     /**

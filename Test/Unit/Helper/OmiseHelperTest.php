@@ -25,10 +25,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->headerMock = $this->createMock('Magento\Framework\HTTP\Header');
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
-        $this->requestMock = $this->createMock('Magento\Framework\App\Request\Http');
-        $this->model = new OmiseHelper($this->headerMock, $this->configMock, $this->requestMock);
+        $this->model = new OmiseHelper($this->configMock);
     }
 
     /**
@@ -128,42 +126,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     {
         $isCreditCardPaymentMethod = $this->model->isCreditCardPaymentMethod(Paynow::CODE);
         $this->assertFalse($isCreditCardPaymentMethod);
-    }
-
-    /**
-     * Test the function getPlatformType() return correct platform as per user agent
-     *
-     * @dataProvider platformTypeProvider
-     * @covers \Omise\Payment\Helper\OmiseHelper
-     * @test
-     */
-    public function getPlatformTypeReturnsCorrectPlatform($platform, $expectedValue)
-    {
-        $headerMock = $this->headerMock;
-        $headerMock->method('getHttpUserAgent')
-            ->willReturn($platform);
-
-        $result = $this->model->getPlatformType();
-        
-        $this->assertEquals($expectedValue, $result);
-    }
-
-    public function platformTypeProvider()
-    {
-        return [
-            ['Android', 'ANDROID'],
-            ['android', 'ANDROID'],
-            ['ipad', 'IOS'],
-            ['IPAD', 'IOS'],
-            ['iPad', 'IOS'],
-            ['iphone', 'IOS'],
-            ['IPHONE', 'IOS'],
-            ['iPhone', 'IOS'],
-            ['ipod', 'IOS'],
-            ['IPOD', 'IOS'],
-            ['iPod', 'IOS'],
-            ['Mozilla', 'WEB'],
-        ];
     }
 
     /**
