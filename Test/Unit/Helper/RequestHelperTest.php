@@ -3,10 +3,7 @@
 namespace Omise\Payment\Test\Unit\Helper;
 
 use Omise\Payment\Helper\RequestHelper;
-
-interface IRequest extends \Magento\Framework\App\RequestInterface {
-    public function getServer($name = null, $default = null);
-}
+use Omise\Payment\Test\Mock\RequestInterfaceMock;
 
 class RequestHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +13,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     private $model;
 
     /**
-     * @var IRequest
+     * @var RequestInterfaceMock
      */
     private $requestMock;
 
@@ -30,9 +27,8 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
      * Ideal for setting the values to variables or objects.
      * @coversNothing
      */
-    public function setUp() : void
-    {
-        $this->requestMock = $this->createMock(IRequest::class);
+    public function setUp() : void {
+        $this->requestMock = $this->createMock(RequestInterfaceMock::class);
         $this->headerMock = $this->createMock('\Magento\Framework\HTTP\Header');
         $this->model = new RequestHelper($this->requestMock, $this->headerMock);
     }
@@ -76,7 +72,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
      * @covers \Omise\Payment\Helper\RequestHelper
      * @test
      */
-    public function getClientIp_REMOTE_ADDR()
+    public function getClientIpRemoteAddrHeader()
     {
         $requestMock = $this->requestMock;
         $requestMock->method('getServer')
@@ -98,7 +94,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
      * @covers \Omise\Payment\Helper\RequestHelper
      * @test
      */
-    public function getClientIp_HTTP_X_FORWARDED_FOR()
+    public function getClientIpHttpXForwadedForHeader()
     {
         $requestMock = $this->requestMock;
         $requestMock->method('getServer')
@@ -116,7 +112,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
      * @covers \Omise\Payment\Helper\RequestHelper
      * @test
      */
-    public function getClientIp_HTTP_X_FORWARDED()
+    public function getClientIpHttpXForwardedHeader()
     {
         $requestMock = $this->requestMock;
         $requestMock->method('getServer')
