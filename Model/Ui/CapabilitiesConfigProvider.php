@@ -2,7 +2,7 @@
 
 namespace Omise\Payment\Model\Ui;
 
-use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Truemoney;
@@ -18,7 +18,10 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
 
     private $capabilities;
 
-    private $helper;
+    /**
+     * @var \Omise\Payment\Helper\RequestHelper
+     */
+    private $requestHelper;
 
     /**
      * @var Magento\Payment\Api\PaymentMethodListInterface;
@@ -29,12 +32,12 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         Capabilities               $capabilities,
         PaymentMethodListInterface $paymentLists,
         StoreManagerInterface      $storeManager,
-        OmiseHelper $helper
+        RequestHelper $requestHelper
     ) {
         $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
-        $this->helper          = $helper;
+        $this->requestHelper = $requestHelper;
     }
 
     /**
@@ -116,7 +119,7 @@ class CapabilitiesConfigProvider implements ConfigProviderInterface
         $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
 
         // If user is in mobile and jump app is enabled then return jumpapp backend
-        if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
+        if ($this->requestHelper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
             return $jumpAppBackend;
         }
 

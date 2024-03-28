@@ -16,7 +16,6 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\PayPay;
-use Magento\Framework\App\Request\Http;
 use Magento\Store\Model\ScopeInterface;
 use Omise\Payment\Model\Config\Grabpay;
 use Omise\Payment\Model\Config\Ocbcpao;
@@ -42,11 +41,6 @@ use Omise\Payment\Model\Config\WeChatPay;
 
 class OmiseHelper extends AbstractHelper
 {
-    /**
-     * @var \Magento\Framework\HTTP\Header
-     */
-    protected $header;
-
     /**
      * @var array
      */
@@ -229,16 +223,10 @@ class OmiseHelper extends AbstractHelper
     /**
      * @param Header $header
      * @param Config $config
-     * @param Http $httpRequest
      */
-    public function __construct(
-        Header $header,
-        Config $config,
-        Http $httpRequest
-    ) {
-        $this->header = $header;
+    public function __construct(Config $config)
+    {
         $this->config = $config;
-        $this->httpRequest = $httpRequest;
 
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
@@ -411,33 +399,6 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
-     * Get platform Type of WEB, IOS or ANDROID to add to source API parameter.
-     * @return string
-     */
-    public function getPlatformType()
-    {
-        $userAgent = $this->header->getHttpUserAgent();
-
-        if (preg_match("/(Android)/i", $userAgent)) {
-            return "ANDROID";
-        }
-
-        if (preg_match("/(iPad|iPhone|iPod)/i", $userAgent)) {
-            return "IOS";
-        }
-
-        return "WEB";
-    }
-
-    /**
-     * Check if current platform is mobile or not
-     */
-    public function isMobilePlatform()
-    {
-        return 'WEB' !== $this->getPlatformType();
-    }
-
-    /**
      * Depending on the setting of state to generate invoice, we will either create an invoice or return a created one.
      * Invoice will be marked as successfully paid and returned.
      * @param \Magento\Sales\Model\Order order
@@ -516,46 +477,5 @@ class OmiseHelper extends AbstractHelper
     public function hasShopeepayFailed($paymentMethod, $isChargeSuccess)
     {
         return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
-    }
-
-    public function getClientIp()
-    {
-        $headersToCheck = [
-            // Check for a client using a shared internet connection
-            'HTTP_CLIENT_IP',
-
-            // Check if the proxy is used for IP/IPs
-            'HTTP_X_FORWARDED_FOR',
-
-            // check for other possible forwarded IP headers
-            'HTTP_X_FORWARDED',
-            'HTTP_FORWARDED_FOR',
-            'HTTP_FORWARDED',
-        ];
-
-        foreach($headersToCheck as $header) {
-            if (empty($_SERVER[$header])) {
-                continue;
-            }
-
-            if ($header === 'HTTP_X_FORWARDED_FOR') {
-                return $this->processForwardedForHeader($_SERVER[$header]);
-            }
-
-            return $_SERVER[$header];
-        }
-
-        // return default remote IP address
-        return $_SERVER['REMOTE_ADDR'];
-    }
-
-    private function processForwardedForHeader($forwardedForHeader)
-    {
-        // Split if multiple IP addresses exist and get the last IP address
-        if (strpos($forwardedForHeader, ',') !== false) {
-            $multiple_ips = explode(",", $forwardedForHeader);
-            return trim(current($multiple_ips));
-        }
-        return $forwardedForHeader;
     }
 }

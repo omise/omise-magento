@@ -31,7 +31,6 @@ use Omise\Payment\Model\Config\PayPay;
 use Omise\Payment\Model\Config\WeChatPay;
 
 use Omise\Payment\Helper\OmiseMoney;
-use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Magento\Payment\Gateway\Helper\SubjectReader;
@@ -44,6 +43,7 @@ use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\MobilebankingDataAssignObserver;
 use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
+use Omise\Payment\Helper\RequestHelper;
 
 class APMBuilder implements BuilderInterface
 {
@@ -118,11 +118,6 @@ class APMBuilder implements BuilderInterface
     protected $returnUrl;
 
     /**
-     * @var Helper
-     */
-    protected $helper;
-
-    /**
      * @var OmiseMoney
      */
     protected $money;
@@ -138,21 +133,26 @@ class APMBuilder implements BuilderInterface
     protected $config;
 
     /**
+     * @var \Omise\Payment\Helper\RequestHelper
+     */
+    private $requestHelper;
+
+    /**
      * @param $helper    \Omise\Payment\Helper\OmiseHelper
      * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
      */
     public function __construct(
-        Helper $helper,
         ReturnUrlHelper $returnUrl,
         Config $config,
         Capabilities $capabilities,
-        OmiseMoney $money
+        OmiseMoney $money,
+        RequestHelper $requestHelper
     ) {
-        $this->helper = $helper;
         $this->returnUrl = $returnUrl;
         $this->config = $config;
         $this->capabilities = $capabilities;
         $this->money = $money;
+        $this->requestHelper = $requestHelper;
     }
 
     /**
@@ -240,43 +240,43 @@ class APMBuilder implements BuilderInterface
             case Alipayplus::ALIPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'alipay_cn',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::ALIPAYHK_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'alipay_hk',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::DANA_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'dana',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::GCASH_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'gcash',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Alipayplus::KAKAOPAY_CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'kakaopay',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Touchngo::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE   => 'touch_n_go',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Mobilebanking::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => $method->getAdditionalInformation(MobilebankingDataAssignObserver::OFFSITE),
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType()
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType()
                 ];
                 break;
             case Rabbitlinepay::CODE:
@@ -287,19 +287,19 @@ class APMBuilder implements BuilderInterface
             case Ocbcpao::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'mobile_banking_ocbc_pao',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case OcbcDigital::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => OcbcDigital::ID,
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Grabpay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'grabpay',
-                    self::PLATFORM_TYPE => $this->helper->getPlatformType(),
+                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case Boost::CODE:
@@ -348,7 +348,7 @@ class APMBuilder implements BuilderInterface
             case WeChatPay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => WeChatPay::ID,
-                    self::SOURCE_IP => $this->helper->getClientIp()
+                    self::SOURCE_IP => $this->requestHelper->getClientIp()
                 ];
                 break;
         }
@@ -362,7 +362,7 @@ class APMBuilder implements BuilderInterface
         $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
 
         // If user is in mobile and jump app is enabled then return shopeepay_jumpapp as source
-        if ($this->helper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
+        if ($this->requestHelper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
             return Shopeepay::JUMPAPP_ID;
         }
 

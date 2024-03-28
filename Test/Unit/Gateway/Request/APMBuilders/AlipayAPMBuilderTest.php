@@ -23,11 +23,11 @@ class AlipayAPMBuilderTest extends APMBuilderTest
         ]);
 
         $this->builder = new APMBuilder(
-            $this->helper,
             $this->returnUrlHelper,
             $this->config,
             $this->capabilities,
             new OmiseMoney(),
+            $this->requestHelper
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(
