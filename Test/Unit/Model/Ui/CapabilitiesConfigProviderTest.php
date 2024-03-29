@@ -3,7 +3,7 @@
 namespace Omise\Payment\Test\Unit\Model\Ui;
 
 use PHPUnit\Framework\TestCase;
-use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Model\Capabilities;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
@@ -16,7 +16,7 @@ class CapabilitiesConfigProviderTest extends TestCase
 {
     private $storeManagerMock;
     private $capabilitiesMock;
-    private $helperMock;
+    private $requestHelper;
     private $paymentListsMock;
 
     protected function setUp(): void
@@ -27,7 +27,7 @@ class CapabilitiesConfigProviderTest extends TestCase
         $this->capabilitiesMock = $this->getMockBuilder(Capabilities::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->helperMock = $this->getMockBuilder(OmiseHelper::class)
+        $this->requestHelper = $this->getMockBuilder(RequestHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->paymentListsMock = $this->getMockBuilder(PaymentMethodListInterface::class)
@@ -44,7 +44,7 @@ class CapabilitiesConfigProviderTest extends TestCase
             $this->capabilitiesMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->helperMock
+            $this->requestHelper
         );
 
         $expected = [
@@ -80,7 +80,7 @@ class CapabilitiesConfigProviderTest extends TestCase
             $this->capabilitiesMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->helperMock
+            $this->requestHelper
         );
 
         $paymentList = [];
