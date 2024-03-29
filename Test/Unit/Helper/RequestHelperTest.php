@@ -146,9 +146,9 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     public function isMobilePlatformDataProvider()
     {
         return [
-            ['Android', false],
-            ['ios', false],
-            ['web', true]
+            ['ANDROID', true],
+            ['iPhone', true],
+            ['Mozilla', false]
         ];
     }
 }
