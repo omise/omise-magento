@@ -3,7 +3,7 @@
 namespace Omise\Payment\Test\Unit\Helper;
 
 use Omise\Payment\Helper\RequestHelper;
-use Omise\Payment\Test\Mock\RequestInterfaceMock;
+use Omise\Payment\Test\Mock\RequestMockInterface;
 
 class RequestHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,7 +13,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     private $model;
 
     /**
-     * @var RequestInterfaceMock
+     * @var RequestMockInterface
      */
     private $requestMock;
 
@@ -27,8 +27,9 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
      * Ideal for setting the values to variables or objects.
      * @coversNothing
      */
-    public function setUp() : void {
-        $this->requestMock = $this->createMock(RequestInterfaceMock::class);
+    public function setUp() : void
+    {
+        $this->requestMock = $this->createMock(RequestMockInterface::class);
         $this->headerMock = $this->createMock('\Magento\Framework\HTTP\Header');
         $this->model = new RequestHelper($this->requestMock, $this->headerMock);
     }

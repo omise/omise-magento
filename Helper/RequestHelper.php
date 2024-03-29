@@ -21,8 +21,7 @@ class RequestHelper
     public function __construct(
         RequestInterface $request,
         Header $header
-    )
-    {
+    ) {
         $this->request = $request;
         $this->header = $header;
     }
