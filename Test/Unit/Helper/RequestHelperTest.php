@@ -130,6 +130,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider isMobilePlatformDataProvider
+     * @covers \Omise\Payment\Helper\RequestHelper
      * @test
      */
     public function isMobilePlatform($platform, $expected)
