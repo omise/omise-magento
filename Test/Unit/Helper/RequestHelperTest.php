@@ -127,4 +127,27 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
         $result = $this->model->getClientIp();
         $this->assertEquals('192.168.1.8', $result);
     }
+
+    /**
+     * @dataProvider isMobilePlatformDataProvider
+     * @test
+     */
+    public function isMobilePlatform($platform, $expected)
+    {
+        $headerMock = $this->headerMock;
+        $headerMock->method('getHttpUserAgent')
+            ->willReturn($platform);
+
+        $result = $this->model->isMobilePlatform();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function isMobilePlatformDataProvider()
+    {
+        return [
+            ['Android', false],
+            ['ios', false],
+            ['web', true]
+        ];
+    }
 }
