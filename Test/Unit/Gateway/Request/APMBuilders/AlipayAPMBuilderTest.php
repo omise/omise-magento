@@ -15,7 +15,6 @@ use Omise\Payment\Model\Config\DuitnowQR;
 use Omise\Payment\Model\Config\MaybankQR;
 use Omise\Payment\Model\Config\Touchngo;
 use Omise\Payment\Model\Config\Promptpay;
-use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Tesco;
 use Omise\Payment\Model\Config\Rabbitlinepay;
@@ -99,7 +98,6 @@ class AlipayAPMBuilderTest extends APMBuilderTest
             [Tesco::CODE, Tesco::ID],
             [Paynow::CODE, Paynow::ID],
             [Promptpay::CODE, Promptpay::ID],
-            [Pointsciti::CODE, Pointsciti::ID],
             [Rabbitlinepay::CODE, Rabbitlinepay::ID],
             [Boost::CODE, Boost::ID],
             [DuitnowQR::CODE, DuitnowQR::ID],

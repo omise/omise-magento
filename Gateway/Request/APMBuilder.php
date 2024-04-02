@@ -23,7 +23,6 @@ use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\DuitnowOBW;
-use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
@@ -222,11 +221,6 @@ class APMBuilder implements BuilderInterface
             case Promptpay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'promptpay'
-                ];
-                break;
-            case Pointsciti::CODE:
-                $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'points_citi'
                 ];
                 break;
             case Fpx::CODE:
