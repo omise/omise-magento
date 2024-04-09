@@ -28,7 +28,6 @@ use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\DuitnowOBW;
-use Omise\Payment\Model\Config\Pointsciti;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
@@ -49,7 +48,6 @@ class OmiseHelper extends AbstractHelper
         Internetbanking::CODE,
         Installment::CODE,
         Truemoney::CODE,
-        Pointsciti::CODE,
         Fpx::CODE,
         Alipayplus::ALIPAY_CODE,
         Alipayplus::ALIPAYHK_CODE,
@@ -119,7 +117,6 @@ class OmiseHelper extends AbstractHelper
         Alipay::ID => Alipay::CODE,
         Truemoney::ID => Truemoney::CODE,
         Truemoney::JUMPAPP_ID => Truemoney::CODE,
-        Pointsciti::ID => Pointsciti::CODE,
         Fpx::ID => Fpx::CODE,
         Alipayplus::ALIPAY_ID => Alipayplus::ALIPAY_CODE,
         Alipayplus::ALIPAYHK_ID => Alipayplus::ALIPAYHK_CODE,
@@ -148,7 +145,6 @@ class OmiseHelper extends AbstractHelper
         // offsite installment banking payment
         Installment::BAY_ID => Installment::CODE,
         Installment::BBL_ID => Installment::CODE,
-        Installment::CITI_ID => Installment::CODE,
         Installment::UOB_ID => Installment::CODE,
         Installment::FIRST_CHOICE_ID => Installment::CODE,
         Installment::KBANK_ID => Installment::CODE,
@@ -186,7 +182,6 @@ class OmiseHelper extends AbstractHelper
         Internetbanking::CODE => "Internet Banking Payment",
         Installment::CODE => "Installment Payment",
         Truemoney::CODE => "TrueMoney Payment",
-        Pointsciti::CODE => "Citi Pay with Points",
         Fpx::CODE => "FPX Payment",
         Alipayplus::ALIPAY_CODE => "Alipay (Alipay+ Partner) Payment",
         Alipayplus::ALIPAYHK_CODE => "AlipayHK (Alipay+ Partner) Payment",

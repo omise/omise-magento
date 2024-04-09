@@ -19,8 +19,6 @@ class Installment extends Config
 
     const BBL_ID = "installment_bbl";
 
-    const CITI_ID = "installment_citi";
-
     const FIRST_CHOICE_ID = "installment_first_choice";
 
     const KBANK_ID = "installment_kbank";
