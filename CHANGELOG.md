@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v3.7.0 _(Apr, 9, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.7.0)
+- Added WeChat Pay (PR: [#475](https://github.com/omise/omise-magento/pull/475))
+- Removed Pay with Points and Citi installment (PR: [#476](https://github.com/omise/omise-magento/pull/476))
+
 ## [v3.6.1 _(Feb, 12, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.6.1)
 - Fixed redirect issue on cancelled card payment. (PR: [#470](https://github.com/omise/omise-magento/pull/470))
 

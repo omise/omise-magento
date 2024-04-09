@@ -2,9 +2,7 @@
 
 namespace Omise\Payment\Test\Unit\Helper;
 
-use Omise\Payment\Helper\TokenHelper;
 use Omise\Payment\Helper\ReturnUrlHelper;
-use Magento\Framework\UrlInterface;
 
 class ReturnUrlHelperTest extends \PHPUnit\Framework\TestCase
 {

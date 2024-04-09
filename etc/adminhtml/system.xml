@@ -179,35 +179,6 @@
                         </depends>
                     </field>
                 </group>
-                <group id="omise_offsite_pointsciti" translate="label" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Citi Pay with Points</label>
-                    <comment>Enable customers to pay using Citi Pay with Points payment method</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Citi Pay with Points Payment Solution.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_pointsciti/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offsite_pointsciti/title</config_path>
-                    </field>
-                    <field id="allowspecific" translate="label comment" type="select" sortOrder="211" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Allowed Countries</label>
-                        <config_path>payment/omise_offsite_pointsciti/allowspecific</config_path>
-                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If not set to all, guest customers will not have a billing country and may not be able to check out.</comment>
-                    </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="212" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Payment from specific countries</label>
-                        <config_path>payment/omise_offsite_pointsciti/specificcountry</config_path>
-                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                        <depends>
-                            <field id="allowspecific">1</field>
-                        </depends>
-                    </field>
-                </group>
                 <group id="omise_offline_tesco" translate="label" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Lotus's Bill Payment</label>
                     <comment>Enable customers to pay for products in Lotus's Stores.</comment>
@@ -990,6 +961,35 @@
                     </field>
                 </group>
 
+                <group id="omise_offsite_wechat_pay" translate="label" sortOrder="536" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable WeChat Pay Payment</label>
+                    <comment>Enable customers to pay using WeChat Pay payment method</comment>
+                    <field id="active" translate="label comment" type="select" sortOrder="537" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable/Disable</label>
+                        <comment>Enable PayPay payment method.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/omise_offsite_wechat_pay/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="538" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <comment>This controls the title which the user sees during checkout.</comment>
+                        <config_path>payment/omise_offsite_wechat_pay/title</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="539" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Allowed Countries</label>
+                        <config_path>payment/omise_offsite_wechat_pay/allowspecific</config_path>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <comment>If not set to all, guest customers will not have a billing country and may not be able to check out.</comment>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="540" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Payment from specific countries</label>
+                        <config_path>payment/omise_offsite_wechat_pay/specificcountry</config_path>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <depends>
+                            <field id="allowspecific">1</field>
+                        </depends>
+                    </field>
+                </group>
             </group>
         </section>
     </system>

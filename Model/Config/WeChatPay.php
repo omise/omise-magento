@@ -3,16 +3,16 @@ namespace Omise\Payment\Model\Config;
 
 use Omise\Payment\Model\Config\Config;
 
-class Pointsciti extends Config
+class WeChatPay extends Config
 {
     /**
      * @var string
      */
-    const CODE = 'omise_offsite_pointsciti';
+    const CODE = 'omise_offsite_wechat_pay';
 
     /**
      * Backends identifier
      * @var string
      */
-    const ID ='points_citi';
+    const ID = 'wechat_pay';
 }

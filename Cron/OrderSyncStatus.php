@@ -43,6 +43,7 @@ class OrderSyncStatus
         "omise_offsite_shopeepay",
         "omise_offsite_atome",
         "omise_offsite_paypay",
+        "omise_offiste_wechat_pay"
     ];
 
     /**

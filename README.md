@@ -7,6 +7,10 @@ Opn Payments provides a set of APIs that help merchants of any size accept payme
 
 **Omise Magento** is our official plugin providing support for processing payments on Magento through Opn Payments.
 
+## Security Warning
+
+**Please do NOT use Omise Magento plugin versions less than 2.18.6, as they are outdated and have security vulnerabilities.**
+
 ## Usage
 
 See our [official docs](https://docs.opn.ooo/magento-plugin) for details on installation and configuration.
