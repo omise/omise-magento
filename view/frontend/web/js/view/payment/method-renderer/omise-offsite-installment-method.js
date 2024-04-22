@@ -170,9 +170,9 @@ define(
              */
             getInstallmentMinimum: function (id) {
                 return {
-                    'kbank': 500,
+                    'kbank': 300,
                     'bbl': 500,
-                    'bay': 300,
+                    'bay': 500,
                     'first_choice': 300,
                     'ktc': 300,
                     'scb': 500,
