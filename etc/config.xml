@@ -273,20 +273,6 @@
                 <payment_action>authorize_capture</payment_action>
             </omise_offsite_rabbitlinepay>
 
-            <omise_offsite_ocbcpao>
-                <active>0</active>
-                <title>OCBC Pay Anyone</title>
-                <model>OmiseOcbcpaoAdapter</model>
-                <is_gateway>1</is_gateway>
-                <can_initialize>1</can_initialize>
-                <can_use_checkout>1</can_use_checkout>
-                <can_capture>1</can_capture>
-                <can_review_payment>1</can_review_payment>
-                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
-                <can_refund>1</can_refund>
-                <payment_action>authorize_capture</payment_action>
-            </omise_offsite_ocbcpao>
-
             <omise_offsite_ocbc_digital>
                 <active>0</active>
                 <title>OCBC Digital</title>

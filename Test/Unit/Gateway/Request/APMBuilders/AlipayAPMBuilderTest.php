@@ -8,7 +8,6 @@ use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Alipayplus;
 use Omise\Payment\Model\Config\OcbcDigital;
-use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\Grabpay;
 use Omise\Payment\Model\Config\Boost;
 use Omise\Payment\Model\Config\DuitnowQR;
@@ -115,7 +114,6 @@ class AlipayAPMBuilderTest extends APMBuilderTest
             [Alipayplus::KAKAOPAY_CODE, Alipayplus::KAKAOPAY_ID],
             [Grabpay::CODE, Grabpay::ID],
             [OcbcDigital::CODE, OcbcDigital::ID],
-            [Ocbcpao::CODE, Ocbcpao::ID],
             [Touchngo::CODE, Touchngo::ID],
         ];
     }
