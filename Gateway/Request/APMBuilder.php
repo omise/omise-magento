@@ -12,7 +12,6 @@ use Omise\Payment\Model\Config\Alipay;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\Grabpay;
-use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\OcbcDigital;
 use Omise\Payment\Model\Config\Touchngo;
 use Omise\Payment\Helper\ReturnUrlHelper;
@@ -276,12 +275,6 @@ class APMBuilder implements BuilderInterface
             case Rabbitlinepay::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'rabbit_linepay'
-                ];
-                break;
-            case Ocbcpao::CODE:
-                $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => 'mobile_banking_ocbc_pao',
-                    self::PLATFORM_TYPE => $this->requestHelper->getPlatformType(),
                 ];
                 break;
             case OcbcDigital::CODE:
