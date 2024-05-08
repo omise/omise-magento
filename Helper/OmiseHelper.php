@@ -18,7 +18,6 @@ use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\PayPay;
 use Magento\Store\Model\ScopeInterface;
 use Omise\Payment\Model\Config\Grabpay;
-use Omise\Payment\Model\Config\Ocbcpao;
 use Omise\Payment\Model\Config\OcbcDigital;
 use Omise\Payment\Model\Config\Touchngo;
 use Omise\Payment\Model\Config\DuitnowQR;
@@ -57,7 +56,6 @@ class OmiseHelper extends AbstractHelper
         Touchngo::CODE,
         Mobilebanking::CODE,
         Rabbitlinepay::CODE,
-        Ocbcpao::CODE,
         OcbcDigital::CODE,
         Grabpay::CODE,
         Boost::CODE,
@@ -125,7 +123,6 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::KAKAOPAY_ID => Alipayplus::KAKAOPAY_CODE,
         Touchngo::ID => Touchngo::CODE,
         Rabbitlinepay::ID => Rabbitlinepay::CODE,
-        Ocbcpao::ID => Ocbcpao::CODE,
         OcbcDigital::ID => OcbcDigital::CODE,
         Grabpay::ID => Grabpay::CODE,
         Boost::ID => Boost::CODE,
@@ -191,7 +188,6 @@ class OmiseHelper extends AbstractHelper
         Touchngo::CODE => "Touch`n Go eWallet Payment",
         Mobilebanking::CODE => "Mobile Banking Payment",
         Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
-        Ocbcpao::CODE => "OCBC Pay Anyone Payment",
         OcbcDigital::CODE => "OCBC Digital Payment",
         Grabpay::CODE => "GrabPay Payment",
         Boost::CODE => "Boost Payment",

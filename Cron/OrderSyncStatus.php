@@ -33,7 +33,6 @@ class OrderSyncStatus
         "omise_offsite_internetbanking",
         "omise_offsite_mobilebanking",
         "omise_offsite_rabbitlinepay",
-        "omise_offsite_ocbcpao",
         "omise_offsite_ocbc_digital",
         "omise_offsite_grabpay",
         "omise_offsite_boost",

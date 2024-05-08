@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v3.7.1 _(May, 8, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.7.1)
+- Fixed minimum installment amount for installment_bay and installment_kbank (PR: [#479](https://github.com/omise/omise-magento/pull/479))
+- Remove OCBC PAO (PR: [#480](https://github.com/omise/omise-magento/pull/480))
+
 ## [v3.7.0 _(Apr, 9, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.7.0)
 - Added WeChat Pay (PR: [#475](https://github.com/omise/omise-magento/pull/475))
 - Removed Pay with Points and Citi installment (PR: [#476](https://github.com/omise/omise-magento/pull/476))
