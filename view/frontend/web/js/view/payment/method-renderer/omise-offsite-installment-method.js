@@ -6,6 +6,8 @@ define(
         'Magento_Checkout/js/view/payment/default',
         'Magento_Checkout/js/model/quote',
         'Magento_Catalog/js/price-utils',
+        'Magento_Checkout/js/model/full-screen-loader',
+        'mage/storage',
     ],
     function (
         $,
@@ -13,7 +15,9 @@ define(
         Base,
         Component,
         quote,
-        priceUtils
+        priceUtils,
+        fullScreenLoader,
+        storage
     ) {
         'use strict';
         const CAPTION = $.mage.__('Choose number of monthly payments');
@@ -83,15 +87,28 @@ define(
             },
         ]
 
+        function convertToCents(dollarAmount) {
+            return Math.round(parseFloat(dollarAmount) * 100);
+        }
+
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-installment-form'
             },
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb', 'myr'],
-
+            isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
             capabilities: null,
+            billingAddressCountries: ["US", "GB", "CA"],
 
+            /**
+             * Get Omise public key
+             *
+             * @return {string}
+             */
+            getPublicKey: function () {
+                return window.checkoutConfig.payment.omise_cc.publicKey
+            },
             /**
              * Initiate observable fields
              *
@@ -110,14 +127,131 @@ define(
                         'installmentTermsUOB',
                         'installmentTermsMBB',
                         'installmentTermsTTB',
+                        'omiseInstallmentError',
+                        'omiseInstallmentToken',
+                        'omiseInstallmentSource',
                     ]);
 
                 this.capabilities = checkoutConfig.omise_payment_list[this.code];
 
                 // filter provider for checkout page
                 this.providers = this.get_available_providers()
-
+                this.openOmiseJs();
                 return this;
+            },
+
+            selectPaymentMethod: function () {
+                this._super();
+                OmiseCard.destroy();
+                setTimeout(() => this.openOmiseJs(), 1000);
+                return this
+            },
+
+            openOmiseJs: function () {
+                const self = this
+                ko.bindingHandlers.omiseInstallmentForm = {
+                    init: function (element) {
+                        const iframeHeightMatching = {
+                            '40px': 258,
+                            '44px': 270,
+                            '48px': 282,
+                            '52px': 295,
+                        }
+
+                        const localeMatching = {
+                            en_US: 'en',
+                            ja_JP: 'ja',
+                            th_TH: 'th'
+                        }
+
+                        const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
+                        const { font, input, checkbox } = formDesign
+                        let iframeElementHeight = iframeHeightMatching[input.height]
+                        element.style.height = 500 + 'px';
+
+                        OmiseCard.configure({
+                            publicKey: self.getPublicKey(),
+                            amount: convertToCents(window.checkoutConfig.quoteData.grand_total),
+                            element,
+                            iframeAppId: 'omise-checkout-installment-form',
+                            customCardForm: false,
+                            customInstallmentForm: true,
+                            locale: localeMatching[locale] ?? 'en',
+                            defaultPaymentMethod: 'installment'
+                        });
+                        
+                        OmiseCard.open({
+                            onCreateSuccess: (payload) => {
+                                console.log('payload: ', payload);
+                                self.createOrder(self, payload)
+                            },
+                            onError: (err) => {
+                                if (err.length > 0) {
+                                    self.omiseInstallmentError(err.length == 1 ? err[0] : 'Please enter required card information.')
+                                }
+                                else {
+                                    self.omiseInstallmentError('Something went wrong. Please refresh the page and try again.')
+                                }
+                                self.stopPerformingPlaceOrderAction()
+                            }
+                        });
+                    }
+                }
+            },
+
+            createOrder: function (self, payload) {
+                console.log('in createOrder');
+                self.omiseInstallmentToken(payload.token)
+                self.omiseInstallmentSource(payload.source)
+                const failHandler = self.buildFailHandler(this, 300)
+                self.getPlaceOrderDeferredObject()
+                    .fail(failHandler)
+                    .done((order_id) => {
+                        let serviceUrl = self.getMagentoReturnUrl(order_id)
+                        storage.get(serviceUrl, false)
+                            .fail(failHandler)
+                            .done(function (response) {
+                                if (response) {
+                                    $.mage.redirect(response.authorize_uri)
+                                } else {
+                                    failHandler(response)
+                                }
+                            })
+                    })
+            },
+
+            /**
+             * Hook the placeOrder function.
+             * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
+             *
+             * @return {boolean}
+             */
+            placeOrder: function (data, event) {
+                this.omiseInstallmentError(null)
+                event && event.preventDefault()
+
+                if (typeof Omise === 'undefined') {
+                    alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'))
+                    return false
+                }
+
+                this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
+                return true
+            },
+
+            /**
+             * Generate Omise token with embedded form before proceed the placeOrder process.
+             *
+             * @return {void}
+             */
+            generateTokenWithEmbeddedFormAndPerformPlaceOrderAction: function () {
+                this.startPerformingPlaceOrderAction()
+                let billingAddress = {}
+                let selectedBillingAddress = quote.billingAddress()
+                if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                    Object.assign(billingAddress, this.getSelectedTokenBillingAddress(selectedBillingAddress))
+                }
+                OmiseCard.requestCardToken(billingAddress)
             },
 
             /**
@@ -312,11 +446,12 @@ define(
              * @return {Object}
              */
             getData: function () {
+                console.log('in get data', this.item.method, this.omiseInstallmentToken(), this.omiseInstallmentSource());
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'offsite': this.omiseOffsite(),
-                        'terms': this.getTerms()
+                        'card': this.omiseInstallmentToken(),
+                        'source': this.omiseInstallmentSource()
                     }
                 };
             },
@@ -380,8 +515,42 @@ define(
                     }
                 }
                 )))
-            }
+            },
 
+            /**
+             * Start performing place order action,
+             * by disable a place order button and show full screen loader component.
+             */
+            startPerformingPlaceOrderAction: function () {
+                this.isPlaceOrderActionAllowed(false)
+                fullScreenLoader.startLoader()
+            },
+
+            /**
+             * Stop performing place order action,
+             * by disable a place order button and show full screen loader component.
+             */
+            stopPerformingPlaceOrderAction: function () {
+                fullScreenLoader.stopLoader()
+                this.isPlaceOrderActionAllowed(true)
+            },
+
+            getSelectedTokenBillingAddress: function (selectedBillingAddress) {
+                let address = {
+                    state: selectedBillingAddress.region,
+                    postal_code: selectedBillingAddress.postcode,
+                    phone_number: selectedBillingAddress.telephone,
+                    country: selectedBillingAddress.countryId,
+                    city: selectedBillingAddress.city,
+                    street1: selectedBillingAddress.street[0]
+                }
+
+                if (selectedBillingAddress.street[1]) {
+                    address.street2 = selectedBillingAddress.street[1]
+                }
+
+                return address
+            }
         });
     }
 );
