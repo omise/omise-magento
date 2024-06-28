@@ -8,7 +8,9 @@ define(
         'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote'
+        'Magento_Checkout/js/model/quote',
+        'Magento_Checkout/js/checkout-data',
+        'Magento_Checkout/js/action/select-payment-method'
     ],
     function (
         ko,
@@ -19,7 +21,9 @@ define(
         validator,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote
+        quote,
+        checkoutData,
+        selectPaymentMethodAction
     ) {
         'use strict'
 
@@ -87,6 +91,8 @@ define(
 
             selectPaymentMethod: function () {
                 this._super();
+                selectPaymentMethodAction(this.getData());
+                checkoutData.setSelectedPaymentMethod(this.item.method);
                 OmiseCard.destroy();
                 setTimeout(() => {
                     if (this.isSecureForm()) {
@@ -97,7 +103,7 @@ define(
                     }
                 }, 300);
                 
-                return this
+                return true
             },
 
             isSecureForm: function () {

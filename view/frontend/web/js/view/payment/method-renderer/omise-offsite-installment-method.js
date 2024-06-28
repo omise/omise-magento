@@ -8,6 +8,8 @@ define(
         'Magento_Catalog/js/price-utils',
         'Magento_Checkout/js/model/full-screen-loader',
         'mage/storage',
+        'Magento_Checkout/js/checkout-data',
+        'Magento_Checkout/js/action/select-payment-method'
     ],
     function (
         $,
@@ -17,7 +19,9 @@ define(
         quote,
         priceUtils,
         fullScreenLoader,
-        storage
+        storage,
+        checkoutData,
+        selectPaymentMethodAction
     ) {
         'use strict';
         const CAPTION = $.mage.__('Choose number of monthly payments');
@@ -142,6 +146,8 @@ define(
 
             selectPaymentMethod: function () {
                 this._super();
+                selectPaymentMethodAction(this.getData());
+                checkoutData.setSelectedPaymentMethod(this.item.method);
                 OmiseCard.destroy();
                 setTimeout(() => {
                     const element = document.querySelector('.omise-installment-form')
@@ -149,7 +155,7 @@ define(
                         this.applyOmiseJsToElement(this, element);
                     }
                 }, 300);
-                return this
+                return true
             },
 
             openOmiseJs: function () {
