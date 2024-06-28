@@ -143,64 +143,68 @@ define(
             selectPaymentMethod: function () {
                 this._super();
                 OmiseCard.destroy();
-                setTimeout(() => this.openOmiseJs(), 1000);
+                setTimeout(() => {
+                    const element = document.querySelector('.omise-installment-form')
+                    if(element) {
+                        this.applyOmiseJsToElement(this, element);
+                    }
+                }, 300);
                 return this
             },
 
             openOmiseJs: function () {
-                const self = this
                 ko.bindingHandlers.omiseInstallmentForm = {
-                    init: function (element) {
-                        const iframeHeightMatching = {
-                            '40px': 258,
-                            '44px': 270,
-                            '48px': 282,
-                            '52px': 295,
-                        }
-
-                        const localeMatching = {
-                            en_US: 'en',
-                            ja_JP: 'ja',
-                            th_TH: 'th'
-                        }
-
-                        const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
-                        const { font, input, checkbox } = formDesign
-                        let iframeElementHeight = iframeHeightMatching[input.height]
-                        element.style.height = 500 + 'px';
-
-                        OmiseCard.configure({
-                            publicKey: self.getPublicKey(),
-                            amount: convertToCents(window.checkoutConfig.quoteData.grand_total),
-                            element,
-                            iframeAppId: 'omise-checkout-installment-form',
-                            customCardForm: false,
-                            customInstallmentForm: true,
-                            locale: localeMatching[locale] ?? 'en',
-                            defaultPaymentMethod: 'installment'
-                        });
-                        
-                        OmiseCard.open({
-                            onCreateSuccess: (payload) => {
-                                console.log('payload: ', payload);
-                                self.createOrder(self, payload)
-                            },
-                            onError: (err) => {
-                                if (err.length > 0) {
-                                    self.omiseInstallmentError(err.length == 1 ? err[0] : 'Please enter required card information.')
-                                }
-                                else {
-                                    self.omiseInstallmentError('Something went wrong. Please refresh the page and try again.')
-                                }
-                                self.stopPerformingPlaceOrderAction()
-                            }
-                        });
-                    }
+                    init: (element) => this.applyOmiseJsToElement(this, element)
                 }
             },
 
+            applyOmiseJsToElement: function (self, element) {
+                const iframeHeightMatching = {
+                    '40px': 258,
+                    '44px': 270,
+                    '48px': 282,
+                    '52px': 295,
+                }
+
+                const localeMatching = {
+                    en_US: 'en',
+                    ja_JP: 'ja',
+                    th_TH: 'th'
+                }
+
+                const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
+                const { font, input, checkbox } = formDesign
+                let iframeElementHeight = iframeHeightMatching[input.height]
+                element.style.height = 500 + 'px';
+
+                OmiseCard.configure({
+                    publicKey: self.getPublicKey(),
+                    amount: convertToCents(window.checkoutConfig.quoteData.grand_total),
+                    element,
+                    iframeAppId: 'omise-checkout-installment-form',
+                    customCardForm: false,
+                    customInstallmentForm: true,
+                    locale: localeMatching[locale] ?? 'en',
+                    defaultPaymentMethod: 'installment'
+                });
+                
+                OmiseCard.open({
+                    onCreateSuccess: (payload) => {
+                        self.createOrder(self, payload)
+                    },
+                    onError: (err) => {
+                        if (err.length > 0) {
+                            self.omiseInstallmentError(err.length == 1 ? err[0] : 'Please enter required card information.')
+                        }
+                        else {
+                            self.omiseInstallmentError('Something went wrong. Please refresh the page and try again.')
+                        }
+                        self.stopPerformingPlaceOrderAction()
+                    }
+                });
+            },
+
             createOrder: function (self, payload) {
-                console.log('in createOrder');
                 self.omiseInstallmentToken(payload.token)
                 self.omiseInstallmentSource(payload.source)
                 const failHandler = self.buildFailHandler(this, 300)
@@ -446,7 +450,6 @@ define(
              * @return {Object}
              */
             getData: function () {
-                console.log('in get data', this.item.method, this.omiseInstallmentToken(), this.omiseInstallmentSource());
                 return {
                     'method': this.item.method,
                     'additional_data': {
