@@ -40,6 +40,4 @@ class InstallmentAPMBuilderTest extends APMBuilderTest
         $this->assertEquals('mock_source', $result['source']);
         $this->assertEquals('https://omise.co/complete', $result['return_uri']);
     }
-
-    
 }
