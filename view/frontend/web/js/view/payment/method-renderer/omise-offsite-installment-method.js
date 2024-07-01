@@ -185,7 +185,7 @@ define(
 
                 OmiseCard.configure({
                     publicKey: self.getPublicKey(),
-                    amount: convertToCents(window.checkoutConfig.quoteData.grand_total),
+                    amount: convertToCents(quote.totals().grand_total),
                     element,
                     iframeAppId: 'omise-checkout-installment-form',
                     customCardForm: false,
