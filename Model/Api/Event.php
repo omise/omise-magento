@@ -16,6 +16,7 @@ use Omise\Payment\Model\Api\Charge;
  * @property Object $data
  * @see      https://www.omise.co/events-api
  */
+#[\AllowDynamicProperties]
 class Event extends BaseObject
 {
     /**

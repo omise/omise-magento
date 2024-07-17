@@ -17,6 +17,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\App\Request\Http;
 
+#[\AllowDynamicProperties]
 class Threedsecure extends Action
 {
     /**

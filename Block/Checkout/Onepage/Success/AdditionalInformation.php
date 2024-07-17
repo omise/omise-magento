@@ -1,6 +1,7 @@
 <?php
 namespace Omise\Payment\Block\Checkout\Onepage\Success;
 
+#[\AllowDynamicProperties]
 class AdditionalInformation extends \Magento\Framework\View\Element\Template
 {
     /**

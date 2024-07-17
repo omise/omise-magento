@@ -8,6 +8,7 @@ use Magento\Sales\Model\Order;
 use Omise\Payment\Model\Config\Cc as Config;
 use Omise\Payment\Model\RefundSyncStatus;
 
+#[\AllowDynamicProperties]
 class SyncStatus
 {
     const STATUS_SUCCESSFUL = 'successful';

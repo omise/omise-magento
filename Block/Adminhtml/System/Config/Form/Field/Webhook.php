@@ -8,6 +8,7 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Request\Http;
 
+#[\AllowDynamicProperties]
 class Webhook extends Field
 {
     /**
