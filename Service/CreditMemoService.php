@@ -6,6 +6,7 @@ use Magento\Sales\Model\Order\CreditmemoFactory;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\CreditmemoService as MagentoCreditmemoService;
 
+#[\AllowDynamicProperties]
 class CreditMemoService
 {
     /**

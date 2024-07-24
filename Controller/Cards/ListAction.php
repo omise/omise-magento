@@ -1,6 +1,7 @@
 <?php
 namespace Omise\Payment\Controller\Cards;
 
+#[\AllowDynamicProperties]
 class ListAction extends \Magento\Framework\App\Action\Action
 {
     /**

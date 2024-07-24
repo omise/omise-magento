@@ -5,6 +5,7 @@ namespace Omise\Payment\Model;
 use Omise\Payment\Service\CreditMemoService;
 use Magento\Sales\Model\Order;
 
+#[\AllowDynamicProperties]
 class RefundSyncStatus
 {
     public function __construct(CreditMemoService $creditMemoService)

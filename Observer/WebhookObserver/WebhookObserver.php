@@ -10,6 +10,7 @@ use Omise\Payment\Model\Api\Event as ApiEvent;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 
+#[\AllowDynamicProperties]
 abstract class WebhookObserver implements ObserverInterface
 {
     /**

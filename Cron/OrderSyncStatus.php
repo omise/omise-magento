@@ -4,6 +4,7 @@ namespace Omise\Payment\Cron;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Exception;
 
+#[\AllowDynamicProperties]
 class OrderSyncStatus
 {
     /**

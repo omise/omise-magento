@@ -7,6 +7,7 @@ use Magento\Store\Model\ScopeInterface as MagentoScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Sales\Model\Order;
 
+#[\AllowDynamicProperties]
 class Config
 {
     /**

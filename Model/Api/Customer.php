@@ -6,6 +6,7 @@ use Exception;
 use OmiseCustomer;
 use Omise\Payment\Model\Config\Config;
 
+#[\AllowDynamicProperties]
 class Customer extends BaseObject
 {
     /**
