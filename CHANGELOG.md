@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.8.0 _(Jul, 24, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.8.0)
+- Resolve dynamic property deprecation error for PHP 8.2 and above (PR: [#485](https://github.com/omise/omise-magento/pull/485))
+
 ## [v3.7.1 _(May, 8, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.7.1)
 - Fixed minimum installment amount for installment_bay and installment_kbank (PR: [#479](https://github.com/omise/omise-magento/pull/479))
 - Remove OCBC PAO (PR: [#480](https://github.com/omise/omise-magento/pull/480))
