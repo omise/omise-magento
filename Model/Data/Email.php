@@ -1,6 +1,7 @@
 <?php
 namespace Omise\Payment\Model\Data;
 
+#[\AllowDynamicProperties]
 class Email
 {
     /**

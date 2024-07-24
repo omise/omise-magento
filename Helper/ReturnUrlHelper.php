@@ -5,6 +5,7 @@ namespace Omise\Payment\Helper;
 use Omise\Payment\Helper\TokenHelper;
 use Magento\Framework\UrlInterface;
 
+#[\AllowDynamicProperties]
 class ReturnUrlHelper
 {
     public function __construct(UrlInterface $url, TokenHelper $tokenHelper)

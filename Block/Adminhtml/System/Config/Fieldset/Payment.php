@@ -4,6 +4,7 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\Fieldset;
 /**
  * Fieldset renderer for Omise solution
  */
+#[\AllowDynamicProperties]
 class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
 {
     /**

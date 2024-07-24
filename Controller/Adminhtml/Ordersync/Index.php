@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Model\SyncStatus;
 
+#[\AllowDynamicProperties]
 class Index extends \Magento\Backend\App\Action
 {
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace Omise\Payment\Controller\Payment;
 
+#[\AllowDynamicProperties]
 class Complete extends \Magento\Framework\App\Action\Action
 {
     /**

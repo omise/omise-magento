@@ -3,6 +3,7 @@ namespace Omise\Payment\Controller\Cards;
 
 use Magento\Framework\App\Request\Http;
 
+#[\AllowDynamicProperties]
 class DeleteAction extends \Magento\Framework\App\Action\Action
 {
     const WRONG_REQUEST = 1;
