@@ -165,14 +165,23 @@ define(
             },
 
             applyOmiseJsToElement: function (self, element) {
+                const iframeHeightMatching = {
+                    '40px': 258,
+                    '44px': 270,
+                    '48px': 282,
+                    '52px': 295,
+                }
+
                 const localeMatching = {
                     en_US: 'en',
                     ja_JP: 'ja',
                     th_TH: 'th'
                 }
 
-                const { locale, enableWlbInstallment } = window.checkoutConfig.payment.omise_cc
-                element.style.height = enableWlbInstallment === '1' ? '450px' : '200px'
+                const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
+                const { font, input, checkbox } = formDesign
+                let iframeElementHeight = iframeHeightMatching[input.height]
+                element.style.height = 500 + 'px';
 
                 OmiseCard.configure({
                     publicKey: self.getPublicKey(),
@@ -182,10 +191,9 @@ define(
                     customCardForm: false,
                     customInstallmentForm: true,
                     locale: localeMatching[locale] ?? 'en',
-                    defaultPaymentMethod: 'installment',
-                    enableWlbInstallment: enableWlbInstallment === '1'
+                    defaultPaymentMethod: 'installment'
                 });
-
+                
                 OmiseCard.open({
                     onCreateSuccess: (payload) => {
                         self.createOrder(self, payload)

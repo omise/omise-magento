@@ -222,19 +222,13 @@
                         <comment>This controls the title which the user sees during checkout.</comment>
                         <config_path>payment/omise_offsite_installment/title</config_path>
                     </field>
-                    <field id="enable_wlb_installment" translate="label" type="select" sortOrder="271" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable WLB installments</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_installment/enable_wlb_installment</config_path>
-                        <comment>This controls whether you want to enable WLB installments or non-WLB installments.</comment>
-                    </field>
-                    <field id="allowspecific" translate="label comment" type="select" sortOrder="272" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="allowspecific" translate="label comment" type="select" sortOrder="271" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Allowed Countries</label>
                         <config_path>payment/omise_offsite_installment/allowspecific</config_path>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
                         <comment>If not set to all, guest customers will not have a billing country and may not be able to check out.</comment>
                     </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="273" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="272" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Payment from specific countries</label>
                         <config_path>payment/omise_offsite_installment/specificcountry</config_path>
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
