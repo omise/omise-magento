@@ -45,7 +45,6 @@
                 <payment_action>authorize_capture</payment_action>
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
-                <enable_wlb_installment>0</enable_wlb_installment>
             </omise_offsite_internetbanking>
 
             <omise_offsite_alipay>

@@ -6,7 +6,6 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\Theme;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
-use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Customer;
 
 class CcConfigProvider implements ConfigProviderInterface
@@ -46,8 +45,6 @@ class CcConfigProvider implements ConfigProviderInterface
         $theme = new Theme();
         $customDesign = $this->omiseCcConfig->getCardThemeConfig();
         $selectedTheme = $this->omiseCcConfig->getCardTheme();
-        $enableWlbInstallment = $this->omiseCcConfig->getValue('enable_wlb_installment', Installment::CODE);
-
         return [
             'payment' => [
                 'ccform' => [
@@ -61,8 +58,7 @@ class CcConfigProvider implements ConfigProviderInterface
                     'locale'             => $this->omiseCcConfig->getStoreLocale(),
                     'secureForm'         => $this->omiseCcConfig->getSecureForm(),
                     'formDesign'         => $theme->getFormDesign($selectedTheme, $customDesign),
-                    'theme'              => $selectedTheme,
-                    'enableWlbInstallment' => $enableWlbInstallment
+                    'theme'              => $selectedTheme
                 ],
             ]
         ];
