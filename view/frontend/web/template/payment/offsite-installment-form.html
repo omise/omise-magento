@@ -39,8 +39,17 @@
             <!-- /ko -->
             <!--/ko-->
         </div>
+
+        <!-- ko if: omiseInstallmentError() -->
+        <div class="omise-card-error-container">
+            <div aria-atomic="true" role="alert" class="message message-error error">
+                <div data-ui-id="checkout-cart-validationmessages-message-error" data-bind="text: omiseInstallmentError()"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+
         <!-- ko if: providers().length -->
-        <div class="omise-banking-fee-warn" data-bind="i18n: 'Choose your installment terms'"></div>
+        <!-- <div class="omise-banking-fee-warn" data-bind="i18n: 'Choose your installment terms'"></div>
         <form class="form" data-bind="attr: {
               id: getCode() + 'Form',
               }">
@@ -83,7 +92,22 @@
                     </li>
                 </ul>
             </fieldset>
-        </form>
+        </form> -->
+        <input type="hidden"
+                   name="payment[omise_token]"
+                   data-bind="attr: {
+                   'id': getCode() + 'InstallmentToken',
+                   'data-container': getCode() + '-cc-token',
+                   },
+                   value: omiseInstallmentToken"/>
+        <input type="hidden"
+                   name="payment[omise_source]"
+                   data-bind="attr: {
+                   'id': getCode() + 'InstallmentSource',
+                   'data-container': getCode() + '-cc-source',
+                   },
+                   value: omiseInstallmentSource"/>
+        <div class="omise-installment-form" data-bind="omiseInstallmentForm: true"></div>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
             <!-- ko template: getTemplate() -->
@@ -96,7 +120,7 @@
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked()) && omiseOffsite() && getTerms() ">
+                        enable: (getCode() == isChecked())">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>
