@@ -24,7 +24,6 @@ define(
         selectPaymentMethodAction
     ) {
         'use strict';
-        const CAPTION = $.mage.__('Choose number of monthly payments');
         const providers = [
             {
                 id: "installment_ktc",
@@ -89,7 +88,64 @@ define(
                 logo: 'ttb',
                 active: true
             },
-        ]
+
+            {
+                id: "installment_wlb_ktc",
+                title: $.mage.__('Krungthai Card'),
+                code: 'ktc',
+                logo: 'ktc',
+                active: true
+            },
+            {
+                id: "installment_wlb_first_choice",
+                title: $.mage.__('First Choice'),
+                code: 'first_choice',
+                logo: 'fc',
+                active: true
+            },
+            {
+                id: "installment_wlb_kbank",
+                title: $.mage.__('Kasikorn Bank'),
+                code: 'kbank',
+                logo: 'kbank',
+                active: true
+            },
+            {
+                id: "installment_wlb_bbl",
+                title: $.mage.__('Bangkok Bank'),
+                code: 'bbl',
+                logo: 'bbl',
+                active: true
+            },
+            {
+                id: "installment_wlb_bay",
+                title: $.mage.__('Krungsri'),
+                code: 'bay',
+                logo: 'bay',
+                active: true
+            },
+            {
+                id: "installment_wlb_scb",
+                title: $.mage.__('Siam Commercial Bank'),
+                code: 'scb',
+                logo: 'scb',
+                active: true
+            },
+            {
+                id: "installment_wlb_uob",
+                title: $.mage.__('United Overseas Bank'),
+                code: 'uob',
+                logo: 'uob',
+                active: true
+            },
+            {
+                id: "installment_wlb_ttb",
+                title: $.mage.__('TMBThanachart Bank'),
+                code: 'ttb',
+                logo: 'ttb',
+                active: true
+            },
+        ];
 
         function convertToCents(dollarAmount) {
             return Math.round(parseFloat(dollarAmount) * 100);
@@ -165,22 +221,13 @@ define(
             },
 
             applyOmiseJsToElement: function (self, element) {
-                const iframeHeightMatching = {
-                    '40px': 258,
-                    '44px': 270,
-                    '48px': 282,
-                    '52px': 295,
-                }
-
                 const localeMatching = {
                     en_US: 'en',
                     ja_JP: 'ja',
                     th_TH: 'th'
                 }
 
-                const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
-                const { font, input, checkbox } = formDesign
-                let iframeElementHeight = iframeHeightMatching[input.height]
+                const { locale } = window.checkoutConfig.payment.omise_cc
                 element.style.height = 500 + 'px';
 
                 OmiseCard.configure({
@@ -292,15 +339,6 @@ define(
              */
             getMinimumOrderText: function () {
                 return $.mage.__('Minimum order value is %amount').replace('%amount', this.getFormattedAmount(this.getInstallmentMinLimit()));
-            },
-
-            /**
-             * Get formatted message about installment caption
-             *
-             * @return {string}
-             */
-            getCaptionText: function () {
-                return CAPTION
             },
 
             /**
