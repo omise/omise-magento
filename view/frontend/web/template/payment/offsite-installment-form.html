@@ -1,13 +1,13 @@
 <div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}, visible: isActive()">
     <div class="payment-method-title field choice">
         <input type="radio" name="payment[method]" class="radio" data-bind="attr: {
-               'id': getCode()
-               },
-               value: getCode(),
-               checked: isChecked,
-               click: selectPaymentMethod,
-               visible: isRadioButtonVisible(),
-               enable: isActive() && !orderValueTooLow()" />
+            'id': getCode()
+            },
+            value: getCode(),
+            checked: isChecked,
+            click: selectPaymentMethod,
+            visible: isRadioButtonVisible(),
+            enable: isActive() && !orderValueTooLow()" />
         <label data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
         </label>
@@ -49,50 +49,6 @@
         <!-- /ko -->
 
         <!-- ko if: providers().length -->
-        <!-- <div class="omise-banking-fee-warn" data-bind="i18n: 'Choose your installment terms'"></div>
-        <form class="form" data-bind="attr: {
-              id: getCode() + 'Form',
-              }">
-
-            <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
-                <ul class="form-list" data-bind="foreach: providers">
-                    <li class="items" data-bind="visible: active">
-                        <input type="radio" name="offsite" data-bind=" 
-                                        attr: { 
-                                            id: $parent.getCode() + '_' + code 
-                                            , value: id 
-                                        },
-                                        checked: $parent.omiseOffsite,
-                                        click: function(data, event) { 
-                                            $parent.resetTerms();
-                                            return true;
-                                        };" />
-                        <label data-bind="
-                                attr:{
-                                    'for': 'omise_offsite_installment_'+logo
-                                }">
-                            <div class="omise-logo-wrapper" data-bind="css: logo">
-                                <img data-bind="css: logo" />
-                            </div>
-                            <div class="omise-banking-text-wrapper">
-                                <span class="title" data-bind="i18n: title"></span>
-                            </div>
-                        </label>
-                        <select style="margin-top:10px" data-bind="options: $parent.getInstallmentTerms(code),
-                                                      optionsText: function (item) {
-                                                          return item.label
-                                                      },
-                                                      optionsValue: function (item) {
-                                                        return item.key
-                                                      },
-                                                      valueAllowUnset:true,
-                                                      value: $parent.getObservableTerm(id),
-                                                      visible: $parent.omiseOffsite() === id,
-                                                      optionsCaption: $parent.getCaptionText()"></select>
-                    </li>
-                </ul>
-            </fieldset>
-        </form> -->
         <input type="hidden"
                    name="payment[omise_token]"
                    data-bind="attr: {
@@ -101,12 +57,13 @@
                    },
                    value: omiseInstallmentToken"/>
         <input type="hidden"
-                   name="payment[omise_source]"
-                   data-bind="attr: {
-                   'id': getCode() + 'InstallmentSource',
-                   'data-container': getCode() + '-cc-source',
-                   },
-                   value: omiseInstallmentSource"/>
+            name="payment[omise_source]"
+            data-bind="attr: {
+            'id': getCode() + 'InstallmentSource',
+            'data-container': getCode() + '-cc-source',
+            },
+            value: omiseInstallmentSource"
+        />
         <div class="omise-installment-form" data-bind="omiseInstallmentForm: true"></div>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
