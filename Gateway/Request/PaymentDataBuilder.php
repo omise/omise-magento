@@ -111,10 +111,6 @@ class PaymentDataBuilder implements BuilderInterface
             $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = true;
         }
 
-        if (Cc::CODE === $method->getMethod()) {
-            $requestBody[self::METADATA]['secure_form_enabled'] = $this->ccConfig->getSecureForm();
-        }
-
         if (Installment::CODE === $method->getMethod()) {
             $card = $method->getAdditionalInformation(InstallmentDataAssignObserver::CARD);
             if ($card !== null) {
