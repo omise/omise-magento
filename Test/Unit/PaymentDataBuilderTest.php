@@ -131,7 +131,6 @@ class PaymentDataBuilderTest extends TestCase
                     'order_id' => 123,
                     'store_id' => 1,
                     'store_name' => 'opn-store',
-                    'secure_form_enabled' => true
                 ],
             ],
             [
