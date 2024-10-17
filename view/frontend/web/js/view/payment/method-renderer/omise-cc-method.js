@@ -83,9 +83,7 @@ define(
                         'omiseSaveCard',
                         'omiseCardError'
                     ])
-                if (this.isSecureForm()) {
-                    this.openOmiseJs()
-                }
+                this.openOmiseJs()
                 return this
             },
 
@@ -95,19 +93,13 @@ define(
                 checkoutData.setSelectedPaymentMethod(this.item.method);
                 OmiseCard.destroy();
                 setTimeout(() => {
-                    if (this.isSecureForm()) {
-                        const element = document.querySelector('.omise-card-form')
-                        if(element) {
-                            this.applyOmiseJsToElement(this, element)
-                        }
+                    const element = document.querySelector('.omise-card-form')
+                    if(element) {
+                        this.applyOmiseJsToElement(this, element)
                     }
                 }, 300);
                 
                 return true
-            },
-
-            isSecureForm: function () {
-                return window.checkoutConfig.payment.omise_cc.secureForm === 'yes'
             },
 
             openOmiseJs: function () {
@@ -288,43 +280,6 @@ define(
             },
 
             /**
-             * Generate Omise token with omise.js before proceed the placeOrder process.
-             *
-             * @return {void}
-             */
-            generateTokenWithOmiseJsAndPerformPlaceOrderAction: function () {
-                if (! this.validate()) {
-                    return false;
-                }
-
-                const self = this
-                this.startPerformingPlaceOrderAction()
-
-                let card = {
-                    number: this.omiseCardNumber(),
-                    name: this.omiseCardHolderName(),
-                    expiration_month: this.omiseCardExpirationMonth(),
-                    expiration_year: this.omiseCardExpirationYear(),
-                    security_code: this.omiseCardSecurityCode()
-                }
-                let selectedBillingAddress = quote.billingAddress()
-
-                if (self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
-                    Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress))
-                }
-
-                Omise.setPublicKey(this.getPublicKey())
-                Omise.createToken('card', card, function (statusCode, response) {
-                    if (statusCode === 200) {
-                        self.createOrder(self, {token : response.id})
-                    } else {
-                        self.omiseCardError(response.message)
-                        self.stopPerformingPlaceOrderAction()
-                    }
-                })
-            },
-
-            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
@@ -346,34 +301,8 @@ define(
                     return true
                 }
 
-                if (this.isSecureForm()) {
-                    this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
-                } else {
-                    this.generateTokenWithOmiseJsAndPerformPlaceOrderAction()
-                }
-
+                this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
                 return true
-            },
-
-            /**
-             * Hook the validate function.
-             * Original source: validate(); @ module-checkout/view/frontend/web/js/view/payment/default.js
-             *
-             * @return {boolean}
-             */
-            validate: function () {
-                let prefix = '#' + this.getCode(),
-                    fields = [
-                        'CardNumber',
-                        'CardHolderName',
-                        'CardExpirationMonth',
-                        'CardExpirationYear',
-                        'CardSecurityCode'
-                    ]
-
-
-                $(prefix + 'Form').validation()
-                return fields.map(f => $(prefix + f).valid()).every(valid => valid)
             },
 
             processOrderWithCard: function () {
