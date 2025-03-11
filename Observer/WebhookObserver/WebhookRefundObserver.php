@@ -57,7 +57,7 @@ class WebhookRefundObserver extends WebhookObserver
 
         $this->orderData->addStatusHistoryComment(
             __(
-                "Opn Payments: Payment refunded.<br/>An amount %1 %2 has been {$refundContextText} refunded.",
+                "Omise Payments: Payment refunded.<br/>An amount %1 %2 has been {$refundContextText} refunded.",
                 $this->orderData->getOrderCurrencyCode(),
                 number_format($this->charge->getRefundedAmount(), 2, '.', '')
             )

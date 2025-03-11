@@ -168,7 +168,7 @@ class Threedsecure extends Action
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
                     __(
-                        'Captured amount of %1 online via Opn Payments Gateway (3-D Secure payment).',
+                        'Captured amount of %1 online via Omise Payments Gateway (3-D Secure payment).',
                         $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                     )
                 );
@@ -177,7 +177,7 @@ class Threedsecure extends Action
                     $payment->addTransaction(Transaction::TYPE_AUTH),
                     $payment->prependMessage(
                         __(
-                            'Authorized amount of %1 via Opn Payments Gateway (3-D Secure payment).',
+                            'Authorized amount of %1 via Omise Payments Gateway (3-D Secure payment).',
                             $order->getBaseCurrency()->formatTxt($order->getTotalDue())
                         )
                     )
