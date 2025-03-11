@@ -65,7 +65,7 @@ class SyncStatus
         $chargeId = $this->helper->getOrderChargeId($order);
 
         if (!$chargeId) {
-            throw new LocalizedException(__('Unable to find Opn Payments charge ID'));
+            throw new LocalizedException(__('Unable to find Omise Payments charge ID'));
         }
 
         // set the store to fetch configuration values from store specific to the order
@@ -90,7 +90,7 @@ class SyncStatus
                 break;
             default:
                 throw new LocalizedException(
-                    __('Cannot read the payment status. Please try sync again or contact Opn Payments support team
+                    __('Cannot read the payment status. Please try sync again or contact Omise Payments support team
                         at support@omise.co if you have any questions.')
                 );
         }
@@ -125,7 +125,7 @@ class SyncStatus
 
             $order->addStatusHistoryComment(
                 __(
-                    'Opn Payments: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',
+                    'Omise Payments: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',
                     number_format($order->getGrandTotal(), 2, '.', ''),
                     $order->getOrderCurrencyCode()
                 )
@@ -159,7 +159,7 @@ class SyncStatus
         $this->cancelOrderInvoice($order);
         $order->registerCancellation(
             __(
-                'Opn Payments: Payment failed.<br/>%1 (code: %2) (manual sync).',
+                'Omise Payments: Payment failed.<br/>%1 (code: %2) (manual sync).',
                 $charge['failure_message'],
                 $charge['failure_code']
             )
@@ -172,8 +172,8 @@ class SyncStatus
     private function markOrderPending($order)
     {
         $order->addStatusHistoryComment(
-            __('Opn Payments: Payment is still in progress.<br/>
-                You might wait for a moment before click sync the status again or contact Opn Payments support
+            __('Omise Payments: Payment is still in progress.<br/>
+                You might wait for a moment before click sync the status again or contact Omise Payments support
                 team at support@omise.co if you have any questions (manual sync).')
         );
         if ($order->getState() != Order::STATE_PENDING_PAYMENT) {
@@ -188,7 +188,7 @@ class SyncStatus
     private function markPaymentExpired($order)
     {
         $this->cancelOrderInvoice($order);
-        $order->registerCancellation(__('Opn Payments: Payment expired. (manual sync).'))
+        $order->registerCancellation(__('Omise Payments: Payment expired. (manual sync).'))
             ->save();
     }
 
@@ -198,7 +198,7 @@ class SyncStatus
     private function markPaymentReversed($order)
     {
         $this->cancelOrderInvoice($order);
-        $order->registerCancellation(__('Opn Payments: Payment reversed. (manual sync).'))
+        $order->registerCancellation(__('Omise Payments: Payment reversed. (manual sync).'))
             ->save();
     }
 }
