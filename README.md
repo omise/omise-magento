@@ -1,7 +1,7 @@
 <!--- KEEP START --->
-[![Omise Payments](https://www.opn.ooo/assets/svg/logo-opn-full.svg)](https://www.opn.ooo)
+[![Omise Payments](images/Omise-logo-dark.svg)](https://www.omise.co/)
 
-[Omise Payments](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
+[Omise Payments](https://www.omise.co/) is a payment service provider operating in Thailand, Japan, and Singapore. 
 Omise Payments provides a set of APIs that help merchants of any size accept payments online.  
 <!--- KEEP END --->
 
@@ -13,7 +13,7 @@ Omise Payments provides a set of APIs that help merchants of any size accept pay
 
 ## Usage
 
-See our [official docs](https://docs.opn.ooo/magento-plugin) for details on installation and configuration.
+See our [official docs](https://docs.omise.co/magento-plugin) for details on installation and configuration.
 
 ## Contributing
 
