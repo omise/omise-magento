@@ -28,7 +28,6 @@
                 <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <payment_action>authorize</payment_action>
-                <secure_form>no</secure_form>
                 <card_form_theme>light</card_form_theme>
                 <card_form_theme_config></card_form_theme_config>
             </omise_cc>

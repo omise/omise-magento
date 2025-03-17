@@ -8,7 +8,9 @@ define(
         'Magento_Payment/js/model/credit-card-validation/validator',
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
-        'Magento_Checkout/js/model/quote'
+        'Magento_Checkout/js/model/quote',
+        'Magento_Checkout/js/checkout-data',
+        'Magento_Checkout/js/action/select-payment-method'
     ],
     function (
         ko,
@@ -19,7 +21,9 @@ define(
         validator,
         fullScreenLoader,
         redirectOnSuccessAction,
-        quote
+        quote,
+        checkoutData,
+        selectPaymentMethodAction
     ) {
         'use strict'
 
@@ -79,86 +83,96 @@ define(
                         'omiseSaveCard',
                         'omiseCardError'
                     ])
-                if (this.isSecureForm()) {
-                    this.openOmiseJs()
-                }
+                this.openOmiseJs()
                 return this
             },
 
-            isSecureForm: function () {
-                return window.checkoutConfig.payment.omise_cc.secureForm === 'yes'
+            selectPaymentMethod: function () {
+                this._super();
+                selectPaymentMethodAction(this.getData());
+                checkoutData.setSelectedPaymentMethod(this.item.method);
+                OmiseCard.destroy();
+                setTimeout(() => {
+                    const element = document.querySelector('.omise-card-form')
+                    if(element) {
+                        this.applyOmiseJsToElement(this, element)
+                    }
+                }, 300);
+                
+                return true
             },
 
             openOmiseJs: function () {
-                const self = this
                 ko.bindingHandlers.omiseCardForm = {
-                    init: function (element) {
-                        const hideRememberCard = !self.isCustomerLoggedIn()
-                        const iframeHeightMatching = {
-                            '40px': 258,
-                            '44px': 270,
-                            '48px': 282,
-                            '52px': 295,
-                        }
-
-                        const localeMatching = {
-                            en_US: 'en',
-                            ja_JP: 'ja',
-                            th_TH: 'th'
-                        }
-
-                        const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
-                        const { font, input, checkbox } = formDesign
-                        let iframeElementHeight = iframeHeightMatching[input.height]
-                        if (hideRememberCard) {
-                            iframeElementHeight = iframeElementHeight - 25
-                        }
-                        element.style.height = iframeElementHeight + 'px'
-
-                        OmiseCard.configure({
-                            publicKey: self.getPublicKey(),
-                            element,
-                            locale: localeMatching[locale] ?? 'en',
-                            customCardForm: true,
-                            customCardFormTheme: theme,
-                            style: {
-                                fontFamily: font.name,
-                                fontSize: font.size,
-                                input: {
-                                    height: input.height,
-                                    borderRadius: input.border_radius,
-                                    border: `1.2px solid ${input.border_color}`,
-                                    focusBorder: `1.2px solid ${input.active_border_color}`,
-                                    background: input.background_color,
-                                    color: input.text_color,
-                                    labelColor: input.label_color,
-                                    placeholderColor: input.placeholder_color,
-                                },
-                                checkBox: {
-                                    textColor: checkbox.text_color,
-                                    themeColor: checkbox.theme_color,
-                                    border: `1.2px solid ${input.border_color}`,
-                                }
-                            },
-                            customCardFormHideRememberCard: hideRememberCard
-                        })
-
-                        OmiseCard.open({
-                            onCreateTokenSuccess: (payload) => {
-                                self.createOrder(self, payload)
-                            },
-                            onError: (err) => {
-                                if (err.length > 0) {
-                                    self.omiseCardError(err.length == 1 ? err[0] : 'Please enter required card information.')
-                                }
-                                else {
-                                    self.omiseCardError('Something went wrong. Please refresh the page and try again.')
-                                }
-                                self.stopPerformingPlaceOrderAction()
-                            }
-                        })
-                    }
+                    init: (element) => this.applyOmiseJsToElement(this, element)
                 }
+            },
+
+            applyOmiseJsToElement: function (self, element) {
+                const hideRememberCard = !self.isCustomerLoggedIn()
+                const iframeHeightMatching = {
+                    '40px': 258,
+                    '44px': 270,
+                    '48px': 282,
+                    '52px': 295,
+                }
+
+                const localeMatching = {
+                    en_US: 'en',
+                    ja_JP: 'ja',
+                    th_TH: 'th'
+                }
+
+                const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
+                const { font, input, checkbox } = formDesign
+                let iframeElementHeight = iframeHeightMatching[input.height]
+                if (hideRememberCard) {
+                    iframeElementHeight = iframeElementHeight - 25
+                }
+                element.style.height = iframeElementHeight + 'px'
+
+                OmiseCard.configure({
+                    publicKey: self.getPublicKey(),
+                    element,
+                    locale: localeMatching[locale] ?? 'en',
+                    customCardForm: true,
+                    customCardFormTheme: theme,
+                    style: {
+                        fontFamily: font.name,
+                        fontSize: font.size,
+                        input: {
+                            height: input.height,
+                            borderRadius: input.border_radius,
+                            border: `1.2px solid ${input.border_color}`,
+                            focusBorder: `1.2px solid ${input.active_border_color}`,
+                            background: input.background_color,
+                            color: input.text_color,
+                            labelColor: input.label_color,
+                            placeholderColor: input.placeholder_color,
+                        },
+                        checkBox: {
+                            textColor: checkbox.text_color,
+                            themeColor: checkbox.theme_color,
+                            border: `1.2px solid ${input.border_color}`,
+                        }
+                    },
+                    customCardFormHideRememberCard: hideRememberCard
+                })
+
+                OmiseCard.open({
+                    onCreateTokenSuccess: (payload) => {
+                        self.createOrder(self, payload)
+                    },
+                    onError: (err) => {
+                        if (err.length > 0) {
+                            self.omiseCardError(err.length == 1 ? err[0] : 'Please enter required card information.')
+                        }
+                        else {
+                            self.omiseCardError('Something went wrong. Please refresh the page and try again.')
+                        }
+                        self.stopPerformingPlaceOrderAction()
+                    }
+                })
             },
 
             createOrder: function (self, payload) {
@@ -266,43 +280,6 @@ define(
             },
 
             /**
-             * Generate Omise token with omise.js before proceed the placeOrder process.
-             *
-             * @return {void}
-             */
-            generateTokenWithOmiseJsAndPerformPlaceOrderAction: function () {
-                if (! this.validate()) {
-                    return false;
-                }
-
-                const self = this
-                this.startPerformingPlaceOrderAction()
-
-                let card = {
-                    number: this.omiseCardNumber(),
-                    name: this.omiseCardHolderName(),
-                    expiration_month: this.omiseCardExpirationMonth(),
-                    expiration_year: this.omiseCardExpirationYear(),
-                    security_code: this.omiseCardSecurityCode()
-                }
-                let selectedBillingAddress = quote.billingAddress()
-
-                if (self.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
-                    Object.assign(card, this.getSelectedTokenBillingAddress(selectedBillingAddress))
-                }
-
-                Omise.setPublicKey(this.getPublicKey())
-                Omise.createToken('card', card, function (statusCode, response) {
-                    if (statusCode === 200) {
-                        self.createOrder(self, {token : response.id})
-                    } else {
-                        self.omiseCardError(response.message)
-                        self.stopPerformingPlaceOrderAction()
-                    }
-                })
-            },
-
-            /**
              * Hook the placeOrder function.
              * Original source: placeOrder(data, event); @ module-checkout/view/frontend/web/js/view/payment/default.js
              *
@@ -324,34 +301,8 @@ define(
                     return true
                 }
 
-                if (this.isSecureForm()) {
-                    this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
-                } else {
-                    this.generateTokenWithOmiseJsAndPerformPlaceOrderAction()
-                }
-
+                this.generateTokenWithEmbeddedFormAndPerformPlaceOrderAction()
                 return true
-            },
-
-            /**
-             * Hook the validate function.
-             * Original source: validate(); @ module-checkout/view/frontend/web/js/view/payment/default.js
-             *
-             * @return {boolean}
-             */
-            validate: function () {
-                let prefix = '#' + this.getCode(),
-                    fields = [
-                        'CardNumber',
-                        'CardHolderName',
-                        'CardExpirationMonth',
-                        'CardExpirationYear',
-                        'CardSecurityCode'
-                    ]
-
-
-                $(prefix + 'Form').validation()
-                return fields.map(f => $(prefix + f).valid()).every(valid => valid)
             },
 
             processOrderWithCard: function () {

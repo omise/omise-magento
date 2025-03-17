@@ -48,6 +48,11 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
+    const CARD = 'card';
+
+    /**
+     * @var string
+     */
     const SOURCE = 'source';
 
     /**
@@ -187,13 +192,15 @@ class APMBuilder implements BuilderInterface
                 ];
                 break;
             case Installment::CODE:
-                $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
-                $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE              => $installmentId,
-                    self::SOURCE_INSTALLMENT_TERMS => $method->getAdditionalInformation(
-                        InstallmentDataAssignObserver::TERMS
-                    )
-                ];
+                $card = $method->getAdditionalInformation(InstallmentDataAssignObserver::CARD);
+                if ($card !== null) {
+                    $paymentInfo[self::CARD] = $card;
+                }
+
+                $source = $method->getAdditionalInformation(InstallmentDataAssignObserver::SOURCE);
+                if ($source !== null) {
+                    $paymentInfo[self::SOURCE] = $source;
+                }
                 break;
             case Truemoney::CODE:
                 $paymentInfo[self::SOURCE] = $this->getTruemoneySourceData($method);

@@ -99,6 +99,6 @@ class Capabilities extends BaseObject
      */
     public function getInstallmentMinLimit()
     {
-        return $this->capabilities['limits']['installment_amount']['min'];
+        return $this->capabilities ? $this->capabilities['limits']['installment_amount']['min'] : 0;
     }
 }

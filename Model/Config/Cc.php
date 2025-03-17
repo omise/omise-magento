@@ -26,9 +26,4 @@ class Cc extends Config
     {
         return $this->getValue('card_form_theme', self::CODE);
     }
-
-    public function getSecureForm()
-    {
-        return $this->getValue('secure_form', self::CODE);
-    }
 }
