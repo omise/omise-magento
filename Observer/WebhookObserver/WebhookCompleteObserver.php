@@ -59,7 +59,7 @@ class WebhookCompleteObserver extends WebhookObserver
         }
 
         // To handle the situation where charge is manually updated as successful
-        // from Omise Payments dashboard after the order is canceled.
+        // from Omise dashboard after the order is canceled.
         if ($this->orderData->getState() === MagentoOrder::STATE_CANCELED && $this->charge->isSuccessful()) {
             $this->processCancelledOrder();
         }
