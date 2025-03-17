@@ -37,7 +37,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[Enable webhooks to receive updates when charge and refund events occur. To learn more, see <a href="https://docs.opn.ooo/api-webhooks">our webhooks documentation</a>. </br></br>
-                        Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="https://dashboard.omise.co/v2/settings/webhooks">Omise Payments dashboard</a> (HTTPS only).
+                        Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="https://dashboard.omise.co/v2/settings/webhooks">Omise dashboard</a> (HTTPS only).
                         ]]>
                     </comment>
                 </field>
