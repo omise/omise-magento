@@ -26,7 +26,7 @@ class PaymentRefund extends AbstractPayment
             $sourceType = $charge->source['type'] ?? 'credit_card';
             $method = str_replace('_', ' ', $sourceType);
             throw new \Magento\Framework\Exception\LocalizedException(
-                __('Payment with Omise Payments %1 cannot be refunded.', $method)
+                __('Payment with Omise %1 cannot be refunded.', $method)
             );
         }
 
