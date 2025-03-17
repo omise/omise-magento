@@ -74,7 +74,7 @@ class SyncStatus
 
         switch ($charge['status']) {
             case self::STATUS_SUCCESSFUL:
-                $this->maruccessful($order, $charge);
+                $this->markPaymentSuccessful($order, $charge);
                 break;
             case self::STATUS_FAILED:
                 $this->markPaymentFailed($order, $charge);
@@ -101,7 +101,7 @@ class SyncStatus
      * @param array $charge
      * @return void
      */
-    private function maruccessful($order, $charge)
+    private function markPaymentSuccessful($order, $charge)
     {
         $orderStateNotClosed = $order->getState() != Order::STATE_CLOSED;
 
