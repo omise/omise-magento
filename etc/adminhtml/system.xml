@@ -18,19 +18,19 @@
                 </field>
                 <field id="test_public_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for test</label>
-                    <comment>The "Test" mode public key can be found in Omise Payments Dashboard.</comment>
+                    <comment>The "Test" mode public key can be found in Omise Dashboard.</comment>
                 </field>
                 <field id="test_secret_key" translate="label" type="password" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Secret key for test</label>
-                    <comment>The "Test" mode secret key can be found in Omise Payments Dashboard.</comment>
+                    <comment>The "Test" mode secret key can be found in Omise  Dashboard.</comment>
                 </field>
                 <field id="live_public_key" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for live</label>
-                    <comment>The "Live" mode public key can be found in Omise Payments Dashboard.</comment>
+                    <comment>The "Live" mode public key can be found in Omise  Dashboard.</comment>
                 </field>
                 <field id="live_secret_key" translate="label" type="password" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Secret key for live</label>
-                    <comment>The "Live" mode secret key can be found in Omise Payments Dashboard.</comment>
+                    <comment>The "Live" mode secret key can be found in Omise  Dashboard.</comment>
                 </field>
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable webhooks</label>
