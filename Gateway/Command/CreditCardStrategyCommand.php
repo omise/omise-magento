@@ -109,7 +109,7 @@ class CreditCardStrategyCommand implements CommandInterface
                 $payment->addTransactionCommentsToOrder(
                     $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
                     __(
-                        'Captured amount of %1 online via Omise Payments Gateway.',
+                        'Captured amount of %1 online via Omise Payment Gateway.',
                         $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                     )
                 );
