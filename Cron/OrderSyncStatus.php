@@ -177,7 +177,7 @@ class OrderSyncStatus
                 if ($isExpired) {
                     $this->syncStatus->cancelOrderInvoice($this->order);
                     $this->order
-                        ->registerCancellation(__('Opn Payments: Payment expired. (cron job sync).'))
+                        ->registerCancellation(__('Omise : Payment expired. (cron job sync).'))
                         ->save();
                 }
             }

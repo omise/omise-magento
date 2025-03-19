@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v3.9.0 _(Mar, 17, 2025)_](https://github.com/omise/omise-magento/releases/tag/v3.9.0)
+- Rebranding Opn Payments to Omise (PR: [#495](https://github.com/omise/omise-magento/pull/495))
+
 ## [v3.8.0 _(Jul, 24, 2024)_](https://github.com/omise/omise-magento/releases/tag/v3.8.0)
 - Resolve dynamic property deprecation error for PHP 8.2 and above (PR: [#485](https://github.com/omise/omise-magento/pull/485))
 
