@@ -59,7 +59,7 @@ class WebhookCompleteObserver extends WebhookObserver
         }
 
         // To handle the situation where charge is manually updated as successful
-        // from Opn Payments dashboard after the order is canceled.
+        // from Omise dashboard after the order is canceled.
         if ($this->orderData->getState() === MagentoOrder::STATE_CANCELED && $this->charge->isSuccessful()) {
             $this->processCancelledOrder();
         }
@@ -75,10 +75,10 @@ class WebhookCompleteObserver extends WebhookObserver
     {
         if ($isCaptured) {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_PAYMENT, $this->invoice);
-            $comment = __('Amount of %1 has been paid via Opn Payments Gateway.', $amount);
+            $comment = __('Amount of %1 has been paid via Omise Gateway.', $amount);
         } else {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_AUTH, $this->invoice);
-            $comment = __('Authorized amount of %1 via Opn Payments Gateway (3-D Secure payment).', $amount);
+            $comment = __('Authorized amount of %1 via Omise Gateway (3-D Secure payment).', $amount);
         }
 
         $this->payment->addTransactionCommentsToOrder($transaction, $comment);

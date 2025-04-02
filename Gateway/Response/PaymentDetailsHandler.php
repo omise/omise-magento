@@ -76,7 +76,7 @@ class PaymentDetailsHandler implements HandlerInterface
             $transaction,
             $payment->prependMessage(
                 __(
-                    'Processing amount of %1 via Opn Payments Gateway.',
+                    'Processing amount of %1 via Omise Gateway.',
                     $order->getBaseCurrency()->formatTxt($order->getTotalDue())
                 )
             )
