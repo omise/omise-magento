@@ -77,7 +77,7 @@
                     </field>
                     <field id="mc_passkey_active" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable Passkey Authentication</label>
-                        <comment>Enable Master Card Passkey Authentication.</comment>
+                        <comment>Enable Mastercard Passkey Authentication.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc/mc_passkey_active</config_path>
                     </field>
