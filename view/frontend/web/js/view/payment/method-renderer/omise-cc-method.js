@@ -132,7 +132,6 @@ define(
                 element.style.height = iframeElementHeight + 'px'
 
                 OmiseCard.configure({
-                    
                     publicKey: self.getPublicKey(),
                     element,
                     locale: localeMatching[locale] ?? 'en',
@@ -177,7 +176,6 @@ define(
             },
 
             createOrder: function (self, payload) {
-
                 self.omiseCardToken(payload.token)
                 if (payload.remember) {
                     self.omiseSaveCard(payload.remember)
