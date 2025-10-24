@@ -279,7 +279,7 @@ define(
                     billingAddress: null
                 }
                 if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
-                tokenData['billingAddress'] = this.getSelectedTokenBillingAddress(selectedBillingAddress)
+                    tokenData['billingAddress'] = this.getSelectedTokenBillingAddress(selectedBillingAddress)
                 }
                 OmiseCard.requestCardToken(tokenData)
             },
