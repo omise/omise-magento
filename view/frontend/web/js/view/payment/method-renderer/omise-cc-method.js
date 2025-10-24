@@ -271,12 +271,15 @@ define(
              */
             generateTokenWithEmbeddedFormAndPerformPlaceOrderAction: function () {
                 this.startPerformingPlaceOrderAction()
-                let billingAddress = {}
-                let selectedBillingAddress = quote.billingAddress()
-                if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
-                    Object.assign(billingAddress, this.getSelectedTokenBillingAddress(selectedBillingAddress))
+                const selectedBillingAddress = quote.billingAddress()
+                const tokenData = {
+                    email: quote.guestEmail ?? window.checkoutConfig.customerData.email,
+                    billingAddress: null
                 }
-                OmiseCard.requestCardToken(billingAddress)
+                if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                    tokenData['billingAddress'] = this.getSelectedTokenBillingAddress(selectedBillingAddress)
+                }
+                OmiseCard.requestCardToken(tokenData)
             },
 
             /**

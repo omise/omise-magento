@@ -52,12 +52,12 @@ class CcConfigProvider implements ConfigProviderInterface
                     'years'  => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcYears()],
                 ],
                 OmiseCcConfig::CODE => [
-                    'publicKey'          => $this->omiseCcConfig->getPublicKey(),
-                    'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
-                    'cards'              => $this->getCards(),
-                    'locale'             => $this->omiseCcConfig->getStoreLocale(),
-                    'formDesign'         => $theme->getFormDesign($selectedTheme, $customDesign),
-                    'theme'              => $selectedTheme
+                    'publicKey'                     => $this->omiseCcConfig->getPublicKey(),
+                    'isCustomerLoggedIn'            => $this->customer->isLoggedIn(),
+                    'cards'                         => $this->getCards(),
+                    'locale'                        => $this->omiseCcConfig->getStoreLocale(),
+                    'formDesign'                    => $theme->getFormDesign($selectedTheme, $customDesign),
+                    'theme'                         => $selectedTheme
                 ],
             ]
         ];
