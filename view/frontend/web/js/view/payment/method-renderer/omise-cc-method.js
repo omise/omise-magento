@@ -343,7 +343,7 @@ define(
                 }
 
                 if (selectedBillingAddress.street[1]) {
-                    address.billingAddress.street2 = selectedBillingAddress.street[1]
+                    address.street2 = selectedBillingAddress.street[1]
                 }
 
                 return address
