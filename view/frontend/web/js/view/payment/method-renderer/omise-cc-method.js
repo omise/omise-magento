@@ -276,17 +276,12 @@ define(
                 let billingAddress = {}
                 let selectedBillingAddress = quote.billingAddress()
 
-                //if(window.checkoutConfig.payment.omise_cc.enabledPasskeyAuthentication){
-                    if(quote.guestEmail != null){
+                if(quote.guestEmail != null){
                     selectedBillingAddress.email = quote.guestEmail
-                    }
-                    else{
-                        if (window.checkoutConfig && window.checkoutConfig.customerData) {
-                            selectedBillingAddress.email = window.checkoutConfig.customerData.email;
-                        }
-                    }
-                //}
-                
+                }
+                else{
+                    selectedBillingAddress.email = window.checkoutConfig.customerData.email;
+                }
 
                 if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
                 
