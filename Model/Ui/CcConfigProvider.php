@@ -45,7 +45,6 @@ class CcConfigProvider implements ConfigProviderInterface
         $theme = new Theme();
         $customDesign = $this->omiseCcConfig->getCardThemeConfig();
         $selectedTheme = $this->omiseCcConfig->getCardTheme();
-        $enabledPasskeyAuthentication = $this->omiseCcConfig->isPasskeyAuthenticationEnabled();
         return [
             'payment' => [
                 'ccform' => [
@@ -58,8 +57,7 @@ class CcConfigProvider implements ConfigProviderInterface
                     'cards'                         => $this->getCards(),
                     'locale'                        => $this->omiseCcConfig->getStoreLocale(),
                     'formDesign'                    => $theme->getFormDesign($selectedTheme, $customDesign),
-                    'theme'                         => $selectedTheme,
-                    'enabledPasskeyAuthentication'  => $enabledPasskeyAuthentication
+                    'theme'                         => $selectedTheme
                 ],
             ]
         ];
