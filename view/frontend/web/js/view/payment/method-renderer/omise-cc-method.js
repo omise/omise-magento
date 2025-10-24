@@ -273,22 +273,15 @@ define(
              */
             generateTokenWithEmbeddedFormAndPerformPlaceOrderAction: function () {
                 this.startPerformingPlaceOrderAction()
-                let billingAddress = {}
-                let selectedBillingAddress = quote.billingAddress()
-
-                if(quote.guestEmail != null){
-                    selectedBillingAddress.email = quote.guestEmail
+                const selectedBillingAddress = quote.billingAddress()
+                const tokenData = {
+                    email: quote.guestEmail ?? window.checkoutConfig.customerData.email,
+                    billingAddress: null
                 }
-                else{
-                    selectedBillingAddress.email = window.checkoutConfig.customerData.email;
-                }
-
                 if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
-                
-                    Object.assign(billingAddress, this.getSelectedTokenBillingAddress(selectedBillingAddress))
+                tokenData['billingAddress'] = this.getSelectedTokenBillingAddress(selectedBillingAddress)
                 }
-
-                OmiseCard.requestCardToken(billingAddress)
+                OmiseCard.requestCardToken(tokenData)
             },
 
             /**
@@ -343,16 +336,13 @@ define(
 
             getSelectedTokenBillingAddress: function (selectedBillingAddress) {
                 let address = {
-                        email: selectedBillingAddress.email,
-                        phoneNumber: selectedBillingAddress.telephone,
-                        billingAddress: {
-                                            state: selectedBillingAddress.region,
-                                            postal_code: selectedBillingAddress.postcode,
-                                            country: selectedBillingAddress.countryId,
-                                            city: selectedBillingAddress.city,
-                                            street1: selectedBillingAddress.street[0]
-                                        }
-                    }
+                    state: selectedBillingAddress.region,
+                    postal_code: selectedBillingAddress.postcode,
+                    phone_number: selectedBillingAddress.telephone,
+                    country: selectedBillingAddress.countryId,
+                    city: selectedBillingAddress.city,
+                    street1: selectedBillingAddress.street[0]
+                }
 
                 if (selectedBillingAddress.street[1]) {
                     address.billingAddress.street2 = selectedBillingAddress.street[1]
