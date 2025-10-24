@@ -26,4 +26,9 @@ class Cc extends Config
     {
         return $this->getValue('card_form_theme', self::CODE);
     }
+
+    public function isPasskeyAuthenticationEnabled()
+    {
+        return $this->getValue('passkey_active', self::CODE) ? true : false;
+    }
 }

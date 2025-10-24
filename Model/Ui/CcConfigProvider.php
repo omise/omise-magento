@@ -45,6 +45,7 @@ class CcConfigProvider implements ConfigProviderInterface
         $theme = new Theme();
         $customDesign = $this->omiseCcConfig->getCardThemeConfig();
         $selectedTheme = $this->omiseCcConfig->getCardTheme();
+        $enabledPasskeyAuthentication = $this->omiseCcConfig->isPasskeyAuthenticationEnabled();
         return [
             'payment' => [
                 'ccform' => [
@@ -52,12 +53,13 @@ class CcConfigProvider implements ConfigProviderInterface
                     'years'  => [OmiseCcConfig::CODE => $this->magentoCcConfig->getCcYears()],
                 ],
                 OmiseCcConfig::CODE => [
-                    'publicKey'          => $this->omiseCcConfig->getPublicKey(),
-                    'isCustomerLoggedIn' => $this->customer->isLoggedIn(),
-                    'cards'              => $this->getCards(),
-                    'locale'             => $this->omiseCcConfig->getStoreLocale(),
-                    'formDesign'         => $theme->getFormDesign($selectedTheme, $customDesign),
-                    'theme'              => $selectedTheme
+                    'publicKey'                     => $this->omiseCcConfig->getPublicKey(),
+                    'isCustomerLoggedIn'            => $this->customer->isLoggedIn(),
+                    'cards'                         => $this->getCards(),
+                    'locale'                        => $this->omiseCcConfig->getStoreLocale(),
+                    'formDesign'                    => $theme->getFormDesign($selectedTheme, $customDesign),
+                    'theme'                         => $selectedTheme,
+                    'enabledPasskeyAuthentication'  => $enabledPasskeyAuthentication
                 ],
             ]
         ];

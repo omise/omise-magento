@@ -132,6 +132,7 @@ define(
                 element.style.height = iframeElementHeight + 'px'
 
                 OmiseCard.configure({
+                    
                     publicKey: self.getPublicKey(),
                     element,
                     locale: localeMatching[locale] ?? 'en',
@@ -176,6 +177,7 @@ define(
             },
 
             createOrder: function (self, payload) {
+
                 self.omiseCardToken(payload.token)
                 if (payload.remember) {
                     self.omiseSaveCard(payload.remember)
@@ -273,9 +275,24 @@ define(
                 this.startPerformingPlaceOrderAction()
                 let billingAddress = {}
                 let selectedBillingAddress = quote.billingAddress()
+
+                //if(window.checkoutConfig.payment.omise_cc.enabledPasskeyAuthentication){
+                    if(quote.guestEmail != null){
+                    selectedBillingAddress.email = quote.guestEmail
+                    }
+                    else{
+                        if (window.checkoutConfig && window.checkoutConfig.customerData) {
+                            selectedBillingAddress.email = window.checkoutConfig.customerData.email;
+                        }
+                    }
+                //}
+                
+
                 if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
+                
                     Object.assign(billingAddress, this.getSelectedTokenBillingAddress(selectedBillingAddress))
                 }
+
                 OmiseCard.requestCardToken(billingAddress)
             },
 
@@ -331,16 +348,19 @@ define(
 
             getSelectedTokenBillingAddress: function (selectedBillingAddress) {
                 let address = {
-                    state: selectedBillingAddress.region,
-                    postal_code: selectedBillingAddress.postcode,
-                    phone_number: selectedBillingAddress.telephone,
-                    country: selectedBillingAddress.countryId,
-                    city: selectedBillingAddress.city,
-                    street1: selectedBillingAddress.street[0]
-                }
+                        email: selectedBillingAddress.email,
+                        phoneNumber: selectedBillingAddress.telephone,
+                        billingAddress: {
+                                            state: selectedBillingAddress.region,
+                                            postal_code: selectedBillingAddress.postcode,
+                                            country: selectedBillingAddress.countryId,
+                                            city: selectedBillingAddress.city,
+                                            street1: selectedBillingAddress.street[0]
+                                        }
+                    }
 
                 if (selectedBillingAddress.street[1]) {
-                    address.street2 = selectedBillingAddress.street[1]
+                    address.billingAddress.street2 = selectedBillingAddress.street[1]
                 }
 
                 return address
