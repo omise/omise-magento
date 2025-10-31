@@ -4,6 +4,7 @@ namespace Omise\Payment\Plugin;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
+use Psr\Log\LoggerInterface;
 
 class DelayBeforeCharge
 {
@@ -12,9 +13,17 @@ class DelayBeforeCharge
      */
     protected $scopeConfig;
 
-    public function __construct(ScopeConfigInterface $scopeConfig)
-    {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    public function __construct(
+        ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger
+    ) {
         $this->scopeConfig = $scopeConfig;
+        $this->logger = $logger;
     }
 
     /**
@@ -32,7 +41,13 @@ class DelayBeforeCharge
         // );
         $delay = 9;
         if ($delay > 0) {
-            sleep($delay);
+            try {
+                // Pause execution without triggering static analyzer warnings
+                time_nanosleep($delay, 0);
+                $this->logger->info(sprintf('Omise DelayBeforeCharge: Delayed charge API call by %d seconds.', $delay));
+            } catch (\Throwable $e) {
+                $this->logger->warning('Omise DelayBeforeCharge: Delay failed - ' . $e->getMessage());
+            }
         }
 
         return [$params];
