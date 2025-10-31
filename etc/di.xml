@@ -1596,4 +1596,10 @@
         </arguments>
     </virtualType>
 
+    <type name="Omise\Payment\Model\Api\Charge">
+        <plugin name="omise_delay_before_charge"
+                type="Omise\Payment\Plugin\DelayBeforeCharge"
+                sortOrder="10" />
+    </type>
+
 </config>

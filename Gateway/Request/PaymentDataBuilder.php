@@ -45,6 +45,11 @@ class PaymentDataBuilder implements BuilderInterface
     const WEBHOOKS_ENDPOINT = 'webhook_endpoints';
 
     /**
+     * @var string
+     */
+    const AUTHENTICATION = 'authentication';
+
+    /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     private $ccConfig;
@@ -100,6 +105,10 @@ class PaymentDataBuilder implements BuilderInterface
                 'store_name' => $store->getName()
             ]
         ];
+
+        if ($this->ccConfig->isPasskeyAuthenticationEnabled()) {
+            $requestBody[self::AUTHENTICATION] = 'PASSKEY';
+        }
 
         if ($this->ccConfig->isDynamicWebhooksEnabled()) {
             $webhookUrl = $store->getBaseUrl() . Webhook::URI;
