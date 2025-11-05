@@ -68,7 +68,7 @@ define(
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb'],
 
-            capabilities: null,
+            capability: null,
 
             /**
             * Initiate observable fields
@@ -81,7 +81,7 @@ define(
                         'omiseOffsite'
                     ]);
 
-                this.capabilities = checkoutConfig.omise_payment_list[this.code];
+                this.capability = checkoutConfig.omise_payment_list[this.code];
 
                 // filter provider for checkout page
                 this.providers = this.get_available_providers()
@@ -113,12 +113,12 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api and filter only support type
+            * Get a provider list form capability api and filter only support type
             *
             * @return {Array}
             */
             get_available_providers: function () {
-                let _providers = Object.values(this.capabilities);
+                let _providers = Object.values(this.capability);
 
                 return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2._id) {

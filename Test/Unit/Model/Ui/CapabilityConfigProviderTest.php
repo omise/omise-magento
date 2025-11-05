@@ -4,18 +4,18 @@ namespace Omise\Payment\Test\Unit\Model\Ui;
 
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Helper\RequestHelper;
-use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Capability;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Truemoney;
-use Omise\Payment\Model\Ui\CapabilitiesConfigProvider;
+use Omise\Payment\Model\Ui\CapabilityConfigProvider;
 
-class CapabilitiesConfigProviderTest extends TestCase
+class CapabilityConfigProviderTest extends TestCase
 {
     private $storeManagerMock;
-    private $capabilitiesMock;
+    private $capabilityMock;
     private $requestHelper;
     private $paymentListsMock;
 
@@ -24,7 +24,7 @@ class CapabilitiesConfigProviderTest extends TestCase
         $this->storeManagerMock = $this->getMockBuilder(StoreManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->capabilitiesMock = $this->getMockBuilder(Capabilities::class)
+        $this->capabilityMock = $this->getMockBuilder(Capability::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->requestHelper = $this->getMockBuilder(RequestHelper::class)
@@ -36,12 +36,12 @@ class CapabilitiesConfigProviderTest extends TestCase
     }
 
     /**
-     * @covers Omise\Payment\Model\Ui\CapabilitiesConfigProvider
+     * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      */
     public function testGetTruemoneyBackendByType()
     {
-        $provider = new CapabilitiesConfigProvider(
-            $this->capabilitiesMock,
+        $provider = new CapabilityConfigProvider(
+            $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
             $this->requestHelper
@@ -65,19 +65,19 @@ class CapabilitiesConfigProviderTest extends TestCase
 
     /**
      * @dataProvider activeBackends
-     * @covers Omise\Payment\Model\Ui\CapabilitiesConfigProvider
+     * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      */
     public function testFilterActiveBackends($code, $backend)
     {
         $expected = [ $code => $backend ];
-        $this->capabilitiesMock->method('getBackendsWithOmiseCode')
+        $this->capabilityMock->method('getBackendsWithOmiseCode')
             ->willReturn($expected);
 
-        $this->capabilitiesMock->method('getTokenizationMethodsWithOmiseCode')
+        $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')
             ->willReturn([]);
 
-        $provider = new CapabilitiesConfigProvider(
-            $this->capabilitiesMock,
+        $provider = new CapabilityConfigProvider(
+            $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
             $this->requestHelper

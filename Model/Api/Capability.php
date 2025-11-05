@@ -3,12 +3,12 @@
 namespace Omise\Payment\Model\Api;
 
 use Magento\Framework\Exception\LocalizedException;
-use OmiseCapabilities;
+use OmiseCapability;
 use Omise\Payment\Model\Config\Config;
 
-class Capabilities extends BaseObject
+class Capability extends BaseObject
 {
-    private $capabilities;
+    private $capability;
 
     private $config;
 
@@ -32,21 +32,21 @@ class Capabilities extends BaseObject
         }
 
         try {
-            $this->capabilities = OmiseCapabilities::retrieve();
+            $this->capability  = OmiseCapability::retrieve();
         } catch (\Exception $e) {
-            throw new LocalizedException(__('unable to load OmiseCapabilities api'));
+            throw new LocalizedException(__('unable to load OmiseCapability api'));
         }
     }
 
     /**
-     * Get Installment capabilities array from Omise-PHP
+     * Get Installment Capability array from Omise-PHP
      *
      * @return array
      */
     public function getInstallmentBackends()
     {
-        return $this->capabilities ? $this->capabilities->getBackends(
-            $this->capabilities->makeBackendFilterType('installment')
+        return $this->capability  ? $this->capability->getPaymentMethods(
+            $this->capability->filterPaymentMethodName('installment')
         )
         : null;
     }
@@ -58,7 +58,7 @@ class Capabilities extends BaseObject
      */
     public function isZeroInterest()
     {
-        return $this->capabilities ? $this->capabilities['zero_interest_installments'] : false;
+        return $this->capability  ? $this->capability ['zero_interest_installments'] : false;
     }
 
     /**
@@ -67,19 +67,19 @@ class Capabilities extends BaseObject
      */
     public function getBackendsByType(string $type)
     {
-        return $this->capabilities ? $this->capabilities->getBackends(
-            $this->capabilities->makeBackendFilterType($type)
+        return $this->capability  ? $this->capability->getPaymentMethods(
+            $this->capability->filterPaymentMethodName($type)
         ) : null;
     }
 
     /**
-     * Retrieves details of payment backends from capabilities
+     * Retrieves details of payment backends from Capability
      *
      * @return array
      */
-    public function getBackends()
+    public function getPaymentMethods()
     {
-        return $this->capabilities ? $this->capabilities->getBackends() : null;
+        return $this->capability  ? $this->capability->getPaymentMethods() : null;
     }
 
     /**
@@ -89,7 +89,7 @@ class Capabilities extends BaseObject
      */
     public function getTokenizationMethods()
     {
-        return $this->capabilities ? $this->capabilities['tokenization_methods'] : null;
+        return $this->capability  ? $this->capability ['tokenization_methods'] : null;
     }
 
     /**
@@ -99,6 +99,6 @@ class Capabilities extends BaseObject
      */
     public function getInstallmentMinLimit()
     {
-        return $this->capabilities ? $this->capabilities['limits']['installment_amount']['min'] : 0;
+        return $this->capability  ? $this->capability ['limits']['installment_amount']['min'] : 0;
     }
 }
