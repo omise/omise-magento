@@ -8,7 +8,7 @@ use Omise\Payment\Gateway\Request\APMBuilder;
 use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\ReturnUrlHelper;
-use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Capability;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Model\Config\OcbcDigital;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ class OcbcDigitalAPMBuilderTest extends TestCase
     private $requestHelper;
     private $returnUrlHelper;
     private $config;
-    private $capabilities;
+    private $capability;
     private $orderMock;
     private $infoMock;
 
@@ -29,7 +29,7 @@ class OcbcDigitalAPMBuilderTest extends TestCase
         $this->requestHelper = $this->getMockBuilder(RequestHelper::class)->disableOriginalConstructor()->getMock();
         $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
         $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
-        $this->capabilities = $this->getMockBuilder(Capabilities::class)->disableOriginalConstructor()->getMock();
+        $this->capability = $this->getMockBuilder(Capability::class)->disableOriginalConstructor()->getMock();
         $this->orderMock = $this->getMockBuilder(OrderAdapterInterface::class)->getMock();
         $this->infoMock = $this->getMockBuilder(InfoMock::class)->getMock();
     }
@@ -49,7 +49,7 @@ class OcbcDigitalAPMBuilderTest extends TestCase
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capabilities,
+            $this->capability,
             new OmiseMoney(),
             $this->requestHelper,
         );

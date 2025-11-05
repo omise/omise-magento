@@ -4,7 +4,7 @@ namespace Omise\Payment\Plugin;
 
 use Magento\Config\Model\Config as CoreConfig;
 use Omise\Payment\Model\Config\Config;
-use OmiseCapabilities;
+use OmiseCapability;
 use OmiseAuthenticationFailureException;
 use Omise\Payment\Helper\OmiseHelper;
 use Magento\Framework\Exception\LocalizedException;
@@ -17,9 +17,9 @@ class ConfigSectionPaymentPlugin
 {
 
     /**
-     * @var OmiseCapabilities
+     * @var OmiseCapability
      */
-    private $capabilities;
+    private $capability;
 
     /**
      * @var Omise\Payment\Helper\OmiseHelper
@@ -89,13 +89,13 @@ class ConfigSectionPaymentPlugin
             // if both keys are empty then we ignore the check.
             if ($keys['public_key'] || $keys['secret_key']) {
                 try {
-                    // Fetching capabilities to check the supplied keys validity
-                    $this->capabilities = OmiseCapabilities::retrieve($keys['public_key'], $keys['secret_key']);
+                    // Fetching capability to check the supplied keys validity
+                    $this->capability = OmiseCapability::retrieve($keys['public_key'], $keys['secret_key']);
 
                     /** when using test mode is will fetch all available payment methods
                      *  that omise is supported
                      * */
-                    $paymentList  = $this->getBackends();
+                    $paymentList  = $this->getPaymentMethods();
                     $omiseConfigPaymentList = $this->getActivePaymentMethods($omiseConfigData);
 
                     // filter and update config payment method data that omise account is supported
@@ -108,11 +108,11 @@ class ConfigSectionPaymentPlugin
 
                     $errorMessage = array_key_exists($errors['code'], $this->errorCodes)
                         ? $this->errorCodes[$errors['code']]
-                        : 'unable to load OmiseCapabilities api';
+                        : 'unable to load OmiseCapability api';
 
                     throw new LocalizedException(__($errorMessage));
                 } catch (Exception $e) {
-                    throw new LocalizedException(__('unable to load OmiseCapabilities api'));
+                    throw new LocalizedException(__('unable to load OmiseCapability api'));
                 }
             }
         }
@@ -155,17 +155,17 @@ class ConfigSectionPaymentPlugin
 
     /**
      * Retrieve only available backends & methods
-     * from capabilities api that only support by omise plugin
+     * from capability api that only support by omise plugin
      * with mapping backends id to magneto code format
      *
      * @return array
      */
-    private function getBackends()
+    private function getPaymentMethods()
     {
         // Retrieve backends & methods from capabilities api
         $backendNames = array_map(function ($payment) {
             return key($payment);
-        }, $this->capabilities['payment_backends']);
+        }, $this->capabilities['payment_methods']);
 
         $backendNames = array_merge($backendNames, $this->capabilities['tokenization_methods']);
 
@@ -226,7 +226,7 @@ class ConfigSectionPaymentPlugin
      */
     private function validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig)
     {
-        // list active payment methods that not support from capabilities api
+        // list active payment methods that not support from capability api
         $nonSupportPayments = [];
 
         // set disable only not support payment methods

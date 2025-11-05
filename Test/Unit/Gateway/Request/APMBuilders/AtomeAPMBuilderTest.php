@@ -39,7 +39,7 @@ class AtomeAPMBuilderTest extends APMBuilderTest
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capabilities,
+            $this->capability,
             new OmiseMoney(),
             $this->requestHelper
         );
@@ -71,7 +71,7 @@ class AtomeAPMBuilderTest extends APMBuilderTest
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capabilities,
+            $this->capability,
             new OmiseMoney(),
             $this->requestHelper
         );
@@ -104,7 +104,7 @@ class AtomeAPMBuilderTest extends APMBuilderTest
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capabilities,
+            $this->capability,
             new OmiseMoney(),
             $this->requestHelper
         );
