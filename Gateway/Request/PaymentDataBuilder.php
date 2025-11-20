@@ -45,11 +45,6 @@ class PaymentDataBuilder implements BuilderInterface
     const WEBHOOKS_ENDPOINT = 'webhook_endpoints';
 
     /**
-     * @var string
-     */
-    const AUTHENTICATION = 'authentication';
-
-    /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     private $ccConfig;
