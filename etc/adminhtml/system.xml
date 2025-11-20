@@ -75,12 +75,6 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_cc/active</config_path>
                     </field>
-                    <field id="passkey_active" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable Passkey Authentication</label>
-                        <comment>Enable Passkey Authentication.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_cc/passkey_active</config_path>
-                    </field>
                     <field id="payment_action" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Payment Action</label>
                         <source_model>Omise\Payment\Model\Source\PaymentAction</source_model>
