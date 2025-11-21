@@ -122,7 +122,6 @@ class PaymentDataBuilder implements BuilderInterface
                 $requestBody['source'] = $source;
             }
         }
-
         return $requestBody;
     }
 

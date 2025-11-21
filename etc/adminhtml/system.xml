@@ -65,7 +65,6 @@
                     <source_model>Omise\Payment\Model\Source\GenerateInvoiceAction</source_model>
                     <comment>Invoices will be generated at the selected order state. This will impact invoice emails to customers as well.</comment>
                 </field>
-
                 <group id="omise_cc" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Credit Card Payment</label>
                     <comment>Powerful payment features that allows you to easily and securely accept credit/debit card payments on your store.</comment>
