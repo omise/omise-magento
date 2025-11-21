@@ -9,12 +9,14 @@ class Cc extends Config
     /**
      * @var string
      */
+
     const CODE = 'omise_cc';
 
     /**
      * Backends identifier
      * @var string
      */
+    
     const ID = 'credit_card';
 
     public function getCardThemeConfig()

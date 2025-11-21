@@ -27,6 +27,7 @@ class PaymentDataBuilder implements BuilderInterface
     /**
      * @var string
      */
+    
     const DESCRIPTION = 'description';
 
     /**
