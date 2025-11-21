@@ -259,7 +259,7 @@
 
             <omise_offsite_rabbitlinepay>
                 <active>0</active>
-                <title>Rabbit LINE Pay</title>
+                <title>LINE Pay</title>
                 <model>OmiseRabbitlinepayAdapter</model>
                 <is_gateway>1</is_gateway>
                 <can_initialize>1</can_initialize>
