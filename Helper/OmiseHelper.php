@@ -198,7 +198,7 @@ class OmiseHelper extends AbstractHelper
         Alipayplus::KAKAOPAY_CODE => "Kakao Pay (Alipay+ Partner) Payment",
         Touchngo::CODE => "Touch`n Go eWallet Payment",
         Mobilebanking::CODE => "Mobile Banking Payment",
-        Rabbitlinepay::CODE => "Rabbit LINE Pay Payment",
+        Rabbitlinepay::CODE => "LINE Pay Payment",
         OcbcDigital::CODE => "OCBC Digital Payment",
         Grabpay::CODE => "GrabPay Payment",
         Boost::CODE => "Boost Payment",
