@@ -110,7 +110,7 @@ class Capability
         $list = [];
         if ($backends) {
             foreach ($backends as $backend) {
-                $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
+                $code = $this->helper->getOmiseCodeByOmiseId($backend->name);
                 if (isset($code)) {
                     $list[$code][] = $backend;
                 }
@@ -126,7 +126,7 @@ class Capability
     public function getCardBrands()
     {
         $card = $this->getBackendsByType("card");
-        return $card ? current($card)->brands : [];
+        return $card ? current($card)->card_brands : [];
     }
 
     /**

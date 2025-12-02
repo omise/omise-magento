@@ -68,8 +68,8 @@ class ConfigSectionPaymentPlugin
         $this->helper = $helper;
         $this->messageManager = $messageManager;
         $this->scopeConfig = $scopeConfig;
-        // using same version as omise-php 2.13(2017-11-02)
-        define('OMISE_API_VERSION', '2017-11-02');
+        // using same version as omise-php 2.13(2019-05-29)
+        define('OMISE_API_VERSION', '2019-05-29');
     }
 
     /**
@@ -97,7 +97,13 @@ class ConfigSectionPaymentPlugin
                      * */
                     $paymentList  = $this->getPaymentMethods();
                     $omiseConfigPaymentList = $this->getActivePaymentMethods($omiseConfigData);
-
+                    echo "<pre>";
+                    print_r($paymentList);
+                    echo "<pre>";
+                    print_r($omiseConfigPaymentList);
+                    echo "<pre>";
+                    print_r($this->capability );
+                    die();
                     // filter and update config payment method data that omise account is supported
                     $data = $this->validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig);
 
@@ -162,12 +168,12 @@ class ConfigSectionPaymentPlugin
      */
     private function getPaymentMethods()
     {
-        // Retrieve backends & methods from capabilities api
+        // Retrieve backends & methods from capability api
         $backendNames = array_map(function ($payment) {
-            return key($payment);
-        }, $this->capabilities['payment_methods']);
+            return $payment['name'];
+        }, $this->capability['payment_methods']);
 
-        $backendNames = array_merge($backendNames, $this->capabilities['tokenization_methods']);
+        $backendNames = array_merge($backendNames, $this->capability['tokenization_methods']);
 
         // filter not support payment method from backends list
         return array_unique(array_filter(array_map(function ($name) {

@@ -108,7 +108,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
         // Since ShopeePay will have two types i.e shopeepay and shopeepay_jumpapp,
         // we split and store the type in separate variables.
         foreach ($shopeeBackends as $backend) {
-            if ($backend->type === Shopeepay::JUMPAPP_ID) {
+            if ($backend->name === Shopeepay::JUMPAPP_ID) {
                 $jumpAppBackend[] = $backend;
             } else {
                 $mpmBackend[] = $backend;
@@ -146,7 +146,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
         // Since Truemoney will have two types i.e truemoney and truemoney_jumpapp,
         // we split and store the type in separate variables.
         foreach ($truemoneyBackends as $backend) {
-            if ($backend->type === Truemoney::JUMPAPP_ID) {
+            if ($backend->name === Truemoney::JUMPAPP_ID) {
                 $jumpAppBackend[] = $backend;
             } else {
                 $walletBackend[] = $backend;

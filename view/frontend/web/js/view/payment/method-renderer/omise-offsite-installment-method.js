@@ -267,7 +267,7 @@ define(
             * @return {Array}
             */
             getAvailableProviders: function () {
-                const paymentMethods = this.capability.map(item => item._id)
+                const paymentMethods = this.capability.map(item => item.name)
                 return ko.observableArray(providers.filter(item => paymentMethods.includes(item)))
             },
 
