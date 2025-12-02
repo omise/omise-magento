@@ -121,7 +121,7 @@ define(
                 let _providers = Object.values(this.capability);
                 return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
                     if (a1.id === a2.name) {
-                        // set currencies from api if is undefined use default value
+                        // set currencies from api if is undefined use default value.
                         if (a2?.currencies !== null) {
                             a1.currencies = a2.currencies.map(c => c.toLowerCase());
                         }
