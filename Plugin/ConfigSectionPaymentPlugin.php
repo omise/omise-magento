@@ -97,13 +97,6 @@ class ConfigSectionPaymentPlugin
                      * */
                     $paymentList  = $this->getPaymentMethods();
                     $omiseConfigPaymentList = $this->getActivePaymentMethods($omiseConfigData);
-                    echo "<pre>";
-                    print_r($paymentList);
-                    echo "<pre>";
-                    print_r($omiseConfigPaymentList);
-                    echo "<pre>";
-                    print_r($this->capability );
-                    die();
                     // filter and update config payment method data that omise account is supported
                     $data = $this->validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig);
 
