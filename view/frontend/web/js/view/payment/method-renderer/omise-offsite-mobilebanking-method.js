@@ -58,6 +58,17 @@ define(
             },
         ]
 
+        function matchAndUpdateCurrencies(a1, a2) {
+            if (a1.id !== a2.name) return false;
+
+            const currencies = Array.isArray(a2?.currencies) ? a2.currencies : [];
+            if (currencies.length > 0) {
+                a1.currencies = currencies.map(c => c.toLowerCase());
+            }
+
+            return true;
+        }
+
         return Component.extend(Base).extend({
             defaults: {
                 template: 'Omise_Payment/payment/offsite-mobilebanking-form'
@@ -128,19 +139,12 @@ define(
             //         }
             //     })))
             // }
+
+            
             get_available_providers: function () {
-                let _providers = Object.values(this.capability);
+                const _providers = Object.values(this.capability);
 
-                function matchAndUpdateCurrencies(a1, a2) {
-                    if (a1.id !== a2.name) return false;
-                    let currencies = Array.isArray(a2?.currencies) ? a2.currencies : [];
-                    if (currencies.length > 0) {
-                        a1.currencies = currencies.map(c => c.toLowerCase());
-                    }
-                    return true;
-                }
-
-                let filteredProviders = providers.filter((a1) => {
+                const filteredProviders = providers.filter((a1) => {
                     return _providers.some((a2) => matchAndUpdateCurrencies(a1, a2));
                 });
 
