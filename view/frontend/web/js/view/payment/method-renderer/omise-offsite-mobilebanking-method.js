@@ -123,7 +123,7 @@ define(
                     if (a1.id === a2.name) {
                         // set currencies from api if is undefined use default value.
                         if (a2?.currencies !== null) {
-                            a1.currencies = a2.currencies.map(c => c.toLowerCase());
+                            a1.currencies = a2.currencies.toLowerCase();
                         }
                         return true
                     }
