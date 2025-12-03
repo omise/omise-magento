@@ -99,7 +99,6 @@ class ConfigSectionPaymentPlugin
                     $omiseConfigPaymentList = $this->getActivePaymentMethods($omiseConfigData);
                     // filter and update config payment method data that omise account is supported
                     $data = $this->validatePaymentMethods($paymentList, $omiseConfigPaymentList, $coreConfig);
-
                     // still save other payment methods that api support
                     $coreConfig->setData('groups', $data);
                 } catch (OmiseAuthenticationFailureException $e) {
