@@ -119,13 +119,19 @@ define(
             */
             get_available_providers: function () {
                 let _providers = Object.values(this.capability);
-                return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
-                    if (a1.id === a2.name) {
-                        // set currencies from api if is undefined use default value.
-                        a1.currencies = (a2?.currencies || []).map(c => c.toLowerCase());
-                        return true
+                const filteredProviders = [];
+
+                for (const a1 of providers) {
+                    for (const a2 of _providers) {
+                        if (a1.id === a2.name) {
+                            a1.currencies = (a2?.currencies || []).map(c => c.toLowerCase());
+                            filteredProviders.push(a1);
+                            break;
+                        }
                     }
-                })))
+                }
+
+                return ko.observableArray(filteredProviders);
             }
 
         });
