@@ -49,7 +49,7 @@ class CapabilityConfigProviderTest extends TestCase
 
         $expected = [
             (object)[
-                "type" => "truemoney_jumpapp",
+                "name" => "truemoney_jumpapp",
                 "currencies" => [ "thb" ],
                 "amount" => [
                     "min" => 2000,
