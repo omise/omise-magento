@@ -117,16 +117,36 @@ define(
             *
             * @return {Array}
             */
+            // get_available_providers: function () {
+            //     let _providers = Object.values(this.capability);
+
+            //     return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
+            //         if (a1.id === a2.name) {
+            //             // set currencies from api if is undefined use default value.
+            //             a1.currencies = (a2?.currencies || []).map(c => c.toLowerCase());
+            //             return true
+            //         }
+            //     })))
+            // }
             get_available_providers: function () {
                 let _providers = Object.values(this.capability);
-                return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
-                    if (a1.id === a2.name) {
-                        // set currencies from api if is undefined use default value.
-                        a1.currencies = (a2?.currencies || []).map(c => c.toLowerCase());
-                        return true
+
+                function matchAndUpdateCurrencies(a1, a2) {
+                    if (a1.id !== a2.name) return false;
+                    let currencies = Array.isArray(a2?.currencies) ? a2.currencies : [];
+                    if (currencies.length > 0) {
+                        a1.currencies = currencies.map(c => c.toLowerCase());
                     }
-                })))
+                    return true;
+                }
+
+                let filteredProviders = providers.filter((a1) => {
+                    return _providers.some((a2) => matchAndUpdateCurrencies(a1, a2));
+                });
+
+                return ko.observableArray(filteredProviders);
             }
+
 
         });
     }
