@@ -116,7 +116,7 @@ class CapabilityConfigProviderTest extends TestCase
                 Truemoney::CODE,
                 [
                     (object)[
-                        'type' => Truemoney::JUMPAPP_ID,
+                        'name' => Truemoney::JUMPAPP_ID,
                         'currencies' => [ 'thb' ],
                         'amount' => [
                             'min' => 2000,
@@ -129,7 +129,7 @@ class CapabilityConfigProviderTest extends TestCase
                 Shopeepay::CODE,
                 [
                     (object)[
-                        'type' => Shopeepay::JUMPAPP_ID,
+                        'name' => Shopeepay::JUMPAPP_ID,
                         'currencies' => [ 'thb', 'sgd', 'myr' ],
                         'amount' => [
                             'min' => 2000,
@@ -142,7 +142,7 @@ class CapabilityConfigProviderTest extends TestCase
                 Rabbitlinepay::CODE,
                 [
                     (object)[
-                        'type' => Rabbitlinepay::ID,
+                        'name' => Rabbitlinepay::ID,
                         'currencies' => [ 'thb' ],
                         'amount' => [
                             'min' => 2000,
