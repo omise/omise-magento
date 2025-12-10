@@ -46,6 +46,39 @@ class CapabilityTest extends TestCase
     /**
      * @covers Omise\Payment\Model\Api\Capability
      */
+    public function testGetTokenizationMethods()
+    {
+        $data = [
+            'tokenization_methods' => [
+                'googlepay',
+                'applepay'
+            ]
+        ];
+        $this->omiseCapabilityMock->shouldReceive('retrieve')->andReturn($data);
+        $capability = new Capability($this->configMock);
+        $result = $capability->getTokenizationMethods();
+
+        $this->assertEquals($data['tokenization_methods'], $result);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Api\Capability
+     */
+    public function testIsZeroInterest()
+    {
+        $data = [
+            'zero_interest_installments' => 0
+        ];
+        $this->omiseCapabilityMock->shouldReceive('retrieve')->andReturn($data);
+        $capability = new Capability($this->configMock);
+        $result = $capability->isZeroInterest();
+
+        $this->assertEquals($data['zero_interest_installments'], $result);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Api\Capability
+     */
     public function testGetInstallmentMinLimitReturnsZeroIfCapabilityIsNotSet()
     {
         $this->omiseCapabilityMock->shouldReceive('retrieve')->andReturn(null);
