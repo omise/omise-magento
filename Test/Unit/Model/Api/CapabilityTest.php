@@ -87,4 +87,98 @@ class CapabilityTest extends TestCase
 
         $this->assertEquals(0, $result);
     }
+
+    /**
+     * @covers Omise\Payment\Model\Api\Capability
+     */
+    public function testGetPaymentMethods()
+    {
+        $data = [
+            'payment_methods' => [
+                'name' => 'card',
+                'name' => 'alipay'
+            ]
+        ];
+
+        // Mock the object returned by OmiseCapability::retrieve()
+        $omiseResult = m::mock();
+        $omiseResult->shouldReceive('getPaymentMethods')
+                    ->andReturn($data['payment_methods']);
+        $omiseResult->shouldReceive('offsetGet')
+                    ->with('payment_methods')
+                    ->andReturn($data['payment_methods']);
+        $omiseResult->shouldAllowMockingMethod('offsetGet');
+
+        // Mock static alias OmiseCapability::retrieve()
+        $this->omiseCapabilityMock
+            ->shouldReceive('retrieve')
+            ->andReturn($omiseResult);
+
+        // Test the model
+        $capability = new Capability($this->configMock);
+        $result = $capability->getPaymentMethods();
+
+        $this->assertEquals($data['payment_methods'], $result);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Api\Capability
+     */
+    public function testGetInstallmentBackends()
+    {
+        $expected = ['installment'];
+        // Mock OmiseCapability result
+        $omiseResult = m::mock();
+        // Required by Capability model
+        $omiseResult->shouldReceive('getInstallmentBackends')
+                    ->andReturn($expected);
+        // If model loops payment methods
+        $omiseResult->shouldReceive('getPaymentMethods')
+                    ->andReturn($expected);
+        // If model filters names
+        $omiseResult->shouldReceive('filterPaymentMethodName')
+                    ->andReturnUsing(function ($value) {
+                        return $value;
+                    });
+        // If model checks array-access
+        $omiseResult->shouldAllowMockingMethod('offsetGet');
+        $omiseResult->shouldReceive('offsetGet')
+                    ->andReturn($expected);
+        // Mock static call OmiseCapability::retrieve()
+        $this->omiseCapabilityMock
+            ->shouldReceive('retrieve')
+            ->andReturn($omiseResult);
+        $capability = new Capability($this->configMock);
+        $result = $capability->getInstallmentBackends();
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Api\Capability
+     */
+    public function testGetBackendsByType()
+    {
+        $type = 'installment'; 
+        $expected = ['installment'];
+        // Mock OmiseCapability result
+        $omiseResult = m::mock();
+        // Mock method with expected argument
+        $omiseResult->shouldReceive('getBackendsByType')
+                    ->with($type)  
+                    ->andReturn($expected);
+        $omiseResult->shouldReceive('getPaymentMethods')->andReturn($expected);
+        $omiseResult->shouldReceive('filterPaymentMethodName')
+                    ->andReturnUsing(function ($value) { return $value; });
+        $omiseResult->shouldAllowMockingMethod('offsetGet');
+        $omiseResult->shouldReceive('offsetGet')->andReturn($expected);
+        // Mock static retrieve
+        $this->omiseCapabilityMock->shouldReceive('retrieve')->andReturn($omiseResult);
+        $capability = new Capability($this->configMock);
+        // Pass the argument
+        $result = $capability->getBackendsByType($type);
+        $this->assertEquals($expected, $result);
+    }
+
+
+
 }
