@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_alipayhk',
-            restrictedToCurrencies: ['sgd', 'thb']
+            restrictedToCurrencies: ['sgd', 'thb'],
+            logo: {
+                file: "images/alipay-hk.svg",
+                width: "60",
+                height: "22",
+                name: "alipay hk"
+            },
         });
     }
 );
