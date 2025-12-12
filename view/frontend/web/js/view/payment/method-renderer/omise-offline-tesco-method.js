@@ -25,6 +25,12 @@ define(
 
             code: 'omise_offline_tesco',
             restrictedToCurrencies: ['thb'],
+            logo: {
+                file: "images/lotus_money_plus.svg",
+                width: "60",
+                height: "22",
+                name: "Lotus's Bill"
+            },
         });
     }
 );

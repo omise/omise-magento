@@ -22,6 +22,12 @@ define(
 
             code: 'omise_offline_promptpay',
             restrictedToCurrencies: ['thb'],
+            logo: {
+                file: "images/promptpay.svg",
+                width: "60",
+                height: "22",
+                name: "PromptPay"
+            },
         });
     }
 );

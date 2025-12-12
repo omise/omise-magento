@@ -22,7 +22,12 @@ define(
 
             code: 'omise_offsite_truemoney',
             restrictedToCurrencies: ['thb'],
-
+            logo: {
+                file: "images/truemoney_wallet_alt.svg",
+                width: "60",
+                height: "22",
+                name: "TrueMoney"
+            },
             /**
              * Initiate observable fields
              *

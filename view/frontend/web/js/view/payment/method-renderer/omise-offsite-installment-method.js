@@ -54,6 +54,12 @@ define(
             },
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb', 'myr'],
+            logo: {
+                file: "images/installment.svg",
+                width: "60",
+                height: "22",
+                name: "Installment"
+            },
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
             capabilities: null,
             billingAddressCountries: ["US", "GB", "CA"],

@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_rabbitlinepay',
-            restrictedToCurrencies: ['thb']
+            restrictedToCurrencies: ['thb'],
+            logo: {
+                file: "images/linepay_vertical.svg",
+                width: "60",
+                height: "22",
+                name: "linepay"
+            },
         });
     }
 );

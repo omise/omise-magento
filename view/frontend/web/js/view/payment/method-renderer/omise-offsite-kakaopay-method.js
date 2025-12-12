@@ -21,7 +21,13 @@ define(
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
             code: 'omise_offsite_kakaopay',
-            restrictedToCurrencies: ['sgd', 'thb']
+            restrictedToCurrencies: ['sgd', 'thb'],
+            logo: {
+                file: "images/kakao_pay.svg",
+                width: "60",
+                height: "22",
+                name: "Kakao Pay"
+            },
         });
     }
 );
