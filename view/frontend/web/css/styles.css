@@ -380,3 +380,7 @@ img.omise-custom-common, img.omise-custom-truemoney, img.omise-custom-kakao, img
     margin-top: -25px;
 }
 
+#gpay-button-online-api-id:hover, #gpay-button-online-api-id:active, #gpay-button-online-api-id:focus {
+    background-position: center center;
+    background-repeat: no-repeat;
+}
