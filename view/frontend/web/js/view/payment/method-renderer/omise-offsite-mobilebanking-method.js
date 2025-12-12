@@ -67,12 +67,6 @@ define(
 
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb'],
-            logo: {
-                file: "images/mobile-banking.svg",
-                width: "60",
-                height: "22",
-                name: "mobile banking"
-            },
             capabilities: null,
 
             /**

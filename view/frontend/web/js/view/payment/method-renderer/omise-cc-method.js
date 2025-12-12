@@ -40,13 +40,6 @@ define(
 
             billingAddressCountries: ["US", "GB", "CA"],
 
-            logo: {
-                file: "images/card.svg",
-                width: "73",
-                height: "40",
-                name: "credit card"
-            },
-
             /**
              * Get a checkout form data
              *
