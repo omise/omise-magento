@@ -376,17 +376,7 @@ div.shopeepay {
     font-size: 1.3rem;
 }
 
-#gpay-button-online-api-id:hover {
-    background-position: center center;
-    background-repeat: no-repeat;
-}
-
-#gpay-button-online-api-id:active {
-    background-position: center center;
-    background-repeat: no-repeat;
-}
-
-#gpay-button-online-api-id:focus {
+#gpay-button-online-api-id:hover, #gpay-button-online-api-id:active, #gpay-button-online-api-id:focus{
     background-position: center center;
     background-repeat: no-repeat;
 }
