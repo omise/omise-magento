@@ -23,7 +23,7 @@ define(
             code: 'omise_offsite_touchngo',
             restrictedToCurrencies: ['sgd', 'myr', 'thb'],
             logo: {
-                file: "images/touchngo.png",
+                file: "images/touch_n_go.svg",
                 width: "30",
                 height: "30",
                 name: "touchngo"
