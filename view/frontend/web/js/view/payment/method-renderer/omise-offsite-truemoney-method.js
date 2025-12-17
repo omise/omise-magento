@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['thb'],
             logo: {
                 file: "images/truemoney_wallet_alt.svg",
-                width: "60",
+                width: "73",
                 height: "22",
                 name: "TrueMoney"
             },

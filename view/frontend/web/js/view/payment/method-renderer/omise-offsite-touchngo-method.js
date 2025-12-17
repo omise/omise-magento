@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['sgd', 'myr', 'thb'],
             logo: {
                 file: "images/touch_n_go.svg",
-                width: "30",
+                width: "73",
                 height: "30",
                 name: "touchngo"
             },

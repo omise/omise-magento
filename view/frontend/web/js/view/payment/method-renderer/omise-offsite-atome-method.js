@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['thb', 'sgd', 'myr'],
             logo: {
                 file: "images/atome.svg",
-                width: "30",
+                width: "73",
                 height: "30",
                 name: "atome"
             },

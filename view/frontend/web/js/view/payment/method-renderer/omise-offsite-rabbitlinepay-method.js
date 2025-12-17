@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['thb'],
             logo: {
                 file: "images/linepay_vertical.svg",
-                width: "60",
+                width: "73",
                 height: "22",
                 name: "linepay"
             },

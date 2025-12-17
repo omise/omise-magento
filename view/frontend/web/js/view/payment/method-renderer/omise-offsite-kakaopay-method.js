@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['sgd', 'thb'],
             logo: {
                 file: "images/kakao_pay.svg",
-                width: "60",
+                width: "73",
                 height: "22",
                 name: "Kakao Pay"
             },
