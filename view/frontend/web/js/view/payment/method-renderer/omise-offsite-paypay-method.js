@@ -23,7 +23,7 @@ define(
             code: 'omise_offsite_paypay',
             restrictedToCurrencies: ['jpy'],
             logo: {
-                file: "images/paypay.png",
+                file: "images/paypay_alt.svg",
                 width: "30",
                 height: "30",
                 name: "paypay"
