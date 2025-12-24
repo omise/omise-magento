@@ -15,7 +15,7 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-common-form'
+                template: 'Omise_Payment/payment/offsite-duitnowqr-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['myr'],
             logo: {
                 file: "images/duitnow_qr.png",
-                width: "65",
+                width: "73",
                 height: "35",
                 name: "duitnow_qr"
             }

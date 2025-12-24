@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['jpy'],
             logo: {
                 file: "images/paypay_alt.svg",
-                width: "30",
+                width: "73",
                 height: "30",
                 name: "paypay"
             }

@@ -15,7 +15,7 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-alipayplus-form'
+                template: 'Omise_Payment/payment/offsite-alipayhk-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['sgd', 'thb'],
             logo: {
                 file: "images/alipay-hk.svg",
-                width: "60",
+                width: "73",
                 height: "22",
                 name: "alipay hk"
             },

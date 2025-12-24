@@ -8,11 +8,11 @@
                click: selectPaymentMethod,
                visible: isRadioButtonVisible(),
                enable: isActive()" />
-        <label class="omise-payment-method-title label" data-bind="attr: {'for': getCode()}">
+        <label class="omise-payment-method-title" data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
             <!-- ko if: getLogo() -->
-            <img class="omise-custom-duitnow" data-bind="attr: { src: require.toUrl('Omise_Payment/'+logo.file), alt: logo.name } ,
-                style: { width: logo.width ? logo.width +'px' : '60px', maxHeight: '60px'}" />
+            <img class="omise-custom-duitnowqr" data-bind="attr: { src: require.toUrl('Omise_Payment/'+logo.file), alt: logo.name } ,
+                             style: { width: logo.width ? logo.width +'px' : '60px', maxHeight: '60px'}">
             <!-- /ko -->
         </label>
         <div data-bind="visible: isSandboxOn()" class="page messages">
@@ -42,46 +42,16 @@
             <!-- /ko -->
             <!--/ko-->
         </div>
-        <!-- ko if: banks().length -->
-        <form class="form" data-bind="attr: {
-              id: getCode() + 'Form',
-              }">
-
-            <fieldset data-bind="attr: {class: 'fieldset payment items ' + getCode(), id: 'payment_form_' + getCode()}">
-                <div class="field required">
-                    <label for="omise_offsite_duitnowobw_banks" class="label">
-                        <span class="title" data-bind="i18n: 'Select Bank'"></span>
-                    </label>
-                    <script>
-                        ko.components.register('banks-select-option', {
-                            template: '<span data-bind="text: name"></span>'
-                        });
-                    </script>
-                    <div class="select-list-box">
-                        <select name="duitnowobw_selected_bank" style="margin-bottom:10px" class="selectedFpxBank"
-                            data-bind="foreach: banks,
-                                    value: selectedDuitnowOBWBank,
-                                    valueAllowUnset: true">
-
-                            <option data-bind="attr:{value: code,}, 
-                                html: $parent.bankLabel(name)">
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
         <div class="actions-toolbar">
             <div class="primary">
                 <button class="action primary checkout" type="submit" disabled="disabled" data-bind="
                         click: placeOrder,
                         attr: {title: $t('Place Order')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked() && selectedDuitnowOBWBank)">
+                        enable: (getCode() == isChecked())">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>
         </div>
-        <!-- /ko -->
     </div>
 </div>

@@ -100,7 +100,7 @@ define(
             restrictedToCurrencies: ['myr'],
             logo: {
                 file: "images/duitnow_obw_alt.svg",
-                width: "65",
+                width: "73",
                 height: "35",
                 name: "duitnow_obw"
             },

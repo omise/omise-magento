@@ -15,7 +15,7 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-common-form'
+                template: 'Omise_Payment/payment/offsite-ocbc-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['sgd'],
             logo: {
                 file: "images/ocbc_digital.svg",
-                width: "30",
+                width: "45",
                 height: "30",
                 name: "ocbc_digital"
             }

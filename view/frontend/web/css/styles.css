@@ -376,8 +376,17 @@ div.shopeepay {
     font-size: 1.3rem;
 }
 
-img.omise-custom-common, img.omise-custom-truemoney, img.omise-custom-kakao, img.omise-custom-linepay, img.omise-custom-grabpay, img.omise-custom-alipay, img.omise-custom-googlepay, img.omise-custom-atome {
+img.omise-custom-common, img.omise-custom-truemoney, img.omise-custom-kakao, img.omise-custom-linepay, img.omise-custom-grabpay, img.omise-custom-alipay, img.omise-custom-googlepay, img.omise-custom-atome, img.omise-custom-duitnow, img.omise-custom-fpx, img.omise-custom-maybankqr {
     margin-top: -25px;
+}
+
+img.omise-custom-duitnowqr {
+    margin-top: -15px;
+}
+
+img.omise-custom-ocbc {
+    margin-top: -18px;
+    margin-right: 10px;
 }
 
 #gpay-button-online-api-id:hover, #gpay-button-online-api-id:active, #gpay-button-online-api-id:focus {

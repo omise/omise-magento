@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['myr'],
             logo: {
                 file: "images/boost.svg",
-                width: "60",
+                width: "73",
                 height: "20",
                 name: "boost"
             }
