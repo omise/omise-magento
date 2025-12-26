@@ -67,7 +67,6 @@ define(
 
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb'],
-
             capabilities: null,
 
             /**

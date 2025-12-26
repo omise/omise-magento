@@ -23,7 +23,7 @@ define(
             code: 'omise_offsite_shopeepay',
             restrictedToCurrencies: ['myr', 'thb', 'sgd'],
             logo: {
-                file: "images/shopeepay.png",
+                file: "images/shopeepay.svg",
                 width: "73",
                 height: "30",
                 name: "shopeepay"
