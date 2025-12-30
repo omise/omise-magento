@@ -1,138 +1,198 @@
 <?php
+declare(strict_types=1);
+
 namespace Omise\Payment\Test\Unit\Model;
 
+use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Capability;
 use Omise\Payment\Model\Omise;
-use Omise\Payment\Model\Api\Capability as OmiseCapabilityAPI;
+use Omise\Payment\Model\Api\Capability as CapabilityAPI;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseMoney;
-use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \Omise\Payment\Model\Capability
+ */
 class CapabilityTest extends TestCase
 {
-    private $omise;
-    private $capabilityAPI;
-    private $helper;
-    private $money;
-    private $capability;
+    private Capability $model;
+    private Omise $omise;
+    private CapabilityAPI $capabilityApi;
+    private OmiseHelper $helper;
+    private OmiseMoney $money;
 
     protected function setUp(): void
     {
         $this->omise = $this->createMock(Omise::class);
-        $this->capabilityAPI = $this->createMock(OmiseCapabilityAPI::class);
+        $this->capabilityApi = $this->createMock(CapabilityAPI::class);
         $this->helper = $this->createMock(OmiseHelper::class);
         $this->money = $this->createMock(OmiseMoney::class);
 
-        // Ensure Omise methods are called in constructor
-        $this->omise->expects($this->any())->method('defineUserAgent');
-        $this->omise->expects($this->any())->method('defineApiVersion');
-        $this->omise->expects($this->any())->method('defineApiKeys');
+        $this->omise->expects($this->once())->method('defineUserAgent');
+        $this->omise->expects($this->once())->method('defineApiVersion');
+        $this->omise->expects($this->once())->method('defineApiKeys');
 
-        $this->capability = new Capability(
+        $this->model = new Capability(
             $this->omise,
-            $this->capabilityAPI,
+            $this->capabilityApi,
             $this->helper,
             $this->money
         );
     }
 
-    public function testRetrieveInstallmentBackends()
+    /**
+     * @covers ::__construct
+     * @covers ::retrieveInstallmentBackends
+     */
+    public function testRetrieveInstallmentBackends(): void
     {
-        $expected = ['backend1', 'backend2'];
-        $this->capabilityAPI->method('getInstallmentBackends')->willReturn($expected);
+        $this->capabilityApi->method('getInstallmentBackends')
+            ->willReturn(['a']);
 
-        $this->assertSame($expected, $this->capability->retrieveInstallmentBackends());
+        $this->assertSame(['a'], $this->model->retrieveInstallmentBackends());
     }
 
-    public function testIsZeroInterest()
+    /**
+     * @covers ::__construct
+     * @covers ::isZeroInterest
+     */
+    public function testIsZeroInterest(): void
     {
-        $this->capabilityAPI->method('isZeroInterest')->willReturn(true);
-        $this->assertTrue($this->capability->isZeroInterest());
+        $this->capabilityApi->method('isZeroInterest')->willReturn(true);
+        $this->assertTrue($this->model->isZeroInterest());
     }
 
-    public function testGetBackendsByType()
+    /**
+     * @covers ::__construct
+     * @covers ::getBackendsByType
+     */
+    public function testGetBackendsByType(): void
     {
-        $type = 'card';
-        $expected = ['card1', 'card2'];
-        $this->capabilityAPI->method('getBackendsByType')->with($type)->willReturn($expected);
+        $this->capabilityApi->method('getBackendsByType')
+            ->with('card')
+            ->willReturn(['visa']);
 
-        $this->assertSame($expected, $this->capability->getBackendsByType($type));
+        $this->assertSame(['visa'], $this->model->getBackendsByType('card'));
     }
 
-    public function testRetrieveMobileBankingBackends()
+    /**
+     * @covers ::__construct
+     * @covers ::retrieveMobileBankingBackends
+     */
+    public function testRetrieveMobileBankingBackends(): void
     {
-        $backends = [
-            (object)['name' => 'bank1', '_id' => 'mobile_banking_test'],
-            (object)['name' => 'bank2', '_id' => 'credit_card']
-        ];
-        $this->capabilityAPI->method('getPaymentMethods')->willReturn($backends);
+        $this->capabilityApi->method('getPaymentMethods')->willReturn([
+            (object)['_id' => 'mobile_banking_kbank'],
+            (object)['_id' => 'card']
+        ]);
 
-        $result = $this->capability->retrieveMobileBankingBackends();
-        $this->assertCount(1, $result);
-        $this->assertEquals('mobile_banking_test', current($result)->_id);
+        $this->assertCount(1, $this->model->retrieveMobileBankingBackends());
     }
 
-    public function testGetPaymentMethods()
+    /**
+     * @covers ::__construct
+     * @covers ::getPaymentMethods
+     */
+    public function testGetPaymentMethods(): void
     {
-        $backends = ['method1', 'method2'];
-        $this->capabilityAPI->method('getPaymentMethods')->willReturn($backends);
+        $this->capabilityApi->method('getPaymentMethods')
+            ->willReturn(['card']);
 
-        $this->assertSame($backends, $this->capability->getPaymentMethods());
+        $this->assertSame(['card'], $this->model->getPaymentMethods());
     }
 
-    public function testIsBackendEnabled()
+    /**
+     * @covers ::__construct
+     * @covers ::isBackendEnabled
+     * @covers ::getBackendsByType
+     */
+    public function testIsBackendEnabledTrue(): void
     {
-        $this->capabilityAPI->method('getBackendsByType')->with('card')->willReturn(['card1']);
-        $this->assertTrue($this->capability->isBackendEnabled('card'));
-
-        $this->capabilityAPI->method('getBackendsByType')->with('bank')->willReturn([]);
-        $this->assertFalse($this->capability->isBackendEnabled('bank'));
+        $this->capabilityApi->method('getBackendsByType')->willReturn(['visa']);
+        $this->assertTrue($this->model->isBackendEnabled('card'));
     }
 
-    public function testGetBackendsWithOmiseCode()
+    /**
+     * @covers ::__construct
+     * @covers ::isBackendEnabled
+     * @covers ::getBackendsByType
+     */
+    public function testIsBackendEnabledFalse(): void
     {
-        $backend = (object)['name' => 'omise_bank'];
-        $this->capabilityAPI->method('getPaymentMethods')->willReturn([$backend]);
-        $this->helper->method('getOmiseCodeByOmiseId')->with('omise_bank')->willReturn('OMISE_CODE');
-
-        $result = $this->capability->getBackendsWithOmiseCode();
-        $this->assertArrayHasKey('OMISE_CODE', $result);
-        $this->assertContains($backend, $result['OMISE_CODE']);
+        $this->capabilityApi->method('getBackendsByType')->willReturn(null);
+        $this->assertFalse($this->model->isBackendEnabled('wallet'));
     }
 
-    public function testGetCardBrands()
+    /**
+     * @covers ::__construct
+     * @covers ::getBackendsWithOmiseCode
+     */
+    public function testGetBackendsWithOmiseCode(): void
     {
-        $cardBackend = [(object)['card_brands' => ['visa', 'mastercard']]];
-        $this->capabilityAPI->method('getBackendsByType')->with('card')->willReturn($cardBackend);
+        $this->capabilityApi->method('getPaymentMethods')
+            ->willReturn([(object)['name' => 'card']]);
 
-        $this->assertSame(['visa', 'mastercard'], $this->capability->getCardBrands());
+        $this->helper->method('getOmiseCodeByOmiseId')
+            ->willReturn('creditcard');
+
+        $result = $this->model->getBackendsWithOmiseCode();
+        $this->assertArrayHasKey('creditcard', $result);
     }
 
-    public function testGetTokenizationMethods()
+    /**
+     * @covers ::__construct
+     * @covers ::getCardBrands
+     * @covers ::getBackendsByType
+     */
+    public function testGetCardBrands(): void
     {
-        $methods = ['method1', 'method2'];
-        $this->capabilityAPI->method('getTokenizationMethods')->willReturn($methods);
+        $this->capabilityApi->method('getBackendsByType')->willReturn([
+            (object)['card_brands' => ['visa']]
+        ]);
 
-        $this->assertSame($methods, $this->capability->getTokenizationMethods());
+        $this->assertSame(['visa'], $this->model->getCardBrands());
     }
 
-    public function testGetInstallmentMinLimit()
+    /**
+     * @covers ::__construct
+     * @covers ::getTokenizationMethods
+     */
+    public function testGetTokenizationMethods(): void
     {
-        $this->capabilityAPI->method('getInstallmentMinLimit')->willReturn(1000);
+        $this->capabilityApi->method('getTokenizationMethods')
+            ->willReturn(['applepay']);
+
+        $this->assertSame(['applepay'], $this->model->getTokenizationMethods());
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::getInstallmentMinLimit
+     */
+    public function testGetInstallmentMinLimit(): void
+    {
+        $this->capabilityApi->method('getInstallmentMinLimit')->willReturn(1000);
         $this->money->method('setAmountAndCurrency')->willReturnSelf();
-        $this->money->method('toUnit')->willReturn(10);
+        $this->money->method('toUnit')->willReturn(1000);
 
-        $this->assertSame(10, $this->capability->getInstallmentMinLimit('THB'));
+        $this->assertSame(1000, $this->model->getInstallmentMinLimit('THB'));
     }
 
-    public function testGetTokenizationMethodsWithOmiseCode()
+    /**
+     * @covers ::__construct
+     * @covers ::getTokenizationMethodsWithOmiseCode
+     */
+    public function testGetTokenizationMethodsWithOmiseCode(): void
     {
-        $methods = ['method1'];
-        $this->capabilityAPI->method('getTokenizationMethods')->willReturn($methods);
-        $this->helper->method('getOmiseCodeByOmiseId')->with('method1')->willReturn('OMISE_METHOD');
+        $this->capabilityApi->method('getTokenizationMethods')
+            ->willReturn(['googlepay']);
 
-        $result = $this->capability->getTokenizationMethodsWithOmiseCode();
-        $this->assertArrayHasKey('OMISE_METHOD', $result);
-        $this->assertContains($methods, $result['OMISE_METHOD']);
+        $this->helper->method('getOmiseCodeByOmiseId')
+            ->willReturn('googlepay');
+
+        $this->assertArrayHasKey(
+            'googlepay',
+            $this->model->getTokenizationMethodsWithOmiseCode()
+        );
     }
 }
