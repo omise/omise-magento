@@ -165,7 +165,12 @@ class CapabilityTest extends TestCase
         // Mock method with expected argument
         $omiseResult->shouldReceive('getBackendsByType')->with($type)->andReturn($expected);
         $omiseResult->shouldReceive('getPaymentMethods')->andReturn($expected);
-        $omiseResult->shouldReceive('filterPaymentMethodName')->andReturnUsing(function ($value) { return $value; });
+        $omiseResult->shouldReceive('filterPaymentMethodName')
+        ->andReturnUsing(
+            function ($value) {
+                return $value;
+            }
+        );
         $omiseResult->shouldAllowMockingMethod('offsetGet');
         $omiseResult->shouldReceive('offsetGet')->andReturn($expected);
         // Mock static retrieve
