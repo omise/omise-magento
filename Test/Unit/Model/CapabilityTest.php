@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Omise\Payment\Test\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use Omise\Payment\Model\Capability;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Capability as CapabilityAPI;
 use Omise\Payment\Helper\OmiseHelper;
@@ -15,7 +14,6 @@ use Omise\Payment\Helper\OmiseMoney;
  */
 class CapabilityTest extends TestCase
 {
-    private Capability $model;
     private Omise $omise;
     private CapabilityAPI $capabilityApi;
     private OmiseHelper $helper;
