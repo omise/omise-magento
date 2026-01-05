@@ -99,8 +99,8 @@ define(
             code: 'omise_offsite_duitnowobw',
             restrictedToCurrencies: ['myr'],
             logo: {
-                file: "images/duitnow_obw.png",
-                width: "65",
+                file: "images/duitnow_obw_alt.svg",
+                width: "73",
                 height: "35",
                 name: "duitnow_obw"
             },
