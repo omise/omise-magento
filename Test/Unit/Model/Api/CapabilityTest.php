@@ -158,17 +158,14 @@ class CapabilityTest extends TestCase
      */
     public function testGetBackendsByType()
     {
-        $type = 'installment'; 
+        $type = 'installment';
         $expected = ['installment'];
         // Mock OmiseCapability result
         $omiseResult = m::mock();
         // Mock method with expected argument
-        $omiseResult->shouldReceive('getBackendsByType')
-                    ->with($type)  
-                    ->andReturn($expected);
+        $omiseResult->shouldReceive('getBackendsByType')->with($type)->andReturn($expected);
         $omiseResult->shouldReceive('getPaymentMethods')->andReturn($expected);
-        $omiseResult->shouldReceive('filterPaymentMethodName')
-                    ->andReturnUsing(function ($value) { return $value; });
+        $omiseResult->shouldReceive('filterPaymentMethodName')->andReturnUsing(function ($value) { return $value; });
         $omiseResult->shouldAllowMockingMethod('offsetGet');
         $omiseResult->shouldReceive('offsetGet')->andReturn($expected);
         // Mock static retrieve
@@ -178,7 +175,4 @@ class CapabilityTest extends TestCase
         $result = $capability->getBackendsByType($type);
         $this->assertEquals($expected, $result);
     }
-
-
-
 }
