@@ -15,11 +15,34 @@ use Omise\Payment\Helper\OmiseMoney;
  */
 class CapabilityTest extends TestCase
 {
-    private Omise $omise;
-    private CapabilityAPI $capabilityApi;
-    private OmiseHelper $helper;
-    private OmiseMoney $money;
+    /**
+     * @var Omise
+     */
+    private $omise;
 
+    /**
+     * @var CapabilityAPI
+     */
+    private $capabilityApi;
+
+    /**
+     * @var OmiseHelper
+     */
+    private $helper;
+
+    /**
+     * @var OmiseMoney
+     */
+    private $money;
+
+    /**
+     * @var Capability
+     */
+    private $model;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp(): void
     {
         $this->omise = $this->createMock(Omise::class);
@@ -45,9 +68,7 @@ class CapabilityTest extends TestCase
      */
     public function testRetrieveInstallmentBackends(): void
     {
-        $this->capabilityApi->method('getInstallmentBackends')
-            ->willReturn(['a']);
-
+        $this->capabilityApi->method('getInstallmentBackends')->willReturn(['a']);
         $this->assertSame(['a'], $this->model->retrieveInstallmentBackends());
     }
 
@@ -67,10 +88,7 @@ class CapabilityTest extends TestCase
      */
     public function testGetBackendsByType(): void
     {
-        $this->capabilityApi->method('getBackendsByType')
-            ->with('card')
-            ->willReturn(['visa']);
-
+        $this->capabilityApi->method('getBackendsByType')->with('card')->willReturn(['visa']);
         $this->assertSame(['visa'], $this->model->getBackendsByType('card'));
     }
 
@@ -94,9 +112,7 @@ class CapabilityTest extends TestCase
      */
     public function testGetPaymentMethods(): void
     {
-        $this->capabilityApi->method('getPaymentMethods')
-            ->willReturn(['card']);
-
+        $this->capabilityApi->method('getPaymentMethods')->willReturn(['card']);
         $this->assertSame(['card'], $this->model->getPaymentMethods());
     }
 
@@ -128,11 +144,8 @@ class CapabilityTest extends TestCase
      */
     public function testGetBackendsWithOmiseCode(): void
     {
-        $this->capabilityApi->method('getPaymentMethods')
-            ->willReturn([(object)['name' => 'card']]);
-
-        $this->helper->method('getOmiseCodeByOmiseId')
-            ->willReturn('creditcard');
+        $this->capabilityApi->method('getPaymentMethods')->willReturn([(object)['name' => 'card']]);
+        $this->helper->method('getOmiseCodeByOmiseId')->willReturn('creditcard');
 
         $result = $this->model->getBackendsWithOmiseCode();
         $this->assertArrayHasKey('creditcard', $result);
@@ -158,9 +171,7 @@ class CapabilityTest extends TestCase
      */
     public function testGetTokenizationMethods(): void
     {
-        $this->capabilityApi->method('getTokenizationMethods')
-            ->willReturn(['applepay']);
-
+        $this->capabilityApi->method('getTokenizationMethods')->willReturn(['applepay']);
         $this->assertSame(['applepay'], $this->model->getTokenizationMethods());
     }
 
@@ -183,11 +194,8 @@ class CapabilityTest extends TestCase
      */
     public function testGetTokenizationMethodsWithOmiseCode(): void
     {
-        $this->capabilityApi->method('getTokenizationMethods')
-            ->willReturn(['googlepay']);
-
-        $this->helper->method('getOmiseCodeByOmiseId')
-            ->willReturn('googlepay');
+        $this->capabilityApi->method('getTokenizationMethods')->willReturn(['googlepay']);
+        $this->helper->method('getOmiseCodeByOmiseId')->willReturn('googlepay');
 
         $this->assertArrayHasKey(
             'googlepay',
