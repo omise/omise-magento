@@ -158,9 +158,7 @@ class CapabilityTest extends TestCase
      */
     public function testGetCardBrands(): void
     {
-        $this->capabilityApi->method('getBackendsByType')->willReturn([
-            (object)['card_brands' => ['visa']]
-        ]);
+        $this->capabilityApi->method('getBackendsByType')->willReturn([(object)['card_brands' => ['visa']]]);
 
         $this->assertSame(['visa'], $this->model->getCardBrands());
     }
