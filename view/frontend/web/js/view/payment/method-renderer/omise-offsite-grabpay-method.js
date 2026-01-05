@@ -23,8 +23,8 @@ define(
             code: 'omise_offsite_grabpay',
             restrictedToCurrencies: ['thb', 'sgd', 'myr'],
             logo: {
-                file: "images/grabpay.png",
-                width: "60",
+                file: "images/grabpay.svg",
+                width: "73",
                 height: "22",
                 name: "grabpay"
             },

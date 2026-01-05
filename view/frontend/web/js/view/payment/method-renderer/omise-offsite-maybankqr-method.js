@@ -15,7 +15,7 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/offsite-common-form'
+                template: 'Omise_Payment/payment/offsite-maybankqr-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
@@ -23,8 +23,8 @@ define(
             code: 'omise_offsite_maybankqr',
             restrictedToCurrencies: ['myr'],
             logo: {
-                file: "images/mae_maybank.png",
-                width: "60",
+                file: "images/maybank_qr.svg",
+                width: "73",
                 height: "40",
                 name: "mae_maybank"
             }

@@ -23,8 +23,8 @@ define(
             code: 'omise_offsite_boost',
             restrictedToCurrencies: ['myr'],
             logo: {
-                file: "images/boost.png",
-                width: "60",
+                file: "images/boost.svg",
+                width: "73",
                 height: "20",
                 name: "boost"
             }
