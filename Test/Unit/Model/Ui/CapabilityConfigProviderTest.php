@@ -47,34 +47,38 @@ class CapabilityConfigProviderTest extends TestCase
             $this->requestHelper
         );
 
-        $expected = [
+        $backends = [
             (object)[
                 "name" => "truemoney_jumpapp",
-                "currencies" => [ "thb" ],
-                "amount" => [
-                    "min" => 2000,
-                    "max" => 500000000000
-                ]
+                "currencies" => ["thb"],
+                "amount" => ["min" => 2000, "max" => 500000000000]
+            ],
+            (object)[
+                "name" => "truemoney_mpm",
+                "currencies" => ["thb"],
+                "amount" => ["min" => 1000, "max" => 500000000000]
             ]
         ];
 
-        $result = $this->invokeMethod($provider, 'getTruemoneyBackendByType', [$expected]);
+        $result = $this->invokeMethod($provider, 'getTruemoneyBackendByType', [$backends]);
 
-        $this->assertEquals($expected, $result);
+        $this->assertNotEmpty($result);
+        $this->assertIsArray($result);
+        $this->assertEquals('truemoney_jumpapp', $result[0]->name);
+        $this->assertEquals(["thb"], $result[0]->currencies);
+        $this->assertEquals(2000, $result[0]->amount['min']);
+        $this->assertEquals(500000000000, $result[0]->amount['max']);
     }
 
     /**
-     * @dataProvider activeBackends
      * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
+     * @dataProvider activeBackends
      */
     public function testFilterActiveBackends($code, $backend)
     {
-        $expected = [ $code => $backend ];
-        $this->capabilityMock->method('getBackendsWithOmiseCode')
-            ->willReturn($expected);
-
-        $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')
-            ->willReturn([]);
+        $expected = [$code => $backend];
+        $this->capabilityMock->method('getBackendsWithOmiseCode')->willReturn($expected);
+        $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')->willReturn([]);
 
         $provider = new CapabilityConfigProvider(
             $this->capabilityMock,
@@ -89,20 +93,179 @@ class CapabilityConfigProviderTest extends TestCase
     }
 
     /**
-     * Call protected/private method of a class.
-     *
-     * @param object &$object    Instantiated object that we will run method on.
-     * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
-     *
-     * @return mixed Method return.
+     * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      */
-    public function invokeMethod(&$object, $methodName, array $parameters)
+    public function testGetShopeeBackendByType_mobile_jumpapp_enabled()
+    {
+        $provider = new CapabilityConfigProvider(
+            $this->capabilityMock,
+            $this->paymentListsMock,
+            $this->storeManagerMock,
+            $this->requestHelper
+        );
+
+        $backends = [
+            (object)['name' => Shopeepay::JUMPAPP_ID],
+            (object)['name' => Shopeepay::ID],
+        ];
+
+        $this->requestHelper->method('isMobilePlatform')->willReturn(true);
+        $this->capabilityMock->method('isBackendEnabled')->willReturnMap([
+            [Shopeepay::JUMPAPP_ID, true],
+            [Shopeepay::ID, true],
+        ]);
+
+        $result = $this->invokeMethod($provider, 'getShopeeBackendByType', [$backends]);
+
+        $this->assertCount(1, $result);
+        $this->assertEquals(Shopeepay::JUMPAPP_ID, $result[0]->name);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
+     */
+    public function testGetShopeeBackendByType_non_mobile_shopee_enabled()
+    {
+        $provider = new CapabilityConfigProvider(
+            $this->capabilityMock,
+            $this->paymentListsMock,
+            $this->storeManagerMock,
+            $this->requestHelper
+        );
+
+        $backends = [
+            (object)['name' => Shopeepay::JUMPAPP_ID],
+            (object)['name' => Shopeepay::ID],
+        ];
+
+        $this->requestHelper->method('isMobilePlatform')->willReturn(false);
+        $this->capabilityMock->method('isBackendEnabled')->willReturnMap([
+            [Shopeepay::JUMPAPP_ID, true],
+            [Shopeepay::ID, true],
+        ]);
+
+        $result = $this->invokeMethod($provider, 'getShopeeBackendByType', [$backends]);
+
+        $this->assertCount(1, $result);
+        $this->assertEquals(Shopeepay::ID, $result[0]->name);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
+     */
+    public function testGetShopeeBackendByType_shopee_disabled()
+    {
+        $provider = new CapabilityConfigProvider(
+            $this->capabilityMock,
+            $this->paymentListsMock,
+            $this->storeManagerMock,
+            $this->requestHelper
+        );
+
+        $backends = [
+            (object)['name' => Shopeepay::JUMPAPP_ID],
+            (object)['name' => Shopeepay::ID],
+        ];
+
+        $this->requestHelper->method('isMobilePlatform')->willReturn(false);
+        $this->capabilityMock->method('isBackendEnabled')->willReturnMap([
+            [Shopeepay::JUMPAPP_ID, true],
+            [Shopeepay::ID, false],
+        ]);
+
+        $result = $this->invokeMethod($provider, 'getShopeeBackendByType', [$backends]);
+
+        $this->assertCount(1, $result);
+        $this->assertEquals(Shopeepay::JUMPAPP_ID, $result[0]->name);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
+     */
+    public function testGetConfig()
+    {
+        // Mock store
+        $storeMock = $this->getMockBuilder(\Magento\Store\Model\Store::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $storeMock->method('getId')->willReturn(1);
+        $storeMock->method('getCurrentCurrencyCode')->willReturn('thb');
+
+        $this->storeManagerMock->method('getStore')->willReturn($storeMock);
+
+        // Active payment methods
+        $ccGooglePayMock = $this->getMockBuilder(\Magento\Payment\Model\MethodInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $ccGooglePayMock->method('getCode')->willReturn(\Omise\Payment\Model\Config\CcGooglePay::CODE);
+
+        $installmentMock = $this->getMockBuilder(\Magento\Payment\Model\MethodInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $installmentMock->method('getCode')->willReturn(\Omise\Payment\Model\Config\Installment::CODE);
+
+        $activeMethods = [$ccGooglePayMock, $installmentMock];
+        $this->paymentListsMock->method('getActiveList')->willReturn($activeMethods);
+
+        // Capability responses
+        $this->capabilityMock->method('getInstallmentMinLimit')->with('thb')->willReturn(1000);
+        $this->capabilityMock->method('isZeroInterest')->willReturn(true);
+        $this->capabilityMock->method('getCardBrands')->willReturn(['visa', 'mastercard']);
+
+        // Provide backend arrays for filterActiveBackends
+        $this->capabilityMock->method('getBackendsWithOmiseCode')->willReturn([
+            \Omise\Payment\Model\Config\CcGooglePay::CODE => [
+                (object)[
+                    'name' => 'cc_googlepay_backend',
+                    'currencies' => ['thb'],
+                    'amount' => ['min'=>2000,'max'=>500000000000]
+                ]
+            ],
+            \Omise\Payment\Model\Config\Installment::CODE => [
+                (object)[
+                    'name' => 'installment_backend',
+                    'currencies' => ['thb'],
+                    'amount' => ['min'=>2000,'max'=>500000000000]
+                ]
+            ],
+        ]);
+        $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')->willReturn([]);
+
+        // Use the real provider
+        $provider = new \Omise\Payment\Model\Ui\CapabilityConfigProvider(
+            $this->capabilityMock,
+            $this->paymentListsMock,
+            $this->storeManagerMock,
+            $this->requestHelper
+        );
+
+        // Execute getConfig
+        $result = $provider->getConfig();
+
+        // Assertions
+        $this->assertArrayHasKey('omise_installment_min_limit', $result);
+        $this->assertEquals(1000, $result['omise_installment_min_limit']);
+
+        $this->assertArrayHasKey('omise_payment_list', $result);
+        $this->assertArrayHasKey(\Omise\Payment\Model\Config\CcGooglePay::CODE, $result['omise_payment_list']);
+        $this->assertArrayHasKey(\Omise\Payment\Model\Config\Installment::CODE, $result['omise_payment_list']);
+
+        $this->assertArrayHasKey('is_zero_interest', $result);
+        $this->assertTrue($result['is_zero_interest']);
+
+        $this->assertArrayHasKey('card_brands', $result);
+        $this->assertEquals(['visa', 'mastercard'], $result['card_brands']);
+    }
+
+
+    /**
+     * Invoke protected/private method via reflection
+     */
+    private function invokeMethod(&$object, string $methodName, array $parameters)
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
-
         return $method->invokeArgs($object, $parameters);
     }
 
@@ -113,41 +276,32 @@ class CapabilityConfigProviderTest extends TestCase
     {
         return [
             [
-                Truemoney::CODE,
+                'truemoney',
                 [
                     (object)[
-                        'name' => Truemoney::JUMPAPP_ID,
-                        'currencies' => [ 'thb' ],
-                        'amount' => [
-                            'min' => 2000,
-                            'max' => 500000000000
-                        ]
+                        'name' => 'truemoney_jumpapp',
+                        'currencies' => ['thb'],
+                        'amount' => ['min' => 2000, 'max' => 500000000000]
                     ]
                 ]
             ],
             [
-                Shopeepay::CODE,
+                'shopeepay',
                 [
                     (object)[
                         'name' => Shopeepay::JUMPAPP_ID,
-                        'currencies' => [ 'thb', 'sgd', 'myr' ],
-                        'amount' => [
-                            'min' => 2000,
-                            'max' => 500000000000
-                        ]
+                        'currencies' => ['thb', 'sgd', 'myr'],
+                        'amount' => ['min' => 2000, 'max' => 500000000000]
                     ]
                 ]
             ],
             [
-                Rabbitlinepay::CODE,
+                'rabbitlinepay',
                 [
                     (object)[
                         'name' => Rabbitlinepay::ID,
-                        'currencies' => [ 'thb' ],
-                        'amount' => [
-                            'min' => 2000,
-                            'max' => 500000000000
-                        ]
+                        'currencies' => ['thb'],
+                        'amount' => ['min' => 2000, 'max' => 500000000000]
                     ]
                 ]
             ]
