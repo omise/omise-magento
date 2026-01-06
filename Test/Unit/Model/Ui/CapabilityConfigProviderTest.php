@@ -214,7 +214,7 @@ class CapabilityConfigProviderTest extends TestCase
         $this->capabilityMock->method('isZeroInterest')->willReturn(true);
         $this->capabilityMock->method('getCardBrands')->willReturn(['visa', 'mastercard']);
 
-        // Backend arrays for filterActiveBackends
+        // Backend arrays
         $this->capabilityMock->method('getBackendsWithOmiseCode')->willReturn([
             \Omise\Payment\Model\Config\CcGooglePay::CODE => [
                 (object)[
@@ -306,3 +306,4 @@ class CapabilityConfigProviderTest extends TestCase
         ];
     }
 }
+
