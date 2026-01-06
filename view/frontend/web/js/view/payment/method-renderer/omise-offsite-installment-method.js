@@ -262,7 +262,7 @@ define(
             },
 
             /**
-            * Get a provider list form capability api ,setup observer by id and filter only support type
+            * Get a provider list from capability api ,setup observer by id and filter only support type
             *
             * @return {Array}
             */

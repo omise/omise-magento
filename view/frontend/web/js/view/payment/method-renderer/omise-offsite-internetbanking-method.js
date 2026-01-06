@@ -77,7 +77,7 @@ define(
             },
 
             /**
-            * Get a provider list form capability api and filter only support type
+            * Get a provider list from capability api and filter only support type
             *
             * @return {Array}
             */
