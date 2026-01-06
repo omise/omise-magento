@@ -306,4 +306,3 @@ class CapabilityConfigProviderTest extends TestCase
         ];
     }
 }
-
