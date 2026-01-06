@@ -24,12 +24,15 @@ class CapabilityConfigProviderTest extends TestCase
         $this->storeManagerMock = $this->getMockBuilder(StoreManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->capabilityMock = $this->getMockBuilder(Capability::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->requestHelper = $this->getMockBuilder(RequestHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->paymentListsMock = $this->getMockBuilder(PaymentMethodListInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -95,7 +98,7 @@ class CapabilityConfigProviderTest extends TestCase
     /**
      * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      */
-    public function testGetShopeeBackendByType_mobile_jumpapp_enabled()
+    public function testGetShopeeBackendByTypeMobileJumpAppEnabled()
     {
         $provider = new CapabilityConfigProvider(
             $this->capabilityMock,
@@ -124,7 +127,7 @@ class CapabilityConfigProviderTest extends TestCase
     /**
      * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      */
-    public function testGetShopeeBackendByType_non_mobile_shopee_enabled()
+    public function testGetShopeeBackendByTypeNonMobileShopeeEnabled()
     {
         $provider = new CapabilityConfigProvider(
             $this->capabilityMock,
@@ -153,7 +156,7 @@ class CapabilityConfigProviderTest extends TestCase
     /**
      * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      */
-    public function testGetShopeeBackendByType_shopee_disabled()
+    public function testGetShopeeBackendByTypeShopeeDisabled()
     {
         $provider = new CapabilityConfigProvider(
             $this->capabilityMock,
@@ -190,7 +193,6 @@ class CapabilityConfigProviderTest extends TestCase
             ->getMock();
         $storeMock->method('getId')->willReturn(1);
         $storeMock->method('getCurrentCurrencyCode')->willReturn('thb');
-
         $this->storeManagerMock->method('getStore')->willReturn($storeMock);
 
         // Active payment methods
@@ -212,37 +214,34 @@ class CapabilityConfigProviderTest extends TestCase
         $this->capabilityMock->method('isZeroInterest')->willReturn(true);
         $this->capabilityMock->method('getCardBrands')->willReturn(['visa', 'mastercard']);
 
-        // Provide backend arrays for filterActiveBackends
+        // Backend arrays for filterActiveBackends
         $this->capabilityMock->method('getBackendsWithOmiseCode')->willReturn([
             \Omise\Payment\Model\Config\CcGooglePay::CODE => [
                 (object)[
                     'name' => 'cc_googlepay_backend',
                     'currencies' => ['thb'],
-                    'amount' => ['min'=>2000,'max'=>500000000000]
+                    'amount' => ['min' => 2000, 'max' => 500000000000]
                 ]
             ],
             \Omise\Payment\Model\Config\Installment::CODE => [
                 (object)[
                     'name' => 'installment_backend',
                     'currencies' => ['thb'],
-                    'amount' => ['min'=>2000,'max'=>500000000000]
+                    'amount' => ['min' => 2000, 'max' => 500000000000]
                 ]
             ],
         ]);
         $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')->willReturn([]);
 
-        // Use the real provider
-        $provider = new \Omise\Payment\Model\Ui\CapabilityConfigProvider(
+        $provider = new CapabilityConfigProvider(
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
             $this->requestHelper
         );
 
-        // Execute getConfig
         $result = $provider->getConfig();
 
-        // Assertions
         $this->assertArrayHasKey('omise_installment_min_limit', $result);
         $this->assertEquals(1000, $result['omise_installment_min_limit']);
 
@@ -256,7 +255,6 @@ class CapabilityConfigProviderTest extends TestCase
         $this->assertArrayHasKey('card_brands', $result);
         $this->assertEquals(['visa', 'mastercard'], $result['card_brands']);
     }
-
 
     /**
      * Invoke protected/private method via reflection
