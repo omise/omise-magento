@@ -212,7 +212,7 @@ class CapabilityConfigProviderTest extends TestCase
         $this->paymentListsMock->method('getActiveList')->willReturn([
             $ccGooglePayMock,
             $installmentMock,
-            $mobileBankingMock, 
+            $mobileBankingMock,
         ]);
 
         $this->capabilityMock->method('getInstallmentMinLimit')
