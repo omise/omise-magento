@@ -7,8 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Capability;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Capability as CapabilityAPI;
-use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Helper\OmiseMoney;
 
 /**
  * @coversDefaultClass \Omise\Payment\Model\Capability
@@ -47,8 +45,8 @@ class CapabilityTest extends TestCase
     {
         $this->omise = $this->createMock(Omise::class);
         $this->capabilityApi = $this->createMock(CapabilityAPI::class);
-        $this->helper = $this->createMock(OmiseHelper::class);
-        $this->money = $this->createMock(OmiseMoney::class);
+        $this->helper = $this->createMock(\Omise\Payment\Helper\OmiseHelper::class);
+        $this->money = $this->createMock(\Omise\Payment\Helper\OmiseMoney::class);
 
         $this->omise->expects($this->once())->method('defineUserAgent');
         $this->omise->expects($this->once())->method('defineApiVersion');
@@ -99,8 +97,8 @@ class CapabilityTest extends TestCase
     public function testRetrieveMobileBankingBackends(): void
     {
         $this->capabilityApi->method('getPaymentMethods')->willReturn([
-            (object)['_id' => 'mobile_banking_kbank'],
-            (object)['_id' => 'card']
+            (object)['name' => 'mobile_banking_kbank'],
+            (object)['name' => 'card']
         ]);
 
         $this->assertCount(1, $this->model->retrieveMobileBankingBackends());
@@ -123,7 +121,7 @@ class CapabilityTest extends TestCase
      */
     public function testIsBackendEnabledTrue(): void
     {
-        $this->capabilityApi->method('getBackendsByType')->willReturn(['visa']);
+        $this->capabilityApi->method('getBackendsByType')->with('card')->willReturn(['card']);
         $this->assertTrue($this->model->isBackendEnabled('card'));
     }
 
@@ -134,7 +132,7 @@ class CapabilityTest extends TestCase
      */
     public function testIsBackendEnabledFalse(): void
     {
-        $this->capabilityApi->method('getBackendsByType')->willReturn(null);
+        $this->capabilityApi->method('getBackendsByType')->with('wallet')->willReturn(null);
         $this->assertFalse($this->model->isBackendEnabled('wallet'));
     }
 
@@ -145,10 +143,10 @@ class CapabilityTest extends TestCase
     public function testGetBackendsWithOmiseCode(): void
     {
         $this->capabilityApi->method('getPaymentMethods')->willReturn([(object)['name' => 'card']]);
-        $this->helper->method('getOmiseCodeByOmiseId')->willReturn('creditcard');
+        $this->helper->method('getOmiseCodeByOmiseId')->willReturn('card');
 
         $result = $this->model->getBackendsWithOmiseCode();
-        $this->assertArrayHasKey('creditcard', $result);
+        $this->assertArrayHasKey('card', $result);
     }
 
     /**

@@ -42,7 +42,7 @@ define(
             code: 'omise_offsite_internetbanking',
             restrictedToCurrencies: ['thb'],
 
-            capability:null,
+            capability: null,
 
             /**
              * Initiate observable fields

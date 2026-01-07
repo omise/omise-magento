@@ -32,7 +32,7 @@ class Capability extends BaseObject
         }
 
         try {
-            $this->capability  = OmiseCapability::retrieve();
+            $this->capability = OmiseCapability::retrieve();
         } catch (\Exception $e) {
             throw new LocalizedException(__('unable to load OmiseCapability api'));
         }
@@ -45,7 +45,7 @@ class Capability extends BaseObject
      */
     public function getInstallmentBackends()
     {
-        return $this->capability  ? $this->capability->getPaymentMethods(
+        return $this->capability ? $this->capability->getPaymentMethods(
             $this->capability->filterPaymentMethodName('installment')
         )
         : null;
@@ -58,7 +58,7 @@ class Capability extends BaseObject
      */
     public function isZeroInterest()
     {
-        return $this->capability  ? $this->capability ['zero_interest_installments'] : false;
+        return $this->capability ? $this->capability['zero_interest_installments'] : false;
     }
 
     /**
@@ -67,7 +67,7 @@ class Capability extends BaseObject
      */
     public function getBackendsByType(string $type)
     {
-        return $this->capability  ? $this->capability->getPaymentMethods(
+        return $this->capability ? $this->capability->getPaymentMethods(
             $this->capability->filterPaymentMethodName($type)
         ) : null;
     }
@@ -79,7 +79,7 @@ class Capability extends BaseObject
      */
     public function getPaymentMethods()
     {
-        return $this->capability  ? $this->capability->getPaymentMethods() : null;
+        return $this->capability ? $this->capability->getPaymentMethods() : null;
     }
 
     /**
@@ -89,7 +89,7 @@ class Capability extends BaseObject
      */
     public function getTokenizationMethods()
     {
-        return $this->capability  ? $this->capability ['tokenization_methods'] : null;
+        return $this->capability ? $this->capability['tokenization_methods'] : null;
     }
 
     /**
@@ -99,6 +99,6 @@ class Capability extends BaseObject
      */
     public function getInstallmentMinLimit()
     {
-        return $this->capability  ? $this->capability ['limits']['installment_amount']['min'] : 0;
+        return $this->capability ? $this->capability['limits']['installment_amount']['min'] : 0;
     }
 }

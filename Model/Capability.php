@@ -78,8 +78,8 @@ class Capability
     {
         $backends = $this->capabilityAPI->getPaymentMethods();
         return array_filter($backends, function ($obj) {
-            if (isset($obj->_id)) {
-                if (preg_match('/mobile_banking_\S+/m', $obj->_id)) {
+            if (isset($obj->name)) {
+                if (preg_match('/mobile_banking_\S+/m', $obj->name)) {
                     return true;
                 }
             }
