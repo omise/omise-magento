@@ -68,7 +68,6 @@ class CapabilityConfigProviderTest extends TestCase
         $this->assertEquals(Truemoney::JUMPAPP_ID, $result[0]->name);
     }
 
-
     /**
      * @covers Omise\Payment\Model\Ui\CapabilityConfigProvider
      * @dataProvider activeBackends
@@ -240,7 +239,6 @@ class CapabilityConfigProviderTest extends TestCase
                         'currencies' => ['THB'],
                     ],
                 ],
-
                 \Omise\Payment\Model\Config\MobileBanking::CODE => [
                     (object)[
                         'name' => 'mobile_banking_kbank',
@@ -249,8 +247,7 @@ class CapabilityConfigProviderTest extends TestCase
                 ],
             ]);
 
-        $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')
-            ->willReturn([]);
+        $this->capabilityMock->method('getTokenizationMethodsWithOmiseCode')->willReturn([]);
 
         $provider = new CapabilityConfigProvider(
             $this->capabilityMock,
@@ -337,4 +334,3 @@ class CapabilityConfigProviderTest extends TestCase
         ];
     }
 }
-
