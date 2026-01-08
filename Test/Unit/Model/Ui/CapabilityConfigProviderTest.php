@@ -262,6 +262,8 @@ class CapabilityConfigProviderTest extends TestCase
 
         $this->assertArrayHasKey('omise_payment_list', $result);
 
+        $this->assertCount(2, $result['omise_payment_list']);
+
         $this->assertArrayHasKey(
             \Omise\Payment\Model\Config\CcGooglePay::CODE,
             $result['omise_payment_list']
@@ -309,7 +311,7 @@ class CapabilityConfigProviderTest extends TestCase
                 [
                     (object)[
                         'name' => Shopeepay::JUMPAPP_ID,
-                        'currencies' => ["THB", 'sgd', 'myr']
+                        'currencies' => ["THB", 'SGD', 'MYR']
                     ]
                 ]
             ],
