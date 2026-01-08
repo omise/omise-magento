@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace Omise\Payment\Test\Unit\Model;
 
@@ -47,7 +46,7 @@ class CapabilityTest extends TestCase
         $this->omise = $this->createMock(Omise::class);
         $this->capabilityApi = $this->createMock(CapabilityAPI::class);
         $this->helper = $this->createMock(\Omise\Payment\Helper\OmiseHelper::class);
-        $this->money = new OmiseMoney();
+        $this->money = $this->createMock(\Omise\Payment\Helper\OmiseMoney::class);
 
         $this->omise->expects($this->once())->method('defineUserAgent');
         $this->omise->expects($this->once())->method('defineApiVersion');
@@ -179,9 +178,9 @@ class CapabilityTest extends TestCase
     {
         $this->capabilityApi->method('getInstallmentMinLimit')->willReturn(1000);
         $this->money->method('setAmountAndCurrency')->willReturnSelf();
-        $this->money->method('toUnit')->willReturn(1000);
+        $this->money->method('toUnit')->willReturn(10);
 
-        $this->assertSame(1000, $this->model->getInstallmentMinLimit('THB'));
+        $this->assertSame(10, $this->model->getInstallmentMinLimit('THB'));
     }
 
     /**
