@@ -211,8 +211,7 @@ class CapabilityConfigProviderTest extends TestCase
 
         $this->paymentListsMock->method('getActiveList')->willReturn([
             $ccGooglePayMock,
-            $installmentMock,
-            $mobileBankingMock,
+            $installmentMock
         ]);
 
         $this->capabilityMock->method('getInstallmentMinLimit')
@@ -272,11 +271,6 @@ class CapabilityConfigProviderTest extends TestCase
             $result['omise_payment_list']
         );
 
-        $this->assertArrayHasKey(
-            \Omise\Payment\Model\Config\MobileBanking::CODE,
-            $result['omise_payment_list']
-        );
-
         $this->assertArrayHasKey('is_zero_interest', $result);
         $this->assertTrue($result['is_zero_interest']);
 
@@ -306,8 +300,7 @@ class CapabilityConfigProviderTest extends TestCase
                 [
                     (object)[
                         'name' => 'truemoney_jumpapp',
-                        'currencies' => ["THB"],
-                        'amount' => []
+                        'currencies' => ["THB"]
                     ]
                 ]
             ],
@@ -316,8 +309,7 @@ class CapabilityConfigProviderTest extends TestCase
                 [
                     (object)[
                         'name' => Shopeepay::JUMPAPP_ID,
-                        'currencies' => ["THB", 'sgd', 'myr'],
-                        'amount' => []
+                        'currencies' => ["THB", 'sgd', 'myr']
                     ]
                 ]
             ],
@@ -326,8 +318,7 @@ class CapabilityConfigProviderTest extends TestCase
                 [
                     (object)[
                         'name' => Rabbitlinepay::ID,
-                        'currencies' => ["THB"],
-                        'amount' => []
+                        'currencies' => ["THB"]
                     ]
                 ]
             ]
