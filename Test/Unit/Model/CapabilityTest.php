@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Capability;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Capability as CapabilityAPI;
+use Omise\Payment\Helper\OmiseMoney;
 
 /**
  * @coversDefaultClass \Omise\Payment\Model\Capability
@@ -46,7 +47,7 @@ class CapabilityTest extends TestCase
         $this->omise = $this->createMock(Omise::class);
         $this->capabilityApi = $this->createMock(CapabilityAPI::class);
         $this->helper = $this->createMock(\Omise\Payment\Helper\OmiseHelper::class);
-        $this->money = $this->createMock(\Omise\Payment\Helper\OmiseMoney::class);
+        $this->money = new OmiseMoney();
 
         $this->omise->expects($this->once())->method('defineUserAgent');
         $this->omise->expects($this->once())->method('defineApiVersion');
