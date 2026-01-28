@@ -51,5 +51,4 @@ class OrderTest extends TestCase
 
         $this->assertSame($this->magentoOrderMock, $result);
     }
-
 }

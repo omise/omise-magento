@@ -259,5 +259,4 @@ class WebhookCompleteObserverTest extends TestCase
 
         $this->assertTrue(true);
     }
-
 }

@@ -400,5 +400,4 @@ class OffsiteTest extends TestCase
         // THIS WILL PASS
         $this->assertTrue($method->invoke($controller, $order));
     }
-
 }

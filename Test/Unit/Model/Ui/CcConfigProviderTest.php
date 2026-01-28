@@ -176,5 +176,4 @@ class CcConfigProviderTest extends TestCase
         // Theme output exists
         $this->assertArrayHasKey('formDesign', $paymentConfig);
     }
-
 }

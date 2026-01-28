@@ -117,5 +117,4 @@ class WebhookRefundObserverTest extends TestCase
         // Execute
         $this->observer->execute($observerMock);
     }
-
 }

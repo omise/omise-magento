@@ -101,5 +101,4 @@ class PendingInvoiceHandlerTest extends TestCase
 
         $this->handler->handle($handlingSubject, $response);
     }
-
 }

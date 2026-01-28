@@ -423,5 +423,4 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expectedValue, $helper->getConfig($fieldId));
     }
-
 }

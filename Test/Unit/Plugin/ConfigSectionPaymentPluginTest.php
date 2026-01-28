@@ -249,5 +249,4 @@ class ConfigSectionPaymentPluginTest extends TestCase
 
         $this->assertEquals('default', $method->invoke($this->plugin, $configWebsite));
     }
-
 }

@@ -85,5 +85,4 @@ class EventTest extends TestCase
         $result = $method->invoke($event, $data);
         $this->assertSame($data, $result);
     }
-
 }

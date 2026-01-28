@@ -73,5 +73,4 @@ class RefundSyncStatusTest extends TestCase
 
         $this->refundSyncStatus->refund($this->order, $charge);
     }
-
 }

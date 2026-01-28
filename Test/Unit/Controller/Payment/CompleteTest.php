@@ -68,5 +68,4 @@ class CompleteTest extends TestCase
 
         $this->assertInstanceOf(Page::class, $result);
     }
-
 }
