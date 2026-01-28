@@ -33,10 +33,10 @@ class WebhookRefundObserverTest extends TestCase
         $this->orderMock = $this->getMockBuilder(OmiseOrder::class)
             ->disableOriginalConstructor()
             ->addMethods([
-                'isPaymentReview', 
-                'getState', 
-                'addStatusHistoryComment', 
-                'save', 
+                'isPaymentReview',
+                'getState',
+                'addStatusHistoryComment',
+                'save',
                 'getOrderCurrencyCode'
             ])
             ->getMock();

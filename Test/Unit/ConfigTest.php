@@ -83,18 +83,18 @@ class ConfigTest extends TestCase
     }
 
     /**
-        * @covers \Omise\Payment\Model\Config\Config::getStoreLocale
-        * @covers \Omise\Payment\Model\Config\Config::__construct
-        * @covers \Omise\Payment\Model\Config\Config::getPublicKey
-        * @covers \Omise\Payment\Model\Config\Config::getSecretKey
-        * @covers \Omise\Payment\Model\Config\Config::getTestPublicKey
-        * @covers \Omise\Payment\Model\Config\Config::getTestSecretKey
-        * @covers \Omise\Payment\Model\Config\Config::getValue
-        * @covers \Omise\Payment\Model\Config\Config::init
-        * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
-        * @covers \Omise\Payment\Model\Config\Config::setStoreId
-        * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
-     */
+     * @covers \Omise\Payment\Model\Config\Config::getStoreLocale
+     * @covers \Omise\Payment\Model\Config\Config::__construct
+     * @covers \Omise\Payment\Model\Config\Config::getPublicKey
+     * @covers \Omise\Payment\Model\Config\Config::getSecretKey
+     * @covers \Omise\Payment\Model\Config\Config::getTestPublicKey
+     * @covers \Omise\Payment\Model\Config\Config::getTestSecretKey
+     * @covers \Omise\Payment\Model\Config\Config::getValue
+     * @covers \Omise\Payment\Model\Config\Config::init
+     * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
+     * @covers \Omise\Payment\Model\Config\Config::setStoreId
+     * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
+    */
 
     public function testGetStoreLocale()
     {
@@ -185,18 +185,18 @@ class ConfigTest extends TestCase
     }
 
     /**
-        * @covers \Omise\Payment\Model\Config\Config::getLiveSecretKey
-        * @covers \Omise\Payment\Model\Config\Config::getValue
-        * @covers \Omise\Payment\Model\Config\Config::__construct
-        * @covers \Omise\Payment\Model\Config\Config::getPublicKey
-        * @covers \Omise\Payment\Model\Config\Config::getSecretKey
-        * @covers \Omise\Payment\Model\Config\Config::getTestPublicKey
-        * @covers \Omise\Payment\Model\Config\Config::getTestSecretKey
-        * @covers \Omise\Payment\Model\Config\Config::getValue
-        * @covers \Omise\Payment\Model\Config\Config::init
-        * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
-        * @covers \Omise\Payment\Model\Config\Config::setStoreId
-        * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
+     * @covers \Omise\Payment\Model\Config\Config::getLiveSecretKey
+     * @covers \Omise\Payment\Model\Config\Config::getValue
+     * @covers \Omise\Payment\Model\Config\Config::__construct
+     * @covers \Omise\Payment\Model\Config\Config::getPublicKey
+     * @covers \Omise\Payment\Model\Config\Config::getSecretKey
+     * @covers \Omise\Payment\Model\Config\Config::getTestPublicKey
+     * @covers \Omise\Payment\Model\Config\Config::getTestSecretKey
+     * @covers \Omise\Payment\Model\Config\Config::getValue
+     * @covers \Omise\Payment\Model\Config\Config::init
+     * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
+     * @covers \Omise\Payment\Model\Config\Config::setStoreId
+     * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
     */
     public function testGetLiveSecretKey()
     {
@@ -255,7 +255,7 @@ class ConfigTest extends TestCase
     /**
      * @dataProvider isDynamicWebhooksEnabledProvider
      * @covers Omise\Payment\Model\Config\Config
-     */
+    */
     public function testIsDynamicWebhooksEnabled($webhookEnabled, $dynamicWebhooksEnabled, $expected)
     {
         $this->scopeConfigMock->shouldReceive('getValue')
@@ -292,7 +292,7 @@ class ConfigTest extends TestCase
 
     /**
      * Data provider for testIsDynamicWebhooksEnabled method
-     */
+    */
     public function isDynamicWebhooksEnabledProvider()
     {
         return [
