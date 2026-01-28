@@ -40,7 +40,7 @@ class CustomerTest extends TestCase
     public function testUpdateReturnsSelfOnSuccess(): void
     {
         $dummyObject = new class {
-            public function update($params): void 
+            public function update($params): void
             {
                 
             }

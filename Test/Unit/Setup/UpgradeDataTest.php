@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Magento\Eav\Setup {
     class EavSetupFactory {
-        public function create($args) 
+        public function create($args)
         {
 
         }
     }
 
     class EavSetup {
-        public function addAttribute($entity, $code, $options) 
+        public function addAttribute($entity, $code, $options)
         {
 
         }
@@ -20,9 +20,9 @@ namespace Magento\Eav\Setup {
 
 namespace Magento\Eav\Model {
     class Config {
-        public function getAttribute($entity, $code) 
+        public function getAttribute($entity, $code)
         {
-            
+
         }
     }
 }
@@ -35,7 +35,10 @@ namespace Magento\Eav\Model\Entity\Attribute {
 
 namespace Magento\Customer\Model\ResourceModel {
     class Attribute {
-        public function save($attribute) {}
+        public function save($attribute)
+        {
+            
+        }
     }
 }
 

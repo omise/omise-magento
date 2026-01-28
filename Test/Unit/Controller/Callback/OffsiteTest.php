@@ -310,7 +310,7 @@ class OffsiteTest extends TestCase
                 return match($key) {
                     'charge_id' => $chargeId,
                     'token' => $token,
-                    default => null
+                    'default' => null
                 };
             });
         $payment->method('getMethod')->willReturn('offsite_method');

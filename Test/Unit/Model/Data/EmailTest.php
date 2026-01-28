@@ -96,9 +96,9 @@ final class EmailTest extends TestCase
         $order->method('getIncrementId')->willReturn('1000001');
 
         $currency = new class {
-            public function getCurrencyCode() 
-            { 
-                return 'THB'; 
+            public function getCurrencyCode()
+            {
+                return 'THB';
             }
         };
 

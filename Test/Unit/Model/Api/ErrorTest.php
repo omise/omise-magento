@@ -12,7 +12,6 @@ class ErrorTest extends TestCase
 {
     /**
      * Test default error values when no input is provided
-     * 
      * @covers \Omise\Payment\Model\Api\Error::__construct
      * @covers \Omise\Payment\Model\Api\Error::getCode
      * @covers \Omise\Payment\Model\Api\Error::getMessage
@@ -30,7 +29,6 @@ class ErrorTest extends TestCase
 
     /**
      * Test constructor sets code and message if provided
-     * 
      * @covers \Omise\Payment\Model\Api\Error::__construct
      * @covers \Omise\Payment\Model\Api\Error::setCode
      * @covers \Omise\Payment\Model\Api\Error::setMessage
@@ -52,7 +50,6 @@ class ErrorTest extends TestCase
 
     /**
      * Test individual setters
-     * 
      * @covers \Omise\Payment\Model\Api\Error::setCode
      * @covers \Omise\Payment\Model\Api\Error::setMessage
      * @covers \Omise\Payment\Model\Api\Error::getCode

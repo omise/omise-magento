@@ -175,7 +175,6 @@ class ThreedsecureTest extends TestCase
         $result = $reflection->invoke($this->controller, $this->createMock(Order::class));
 
         $this->assertSame($mockInvoice, $result);
-
     }
 
     /**
@@ -224,7 +223,6 @@ class ThreedsecureTest extends TestCase
     /**
      * @covers \Omise\Payment\Controller\Callback\Threedsecure::invoice
      * @covers \Omise\Payment\Controller\Callback\Threedsecure::__construct
-     * 
      */
     public function testInvoiceMethodReturnsLastInvoice()
     {
