@@ -6,7 +6,7 @@ use Omise\Payment\Api\Data\PaymentInterface;
 
 class PaymentFactoryStub
 {
-    private PaymentInterface $data;
+    private $data;
 
     public function __construct(PaymentInterface $data)
     {

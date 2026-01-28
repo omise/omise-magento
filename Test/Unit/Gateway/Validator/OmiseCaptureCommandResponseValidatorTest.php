@@ -12,7 +12,7 @@ use ReflectionClass;
  */
 class OmiseCaptureCommandResponseValidatorTest extends TestCase
 {
-    private OmiseCaptureCommandResponseValidator $validator;
+    private $validator;
 
     protected function setUp(): void
     {

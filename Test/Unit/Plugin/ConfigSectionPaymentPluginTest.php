@@ -15,12 +15,12 @@ use Magento\Config\Model\Config as CoreConfig;
  */
 class ConfigSectionPaymentPluginTest extends TestCase
 {
-    private ConfigSectionPaymentPlugin $plugin;
-    private CoreConfig $coreConfig;
-    private OmiseHelper $helper;
-    private ManagerInterface $messageManager;
-    private ScopeConfigInterface $scopeConfig;
-    private Config $config;
+    private $plugin;
+    private $coreConfig;
+    private $helper;
+    private $messageManager;
+    private $scopeConfig;
+    private $config;
 
     protected function setUp(): void
     {
