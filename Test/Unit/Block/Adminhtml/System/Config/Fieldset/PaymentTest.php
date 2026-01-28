@@ -12,9 +12,14 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
  */
 class PaymentTest extends TestCase
 {
-    private Payment $block;
-    private AbstractElement $element;
-    private object $jsHelper;
+    /** @var Payment */
+    private $block;
+
+    /** @var AbstractElement */
+    private $element;
+
+    /** @var object */
+    private $jsHelper;
 
     protected function setUp(): void
     {

@@ -16,11 +16,20 @@ use Magento\Backend\Block\Template\Context;
  */
 class WebhookTest extends TestCase
 {
-    private Webhook $block;
-    private StoreManagerInterface $storeManager;
-    private HttpRequest $request;
-    private AbstractElement $element;
-    private Store $store;
+    /** @var Webhook */
+    private $block;
+
+    /** @var StoreManagerInterface */
+    private $storeManager;
+
+    /** @var HttpRequest */
+    private $request;
+
+    /** @var AbstractElement */
+    private $element;
+
+    /** @var Store */
+    private $store;
 
     protected function setUp(): void
     {

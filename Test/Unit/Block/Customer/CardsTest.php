@@ -12,8 +12,13 @@ use PHPUnit\Framework\TestCase;
  */
 class CardsTest extends TestCase
 {
+    /** @var Context */
     private $contextMock;
+
+    /** @var Customer */
     private $customerMock;
+
+    /** @var CardsBlock */
     private $cardsBlock;
 
     protected function setUp(): void

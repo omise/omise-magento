@@ -15,13 +15,26 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class ListActionTest extends TestCase
 {
-    private ListAction $controller;
-    private Context|MockObject $contextMock;
-    private Session|MockObject $customerSessionMock;
-    private PageFactory|MockObject $pageFactoryMock;
-    private Page|MockObject $resultPageMock;
-    private PageConfig|MockObject $pageConfigMock;
-    private PageTitle|MockObject $pageTitleMock;
+    /** @var ListAction */
+    private $controller;
+
+    /** @var Context|\PHPUnit\Framework\MockObject\MockObject */
+    private $contextMock;
+
+    /** @var Session|\PHPUnit\Framework\MockObject\MockObject */
+    private $customerSessionMock;
+
+    /** @var PageFactory|\PHPUnit\Framework\MockObject\MockObject */
+    private $pageFactoryMock;
+
+    /** @var Page|\PHPUnit\Framework\MockObject\MockObject */
+    private $resultPageMock;
+
+    /** @var PageConfig|\PHPUnit\Framework\MockObject\MockObject */
+    private $pageConfigMock;
+
+    /** @var PageTitle|\PHPUnit\Framework\MockObject\MockObject */
+    private $pageTitleMock;
 
     protected function setUp(): void
     {

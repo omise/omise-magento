@@ -13,12 +13,23 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class CompleteTest extends TestCase
 {
-    private Complete $controller;
-    private Context|MockObject $contextMock;
-    private PageFactory|MockObject $pageFactoryMock;
-    private Page|MockObject $resultPageMock;
-    private PageConfig|MockObject $pageConfigMock;
-    private PageTitle|MockObject $pageTitleMock;
+    /** @var Complete */
+    private $controller;
+
+    /** @var Context|\PHPUnit\Framework\MockObject\MockObject */
+    private $contextMock;
+
+    /** @var PageFactory|\PHPUnit\Framework\MockObject\MockObject */
+    private $pageFactoryMock;
+
+    /** @var Page|\PHPUnit\Framework\MockObject\MockObject */
+    private $resultPageMock;
+
+    /** @var PageConfig|\PHPUnit\Framework\MockObject\MockObject */
+    private $pageConfigMock;
+
+    /** @var PageTitle|\PHPUnit\Framework\MockObject\MockObject */
+    private $pageTitleMock;
 
     protected function setUp(): void
     {

@@ -19,15 +19,32 @@ use PHPUnit\Framework\TestCase;
 
 class ThreedsecureTest extends TestCase
 {
-    protected Threedsecure $controller;
-    protected Session|MockObject $session;
-    protected Config|MockObject $config;
-    protected OmiseEmailHelper|MockObject $emailHelper;
-    protected OmiseHelper|MockObject $helper;
-    protected Http|MockObject $request;
-    protected Context|MockObject $context;
-    protected ManagerInterface|MockObject $messageManager;
-    protected Session|MockObject $checkoutSession;
+    /** @var Threedsecure */
+    protected $controller;
+
+    /** @var Session|\PHPUnit\Framework\MockObject\MockObject */
+    protected $session;
+
+    /** @var Config|\PHPUnit\Framework\MockObject\MockObject */
+    protected $config;
+
+    /** @var OmiseEmailHelper|\PHPUnit\Framework\MockObject\MockObject */
+    protected $emailHelper;
+
+    /** @var OmiseHelper|\PHPUnit\Framework\MockObject\MockObject */
+    protected $helper;
+
+    /** @var Http|\PHPUnit\Framework\MockObject\MockObject */
+    protected $request;
+
+    /** @var Context|\PHPUnit\Framework\MockObject\MockObject */
+    protected $context;
+
+    /** @var ManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
+    protected $messageManager;
+
+    /** @var Session|\PHPUnit\Framework\MockObject\MockObject */
+    protected $checkoutSession;
 
     protected function setUp(): void
     {

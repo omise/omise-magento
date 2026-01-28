@@ -12,8 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class FormModalTest extends TestCase
 {
-    private FormModal $block;
-    private AbstractElement $element;
+    /** @var FormModal */
+    private $block;
+
+    /** @var AbstractElement */
+    private $element;
 
     protected function setUp(): void
     {

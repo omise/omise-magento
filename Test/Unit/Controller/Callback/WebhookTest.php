@@ -14,13 +14,26 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class WebhookTest extends TestCase
 {
-    private Webhook $controller;
-    private Http|MockObject $requestMock;
-    private Omise|MockObject $omiseMock;
-    private ApiEvent|MockObject $apiEventMock;
-    private EventManager|MockObject $eventManagerMock;
-    private Config|MockObject $configMock;
-    private Context|MockObject $contextMock;
+    /** @var Webhook */
+    private $controller;
+
+    /** @var Http|\PHPUnit\Framework\MockObject\MockObject */
+    private $requestMock;
+
+    /** @var Omise|\PHPUnit\Framework\MockObject\MockObject */
+    private $omiseMock;
+
+    /** @var ApiEvent|\PHPUnit\Framework\MockObject\MockObject */
+    private $apiEventMock;
+
+    /** @var EventManager|\PHPUnit\Framework\MockObject\MockObject */
+    private $eventManagerMock;
+
+    /** @var Config|\PHPUnit\Framework\MockObject\MockObject */
+    private $configMock;
+
+    /** @var Context|\PHPUnit\Framework\MockObject\MockObject */
+    private $contextMock;
 
     protected function setUp(): void
     {

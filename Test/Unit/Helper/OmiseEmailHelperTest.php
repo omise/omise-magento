@@ -20,12 +20,23 @@ use PHPUnit\Framework\TestCase;
  */
 class OmiseEmailHelperTest extends TestCase
 {
-    private OmiseEmailHelper $helper;
-    private OrderSender $orderSender;
-    private InvoiceSender $invoiceSender;
-    private Session $checkoutSession;
-    private Cc $config;
-    private CacheInterface $cache;
+    /** @var OmiseEmailHelper */
+    private $helper;
+
+    /** @var OrderSender */
+    private $orderSender;
+
+    /** @var InvoiceSender */
+    private $invoiceSender;
+
+    /** @var Session */
+    private $checkoutSession;
+
+    /** @var Cc */
+    private $config;
+
+    /** @var CacheInterface */
+    private $cache;
 
     protected function setUp(): void
     {

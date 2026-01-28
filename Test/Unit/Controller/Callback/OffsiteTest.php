@@ -26,15 +26,32 @@ use Magento\Sales\Model\Order\Payment\Transaction;
  */
 class OffsiteTest extends TestCase
 {
-    private Offsite $controller;
-    private Session $session;
-    private Charge $charge;
-    private OmiseHelper $helper;
-    private OmiseEmailHelper $emailHelper;
-    private Cc $config;
-    private Session $checkoutSession;
-    private Http $request;
-    private ManagerInterface $messageManager;
+    /** @var Offsite */
+    private $controller;
+
+    /** @var Session */
+    private $session;
+
+    /** @var Charge */
+    private $charge;
+
+    /** @var OmiseHelper */
+    private $helper;
+
+    /** @var OmiseEmailHelper */
+    private $emailHelper;
+
+    /** @var Cc */
+    private $config;
+
+    /** @var Session */
+    private $checkoutSession;
+
+    /** @var Http */
+    private $request;
+
+    /** @var ManagerInterface */
+    private $messageManager;
 
     protected function setUp(): void
     {
