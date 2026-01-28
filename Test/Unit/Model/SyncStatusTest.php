@@ -54,7 +54,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
-    */
+     */
     public function testCancelOrderInvoiceCancelsLastInvoice()
     {
         $invoice = Mockery::mock(Invoice::class);
@@ -74,7 +74,7 @@ class SyncStatusTest extends TestCase
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentFailed
      *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
-    */
+     */
     public function testMarkPaymentFailed()
     {
         $order = Mockery::mock(Order::class);
@@ -92,7 +92,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markOrderPending
-    */
+     */
     public function testMarkOrderPending()
     {
         $order = Mockery::mock(Order::class);
@@ -110,7 +110,7 @@ class SyncStatusTest extends TestCase
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentExpired
      *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
-    */
+     */
     public function testMarkPaymentExpired()
     {
         $order = Mockery::mock(Order::class);
@@ -126,7 +126,7 @@ class SyncStatusTest extends TestCase
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentReversed
      *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
-    */
+     */
     public function testMarkPaymentReversed()
     {
         $order = Mockery::mock(Order::class);
@@ -141,7 +141,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::reverseCancelledItems
-    */
+     */
     public function testReverseCancelledItems()
     {
         $item = Mockery::mock();
@@ -158,7 +158,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::sync
-    */
+     */
     public function testSyncThrowsExceptionWhenNoChargeId()
     {
         $order = Mockery::mock(Order::class);
@@ -174,7 +174,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
-    */
+     */
     public function testMarkPaymentSuccessful_RefundTriggered()
     {
         $charge = ['id' => 'ch_test'];
@@ -193,7 +193,7 @@ class SyncStatusTest extends TestCase
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
      *  @covers \Omise\Payment\Model\SyncStatus::reverseCancelledItems
-    */
+     */
     public function testMarkPaymentSuccessful_OrderCanceled()
     {
         $charge = ['id' => 'ch_test'];
@@ -226,7 +226,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
-    */
+     */
     public function testMarkPaymentSuccessful_OrderAlreadyProcessed()
     {
         $charge = ['id' => 'ch_test'];
@@ -248,7 +248,7 @@ class SyncStatusTest extends TestCase
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
      *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
-    */
+     */
     public function testMarkPaymentSuccessful_NormalProcessing()
     {
         $charge = ['id' => 'ch_test'];

@@ -34,7 +34,7 @@ class ConfigTest extends TestCase
      * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
      * @covers \Omise\Payment\Model\Config\Config::setStoreId
      * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
-    */
+     */
     public function testCanInitialize()
     {
         // Mock all constructor dependencies
@@ -94,7 +94,7 @@ class ConfigTest extends TestCase
      * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
      * @covers \Omise\Payment\Model\Config\Config::setStoreId
      * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
-    */
+     */
 
     public function testGetStoreLocale()
     {
@@ -129,7 +129,7 @@ class ConfigTest extends TestCase
      * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
      * @covers \Omise\Payment\Model\Config\Config::setStoreId
      * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
-    */
+     */
     public function testGetLivePublicKey()
     {
         // Mock ScopeConfigInterface
@@ -197,7 +197,7 @@ class ConfigTest extends TestCase
      * @covers \Omise\Payment\Model\Config\Config::isSandboxEnabled
      * @covers \Omise\Payment\Model\Config\Config::setStoreId
      * @covers \Omise\Payment\Model\Config\Config::setStoreLocale
-    */
+     */
     public function testGetLiveSecretKey()
     {
         // Mock ScopeConfigInterface
@@ -255,7 +255,7 @@ class ConfigTest extends TestCase
     /**
      * @dataProvider isDynamicWebhooksEnabledProvider
      * @covers Omise\Payment\Model\Config\Config
-    */
+     */
     public function testIsDynamicWebhooksEnabled($webhookEnabled, $dynamicWebhooksEnabled, $expected)
     {
         $this->scopeConfigMock->shouldReceive('getValue')
@@ -292,7 +292,7 @@ class ConfigTest extends TestCase
 
     /**
      * Data provider for testIsDynamicWebhooksEnabled method
-    */
+     */
     public function isDynamicWebhooksEnabledProvider()
     {
         return [
