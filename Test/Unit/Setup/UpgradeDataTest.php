@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Omise\Payment\Test\Unit\Setup;
 
-require_once __DIR__ . '../../stubs/Magento/Framework/Setup/ModuleDataSetupInterface.php';
-require_once __DIR__ . '../../stubs/Magento/Framework/Setup/ModuleContextInterface.php';
-require_once __DIR__ . '../../stubs/Magento/Framework/DB/AdapterInterface.php';
-require_once __DIR__ . '../../stubs/Magento/Eav/Setup/EavSetupFactory.php';
-require_once __DIR__ . '../../stubs/Magento/Eav/Setup/EavSetup.php';
-require_once __DIR__ . '../../stubs/Magento/Eav/Model/Config.php';
-require_once __DIR__ . '../../stubs/Magento/Eav/Model/Entity/Attribute/AbstractAttribute.php';
-require_once __DIR__ . '../../stubs/Magento/Customer/Model/ResourceModel/Attribute.php';
+require_once __DIR__ . '../../Stubs/Magento/Framework/Setup/ModuleDataSetupInterface.php';
+require_once __DIR__ . '../../Stubs/Magento/Framework/Setup/ModuleContextInterface.php';
+require_once __DIR__ . '../../Stubs/Magento/Framework/DB/AdapterInterface.php';
+require_once __DIR__ . '../../Stubs/Magento/Eav/Setup/EavSetupFactory.php';
+require_once __DIR__ . '../../Stubs/Magento/Eav/Setup/EavSetup.php';
+require_once __DIR__ . '../../Stubs/Magento/Eav/Model/Config.php';
+require_once __DIR__ . '../../Stubs/Magento/Eav/Model/Entity/Attribute/AbstractAttribute.php';
+require_once __DIR__ . '../../Stubs/Magento/Customer/Model/ResourceModel/Attribute.php';
 
 use Omise\Payment\Setup\UpgradeData;
 use PHPUnit\Framework\TestCase;
