@@ -102,3 +102,4 @@ class ListActionTest extends TestCase
         $this->assertSame($this->resultPageMock, $result);
     }
 }
+
