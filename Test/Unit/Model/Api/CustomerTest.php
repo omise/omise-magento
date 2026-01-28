@@ -41,9 +41,7 @@ class CustomerTest extends TestCase
     {
         $dummyObject = new class {
             public function update($params): void
-            {
-                
-            }
+            {}
         };
 
         $ref = new \ReflectionProperty(Customer::class, 'object');
@@ -73,8 +71,14 @@ class CustomerTest extends TestCase
 
         $dummyObject = new class($cards) {
             private array $cards;
-            public function __construct(array $cards) { $this->cards = $cards; }
-            public function cards($options = []) { return $this->cards; }
+            public function __construct(array $cards)
+            {
+                $this->cards = $cards;
+            }
+            public function cards($options = [])
+            {
+                return $this->cards;
+            }
         };
 
         $ref = new \ReflectionProperty(Customer::class, 'object');
