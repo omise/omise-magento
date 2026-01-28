@@ -90,7 +90,10 @@ class PaymentTest extends TestCase
         $this->element->method('getHtmlId')->willReturn('dummy_id');
 
         // Mock jsHelper to wrap script
-        $this->jsHelper->method('getScript')->willReturnCallback(fn($script) => 'wrapped:' . $script);
+        $this->jsHelper->method('getScript')
+        ->willReturnCallback(function ($script) {
+            return 'wrapped:' . $script;
+        });
 
         // Call protected method via reflection
         $method = new \ReflectionMethod($this->block, '_getExtraJs');

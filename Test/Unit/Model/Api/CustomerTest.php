@@ -41,7 +41,9 @@ class CustomerTest extends TestCase
     {
         $dummyObject = new class {
             public function update($params): void
-            {}
+            {
+                // intentionally left empty
+            }
         };
 
         $ref = new \ReflectionProperty(Customer::class, 'object');

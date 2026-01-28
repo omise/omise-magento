@@ -306,7 +306,9 @@ class OffsiteTest extends TestCase
 
         // Expect LocalizedException
         $this->expectException(\Magento\Framework\Exception\LocalizedException::class);
-        $this->expectExceptionMessage('Payment failed. Payment declined, please contact our support if you have any questions.');
+        $this->expectExceptionMessage(
+            'Payment failed. Payment declined, please contact our support if you have any questions.'
+        );
 
         // Call the private method
         $method->invoke($this->controller, $charge);
@@ -327,7 +329,7 @@ class OffsiteTest extends TestCase
                 return match($key) {
                     'charge_id' => $chargeId,
                     'token' => $token,
-                    'default' => null
+                    default => null
                 };
             });
         $payment->method('getMethod')->willReturn('offsite_method');

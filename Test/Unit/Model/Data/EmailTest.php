@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Omise\Payment\Model\Data\Email::getEmailData
  * @covers \Omise\Payment\Model\Data\Email::getPaynowChargeExpiryTime
  */
-final class EmailTest extends TestCase
+class EmailTest extends TestCase
 {
     private $scopeConfig;
     private $charge;

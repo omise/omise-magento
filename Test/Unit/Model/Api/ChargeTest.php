@@ -227,7 +227,7 @@ class ChargeTest extends TestCase
             ->setConstructorArgs([$this->configMock])
             ->getMock();
 
-        $chargeMock->setProtectedProperty = function($obj, $prop, $val) {
+        $chargeMock->setProtectedProperty = function ($obj, $prop, $val) {
             $ref = new \ReflectionClass($obj);
             $property = $ref->getProperty($prop);
             $property->setAccessible(true);
