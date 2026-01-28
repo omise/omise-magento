@@ -53,7 +53,7 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
+     * @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
      */
     public function testCancelOrderInvoiceCancelsLastInvoice()
     {
@@ -72,8 +72,8 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentFailed
-     *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentFailed
+     * @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
      */
     public function testMarkPaymentFailed()
     {
@@ -91,7 +91,7 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markOrderPending
+     * @covers \Omise\Payment\Model\SyncStatus::markOrderPending
      */
     public function testMarkOrderPending()
     {
@@ -108,8 +108,8 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentExpired
-     *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentExpired
+     * @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
      */
     public function testMarkPaymentExpired()
     {
@@ -124,8 +124,8 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentReversed
-     *  @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentReversed
+     * @covers \Omise\Payment\Model\SyncStatus::cancelOrderInvoice
      */
     public function testMarkPaymentReversed()
     {
@@ -140,7 +140,7 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::reverseCancelledItems
+     * @covers \Omise\Payment\Model\SyncStatus::reverseCancelledItems
      */
     public function testReverseCancelledItems()
     {
@@ -157,7 +157,7 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::sync
+     * @covers \Omise\Payment\Model\SyncStatus::sync
      */
     public function testSyncThrowsExceptionWhenNoChargeId()
     {
@@ -173,9 +173,9 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
      */
-    public function testMarkPaymentSuccessful_RefundTriggered()
+    public function testMarkPaymentSuccessfulRefundTriggered()
     {
         $charge = ['id' => 'ch_test'];
 
@@ -191,10 +191,10 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
-     *  @covers \Omise\Payment\Model\SyncStatus::reverseCancelledItems
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
+     * @covers \Omise\Payment\Model\SyncStatus::reverseCancelledItems
      */
-    public function testMarkPaymentSuccessful_OrderCanceled()
+    public function testMarkPaymentSuccessfulOrderCanceled()
     {
         $charge = ['id' => 'ch_test'];
 
@@ -225,9 +225,9 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
      */
-    public function testMarkPaymentSuccessful_OrderAlreadyProcessed()
+    public function testMarkPaymentSuccessfulOrderAlreadyProcessed()
     {
         $charge = ['id' => 'ch_test'];
 
@@ -247,9 +247,9 @@ class SyncStatusTest extends TestCase
     }
 
     /** @covers \Omise\Payment\Model\SyncStatus::__construct
-     *  @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
+     * @covers \Omise\Payment\Model\SyncStatus::markPaymentSuccessful
      */
-    public function testMarkPaymentSuccessful_NormalProcessing()
+    public function testMarkPaymentSuccessfulNormalProcessing()
     {
         $charge = ['id' => 'ch_test'];
 
