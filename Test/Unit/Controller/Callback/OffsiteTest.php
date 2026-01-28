@@ -327,8 +327,8 @@ class OffsiteTest extends TestCase
         $payment->method('getAdditionalInformation')
             ->willReturnCallback(function ($key) use ($chargeId, $token) {
                 return match($key) {
-                'charge_id' => $chargeId,
-                'token'     => $token,
+                "charge_id" => $chargeId,
+                "token"     => $token,
                 default     => null,
                 };
             });
