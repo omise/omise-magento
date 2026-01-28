@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <head>
         <css src="Omise_Payment::css/styles.css" />
-        <script src="https://cdn.omise.co/omise.js" src_type="url" />
+        <script src="https://cdn.staging-omise.co/omise.js" src_type="url" />
     </head>
     <body>
         <referenceBlock name="checkout.root">

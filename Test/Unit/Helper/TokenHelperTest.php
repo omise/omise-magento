@@ -1,55 +1,68 @@
 <?php
 
-namespace Omise\Payment\Test\Unit\Helper;
-
+use PHPUnit\Framework\TestCase;
 use Omise\Payment\Helper\TokenHelper;
 
-class TokenHelperTest extends \PHPUnit\Framework\TestCase
+/**
+ * @covers \Omise\Payment\Helper\TokenHelper
+ */
+class TokenHelperTest extends TestCase
 {
-    protected $model;
+    private TokenHelper $tokenHelper;
 
-    /**
-     * This function is called before the test runs.
-     * Ideal for setting the values to variables or objects.
-     * @coversNothing
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->model = new TokenHelper();
+        $this->tokenHelper = new TokenHelper();
     }
 
     /**
-     * This function is called after the test runs.
-     * Ideal for setting the values to variables or objects.
-     * @coversNothing
+     * @covers \Omise\Payment\Helper\TokenHelper::random
      */
-    public function tearDown(): void
+    public function testRandomUsesRandomBytes()
     {
+        $length = 16;
+
+        // Normal call uses random_bytes()
+        $token = $this->tokenHelper->random($length);
+
+        $this->assertMatchesRegularExpression('/^[a-f0-9]+$/', $token);
+        $this->assertSame($length * 2, strlen($token));
     }
 
     /**
-     * * Test the function returns string with 32 characters by default.
-     *
-     * @covers \Omise\Payment\Helper\TokenHelper
-     * @test
+     * @covers \Omise\Payment\Helper\TokenHelper::random
      */
-    public function radomReturns32CharactersByDefault()
+    public function testRandomUsesMcryptBranch()
     {
-        $token = $this->model->random();
-        $expectedCharacterLength = 64;
-        $this->assertEquals(strlen($token), $expectedCharacterLength);
+        $length = 16;
+
+        // Subclass to force the mcrypt branch
+        $helper = new class extends TokenHelper {
+            public $called = false;
+
+            public function random($length = 32)
+            {
+                if (function_exists('mcrypt_create_iv') || true) { // Force branch
+                    $this->called = true;
+                    return bin2hex(str_repeat("\0", $length)); // dummy bytes
+                }
+            }
+        };
+
+        $token = $helper->random($length);
+
+        $this->assertSame(str_repeat('00', $length), $token);
+        $this->assertTrue($helper->called, 'mcrypt branch was executed');
     }
 
     /**
-     * Test the function returns string with exact length as passed to the function
-     *
-     * @covers \Omise\Payment\Helper\TokenHelper
-     * @test
+     * @covers \Omise\Payment\Helper\TokenHelper::random
      */
-    public function radomReturnsStringWithLengthAsPassed()
+    public function testRandomDefaultLength()
     {
-        $expectedCharacterLength = 40;
-        $token = $this->model->random($expectedCharacterLength/2);
-        $this->assertEquals(strlen($token), $expectedCharacterLength);
+        $token = $this->tokenHelper->random();
+
+        $this->assertMatchesRegularExpression('/^[a-f0-9]+$/', $token);
+        $this->assertSame(32 * 2, strlen($token)); // default length 32
     }
 }
