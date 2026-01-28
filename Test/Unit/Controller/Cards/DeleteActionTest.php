@@ -15,10 +15,17 @@ use PHPUnit\Framework\TestCase;
  */
 class DeleteActionTest extends TestCase
 {
-    private DeleteAction $controller;
-    private Http $requestMock;
-    private ManagerInterface $messageManagerMock;
-    private Customer $customerMock;
+    /** @var DeleteAction */
+    private $controller;
+
+    /** @var Http */
+    private $requestMock;
+
+    /** @var ManagerInterface */
+    private $messageManagerMock;
+
+    /** @var Customer */
+    private $customerMock;
 
     protected function setUp(): void
     {
