@@ -3,6 +3,7 @@ namespace Omise\Payment\Test\Unit\Model;
 
 use Omise\Payment\Model\PaymentInformation;
 use Omise\Payment\Api\Data\PaymentInterface;
+use Omise\Payment\Test\Unit\Model\Stub\PaymentFactoryStub;
 use Magento\Checkout\Model\Session;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
@@ -11,34 +12,10 @@ use Magento\Framework\Exception\SessionException;
 use Magento\Framework\Exception\AuthorizationException;
 use Magento\Framework\Exception\PaymentException;
 
-// -----------------------------------------------------------------------------
-// Step 1: Define a stub factory class for testing
-// -----------------------------------------------------------------------------
-class PaymentFactoryStub
-{
-    private PaymentInterface $data;
-
-    public function __construct(PaymentInterface $data)
-    {
-        $this->data = $data;
-    }
-
-    public function create(): PaymentInterface
-    {
-        return $this->data;
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Step 2: Use class_alias() to satisfy the type hint in PaymentInformation
-// -----------------------------------------------------------------------------
 if (!class_exists(\Omise\Payment\Api\Data\PaymentInterfaceFactory::class)) {
     class_alias(PaymentFactoryStub::class, \Omise\Payment\Api\Data\PaymentInterfaceFactory::class);
 }
 
-// -----------------------------------------------------------------------------
-// Step 3: Unit test class
-// -----------------------------------------------------------------------------
 class PaymentInformationTest extends TestCase
 {
     private Session $sessionMock;
