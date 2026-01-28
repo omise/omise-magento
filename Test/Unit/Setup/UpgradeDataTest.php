@@ -189,4 +189,3 @@ class UpgradeDataTest extends TestCase
         $this->upgradeData->upgrade($setupMock, $contextMock);
     }
 }
-
