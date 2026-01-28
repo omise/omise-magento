@@ -124,7 +124,8 @@ class CreditMemoServiceTest extends TestCase
         $this->invoice->shouldReceive('loadByIncrementId')->with('INV004')->once()->andReturn($invoice1);
 
         $this->creditMemoFactory->shouldReceive('createByOrder')->with($orderMock)->once()->andReturn($creditMemoMock);
-        $creditMemoMock->shouldReceive('setCustomerNote')->once()->andThrow(new Exception('Error creating credit memo'));
+        $creditMemoMock->shouldReceive('setCustomerNote')->once()
+        ->andThrow(new Exception('Error creating credit memo'));
         $this->creditMemoService->shouldReceive('refund')->never();
 
         try {

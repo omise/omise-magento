@@ -66,7 +66,10 @@ class IndexTest extends TestCase
 
         // Set protected _actionFlag
         $mockActionFlag = new class {
-            public function set($controller, $flag, $value) { return true; }
+            public function set($controller, $flag, $value) 
+            { 
+                return true; 
+            }
         };
         $reflection = new \ReflectionProperty($this->controller, '_actionFlag');
         $reflection->setAccessible(true);

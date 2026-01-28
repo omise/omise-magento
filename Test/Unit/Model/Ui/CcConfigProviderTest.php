@@ -31,7 +31,6 @@ class CcConfigProviderTest extends TestCase
         );
     }
 
-
     /**
      * @covers \Omise\Payment\Model\Ui\CcConfigProvider::getCards
      * @covers \Omise\Payment\Model\Ui\CcConfigProvider::getConfig
@@ -59,8 +58,6 @@ class CcConfigProviderTest extends TestCase
 
         $this->assertSame([], $this->provider->getCards());
     }
-
-
 
     /**
      * @covers ::__construct

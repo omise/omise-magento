@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace Magento\Eav\Setup {
     class EavSetupFactory {
-        public function create($args) {}
+        public function create($args) 
+        {
+
+        }
     }
 
     class EavSetup {
-        public function addAttribute($entity, $code, $options) {}
+        public function addAttribute($entity, $code, $options) 
+        {
+
+        }
     }
 }
 
 namespace Magento\Eav\Model {
     class Config {
-        public function getAttribute($entity, $code) {}
+        public function getAttribute($entity, $code) 
+        {
+            
+        }
     }
 }
 
@@ -134,10 +143,26 @@ namespace Omise\Payment\Test\Unit\Setup {
             $connectionMock->expects($this->exactly(4))
                 ->method('update')
                 ->withConsecutive(
-                    ['core_config_data', ['path' => 'payment/omise_cc/active'], ['path = ?' => 'payment/omise/active']],
-                    ['core_config_data', ['path' => 'payment/omise_cc/title'], ['path = ?' => 'payment/omise/title']],
-                    ['core_config_data', ['path' => 'payment/omise_cc/3ds'], ['path = ?' => 'payment/omise/3ds']],
-                    ['core_config_data', ['path' => 'payment/omise_cc/payment_action'], ['path = ?' => 'payment/omise/payment_action']]
+                    [
+                        'core_config_data',
+                        ['path' => 'payment/omise_cc/active'],
+                        ['path = ?' => 'payment/omise/active']
+                    ],
+                    [
+                        'core_config_data',
+                        ['path' => 'payment/omise_cc/title'],
+                        ['path = ?' => 'payment/omise/title']
+                    ],
+                    [
+                        'core_config_data',
+                        ['path' => 'payment/omise_cc/3ds'],
+                        ['path = ?' => 'payment/omise/3ds']
+                    ],
+                    [
+                        'core_config_data',
+                        ['path' => 'payment/omise_cc/payment_action'],
+                        ['path = ?' => 'payment/omise/payment_action']
+                    ]
                 );
 
             $this->upgradeData->upgrade($setupMock, $contextMock);

@@ -87,7 +87,10 @@ class CustomerTest extends TestCase
         $errorMock = new Error();
 
         // Customer object returned by API
-        $mockCustomerObject = new class { public $id = 'cust_999'; };
+        $mockCustomerObject = new class 
+        { 
+            public $id = 'cust_999'; 
+        };
 
         // Mock of OmiseCustomerAPI
         $customerAPIMock = $this->createMock(OmiseCustomerAPI::class);
@@ -160,7 +163,10 @@ class CustomerTest extends TestCase
      */
     public function testCreateAssignsOmiseCustomerId()
     {
-        $mockOmiseCustomer = new class { public $id = 'cust_456'; };
+        $mockOmiseCustomer = new class 
+        { 
+            public $id = 'cust_456'; 
+        };
         $customerAPIMock = $this->createMock(OmiseCustomerAPI::class);
         $customerAPIMock->method('create')->willReturn($mockOmiseCustomer);
 
@@ -185,7 +191,10 @@ class CustomerTest extends TestCase
     {
         $mockOmiseCustomer = new class {
             public $id = 'cust_789';
-            public function update($data) { return $this; }
+            public function update($data) 
+            { 
+                return $this; 
+            }
         };
 
         $customerAPIMock = $this->createMock(OmiseCustomerAPI::class);
@@ -208,13 +217,22 @@ class CustomerTest extends TestCase
     {
         $cardMock = new class {
             public $destroyCalled = false;
-            public function destroy() { $this->destroyCalled = true; }
+            public function destroy() 
+            { 
+                $this->destroyCalled = true; 
+            }
         };
 
         $cardsStub = new class($cardMock) {
             private $card;
-            public function __construct($card) { $this->card = $card; }
-            public function retrieve($token) { return $this->card; }
+            public function __construct($card) 
+            { 
+                $this->card = $card; 
+            }
+            public function retrieve($token) 
+            { 
+                return $this->card; 
+            }
         };
 
         $customerAPIMock = $this->createMock(OmiseCustomerAPI::class);

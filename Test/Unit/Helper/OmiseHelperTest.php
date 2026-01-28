@@ -270,7 +270,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $orderMock->method('hasInvoices')->willReturn(true);
         $orderMock->method('getInvoiceCollection')->willReturn($invoiceCollectionMock);
 
-        $this->configMock->method('getSendInvoiceAtOrderStatus')->willReturn(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT);
+        $this->configMock->method('getSendInvoiceAtOrderStatus')
+        ->willReturn(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT);
 
         $resultInvoice = $this->model->createInvoiceAndMarkAsPaid($orderMock, $chargeId, true);
         $this->assertSame($existingInvoiceMock, $resultInvoice);

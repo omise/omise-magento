@@ -64,4 +64,3 @@ class PendingPaymentHandlerTest extends TestCase
         $this->handler->handle($handlingSubject, $response);
     }
 }
-

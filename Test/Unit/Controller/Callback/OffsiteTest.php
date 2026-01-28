@@ -20,6 +20,7 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Sales\Model\Order\Payment\Transaction;
+
 /**
  * @coversDefaultClass \Omise\Payment\Controller\Callback\Offsite
  */
@@ -288,7 +289,7 @@ class OffsiteTest extends TestCase
 
         // Expect LocalizedException
         $this->expectException(\Magento\Framework\Exception\LocalizedException::class);
-        $this->expectExceptionMessage('Payment failed. Payment declined, please contact our support if you have any questions.');
+        $this->expectExceptionMessage('Payment failed. Payment declined, please contact our support.');
 
         // Call the private method
         $method->invoke($this->controller, $charge);

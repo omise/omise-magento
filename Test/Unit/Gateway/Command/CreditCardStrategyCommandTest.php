@@ -18,7 +18,6 @@ use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Api\Charge;
 use PHPUnit\Framework\TestCase;
 
-
 /**
  * @coversDefaultClass \Omise\Payment\Gateway\Command\CreditCardStrategyCommand
  */

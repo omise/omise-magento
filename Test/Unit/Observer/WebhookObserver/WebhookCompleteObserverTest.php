@@ -58,10 +58,22 @@ class WebhookCompleteObserverTest extends TestCase
             private bool $successful = false;
             public string $id = 'chrg_test_123';
 
-            public function isFailed(): bool { return $this->failed; }
-            public function setFailed(bool $val): void { $this->failed = $val; }
-            public function isSuccessful(): bool { return $this->successful; }
-            public function setSuccessful(bool $val): void { $this->successful = $val; }
+            public function isFailed(): bool 
+            { 
+                return $this->failed; 
+            }
+            public function setFailed(bool $val): void 
+            { 
+                $this->failed = $val; 
+            }
+            public function isSuccessful(): bool 
+            { 
+                return $this->successful; 
+            }
+            public function setSuccessful(bool $val): void 
+            { 
+                $this->successful = $val; 
+            }
         };
 
         // Order config stub

@@ -31,8 +31,14 @@ class FormModalTest extends TestCase
 
         // Inject fake theme
         $theme = new class {
-            public function getLightTheme() { return ['bg' => '#fff']; }
-            public function getDarkTheme() { return ['bg' => '#000']; }
+            public function getLightTheme() 
+            { 
+                return ['bg' => '#fff']; 
+            }
+            public function getDarkTheme() 
+            { 
+                return ['bg' => '#000']; 
+            }
         };
         $this->setProperty($this->block, 'theme', $theme);
 

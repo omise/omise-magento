@@ -252,7 +252,6 @@ public function testGetStoreLocale()
         $this->assertEquals('live_skey_xxx', $method->invoke($config));
     }
 
-
     /**
      * @dataProvider isDynamicWebhooksEnabledProvider
      * @covers Omise\Payment\Model\Config\Config
