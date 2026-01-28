@@ -19,11 +19,11 @@ use Exception;
  */
 class CreditMemoServiceTest extends TestCase
 {
-    private CreditMemoService $service;
-    private CreditmemoFactory $creditMemoFactory;
-    private MagentoCreditmemoService $creditMemoService;
-    private Invoice $invoice;
-    private ObjectManagerHelper $objectManager;
+    private $service;
+    private $creditMemoFactory;
+    private $creditMemoService;
+    private $invoice;
+    private $objectManager;
 
     protected function setUp(): void
     {

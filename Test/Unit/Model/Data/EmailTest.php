@@ -25,15 +25,15 @@ use PHPUnit\Framework\TestCase;
  */
 final class EmailTest extends TestCase
 {
-    private ScopeConfigInterface $scopeConfig;
-    private Charge $charge;
-    private Repository $assetRepo;
-    private TransportBuilder $transportBuilder;
-    private TransportInterface $transport;
-    private StoreManagerInterface $storeManager;
-    private Store $store;
-    private OmiseHelper $helper;
-    private Email $email;
+    private $scopeConfig;
+    private $charge;
+    private $assetRepo;
+    private $transportBuilder;
+    private $transport;
+    private $storeManager;
+    private $store;
+    private $helper;
+    private $email;
 
     protected function setUp(): void
     {

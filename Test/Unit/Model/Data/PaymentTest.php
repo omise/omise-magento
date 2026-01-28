@@ -13,8 +13,8 @@ use Magento\Framework\Api\AttributeValueFactory;
  */
 class PaymentTest extends TestCase
 {
-    private ExtensionAttributesFactory $extensionFactory;
-    private AttributeValueFactory $attributeFactory;
+    private $extensionFactory;
+    private $attributeFactory;
 
     protected function setUp(): void
     {

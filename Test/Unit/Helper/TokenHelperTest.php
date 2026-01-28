@@ -8,7 +8,7 @@ use Omise\Payment\Helper\TokenHelper;
  */
 class TokenHelperTest extends TestCase
 {
-    private TokenHelper $tokenHelper;
+    private $tokenHelper;
 
     protected function setUp(): void
     {

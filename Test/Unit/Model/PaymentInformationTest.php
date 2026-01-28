@@ -18,9 +18,14 @@ if (!class_exists(\Omise\Payment\Api\Data\PaymentInterfaceFactory::class)) {
 
 class PaymentInformationTest extends TestCase
 {
-    private Session $sessionMock;
-    private \Omise\Payment\Api\Data\PaymentInterfaceFactory $factoryStub;
-    private PaymentInformation $paymentInfo;
+    /** @var Session|\PHPUnit\Framework\MockObject\MockObject */
+    private $sessionMock;
+
+    /** @var \Omise\Payment\Api\Data\PaymentInterfaceFactory */
+    private $factoryStub;
+
+    /** @var PaymentInformation */
+    private $paymentInfo;
 
     protected function setUp(): void
     {

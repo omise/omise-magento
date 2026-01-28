@@ -15,8 +15,8 @@ use PHPUnit\Framework\TestCase;
  */
 class CustomerTest extends TestCase
 {
-    private Config $config;
-    private Customer $customer;
+    private $config;
+    private $customer;
 
     protected function setUp(): void
     {

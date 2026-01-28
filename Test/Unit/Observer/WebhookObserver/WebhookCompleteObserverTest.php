@@ -24,15 +24,15 @@ use ReflectionClass;
  */
 class WebhookCompleteObserverTest extends TestCase
 {
-    private WebhookCompleteObserver $observer;
-    private Observer $observerEvent;
+    private $observer;
+    private $observerEvent;
     private $chargeStub;
     private $paymentStub;
     private $invoiceStub;
     private $orderConfigStub;
-    private MagentoOrder $magentoOrder;
-    private OmiseEmailHelper $emailHelper;
-    private OmiseHelper $helper;
+    private $magentoOrder;
+    private $emailHelper;
+    private $helper;
 
     protected function setUp(): void
     {

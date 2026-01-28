@@ -17,13 +17,13 @@ use Magento\Sales\Model\Order as MagentoOrder;
  */
 class WebhookObserverTest extends TestCase
 {
-    private ApiEvent $apiEventMock;
-    private Order $orderMock;
-    private Config $configMock;
-    private Observer $observerMock;
-    private ApiCharge $chargeMock;
-    private Payment $paymentMock;
-    private MagentoOrder $magentoOrderMock;
+    private $apiEventMock;
+    private $orderMock;
+    private $configMock;
+    private $observerMock;
+    private $chargeMock;
+    private $paymentMock;
+    private $magentoOrderMock;
 
     protected function setUp(): void
     {

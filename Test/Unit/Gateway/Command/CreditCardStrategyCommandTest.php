@@ -23,10 +23,17 @@ use PHPUnit\Framework\TestCase;
  */
 class CreditCardStrategyCommandTest extends TestCase
 {
-    private CommandPoolInterface $commandPool;
-    private OmiseHelper $helper;
-    private OmiseEmailHelper $emailHelper;
-    private Charge $charge;
+    /** @var CommandPoolInterface */
+    private $commandPool;
+
+    /** @var OmiseHelper */
+    private $helper;
+
+    /** @var OmiseEmailHelper */
+    private $emailHelper;
+
+    /** @var Charge */
+    private $charge;
 
     protected function setUp(): void
     {

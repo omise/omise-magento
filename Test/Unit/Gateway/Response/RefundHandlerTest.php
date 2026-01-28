@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class RefundHandlerTest extends TestCase
 {
-    private RefundHandler $handler;
+    private $handler;
 
     protected function setUp(): void
     {

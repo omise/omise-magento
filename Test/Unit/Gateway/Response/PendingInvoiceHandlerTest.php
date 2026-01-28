@@ -16,10 +16,17 @@ use PHPUnit\Framework\TestCase;
  */
 class PendingInvoiceHandlerTest extends TestCase
 {
-    private PendingInvoiceHandler $handler;
-    private OmiseHelper $helper;
-    private OmiseEmailHelper $emailHelper;
-    private Config $config;
+   /** @var PendingInvoiceHandler */
+    private $handler;
+
+    /** @var OmiseHelper */
+    private $helper;
+
+    /** @var OmiseEmailHelper */
+    private $emailHelper;
+
+    /** @var Config */
+    private $config;
 
     protected function setUp(): void
     {

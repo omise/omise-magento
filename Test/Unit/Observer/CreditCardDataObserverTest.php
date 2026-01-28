@@ -21,8 +21,8 @@ use Magento\Payment\Model\InfoInterface;
 
 class CreditCardDataObserverTest extends TestCase
 {
-    private Customer $customerMock;
-    private CreditCardDataObserver $observer;
+    private $customerMock;
+    private $observer;
 
     protected function setUp(): void
     {

@@ -12,9 +12,9 @@ use PHPUnit\Framework\TestCase;
  */
 class RefundSyncStatusTest extends TestCase
 {
-    private CreditMemoService $creditMemoService;
-    private RefundSyncStatus $refundSyncStatus;
-    private Order $order;
+    private $creditMemoService;
+    private $refundSyncStatus;
+    private $order;
 
     protected function setUp(): void
     {

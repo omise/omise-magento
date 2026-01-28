@@ -12,8 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class PendingPaymentHandlerTest extends TestCase
 {
-    private PendingPaymentHandler $handler;
-    private OmiseHelper $helper;
+    /** @var PendingPaymentHandler */
+    private $handler;
+
+    /** @var OmiseHelper */
+    private $helper;
 
     protected function setUp(): void
     {

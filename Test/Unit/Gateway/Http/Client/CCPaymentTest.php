@@ -11,10 +11,17 @@ use PHPUnit\Framework\TestCase;
 
 class CCPaymentTest extends TestCase
 {
-    private CCPayment $ccPayment;
-    private Charge $apiChargeMock;
-    private Omise $omiseMock;
-    private TransferInterface $transferMock;
+    /** @var CCPayment */
+    private $ccPayment;
+
+    /** @var Charge */
+    private $apiChargeMock;
+
+    /** @var Omise */
+    private $omiseMock;
+
+    /** @var TransferInterface */
+    private $transferMock;
 
     protected function setUp(): void
     {
