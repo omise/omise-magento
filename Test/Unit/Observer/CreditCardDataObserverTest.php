@@ -1,15 +1,8 @@
 <?php
-// ------------------------
-// Stub for Magento PaymentInterface to run tests in isolation
-// ------------------------
-namespace Magento\Payment\Api\Data;
-
-interface PaymentInterface
-{
-    const KEY_ADDITIONAL_DATA = 'additional_data';
-}
 
 namespace Omise\Payment\Test\Unit\Observer;
+
+require_once __DIR__ . '/../Stubs/PaymentInterface.php';
 
 use Omise\Payment\Observer\CreditCardDataObserver;
 use Omise\Payment\Model\Customer;

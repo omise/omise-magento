@@ -53,26 +53,36 @@ class WebhookCompleteObserverTest extends TestCase
 
         // Charge stub
         $this->chargeStub = new class {
-            public string $failure_message = '';
-            private bool $failed = false;
-            private bool $successful = false;
-            public string $id = 'chrg_test_123';
+            /** @var string */
+            public $failure_message = '';
 
-            public function isFailed(): bool
+            /** @var bool */
+            private $failed = false;
+
+            /** @var bool */
+            private $successful = false;
+
+            /** @var string */
+            public $id = 'chrg_test_123';
+
+            public function isFailed()
             {
                 return $this->failed;
             }
-            public function setFailed(bool $val): void
+
+            public function setFailed($val)
             {
-                $this->failed = $val;
+                $this->failed = (bool)$val;
             }
-            public function isSuccessful(): bool
+
+            public function isSuccessful()
             {
                 return $this->successful;
             }
-            public function setSuccessful(bool $val): void
+
+            public function setSuccessful($val)
             {
-                $this->successful = $val;
+                $this->successful = (bool)$val;
             }
         };
 

@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Omise\Payment\Test\Unit\Helper;
+
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Helper\TokenHelper;
 

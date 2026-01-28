@@ -70,7 +70,8 @@ class CustomerTest extends TestCase
         $cards = ['card_1', 'card_2'];
 
         $dummyObject = new class($cards) {
-            private array $cards;
+            /** @var array */
+            private $cards;
             public function __construct(array $cards)
             {
                 $this->cards = $cards;
