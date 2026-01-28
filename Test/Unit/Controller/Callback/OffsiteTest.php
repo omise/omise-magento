@@ -326,11 +326,14 @@ class OffsiteTest extends TestCase
         $payment = $this->createMock(Payment::class);
         $payment->method('getAdditionalInformation')
             ->willReturnCallback(function ($key) use ($chargeId, $token) {
-                return match($key) {
-                "charge_id" => $chargeId,
-                "token"     => $token,
-                default     => null,
-                };
+                switch ($key) {
+                    case 'charge_id':
+                        return $chargeId;
+                    case 'token':
+                        return $token;
+                    default:
+                        return null;
+                }
             });
 
         $payment->method('getMethod')->willReturn('offsite_method');
