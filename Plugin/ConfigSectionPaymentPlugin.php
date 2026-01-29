@@ -72,7 +72,6 @@ class ConfigSectionPaymentPlugin
         if (!defined('OMISE_API_VERSION')) {
             define('OMISE_API_VERSION', '2019-05-29');
         }
-        //define('OMISE_API_VERSION', '2019-05-29');
     }
 
     /**
