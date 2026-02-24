@@ -25,7 +25,7 @@ class PayPayAPMBuilderTest extends APMBuilderTest
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capability,
+            $this->capabilities,
             new OmiseMoney(),
             $this->requestHelper
         );

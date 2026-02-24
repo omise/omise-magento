@@ -10,7 +10,7 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
-use Omise\Payment\Model\Capability;
+use Omise\Payment\Model\Capabilities;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -54,7 +54,7 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $money;
 
-    private $capability;
+    private $capabilities;
 
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
@@ -63,11 +63,11 @@ class PaymentDataBuilder implements BuilderInterface
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
-        Capability $capability
+        Capabilities $capabilities
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
-        $this->capability = $capability;
+        $this->capabilities = $capabilities;
     }
 
     /**

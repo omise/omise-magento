@@ -3,7 +3,7 @@
 namespace Omise\Payment\Model\Ui;
 
 use Omise\Payment\Helper\RequestHelper;
-use Omise\Payment\Model\Capability;
+use Omise\Payment\Model\Capabilities;
 use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\CcGooglePay;
@@ -12,11 +12,11 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
 
-class CapabilityConfigProvider implements ConfigProviderInterface
+class CapabilitiesConfigProvider implements ConfigProviderInterface
 {
     private $_storeManager;
 
-    private $capability;
+    private $capabilities;
 
     /**
      * @var \Omise\Payment\Helper\RequestHelper
@@ -29,12 +29,12 @@ class CapabilityConfigProvider implements ConfigProviderInterface
     private $_paymentLists;
 
     public function __construct(
-        Capability               $capability,
+        Capabilities               $capabilities,
         PaymentMethodListInterface $paymentLists,
         StoreManagerInterface      $storeManager,
         RequestHelper $requestHelper
     ) {
-        $this->capability    = $capability;
+        $this->capabilities    = $capabilities;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
         $this->requestHelper = $requestHelper;
@@ -50,16 +50,16 @@ class CapabilityConfigProvider implements ConfigProviderInterface
         $listOfActivePaymentMethods = $this->_paymentLists->getActiveList($this->_storeManager->getStore()->getId());
         $currency = $this->_storeManager->getStore()->getCurrentCurrencyCode();
         $configs = [];
-        $configs['omise_installment_min_limit'] = $this->capability->getInstallmentMinLimit($currency);
+        $configs['omise_installment_min_limit'] = $this->capabilities->getInstallmentMinLimit($currency);
         $configs['omise_payment_list'] = [];
 
         foreach ($listOfActivePaymentMethods as $method) {
             $code = $method->getCode();
 
             if ($code === OmiseInstallmentConfig::CODE) {
-                $configs['is_zero_interest'] = $this->capability->isZeroInterest();
+                $configs['is_zero_interest'] = $this->capabilities->isZeroInterest();
             } elseif ($code === CcGooglePay::CODE) {
-                $configs['card_brands'] = $this->capability->getCardBrands();
+                $configs['card_brands'] = $this->capabilities->getCardBrands();
             }
 
             $this->filterActiveBackends($code, $configs['omise_payment_list']);
@@ -75,9 +75,9 @@ class CapabilityConfigProvider implements ConfigProviderInterface
      */
     private function filterActiveBackends($code, &$paymentList)
     {
-        // Retrieve available backends & methods from capability api
-        $paymentBackends = $this->capability->getBackendsWithOmiseCode();
-        $tokenizationMethods = $this->capability->getTokenizationMethodsWithOmiseCode();
+        // Retrieve available backends & methods from capabilities api
+        $paymentBackends = $this->capabilities->getBackendsWithOmiseCode();
+        $tokenizationMethods = $this->capabilities->getTokenizationMethodsWithOmiseCode();
         $mergedBackends = array_merge($paymentBackends, $tokenizationMethods);
 
         // filter only active backends
@@ -108,15 +108,15 @@ class CapabilityConfigProvider implements ConfigProviderInterface
         // Since ShopeePay will have two types i.e shopeepay and shopeepay_jumpapp,
         // we split and store the type in separate variables.
         foreach ($shopeeBackends as $backend) {
-            if ($backend->name === Shopeepay::JUMPAPP_ID) {
+            if ($backend->type === Shopeepay::JUMPAPP_ID) {
                 $jumpAppBackend[] = $backend;
             } else {
                 $mpmBackend[] = $backend;
             }
         }
 
-        $isShopeepayJumpAppEnabled = $this->capability->isBackendEnabled(Shopeepay::JUMPAPP_ID);
-        $isShopeepayEnabled = $this->capability->isBackendEnabled(Shopeepay::ID);
+        $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
+        $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
 
         // If user is in mobile and jump app is enabled then return jumpapp backend
         if ($this->requestHelper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
@@ -146,15 +146,15 @@ class CapabilityConfigProvider implements ConfigProviderInterface
         // Since Truemoney will have two types i.e truemoney and truemoney_jumpapp,
         // we split and store the type in separate variables.
         foreach ($truemoneyBackends as $backend) {
-            if ($backend->name === Truemoney::JUMPAPP_ID) {
+            if ($backend->type === Truemoney::JUMPAPP_ID) {
                 $jumpAppBackend[] = $backend;
             } else {
                 $walletBackend[] = $backend;
             }
         }
 
-        $isJumpAppEnabled = $this->capability->isBackendEnabled(Truemoney::JUMPAPP_ID);
-        $isWalletEnabled = $this->capability->isBackendEnabled(Truemoney::ID);
+        $isJumpAppEnabled = $this->capabilities->isBackendEnabled(Truemoney::JUMPAPP_ID);
+        $isWalletEnabled = $this->capabilities->isBackendEnabled(Truemoney::ID);
 
         if (!$isJumpAppEnabled && $isWalletEnabled) {
             return $walletBackend;

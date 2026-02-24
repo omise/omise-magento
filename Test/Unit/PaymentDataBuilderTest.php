@@ -18,7 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Promptpay;
-use Omise\Payment\Model\Capability;
+use Omise\Payment\Model\Capabilities;
 
 class PaymentDataBuilderTest extends TestCase
 {
@@ -31,7 +31,7 @@ class PaymentDataBuilderTest extends TestCase
     private $configMock;
     private $storeManagerMock;
     private $storeMock;
-    private $capability;
+    private $capabilities;
 
     protected function setUp(): void
     {
@@ -44,7 +44,7 @@ class PaymentDataBuilderTest extends TestCase
         $this->orderMock = m::mock(OrderInterface::class);
         $this->storeManagerMock =  m::mock(StoreManagerInterface::class);
         $this->storeMock =  m::mock(StoreInterface::class);
-        $this->capability = m::mock(Capability::class);
+        $this->capabilities = m::mock(Capabilities::class);
     }
 
     /**
@@ -103,7 +103,7 @@ class PaymentDataBuilderTest extends TestCase
         $model = new PaymentDataBuilder(
             $this->ccConfigMock,
             $this->omiseMoneyMock,
-            $this->capability
+            $this->capabilities
         );
         $result = $model->build(['payment' => $this->paymentDataMock]);
 
