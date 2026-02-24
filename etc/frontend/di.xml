@@ -6,7 +6,7 @@
             <argument name="configProviders" xsi:type="array">
                 <item name="omise_cc_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CcConfigProvider</item>
                 <item name="omise_plugin_config_provider" xsi:type="object">Omise\Payment\Model\Ui\PluginConfigProvider</item>
-                <item name="omise_capability_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CapabilityConfigProvider</item>
+                <item name="omise_capabilities_config_provider" xsi:type="object">Omise\Payment\Model\Ui\CapabilitiesConfigProvider</item>
             </argument>
         </arguments>
     </type>

@@ -2,8 +2,6 @@
 
 namespace Omise\Payment\Test\Unit\Model\Api;
 
-use ArrayAccess;
-
 /**
  * Mock Omise object class.
  * Usually OmiseObject will be extended by Omise resource classes (i.e. OmiseCharge, OmiseCustomer and so on).
@@ -11,8 +9,7 @@ use ArrayAccess;
  *
  * @see refresh_omise_object  method of this test (it will be used only in that test).
  */
-#[\AllowDynamicProperties]
-class MockOmiseObject implements ArrayAccess
+class MockOmiseObject implements \ArrayAccess
 {
     // Store the attributes of the object.
     protected $_values = [];
@@ -25,32 +22,26 @@ class MockOmiseObject implements ArrayAccess
         ];
     }
 
-    public function reload()
-    {
-        //
-    }
-
     /**
      * Override methods of ArrayAccess
      */
-    public function offsetSet(mixed $key, mixed $value): void
+    public function offsetSet($key, $value)
     {
-        $this->{$key} = $value;
+        $this->_values[$key] = $value;
     }
 
-    public function offsetExists(mixed $key): bool
+    public function offsetExists($key)
     {
-        return isset($this->{$key});
+        return isset($this->_values[$key]);
     }
 
-    public function offsetUnset(mixed $key): void
+    public function offsetUnset($key)
     {
-        unset($this->{$key});
+        unset($this->_values[$key]);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetGet(mixed $key)
+    public function offsetGet($key)
     {
-        return isset($this->{$key}) ? $this->{$key} : null;
+        return isset($this->_values[$key]) ? $this->_values[$key] : null;
     }
 }

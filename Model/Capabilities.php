@@ -2,12 +2,12 @@
 
 namespace Omise\Payment\Model;
 
-use Omise\Payment\Model\Api\Capability as OmiseCapabilityAPI;
+use Omise\Payment\Model\Api\Capabilities as OmiseCapabilitiesAPI;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseMoney;
 
-class Capability
+class Capabilities
 {
     /**
      * @var \Omise\Payment\Model\Omise
@@ -15,9 +15,9 @@ class Capability
     protected $omise;
 
     /**
-     * @var \Omise\Payment\Model\Api\Capability
+     * @var \Omise\Payment\Model\Api\Capabilities
      */
-    protected $capabilityAPI;
+    protected $capabilitiesAPI;
 
     /**
      * @var Omise\Payment\Helper\OmiseHelper
@@ -31,12 +31,12 @@ class Capability
 
     public function __construct(
         Omise $omise,
-        OmiseCapabilityAPI $capabilityAPI,
+        OmiseCapabilitiesAPI $capabilitiesAPI,
         OmiseHelper $helper,
         OmiseMoney $money
     ) {
         $this->omise = $omise;
-        $this->capabilityAPI = $capabilityAPI;
+        $this->capabilitiesAPI = $capabilitiesAPI;
         $this->helper = $helper;
         $this->money = $money;
 
@@ -50,7 +50,7 @@ class Capability
      */
     public function retrieveInstallmentBackends()
     {
-        return $this->capabilityAPI->getInstallmentBackends();
+        return $this->capabilitiesAPI->getInstallmentBackends();
     }
 
     /**
@@ -58,7 +58,7 @@ class Capability
      */
     public function isZeroInterest()
     {
-        return $this->capabilityAPI->isZeroInterest();
+        return $this->capabilitiesAPI->isZeroInterest();
     }
 
     /**
@@ -67,7 +67,7 @@ class Capability
      */
     public function getBackendsByType(string $type)
     {
-        return $this->capabilityAPI->getBackendsByType($type);
+        return $this->capabilitiesAPI->getBackendsByType($type);
     }
 
     /**
@@ -76,10 +76,10 @@ class Capability
      */
     public function retrieveMobileBankingBackends()
     {
-        $backends = $this->capabilityAPI->getPaymentMethods();
+        $backends = $this->capabilitiesAPI->getBackends();
         return array_filter($backends, function ($obj) {
-            if (isset($obj->name)) {
-                if (preg_match('/mobile_banking_\S+/m', $obj->name)) {
+            if (isset($obj->_id)) {
+                if (preg_match('/mobile_banking_\S+/m', $obj->_id)) {
                     return true;
                 }
             }
@@ -90,9 +90,9 @@ class Capability
      *
      * @return array|null
      */
-    public function getPaymentMethods()
+    public function getBackends()
     {
-        return $this->capabilityAPI->getPaymentMethods();
+        return $this->capabilitiesAPI->getBackends();
     }
 
     public function isBackendEnabled($type)
@@ -106,11 +106,11 @@ class Capability
      */
     public function getBackendsWithOmiseCode()
     {
-        $backends = $this->capabilityAPI->getPaymentMethods();
+        $backends = $this->capabilitiesAPI->getBackends();
         $list = [];
         if ($backends) {
             foreach ($backends as $backend) {
-                $code = $this->helper->getOmiseCodeByOmiseId($backend->name);
+                $code = $this->helper->getOmiseCodeByOmiseId($backend->_id);
                 if (isset($code)) {
                     $list[$code][] = $backend;
                 }
@@ -126,7 +126,7 @@ class Capability
     public function getCardBrands()
     {
         $card = $this->getBackendsByType("card");
-        return $card ? current($card)->card_brands : [];
+        return $card ? current($card)->brands : [];
     }
 
     /**
@@ -135,7 +135,7 @@ class Capability
      */
     public function getTokenizationMethods()
     {
-        return $this->capabilityAPI->getTokenizationMethods();
+        return $this->capabilitiesAPI->getTokenizationMethods();
     }
 
     /**
@@ -143,7 +143,7 @@ class Capability
      */
     public function getInstallmentMinLimit($currency)
     {
-        $amount = $this->capabilityAPI->getInstallmentMinLimit();
+        $amount = $this->capabilitiesAPI->getInstallmentMinLimit();
         return $this->money->setAmountAndCurrency(
             $amount,
             $currency
@@ -156,7 +156,7 @@ class Capability
      */
     public function getTokenizationMethodsWithOmiseCode()
     {
-        $methods = $this->capabilityAPI->getTokenizationMethods();
+        $methods = $this->capabilitiesAPI->getTokenizationMethods();
         $list = [];
         if ($methods) {
             foreach ($methods as $method) {
