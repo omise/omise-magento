@@ -1,5 +1,5 @@
 # CHANGELOG
-## [v3.10.0 _(Mar, 17, 2025)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
+## [v3.10.0 _(Mar, 2, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
 - Logo & Payment Method Names updated (including LinePay)
 - Passkey support
 - the fix on GPay button
