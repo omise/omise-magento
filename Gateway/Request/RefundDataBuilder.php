@@ -57,9 +57,8 @@ class RefundDataBuilder implements BuilderInterface
         /** @var Payment $payment */
         $payment = $paymentDO->getPayment();
         $order = $payment->getOrder();
-        $currency = $order->getOrderCurrency()->getCode();
-        $amountToRefund = $order->getTotalOnlineRefunded();
-
+        $amountToRefund = $this->subjectReader->readAmount($buildSubject);
+        $currency = $order->getBaseCurrencyCode();
         return [
             'store_id' => $order->getStore()->getId(),
             'transaction_id' => $payment->getParentTransactionId(),
