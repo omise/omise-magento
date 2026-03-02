@@ -1,4 +1,9 @@
 # CHANGELOG
+## [v3.10.0 _(Mar, 17, 2025)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
+- Logo & Payment Method Names updated (including LinePay)
+- Passkey support
+- the fix on GPay button
+  (PR: [#510](https://github.com/omise/omise-magento/pull/510))
 
 ## [v3.9.0 _(Mar, 17, 2025)_](https://github.com/omise/omise-magento/releases/tag/v3.9.0)
 - Rebranding Opn Payments to Omise (PR: [#495](https://github.com/omise/omise-magento/pull/495))
