@@ -174,7 +174,7 @@ div.fpx {
 }
 
 div.boost {
-    background: url('../images/boost.png');
+    background: url('../images/boost.svg');
     width: 90px;
     height: 40px;
     float: right;
@@ -183,7 +183,7 @@ div.boost {
 }
 
 div.duitnow_obw {
-    background: url('../images/logo-duitnow.png');
+    background: url('../images/duitnow_obw_alt.svg');
     width: 68px;
     height: 22px;
     float: right;
@@ -374,4 +374,22 @@ div.shopeepay {
     margin-bottom: 3px;
     padding: 0px 12px;
     font-size: 1.3rem;
+}
+
+img.omise-custom-common, img.omise-custom-truemoney, img.omise-custom-kakao, img.omise-custom-linepay, img.omise-custom-grabpay, img.omise-custom-alipay, img.omise-custom-googlepay, img.omise-custom-atome, img.omise-custom-duitnow, img.omise-custom-fpx, img.omise-custom-maybankqr {
+    margin-top: -25px;
+}
+
+img.omise-custom-duitnowqr {
+    margin-top: -15px;
+}
+
+img.omise-custom-ocbc {
+    margin-top: -18px;
+    margin-right: 10px;
+}
+
+#gpay-button-online-api-id:hover, #gpay-button-online-api-id:active, #gpay-button-online-api-id:focus {
+    background-position: center center;
+    background-repeat: no-repeat;
 }

@@ -24,7 +24,7 @@ define(
             restrictedToCurrencies: ['thb'],
             logo: {
                 file: "images/wechat_pay.svg",
-                width: "30",
+                width: "73",
                 height: "30",
                 name: "wechat_pay"
             }

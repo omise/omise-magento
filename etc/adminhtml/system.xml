@@ -573,11 +573,11 @@
                     </field>
                 </group>
                 <group id="omise_offsite_rabbitlinepay" translate="label" sortOrder="490" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Rabbit LINE Pay Payment</label>
-                    <comment>Enable customers to pay using Rabbit LINE Pay payment method</comment>
+                    <label>Enable LINE Pay Payment</label>
+                    <comment>Enable customers to pay using LINE Pay payment method</comment>
                     <field id="active" translate="label comment" type="select" sortOrder="491" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable/Disable</label>
-                        <comment>Enable Rabbit LINE Pay payment method.</comment>
+                        <comment>Enable LINE Pay payment method.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/omise_offsite_rabbitlinepay/active</config_path>
                     </field>

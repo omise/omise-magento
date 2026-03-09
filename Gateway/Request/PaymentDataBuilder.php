@@ -80,7 +80,6 @@ class PaymentDataBuilder implements BuilderInterface
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
         $method  = $payment->getPayment();
-
         $store_id = $order->getStoreId();
         $om = \Magento\Framework\App\ObjectManager::getInstance();
         $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
@@ -105,7 +104,6 @@ class PaymentDataBuilder implements BuilderInterface
             $webhookUrl = $store->getBaseUrl() . Webhook::URI;
             $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
         }
-
         // Set zero_interest_installment to true for installment Maybank only
         if ($this->enableZeroInterestInstallments($method)) {
             $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = true;
