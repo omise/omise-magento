@@ -1,4 +1,9 @@
 # CHANGELOG
+## [v3.10.0 _(Mar, 10, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
+- Add Passkey support (PR: [#499](https://github.com/omise/omise-magento/pull/499))
+- Update Rabbit LINE Pay to LINE Pay (PR: [#502](https://github.com/omise/omise-magento/pull/502))
+- Update Payment method logos (PR: [#505](https://github.com/omise/omise-magento/pull/505))
+- Fix Google Pay button styling on hover (PR: [#504](https://github.com/omise/omise-magento/pull/504))
 
 ## [v3.9.0 _(Mar, 17, 2025)_](https://github.com/omise/omise-magento/releases/tag/v3.9.0)
 - Rebranding Opn Payments to Omise (PR: [#495](https://github.com/omise/omise-magento/pull/495))
