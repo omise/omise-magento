@@ -32,7 +32,6 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 
-use Omise\Payment\Model\Config\Internetbanking;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
@@ -44,7 +43,6 @@ class OmiseHelper extends AbstractHelper
      */
     private $offsitePaymentMethods = [
         Alipay::CODE,
-        Internetbanking::CODE,
         Installment::CODE,
         Truemoney::CODE,
         Fpx::CODE,
@@ -135,10 +133,6 @@ class OmiseHelper extends AbstractHelper
         PayPay::ID => PayPay::CODE,
         WeChatPay::ID => WeChatPay::CODE,
 
-        // offsite internet banking payment
-        Internetbanking::BBL_ID => Internetbanking::CODE,
-        Internetbanking::BAY_ID => Internetbanking::CODE,
-
         // offsite installment banking payment
         Installment::BAY_ID => Installment::CODE,
         Installment::BBL_ID => Installment::CODE,
@@ -187,7 +181,6 @@ class OmiseHelper extends AbstractHelper
 
         // offsite payment
         Alipay::CODE => "Alipay",
-        Internetbanking::CODE => "Internet Banking Payment",
         Installment::CODE => "Installment Payment",
         Truemoney::CODE => "TrueMoney Payment",
         Fpx::CODE => "FPX Payment",
