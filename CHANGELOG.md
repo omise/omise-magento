@@ -1,5 +1,5 @@
 # CHANGELOG
-## [v3.10.0 _(Mar, 9, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
+## [v3.10.0 _(Mar, 10, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
 - Add Passkey support (PR: [#499](https://github.com/omise/omise-magento/pull/499))
 - Update Rabbit LINE Pay to LINE Pay (PR: [#502](https://github.com/omise/omise-magento/pull/502))
 - Update Payment method logos (PR: [#505](https://github.com/omise/omise-magento/pull/505))
