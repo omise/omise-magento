@@ -61,6 +61,7 @@ class PaymentInformation implements PaymentInformationInterface
             $data = $this->data_factory->create();
             $data->setOrderId($order_id);
             $data->setAuthorizeUri($payment->getAdditionalInformation('charge_authorize_uri'));
+            //$data->setAuthorizeUri($payment->getAdditionalInformation('upa_redirect_uri'));
 
             return $data;
         }

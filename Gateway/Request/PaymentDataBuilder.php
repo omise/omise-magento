@@ -11,6 +11,7 @@ use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Helper\OmiseHelper;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -54,20 +55,32 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $money;
 
+    /**
+     * @ar Capabilities
+     */
     private $capabilities;
+
+    /**
+     * @var OmiseHelper
+     */
+    private $omiseHelper;
 
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
+     * @param Capabilities $capabilities
+     * @param OmiseHelper $omiseHelper
      */
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
-        Capabilities $capabilities
+        Capabilities $capabilities,
+        OmiseHelper $omiseHelper
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
         $this->capabilities = $capabilities;
+        $this->omiseHelper = $omiseHelper;
     }
 
     /**
@@ -76,29 +89,71 @@ class PaymentDataBuilder implements BuilderInterface
      * @return array
      */
     public function build(array $buildSubject)
-    {
+    {   
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-upa.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('***PaymentDataBuilder called');
+        
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
         $method  = $payment->getPayment();
         $store_id = $order->getStoreId();
+        $methodCode = $payment->getPayment()->getMethod();
+        
         $om = \Magento\Framework\App\ObjectManager::getInstance();
         $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
         $store = $manager->getStore($store_id);
         $currency = $order->getCurrencyCode();
 
-        $requestBody = [
-            self::AMOUNT      => $this->money->setAmountAndCurrency(
-                $order->getGrandTotalAmount(),
-                $currency
-            )->toSubunit(),
-            self::CURRENCY    => $currency,
-            self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
-            self::METADATA    => [
-                'order_id' => $order->getOrderIncrementId(),
-                'store_id' => $order->getStoreId(),
-                'store_name' => $store->getName()
-            ]
-        ];
+        $isUpaAllow = $this->omiseHelper->isAllowUpa($methodCode);
+        $logger->info('***IS OFFSITE : '.$isUpaAllow);
+        
+        if($isUpaAllow){
+            $logger->info('***UPA FLOW START***');
+            $requestBody = array(
+                'amount' => $this->money->setAmountAndCurrency(
+                        $order->getGrandTotalAmount(),
+                        $currency
+                    )->toSubunit(),
+                'currency'        => $currency,
+                'order_id'        => (string) $order->getOrderIncrementId(),
+                'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
+                'payment_methods' => [$methodCode],
+                'redirect_urls'   => array(
+                    'complete_url' => "https://www.omise.co",
+                    'cancel_url'   => "https://www.google.com",
+                ),
+                "refund_policy_link" => "https://opn.oo0/refund",
+                "session_expires_at" => null,
+                "expires_at" => null,
+                "is_link" => true,
+                "multi_charge" => true,
+                "require_save_card" => true,
+                "enable_passkey" => true,
+                "is_upa" => true
+		    );
+            /*$locale = substr( strtolower( get_locale() ), 0, 2 );
+            if ( ! empty( $locale ) ) {
+                $payload['locale'] = $locale;
+            }
+            $payload['locale'] = $locale;*/
+            return $requestBody;
+        }else{
+            $requestBody = [
+                self::AMOUNT      => $this->money->setAmountAndCurrency(
+                    $order->getGrandTotalAmount(),
+                    $currency
+                )->toSubunit(),
+                self::CURRENCY    => $currency,
+                self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
+                self::METADATA    => [
+                    'order_id' => $order->getOrderIncrementId(),
+                    'store_id' => $order->getStoreId(),
+                    'store_name' => $store->getName()
+                ]
+            ];
+        }
 
         if ($this->ccConfig->isDynamicWebhooksEnabled()) {
             $webhookUrl = $store->getBaseUrl() . Webhook::URI;

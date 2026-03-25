@@ -31,7 +31,7 @@ use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
-
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
@@ -216,13 +216,21 @@ class OmiseHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var ScopeConfigInterface $scopeConfig
+     */
+    protected $scopeConfig;
+
+    /**
      * @param Header $header
      * @param Config $config
+     * @param ScopeConfigInterface $scopeConfig
      */
-    public function __construct(Config $config)
-    {
+    public function __construct(
+        Config $config,
+        ScopeConfigInterface $scopeConfig
+    ) {
+        $this->scopeConfig = $scopeConfig;
         $this->config = $config;
-
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -240,6 +248,18 @@ class OmiseHelper extends AbstractHelper
         $path = 'payment/omise/' . $fieldId;
 
         return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
+    }
+
+    /**
+     * @param string $methodcode
+     * @return bool
+     */
+    public function isAllowUpa($methodCode){
+        $isUpaFeatureFlagEnabled = $this->getConfig("is_upa_feature_flag_enabled");
+        if($isUpaFeatureFlagEnabled){
+            return $this->isOffsitePaymentMethod($methodCode);    
+        }
+        return false;
     }
 
     /**

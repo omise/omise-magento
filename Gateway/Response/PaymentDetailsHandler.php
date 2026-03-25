@@ -54,8 +54,17 @@ class PaymentDetailsHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-upa.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('***PaymentDetails Handler called');
+        $logger->info(print_r($response,true));
+        $logger->info(print_r($response['charge']->redirect_url,true));
+        
+
         $payment       = SubjectReader::readPayment($handlingSubject);
         $payment       = $payment->getPayment();
+        $payment->setAdditionalInformation('upa_redirect_uri', $response['charge']->redirect_url);
         $paymentType   = isset($response['charge']->source['type']) ? $response['charge']->source['type'] : null;
         $paymentMethod = $payment->getMethod();
         $order         = $payment->getOrder();
