@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class ObjectTest extends TestCase
 {
     /**
-     * @test
+     * @covers
      */
     public function refreshObject()
     {
@@ -22,7 +22,7 @@ class ObjectTest extends TestCase
     }
 
     /**
-     * @test
+     * @covers
      */
     public function refreshObjectTwice()
     {
@@ -35,7 +35,7 @@ class ObjectTest extends TestCase
     }
 
     /**
-     * @test
+     * @covers
      *
      * This is a special case, made for Omise-PHP library object.
      */
@@ -50,7 +50,7 @@ class ObjectTest extends TestCase
     }
 
     /**
-     * @test
+     * @covers
      */
     public function refreshObjectWithEmptyData()
     {
@@ -60,7 +60,7 @@ class ObjectTest extends TestCase
     }
 
     /**
-     * @test
+     * @covers
      */
     public function tryingToAccessUndefinedPropertyShouldReturnEmptyString()
     {
