@@ -55,7 +55,7 @@ define(
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb', 'myr'],
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-            capabilities: null,
+            capability: null,
             billingAddressCountries: ["US", "GB", "CA"],
 
             /**
@@ -79,7 +79,7 @@ define(
                         'omiseInstallmentSource',
                     ]);
 
-                this.capabilities = checkoutConfig.omise_payment_list[this.code];
+                this.capability = checkoutConfig.omise_payment_list[this.code];
 
                 // filter provider for checkout page
                 this.providers = this.getAvailableProviders()
@@ -262,12 +262,12 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api ,setup observer by id and filter only support type
+            * Get a provider list from capability api ,setup observer by id and filter only support type
             *
             * @return {Array}
             */
             getAvailableProviders: function () {
-                const paymentMethods = this.capabilities.map(item => item._id)
+                const paymentMethods = this.capability.map(item => item.name)
                 return ko.observableArray(providers.filter(item => paymentMethods.includes(item)))
             },
 
