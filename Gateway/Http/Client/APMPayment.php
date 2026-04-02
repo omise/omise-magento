@@ -33,18 +33,10 @@ class APMPayment extends AbstractPayment
      */
     public function placeRequest(\Magento\Payment\Gateway\Http\TransferInterface $transferObject)
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-upa.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('***APMPayment***');
-        
         $transferObjectBody = $transferObject->getBody();
-        $methodCode = $transferObjectBody['payment_methods'][0];
-        $logger->info(print_r($methodCode,true));
-        $isUpaAllow = $this->omiseHelper->isAllowUpa($methodCode);
 
-        if($isUpaAllow){
-            return ["session" => $this->apiCharge->createSession($transferObjectBody)];
+        if(array_key_exists('is_upa',$transferObjectBody)){
+            return [self::SESSION => $this->apiCharge->createSession($transferObjectBody)];
         }else{
             return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];
         }

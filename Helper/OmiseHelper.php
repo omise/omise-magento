@@ -263,6 +263,16 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
+     * @var string
+     * @return string
+     */
+    public function getMethodId($code){
+        $codeToId = array_flip($this->omiseCodeByOmiseId);
+        return $id = $codeToId[$code] ?? null;
+
+    }
+
+    /**
      * Convert tesco code returned from Omise Backend in SVG format to HTML format
      *
      * @param  string  $svg
