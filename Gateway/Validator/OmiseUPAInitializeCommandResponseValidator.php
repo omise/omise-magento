@@ -9,14 +9,12 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
 {
     public function validate(array $validationSubject)
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-upa.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('***AMP COMMAND POOL*** 123');
-        $logger->info(print_r($validationSubject,true));
-        return $this->createResult(true, []);
-        $checkoutsession = $validationSubject['response']['session'];
-
+        if(array_key_exists('session',$validationSubject['response'])){
+            $checkoutSession = $validationSubject['response']['session'];
+            if(array_key_exists('object',$checkoutSession) && $checkoutSession['object'] == 'checkout_session' && !empty($checkoutSession['id'])){
+                return $this->createResult(true, []);        
+            }
+        }
         /*if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
             return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage() ]);
         }
