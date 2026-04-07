@@ -31,7 +31,6 @@ use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
@@ -216,20 +215,12 @@ class OmiseHelper extends AbstractHelper
     protected $config;
 
     /**
-     * @var ScopeConfigInterface $scopeConfig
-     */
-    protected $scopeConfig;
-
-    /**
      * @param Header $header
      * @param Config $config
-     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        Config $config,
-        ScopeConfigInterface $scopeConfig
+        Config $config
     ) {
-        $this->scopeConfig = $scopeConfig;
         $this->config = $config;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
@@ -255,7 +246,7 @@ class OmiseHelper extends AbstractHelper
      * @return bool
      */
     public function isAllowUpa($methodCode){
-        $isUpaFeatureFlagEnabled = $this->getConfig("is_upa_feature_flag_enabled");
+        $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
         if($isUpaFeatureFlagEnabled){
             return $this->isOffsitePaymentMethod($methodCode);    
         }
@@ -266,7 +257,8 @@ class OmiseHelper extends AbstractHelper
      * @param int
      * @return string
      */
-    public function checkoutSessionEndPoint($isSandbox = 1){
+    public function checkoutSessionEndPoint(){
+        $isSandbox = $this->config->isSandboxEnabled();
         if($isSandbox){
             return "https://checkout-page.staging-omise.co/api/sessions";
         }

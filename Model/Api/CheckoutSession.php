@@ -47,7 +47,7 @@ class CheckoutSession extends BaseObject
      */
     public function createSession($params){        
         try {
-            $endPoint = $this->omiseHelper->checkoutSessionEndPoint($this->config->isSandboxEnabled());
+            $endPoint = $this->omiseHelper->checkoutSessionEndPoint();
             $session = $this->aPMSession->createSession($endPoint,$this->config->getSecretKey(),$params);
             $this->refresh($session);
         } catch (Exception $e) {
