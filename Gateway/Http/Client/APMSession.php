@@ -45,7 +45,7 @@ class APMSession extends \OmiseApiResource
         }
 
         if (!empty($array['object']) && $array['object'] === 'error') {
-            throw OmiseException::getInstance($array);
+            throw \OmiseException::getInstance($array);
         }
         
         return $array;
@@ -121,7 +121,7 @@ class APMSession extends \OmiseApiResource
         }
 
         if($is_json){
-            $options[CURLOPT_HTTPHEADER][1] = 'Content-Type: application/json';
+            $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
             $http_query = json_encode($params);
             $options += [CURLOPT_POSTFIELDS => $http_query];
             return $options;

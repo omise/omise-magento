@@ -2,27 +2,28 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
+use Omise\Payment\Model\Api\CheckoutSession;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Helper\OmiseHelper;
 
 class APMPayment extends AbstractPayment
 {
     /**
-     * @var OmiseHelper
+     * @var CheckoutSession
      */
-    private $omiseHelper;
+    private $checkoutSession;
 
     /**
      * @param ApiCharge $apiCharge,
      * @param Omise $omise
-     * @param OmiseHelper $omiseHelper
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         ApiCharge $apiCharge,
         Omise $omise,
-        OmiseHelper $omiseHelper
+        CheckoutSession $checkoutSession
     ) {
-        $this->omiseHelper = $omiseHelper;
+        $this->checkoutSession = $checkoutSession;
         parent::__construct($apiCharge, $omise);
     }
 
@@ -36,7 +37,7 @@ class APMPayment extends AbstractPayment
         $transferObjectBody = $transferObject->getBody();
 
         if(array_key_exists('is_upa',$transferObjectBody)){
-            return [self::SESSION => $this->apiCharge->createSession($transferObjectBody)];
+            return [self::SESSION => $this->checkoutSession->createSession($transferObjectBody)];
         }else{
             return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];
         }

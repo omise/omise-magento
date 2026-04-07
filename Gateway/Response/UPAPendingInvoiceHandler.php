@@ -13,11 +13,6 @@ class UPAPendingInvoiceHandler implements HandlerInterface
     const STATE_PROCESSING = \Magento\Sales\Model\Order::STATE_PROCESSING;
 
     /**
-     * @var OmiseHelper
-     */
-    private $helper;
-
-    /**
      * @var OmiseEmailHelper
      */
     private $emailHelper;
@@ -28,16 +23,13 @@ class UPAPendingInvoiceHandler implements HandlerInterface
     private $config;
 
     /**
-     * @param OmiseHelper $helper
      * @param OmiseEmailHelper $emailHelper
      * @param Config $config
      */
     public function __construct(
-        OmiseHelper $helper,
         OmiseEmailHelper $emailHelper,
         Config $config
     ) {
-        $this->helper = $helper;
         $this->emailHelper = $emailHelper;
         $this->config = $config;
     }

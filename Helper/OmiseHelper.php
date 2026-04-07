@@ -263,6 +263,17 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
+     * @param int
+     * @return string
+     */
+    public function checkoutSessionEndPoint($isSandbox = 1){
+        if($isSandbox){
+            return "https://checkout-page.staging-omise.co/api/sessions";
+        }
+        return "https://checkout-page.omise.co/";
+    }
+
+    /**
      * @var string
      * @return string
      */

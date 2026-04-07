@@ -56,21 +56,19 @@ class UPAPaymentDetailsHandler implements HandlerInterface
     {
         $payment       = SubjectReader::readPayment($handlingSubject);
         $payment       = $payment->getPayment();
-        $payment->setAdditionalInformation('upa_redirect_uri', $response['session']['redirect_url']);
-        $payment->setAdditionalInformation('session_id', $response['session']['id']);
         
-        $paymentType   = ($response['session']['object'] == "checkout_session") ? $response['session']['object'] : null;
+        $paymentType   = ($response['session']->object == "checkout_session") ? $response['session']->object : null;
         $paymentMethod = $payment->getMethod();
         $order         = $payment->getOrder();
 
-        $payment->setAdditionalInformation('upa_redirect_uri', $response['session']['redirect_url']);
-        $payment->setAdditionalInformation('session_id', $response['session']['id']);
+        $payment->setAdditionalInformation('upa_redirect_uri', $response['session']->redirect_url);
+        $payment->setAdditionalInformation('session_id', $response['session']->id);
         $payment->setAdditionalInformation('payment_type', $paymentType);
 
         $transaction = $this->transactionBuilder
                             ->setPayment($payment)
                             ->setOrder($order)
-                            ->setTransactionId($response['session']['id'])
+                            ->setTransactionId($response['session']->id)
                             ->setAdditionalInformation([Transaction::RAW_DETAILS => (array) $payment])
                             ->setFailSafe(true)
                             ->build(Transaction::TYPE_PAYMENT);
@@ -83,17 +81,5 @@ class UPAPaymentDetailsHandler implements HandlerInterface
                 )
             )
         );
-        
-        /*if ($paymentType === 'bill_payment_tesco_lotus') {
-            $barcode = $this->downloadPaymentFile($response['charge']->source['references']['barcode']);
-            $payment->setAdditionalInformation('barcode', $barcode);
-        }
-
-        if ($this->_helper->isPayableByImageCode($paymentMethod)) {
-            $payment->setAdditionalInformation(
-                'image_code',
-                $response['charge']->source['scannable_code']['image']['download_uri']
-            );
-        }*/
     }
 }

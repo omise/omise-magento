@@ -1255,16 +1255,6 @@
     </virtualType>
     <!-- /Value Handler -->
 
-    <!-- APM :: Command Pool -->
-    <virtualType name="OmiseAPMCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
-        <arguments>
-            <argument name="commands" xsi:type="array">
-                <item name="initialize" xsi:type="string">OmiseAPMInitializeCommand</item>
-                <item name="refund" xsi:type="string">OmiseRefundCommand</item>
-            </argument>
-        </arguments>
-    </virtualType>
-
     <virtualType name="OmiseAPMInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">OmiseAPMRequest</argument>

@@ -54,20 +54,24 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $money;
 
+    /**
+     * @var Capability
+     */
     private $capability;
 
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
+     * @param Capability $capability
      */
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
-        Capability $capabilities
+        Capability $capability
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
-        $this->capabilities = $capabilities;
+        $this->capability = $capability;
     }
 
     /**

@@ -86,30 +86,6 @@ class Charge extends BaseObject
     }
 
     /**
-     * @param array $params
-     * 
-     * @return Omise\Payment\Model\Api\Error|self
-     */
-    public function createSession($params){
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-upa.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('***Session Creation Process Start***');
-        
-        try {
-            $om = \Magento\Framework\App\ObjectManager::getInstance();
-            $aPMSession = $om->get(\Omise\Payment\Gateway\Http\Client\APMSession::class);
-            $session = $aPMSession->createSession("https://checkout-page.staging-omise.co/api/sessions",$this->config->getSecretKey(),$params);
-            return $session;
-        } catch (Exception $e) {
-            return new Error([
-                'code'    => 'not_found',
-                'message' => $e->getMessage()
-            ]); 
-        }
-    }
-
-    /**
      * @return Omise\Payment\Model\Api\Error|self
      */
     public function capture()

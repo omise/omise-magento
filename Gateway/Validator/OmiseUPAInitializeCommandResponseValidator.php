@@ -8,27 +8,16 @@ use Omise\Payment\Model\Api\Charge;
 class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidator
 {
     public function validate(array $validationSubject)
-    {
-        if(array_key_exists('session',$validationSubject['response'])){
-            $checkoutSession = $validationSubject['response']['session'];
-            if(array_key_exists('object',$checkoutSession) && $checkoutSession['object'] == 'checkout_session' && !empty($checkoutSession['id'])){
-                return $this->createResult(true, []);        
-            }
+    {   
+        $checkoutSession = $validationSubject['response']['session'];
+        if (! $checkoutSession instanceof \Omise\Payment\Model\Api\CheckoutSession) {
+            return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage()]);
         }
-        /*if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
-            return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage() ]);
-        }
-
-        if ($charge instanceof \Omise\Payment\Model\Api\Error) {
-            return $this->createResult(false, [ $charge->getMessage() ]);
-        }*/
-
-        $result = $this->validateResponse($checkoutsession);
+        $result = $this->validateResponse($checkoutSession);
         if ($result === true) {
             return $this->createResult(true, []);
         }
-
-        return $this->createResult(false, [ '' ]);
+        return $this->createResult(false, [ $result->getMessage() ]);
     }
 
     /**
@@ -36,15 +25,14 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
      *
      * @return true|\Omise\Payment\Gateway\Validator\Message\*
      */
-    protected function validateResponse($checkoutsession)
+    protected function validateResponse($checkoutSession)
     {
-        if(!array_key_exists("session",$checkoutsession) || !array_key_exists('object',$checkoutsession['session']) || $checkoutsession['session']['object'] != "checkout_session"){
-            new ErrorInvalid(
+        if(empty($checkoutSession->id) && $checkoutSession->object != "checkout_session"){
+            return new ErrorInvalid(
                 'Payment failed, invalid payment status,
                 please contact our support if you have any questions'
             );
-        }else{
-            return true;
         }
+        return true;
     }
 }

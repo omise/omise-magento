@@ -26,11 +26,6 @@ class DynamicCommandPool implements CommandPoolInterface
 
     public function get($commandCode)
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-upa.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('***AMP COMMAND POOL***');
-
         $quote = $this->checkoutSession->getQuote();
         $methodCode = null;
 
@@ -39,10 +34,8 @@ class DynamicCommandPool implements CommandPoolInterface
         }
 
         if (!empty($methodCode) && $this->omiseHelper->isAllowUpa($methodCode)) {
-            $logger->info('***CONFIGURATION ALLOWD UPA***');
             return $this->upaPool->get($commandCode);
         }
-
         return $this->apmPool->get($commandCode);
     }
 }

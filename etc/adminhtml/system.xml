@@ -16,6 +16,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enabling sandbox means that all your transactions will be in TEST mode.</comment>
                 </field>
+                <field id="is_upa_feature_flag_enabled" translate="label comment" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>UPA Feature</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, supported payment methods will create payment sessions through Omise hosted checkout page.</comment>
+                </field>
                 <field id="test_public_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for test</label>
                     <comment>The "Test" mode public key can be found in Omise Dashboard.</comment>
@@ -31,11 +36,6 @@
                 <field id="live_secret_key" translate="label" type="password" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Secret key for live</label>
                     <comment>The "Live" mode secret key can be found in Omise Dashboard.</comment>
-                </field>
-                <field id="is_upa_feature_flag_enabled" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>UPA Feature</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If enabled, supported payment methods will create payment sessions through Omise hosted checkout page.</comment>
                 </field>
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable webhooks</label>
