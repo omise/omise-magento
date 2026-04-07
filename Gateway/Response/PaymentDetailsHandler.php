@@ -56,7 +56,6 @@ class PaymentDetailsHandler implements HandlerInterface
     {
         $payment       = SubjectReader::readPayment($handlingSubject);
         $payment       = $payment->getPayment();
-        $payment->setAdditionalInformation('upa_redirect_uri', $response['charge']->redirect_url);
         $paymentType   = isset($response['charge']->source['type']) ? $response['charge']->source['type'] : null;
         $paymentMethod = $payment->getMethod();
         $order         = $payment->getOrder();
