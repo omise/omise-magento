@@ -12,6 +12,7 @@ use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capability;
+use Magento\Framework\UrlInterface;
 
 class UPAPaymentDataBuilder implements BuilderInterface
 {
@@ -63,20 +64,28 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $omiseHelper;
 
     /**
+     * @var UrlInterface
+     */
+    protected $urlBuilder;
+
+    /**
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      * @param Capabilities $capabilities
      * @param OmiseHelper $omiseHelper
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
         Capability $capability,
-        OmiseHelper $omiseHelper
+        OmiseHelper $omiseHelper,
+        UrlInterface $urlBuilder
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
         $this->capability = $capability;
         $this->omiseHelper = $omiseHelper;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -105,8 +114,8 @@ class UPAPaymentDataBuilder implements BuilderInterface
             'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
             'payment_methods' => [$methodCode],
             'redirect_urls'   => array(
-                'complete_url' => "https://www.omise.co",
-                'cancel_url'   => "https://www.google.com",
+                'complete_url' => $this->urlBuilder->getUrl('omise/callback/upacallback'),
+                'cancel_url'   => $this->urlBuilder->getUrl('omise/payment/cancel'),
             ),
             "refund_policy_link" => "https://opn.oo0/refund",
             "session_expires_at" => null,

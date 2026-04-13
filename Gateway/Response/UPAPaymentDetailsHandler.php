@@ -71,7 +71,7 @@ class UPAPaymentDetailsHandler implements HandlerInterface
                             ->setTransactionId($response['session']->id)
                             ->setAdditionalInformation([Transaction::RAW_DETAILS => (array) $payment])
                             ->setFailSafe(true)
-                            ->build(Transaction::TYPE_PAYMENT);
+                            ->build(Transaction::TYPE_ORDER);
         $payment->addTransactionCommentsToOrder(
             $transaction,
             $payment->prependMessage(

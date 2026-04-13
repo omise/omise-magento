@@ -12,7 +12,11 @@ class UPAPendingPaymentHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
-        if(!empty($response['session']->id) && $response['session']->object == "checkout_session"){
+        $session = $response['session'];
+        $sessionObject = $session->object;
+        $sessionId = $session->id;
+
+        if(!empty($sessionId) && $sessionObject == "checkout_session"){
             $stateObject = $handlingSubject['stateObject'];
             $stateObject->setState(Order::STATE_PENDING_PAYMENT);
             $stateObject->setStatus(Order::STATE_PENDING_PAYMENT);

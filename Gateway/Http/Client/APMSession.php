@@ -28,20 +28,19 @@ class APMSession extends \OmiseApiResource
         $this->omiseHelper = $omiseHelper;
     }
 
-    public function createSession($url,$skey,$params){
+    public function createSession($url,$requestMethod,$skey,$params = null,$is_json = false){
         $result = $this->execute(
             $url,
-            "POST",
+            $requestMethod,
             $skey,
             $params,
-            true
+            $is_json
         );
         
         $array = json_decode($result, true);
-        
         // If response is invalid or not a JSON.
         if (!$this->isValidAPIResponse($array)) {
-            throw new Exception('Unknown error. (Bad Response)');
+            throw new \Exception('Unknown error. (Bad Response)');
         }
 
         if (!empty($array['object']) && $array['object'] === 'error') {
