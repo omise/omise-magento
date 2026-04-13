@@ -4,10 +4,7 @@ namespace Omise\Payment\Model\Api;
 
 use Exception;
 use OmiseCharge;
-<<<<<<< .merge_file_TG97YV
-=======
 use OmiseApiResource;
->>>>>>> .merge_file_tdBYFV
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Helper\OmiseHelper;
 use \Omise\Payment\Gateway\Http\Client\APMSession;
@@ -51,10 +48,6 @@ class CheckoutSession extends BaseObject
      */
     public function createSession($params){        
         try {
-<<<<<<< .merge_file_TG97YV
-            $endPoint = $this->omiseHelper->checkoutSessionEndPoint();
-            $session = $this->aPMSession->createSession($endPoint,$this->config->getSecretKey(),$params);
-=======
             $session = $this->aPMSession->createSession($this->omiseHelper->checkoutSessionEndPoint(),OmiseApiResource::REQUEST_POST,$this->config->getSecretKey(),$params,true);
             $this->refresh($session);
         } catch (Exception $e) {
@@ -70,7 +63,6 @@ class CheckoutSession extends BaseObject
         try {
             $url = $this->omiseHelper->checkoutSessionEndPoint().'/'.$sessionId;
             $session = $this->aPMSession->createSession($url,OmiseApiResource::REQUEST_GET,$this->config->getSecretKey(),$sessionId);
->>>>>>> .merge_file_tdBYFV
             $this->refresh($session);
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));
