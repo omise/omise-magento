@@ -44,7 +44,8 @@ class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
                 <div class="heading">
                     <strong>' . $element->getLegend() . '</strong>
                     <span class="heading-intro">' .
-                        __('Accept credit/debit cards and Alipay in your Magento store') . '<br/>
+                        __('Accept credit/debit cards and Alipay and
+                        Internet Banking Payments in your Magento store') . '<br/>
                     </span>
                     <div class="config-alt"></div>
                 </div>
