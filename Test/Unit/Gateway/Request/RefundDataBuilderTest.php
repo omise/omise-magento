@@ -62,7 +62,8 @@ class RefundDataBuilderTest extends TestCase
         );
 
         $result = $builder->build([
-            'payment' => $paymentDO
+            'payment' => $paymentDO,
+            'amount'  => 100.50
         ]);
 
         $this->assertSame(
