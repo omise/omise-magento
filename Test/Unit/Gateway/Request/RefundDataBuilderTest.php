@@ -43,8 +43,6 @@ class RefundDataBuilderTest extends TestCase
 
         $order->method('getBaseCurrencyCode')->willReturn('THB');
 
-        //$order->method('getTotalOnlineRefunded')->willReturn(100.50);
-
         $money->expects($this->once())
             ->method('setAmountAndCurrency')
             ->with(100.50, 'THB')
