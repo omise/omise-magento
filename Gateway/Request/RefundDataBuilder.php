@@ -69,4 +69,3 @@ class RefundDataBuilder implements BuilderInterface
         ];
     }
 }
-
