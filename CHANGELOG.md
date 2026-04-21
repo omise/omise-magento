@@ -1,4 +1,8 @@
 # CHANGELOG
+## [v3.11.0 _(Apr, 21, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.11.0)
+- Remove/Cleanup Internet Banking (PR: [#508](https://github.com/omise/omise-magento/pull/508))
+- Resolve Refund amount issue for multi currency store. (PR: [#509](https://github.com/omise/omise-magento/pull/509))
+
 ## [v3.10.0 _(Mar, 10, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.10.0)
 - Add Passkey support (PR: [#499](https://github.com/omise/omise-magento/pull/499))
 - Update Rabbit LINE Pay to LINE Pay (PR: [#502](https://github.com/omise/omise-magento/pull/502))
