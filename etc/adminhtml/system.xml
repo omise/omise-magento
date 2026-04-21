@@ -112,35 +112,6 @@
                         </depends>
                     </field>
                 </group>
-                <group id="omise_offsite_internetbanking" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Internet Banking Payment</label>
-                    <comment>Enable customers of a bank to easily conduct financial transactions through a bank-operated website (only available in Thailand).</comment>
-                    <field id="active" translate="label comment" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable/Disable</label>
-                        <comment>Enable Internet Banking payment method.</comment>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/omise_offsite_internetbanking/active</config_path>
-                    </field>
-                    <field id="title" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Title</label>
-                        <comment>This controls the title which the user sees during checkout.</comment>
-                        <config_path>payment/omise_offsite_internetbanking/title</config_path>
-                    </field>
-                    <field id="allowspecific" translate="label comment" type="select" sortOrder="151" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Allowed Countries</label>
-                        <config_path>payment/omise_offsite_internetbanking/allowspecific</config_path>
-                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
-                        <comment>If not set to all, guest customers will not have a billing country and may not be able to check out.</comment>
-                    </field>
-                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="152" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Payment from specific countries</label>
-                        <config_path>payment/omise_offsite_internetbanking/specificcountry</config_path>
-                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
-                        <depends>
-                            <field id="allowspecific">1</field>
-                        </depends>
-                    </field>
-                </group>
                 <group id="omise_offsite_alipay" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Alipay</label>
                     <comment>Enable customers to pay using Alipay method</comment>

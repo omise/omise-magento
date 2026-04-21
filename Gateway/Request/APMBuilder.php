@@ -29,7 +29,6 @@ use Omise\Payment\Model\Config\PayPay;
 use Omise\Payment\Model\Config\WeChatPay;
 
 use Omise\Payment\Helper\OmiseMoney;
-use Omise\Payment\Model\Config\Internetbanking;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Omise\Payment\Observer\FpxDataAssignObserver;
@@ -39,7 +38,6 @@ use Omise\Payment\Observer\TruemoneyDataAssignObserver;
 use Omise\Payment\Observer\DuitnowOBWDataAssignObserver;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Observer\MobilebankingDataAssignObserver;
-use Omise\Payment\Observer\InternetbankingDataAssignObserver;
 use Omise\Payment\Observer\ConveniencestoreDataAssignObserver;
 use Omise\Payment\Helper\RequestHelper;
 
@@ -184,11 +182,6 @@ class APMBuilder implements BuilderInterface
             case Tesco::CODE:
                 $paymentInfo[self::SOURCE] = [
                     self::SOURCE_TYPE => 'bill_payment_tesco_lotus'
-                ];
-                break;
-            case Internetbanking::CODE:
-                $paymentInfo[self::SOURCE] = [
-                    self::SOURCE_TYPE => $method->getAdditionalInformation(InternetbankingDataAssignObserver::OFFSITE)
                 ];
                 break;
             case Installment::CODE:
