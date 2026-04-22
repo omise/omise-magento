@@ -56,6 +56,7 @@ define(
             restrictedToCurrencies: ['thb', 'myr'],
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
             capability: null,
+            iswlb:0,
             billingAddressCountries: ["US", "GB", "CA"],
 
             /**
@@ -80,7 +81,7 @@ define(
                     ]);
 
                 this.capability = checkoutConfig.omise_payment_list[this.code];
-
+                this.iswlb = checkoutConfig.omise_wlb_enable;
                 // filter provider for checkout page
                 this.providers = this.getAvailableProviders()
                 this.openOmiseJs();
@@ -246,6 +247,7 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
+                        'wlb': this.iswlb,
                         'card': this.omiseInstallmentToken(),
                         'source': this.omiseInstallmentSource()
                     }

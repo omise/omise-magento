@@ -11,6 +11,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Payment\Api\PaymentMethodListInterface;
 use Omise\Payment\Model\Config\Installment as OmiseInstallmentConfig;
+use Omise\Payment\Model\Config\Config;
 
 class CapabilityConfigProvider implements ConfigProviderInterface
 {
@@ -28,16 +29,23 @@ class CapabilityConfigProvider implements ConfigProviderInterface
      */
     private $_paymentLists;
 
+    /**
+     * @var Config
+     */
+    protected $config;
+
     public function __construct(
         Capability               $capability,
         PaymentMethodListInterface $paymentLists,
         StoreManagerInterface      $storeManager,
-        RequestHelper $requestHelper
+        RequestHelper $requestHelper,
+        Config $config
     ) {
         $this->capability    = $capability;
         $this->_paymentLists   = $paymentLists;
         $this->_storeManager   = $storeManager;
         $this->requestHelper = $requestHelper;
+        $this->config = $config;
     }
 
     /**
@@ -65,7 +73,25 @@ class CapabilityConfigProvider implements ConfigProviderInterface
             $this->filterActiveBackends($code, $configs['omise_payment_list']);
         }
 
+        $configs['omise_wlb_enable'] = $this->checkWlbStatus($configs['omise_payment_list']);
+        $configs['omise_upa_feature'] = $this->config->getIsUpaFeatureFlagEnabled();
         return $configs;
+    }
+
+    /**
+     * Check the Wlb active or not
+     * @var array
+     * @return int
+     */
+    private function checkWlbStatus($omise_payment_list){
+        if(array_key_exists('omise_offsite_installment',$omise_payment_list)){
+            foreach ($omise_payment_list['omise_offsite_installment'] as $method) {
+                if (str_starts_with($method->name, 'installment_wlb')) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
     }
 
     /**
