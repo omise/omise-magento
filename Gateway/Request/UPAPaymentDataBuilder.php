@@ -10,9 +10,10 @@ use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
+use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capability;
 
-class PaymentDataBuilder implements BuilderInterface
+class UPAPaymentDataBuilder implements BuilderInterface
 {
     /**
      * @var string
@@ -54,24 +55,28 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $money;
 
-    /**
-     * @var Capability
-     */
     private $capability;
 
     /**
-     * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
+     * @var OmiseHelper
+     */
+    private $omiseHelper;
+
+    /**
      * @param Omise\Payment\Model\Config\Cc $ccConfig
-     * @param Capability $capability
+     * @param Capabilities $capabilities
+     * @param OmiseHelper $omiseHelper
      */
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
-        Capability $capability
+        Capability $capability,
+        OmiseHelper $omiseHelper
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
         $this->capability = $capability;
+        $this->omiseHelper = $omiseHelper;
     }
 
     /**
@@ -80,51 +85,43 @@ class PaymentDataBuilder implements BuilderInterface
      * @return array
      */
     public function build(array $buildSubject)
-    {
+    {   
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
         $method  = $payment->getPayment();
         $store_id = $order->getStoreId();
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
-        $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
-        $store = $manager->getStore($store_id);
+        $methodCode = $payment->getPayment()->getMethod();
         $currency = $order->getCurrencyCode();
-
-        $requestBody = [
-            self::AMOUNT      => $this->money->setAmountAndCurrency(
-                $order->getGrandTotalAmount(),
-                $currency
-            )->toSubunit(),
-            self::CURRENCY    => $currency,
-            self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
-            self::METADATA    => [
-                'order_id' => $order->getOrderIncrementId(),
-                'store_id' => $order->getStoreId(),
-                'store_name' => $store->getName()
-            ]
-        ];
-
-        if ($this->ccConfig->isDynamicWebhooksEnabled()) {
-            $webhookUrl = $store->getBaseUrl() . Webhook::URI;
-            $requestBody[self::WEBHOOKS_ENDPOINT] = [$webhookUrl];
+        
+        $methodCode = $this->omiseHelper->getMethodId($methodCode);
+        
+        $requestBody = array(
+            'amount' => $this->money->setAmountAndCurrency(
+                    $order->getGrandTotalAmount(),
+                    $currency
+                )->toSubunit(),
+            'currency'        => $currency,
+            'order_id'        => (string) $order->getOrderIncrementId(),
+            'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
+            'payment_methods' => [$methodCode],
+            'redirect_urls'   => array(
+                'complete_url' => "https://www.omise.co",
+                'cancel_url'   => "https://www.google.com",
+            ),
+            "refund_policy_link" => "https://opn.oo0/refund",
+            "session_expires_at" => null,
+            "expires_at" => null,
+            "is_link" => true,
+            "multi_charge" => true,
+            "require_save_card" => true,
+            "enable_passkey" => true,
+            "is_upa" => true
+        );
+        /*$locale = substr( strtolower( get_locale() ), 0, 2 );
+        if ( ! empty( $locale ) ) {
+            $payload['locale'] = $locale;
         }
-        // Set zero_interest_installment to true for installment Maybank only
-        if ($this->enableZeroInterestInstallments($method)) {
-            $requestBody[self::ZERO_INTEREST_INSTALLMENTS] = true;
-        }
-
-        if (Installment::CODE === $method->getMethod()) {
-            $card = $method->getAdditionalInformation(InstallmentDataAssignObserver::CARD);
-            if ($card !== null) {
-                $requestBody['card'] = $card;
-            }
-
-            $source = $method->getAdditionalInformation(InstallmentDataAssignObserver::SOURCE);
-            if ($source !== null) {
-                $requestBody['source'] = $source;
-            }
-        }
-
+        $payload['locale'] = $locale;*/
         return $requestBody;
     }
 

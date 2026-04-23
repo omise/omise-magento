@@ -122,6 +122,16 @@ class Config
     }
 
     /**
+     * Check if Omise's sandbox mode enable or not
+     *
+     * @return bool
+     */
+    public function getIsUpaFeatureFlagEnabled()
+    {
+        return $this->getValue('is_upa_feature_flag_enabled');
+    }
+
+    /**
      * Retrieve Omise public key whether live or test key
      *
      * @return string
