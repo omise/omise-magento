@@ -30,8 +30,8 @@ class CapabilityConfigProvider implements ConfigProviderInterface
     private $_paymentLists;
 
     /**
-      * @var Config
-      */
+     * @var Config
+     */
     protected $config;
 
     public function __construct(
@@ -82,9 +82,9 @@ class CapabilityConfigProvider implements ConfigProviderInterface
      * @var array
      * @return int
      */
-    private function checkWlbStatus($omise_payment_list) 
+    private function checkWlbStatus($omise_payment_list)
     {
-        if (array_key_exists('omise_offsite_installment', $omise_payment_list)){
+        if (array_key_exists('omise_offsite_installment', $omise_payment_list)) {
             foreach ($omise_payment_list['omise_offsite_installment'] as $method) {
                 if (str_starts_with($method->name, 'installment_wlb')) {
                     return 1;
