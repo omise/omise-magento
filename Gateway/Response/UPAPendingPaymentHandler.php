@@ -1,4 +1,5 @@
 <?php
+
 namespace Omise\Payment\Gateway\Response;
 
 use Magento\Payment\Gateway\Response\HandlerInterface;
@@ -12,7 +13,7 @@ class UPAPendingPaymentHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
-        if(!empty($response['session']->id) && $response['session']->object == "checkout_session"){
+        if (!empty($response['session']->id) && $response['session']->object == "checkout_session") {
             $stateObject = $handlingSubject['stateObject'];
             $stateObject->setState(Order::STATE_PENDING_PAYMENT);
             $stateObject->setStatus(Order::STATE_PENDING_PAYMENT);

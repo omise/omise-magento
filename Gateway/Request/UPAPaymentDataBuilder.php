@@ -93,19 +93,19 @@ class UPAPaymentDataBuilder implements BuilderInterface
         
         $methodCode = $this->omiseHelper->getMethodId($methodCode);
         
-        return array(
+        return [
             'amount' => $this->money->setAmountAndCurrency(
-                    $order->getGrandTotalAmount(),
-                    $currency
-                )->toSubunit(),
+                $order->getGrandTotalAmount(),
+                $currency
+            )->toSubunit(),
             'currency'        => $currency,
             'order_id'        => (string) $order->getOrderIncrementId(),
             'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
             'payment_methods' => [$methodCode],
-            'redirect_urls'   => array(
+            'redirect_urls'   => [
                 'complete_url' => "https://www.omise.co",
                 'cancel_url'   => "https://www.google.com",
-            ),
+            ],
             "refund_policy_link" => "https://opn.oo0/refund",
             "session_expires_at" => null,
             "expires_at" => null,
@@ -114,7 +114,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "require_save_card" => true,
             "enable_passkey" => true,
             "is_upa" => true
-        );
+        ];
     }
 
     /**

@@ -34,7 +34,7 @@ class CheckoutSession extends BaseObject
         Config $config,
         APMSession $aPMSession,
         OmiseHelper $omiseHelper
-    ){
+    ) {
         $this->aPMSession = $aPMSession;
         $this->config = $config;
         $this->omiseHelper = $omiseHelper;
@@ -45,10 +45,10 @@ class CheckoutSession extends BaseObject
      *
      * @return Omise\Payment\Model\Api\Error|self
      */
-    public function createSession($params){  
+    public function createSession($params) {
         try {
             $endPoint = $this->omiseHelper->checkoutSessionEndPoint();
-            $session = $this->aPMSession->createSession($endPoint,$this->config->getSecretKey(),$params);
+            $session = $this->aPMSession->createSession($endPoint, $this->config->getSecretKey(), $params);
             $this->refresh($session);
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));

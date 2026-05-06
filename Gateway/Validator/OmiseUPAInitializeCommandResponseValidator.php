@@ -27,7 +27,7 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
      */
     protected function validateResponse($checkoutSession)
     {
-        if(empty($checkoutSession->id) && $checkoutSession->object != "checkout_session"){
+        if (!empty($checkoutSession->id) && $checkoutSession->object != "checkout_session") {
             return new ErrorInvalid(
                 'Payment failed, invalid payment status,
                 please contact our support if you have any questions'

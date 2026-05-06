@@ -1,6 +1,7 @@
 <?php
 
 namespace Omise\Payment\Gateway\Http\Client;
+
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Omise\Payment\Model\Api\CheckoutSession;
 use Omise\Payment\Model\Omise;
@@ -36,9 +37,9 @@ class APMPayment extends AbstractPayment
     {
         $transferObjectBody = $transferObject->getBody();
 
-        if(array_key_exists('is_upa',$transferObjectBody)){
+        if (array_key_exists('is_upa', $transferObjectBody)) {
             return [self::SESSION => $this->checkoutSession->createSession($transferObjectBody)];
-        }else{
+        } else {
             return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];
         }
     }

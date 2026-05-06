@@ -245,9 +245,9 @@ class OmiseHelper extends AbstractHelper
      * @param string $methodcode
      * @return bool
      */
-    public function isAllowUpa($methodCode){
+    public function isAllowUpa($methodCode) {
         $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
-        if($isUpaFeatureFlagEnabled){
+        if ($isUpaFeatureFlagEnabled) {
             return $this->isOffsitePaymentMethod($methodCode);
         }
         return false;
@@ -257,9 +257,9 @@ class OmiseHelper extends AbstractHelper
      * @param int
      * @return string
      */
-    public function checkoutSessionEndPoint(){
+    public function checkoutSessionEndPoint() {
         $isSandbox = $this->config->isSandboxEnabled();
-        if($isSandbox){
+        if ($isSandbox) {
             return "https://checkout-page.staging-omise.co/api/sessions";
         }
         return "https://checkout-page.omise.co/";
@@ -269,10 +269,9 @@ class OmiseHelper extends AbstractHelper
      * @var string
      * @return string
      */
-    public function getMethodId($code){
+    public function getMethodId($code) {
         $codeToId = array_flip($this->omiseCodeByOmiseId);
         return $codeToId[$code] ?? null;
-
     }
 
     /**
