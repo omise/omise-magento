@@ -1,28 +1,23 @@
 <?php
 
 namespace Omise\Payment\Gateway\Http\Client;
-use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Helper\OmiseHelper;
 use OmiseException;
 
 class APMSession extends \OmiseApiResource
 {
-    private $OMISE_CONNECTTIMEOUT = 30;
-    private $OMISE_TIMEOUT = 60;
+    private $omiseConnectTimeout = 30;
+    private $omiseTimeout = 60;
     /**
      * @var OmiseHelper
      */
     private $omiseHelper;
 
     /**
-     * @param ApiCharge $apiCharge,
-     * @param Omise $omise
      * @param OmiseHelper $omiseHelper
      */
     public function __construct(
-        ApiCharge $apiCharge,
-        Omise $omise,
         OmiseHelper $omiseHelper
     ) {
         $this->omiseHelper = $omiseHelper;
@@ -52,7 +47,7 @@ class APMSession extends \OmiseApiResource
     }
 
     protected function execute($url, $requestMethod, $key, $params = null,$is_json = false)
-    {   
+    {
         $ch = curl_init($url);
 
         curl_setopt_array($ch, $this->genOptions($requestMethod, $key . ':', $params, $is_json));
@@ -99,9 +94,9 @@ class APMSession extends \OmiseApiResource
             // Make HTTP error code above 400 an error.
             // CURLOPT_FAILONERROR => true,
             // Time before the request is aborted.
-            CURLOPT_TIMEOUT => $this->OMISE_TIMEOUT,
+            CURLOPT_TIMEOUT => $this->omiseTimeout,
             // Time before the request is aborted when attempting to connect.
-            CURLOPT_CONNECTTIMEOUT => $this->OMISE_CONNECTTIMEOUT,
+            CURLOPT_CONNECTTIMEOUT => $this->omiseConnectTimeout,
             // Authentication.
             CURLOPT_USERPWD => $userpwd
         ];

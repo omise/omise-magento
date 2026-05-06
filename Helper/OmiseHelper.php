@@ -248,7 +248,7 @@ class OmiseHelper extends AbstractHelper
     public function isAllowUpa($methodCode){
         $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
         if($isUpaFeatureFlagEnabled){
-            return $this->isOffsitePaymentMethod($methodCode);    
+            return $this->isOffsitePaymentMethod($methodCode);
         }
         return false;
     }
@@ -271,7 +271,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function getMethodId($code){
         $codeToId = array_flip($this->omiseCodeByOmiseId);
-        return $id = $codeToId[$code] ?? null;
+        return $codeToId[$code] ?? null;
 
     }
 

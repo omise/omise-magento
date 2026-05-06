@@ -8,7 +8,7 @@ use Omise\Payment\Model\Api\Charge;
 class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidator
 {
     public function validate(array $validationSubject)
-    {   
+    {
         $checkoutSession = $validationSubject['response']['session'];
         if (! $checkoutSession instanceof \Omise\Payment\Model\Api\CheckoutSession) {
             return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage()]);

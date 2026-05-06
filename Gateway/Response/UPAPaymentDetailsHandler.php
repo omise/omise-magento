@@ -10,7 +10,7 @@ class UPAPaymentDetailsHandler implements HandlerInterface
     /**
      * @var \Omise\Payment\Helper\OmiseHelper
      */
-    protected $_helper;
+    protected $helper;
 
     /**
      * @var \Magento\Framework\HTTP\Client\Curl
@@ -32,21 +32,9 @@ class UPAPaymentDetailsHandler implements HandlerInterface
         \Magento\Framework\HTTP\Client\Curl $curl,
         \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder
     ) {
-        $this->_helper            = $helper;
+        $this->helper            = $helper;
         $this->curlClient         = $curl;
         $this->transactionBuilder = $transactionBuilder;
-    }
-
-    /**
-     * @param string $url URL to Tesco Barcode generated in Omise Backend
-     * @return string Barcode in SVG format
-     */
-    private function downloadPaymentFile($url)
-    {
-        $this->curlClient->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->curlClient->setOption(CURLOPT_FOLLOWLOCATION, true);
-        $this->curlClient->get($url);
-        return $this->curlClient->getBody();
     }
     
     /**
@@ -58,7 +46,6 @@ class UPAPaymentDetailsHandler implements HandlerInterface
         $payment       = $payment->getPayment();
         
         $paymentType   = ($response['session']->object == "checkout_session") ? $response['session']->object : null;
-        $paymentMethod = $payment->getMethod();
         $order         = $payment->getOrder();
 
         $payment->setAdditionalInformation('upa_redirect_uri', $response['session']->redirect_url);

@@ -85,17 +85,15 @@ class UPAPaymentDataBuilder implements BuilderInterface
      * @return array
      */
     public function build(array $buildSubject)
-    {   
+    {
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
-        $method  = $payment->getPayment();
-        $store_id = $order->getStoreId();
         $methodCode = $payment->getPayment()->getMethod();
         $currency = $order->getCurrencyCode();
         
         $methodCode = $this->omiseHelper->getMethodId($methodCode);
         
-        $requestBody = array(
+        return array(
             'amount' => $this->money->setAmountAndCurrency(
                     $order->getGrandTotalAmount(),
                     $currency
@@ -117,12 +115,6 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "enable_passkey" => true,
             "is_upa" => true
         );
-        /*$locale = substr( strtolower( get_locale() ), 0, 2 );
-        if ( ! empty( $locale ) ) {
-            $payload['locale'] = $locale;
-        }
-        $payload['locale'] = $locale;*/
-        return $requestBody;
     }
 
     /**

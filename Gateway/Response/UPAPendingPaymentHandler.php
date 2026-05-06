@@ -16,7 +16,7 @@ class UPAPendingPaymentHandler implements HandlerInterface
             $stateObject = $handlingSubject['stateObject'];
             $stateObject->setState(Order::STATE_PENDING_PAYMENT);
             $stateObject->setStatus(Order::STATE_PENDING_PAYMENT);
-            $stateObject->setIsNotified(false);    
+            $stateObject->setIsNotified(false);
         }
     }
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Omise\Payment\Model;
 
 use Magento\Payment\Gateway\Command\CommandPoolInterface;
