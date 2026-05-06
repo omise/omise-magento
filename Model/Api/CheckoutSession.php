@@ -45,7 +45,8 @@ class CheckoutSession extends BaseObject
      *
      * @return Omise\Payment\Model\Api\Error|self
      */
-    public function createSession($params) {
+    public function createSession($params)
+    {
         try {
             $endPoint = $this->omiseHelper->checkoutSessionEndPoint();
             $session = $this->aPMSession->createSession($endPoint, $this->config->getSecretKey(), $params);
