@@ -18,7 +18,7 @@ class InstallmentDataAssignObserver extends OffsiteDataAssignObserver
     /**
      * @var string
      */
-    CONST WLB = 'wlb';
+    const WLB = 'wlb';
 
     /**
      * @var array
