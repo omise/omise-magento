@@ -94,7 +94,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
      * @return array
      */
     public function build(array $buildSubject)
-    {   
+    {
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
         $method  = $payment->getPayment();
@@ -104,19 +104,19 @@ class UPAPaymentDataBuilder implements BuilderInterface
         
         $methodCode = $this->omiseHelper->getMethodId($methodCode);
         
-        $requestBody = array(
+        $requestBody = [
             'amount' => $this->money->setAmountAndCurrency(
-                    $order->getGrandTotalAmount(),
-                    $currency
-                )->toSubunit(),
+                $order->getGrandTotalAmount(),
+                $currency
+            )->toSubunit(),
             'currency'        => $currency,
             'order_id'        => (string) $order->getOrderIncrementId(),
             'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
             'payment_methods' => [$methodCode],
-            'redirect_urls'   => array(
+            'redirect_urls'   => [
                 'complete_url' => $this->urlBuilder->getUrl('omise/callback/upacallback'),
                 'cancel_url'   => $this->urlBuilder->getUrl('omise/payment/cancel'),
-            ),
+            ],
             "refund_policy_link" => "https://opn.oo0/refund",
             "session_expires_at" => null,
             "expires_at" => null,
@@ -125,7 +125,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "require_save_card" => true,
             "enable_passkey" => true,
             "is_upa" => true
-        );
+        ];
         /*$locale = substr( strtolower( get_locale() ), 0, 2 );
         if ( ! empty( $locale ) ) {
             $payload['locale'] = $locale;

@@ -93,11 +93,12 @@ class UPACallback extends Action
      * @var string
      * @return bool
      */
-    private function validateChargeId($payment,$chargeId){
+    private function validateChargeId($payment, $chargeId)
+    {
         $sessionId = $payment->getAdditionalInformation('session_id');
         $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
 
-        if(!is_array($checkoutSessionInfo->payments)){
+        if (!is_array($checkoutSessionInfo->payments)) {
             return false;
         }
         
@@ -290,7 +291,7 @@ class UPACallback extends Action
         }
 
         $chargeId = $this->request->getParam('chargeId');
-        $isValidCharge = $this->validateChargeId($payment,$chargeId);
+        $isValidCharge = $this->validateChargeId($payment, $chargeId);
 
         if (!$chargeId || !$isValidCharge) {
             $this->invalid(

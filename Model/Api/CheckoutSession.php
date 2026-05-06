@@ -35,7 +35,7 @@ class CheckoutSession extends BaseObject
         Config $config,
         APMSession $aPMSession,
         OmiseHelper $omiseHelper
-    ){
+    ) {
         $this->aPMSession = $aPMSession;
         $this->config = $config;
         $this->omiseHelper = $omiseHelper;
@@ -43,12 +43,14 @@ class CheckoutSession extends BaseObject
 
     /**
      * @param array $params
-     * 
+     *
      * @return Omise\Payment\Model\Api\Error|self
      */
-    public function createSession($params){        
+    public function createSession($params)
+    {
         try {
-            $session = $this->aPMSession->createSession($this->omiseHelper->checkoutSessionEndPoint(),OmiseApiResource::REQUEST_POST,$this->config->getSecretKey(),$params,true);
+            $session = $this->aPMSession->createSession($this->omiseHelper->checkoutSessionEndPoint(), 
+            OmiseApiResource::REQUEST_POST, $this->config->getSecretKey(), $params,true);
             $this->refresh($session);
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));
@@ -59,10 +61,11 @@ class CheckoutSession extends BaseObject
     /**
      * @var string
      */
-    public function getSessionInfo($sessionId){
+    public function getSessionInfo($sessionId)
+    {
         try {
             $url = $this->omiseHelper->checkoutSessionEndPoint().'/'.$sessionId;
-            $session = $this->aPMSession->createSession($url,OmiseApiResource::REQUEST_GET,$this->config->getSecretKey(),$sessionId);
+            $session = $this->aPMSession->createSession($url, OmiseApiResource::REQUEST_GET, $this->config->getSecretKey(), $sessionId);
             $this->refresh($session);
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));
