@@ -16,9 +16,15 @@ class InstallmentDataAssignObserver extends OffsiteDataAssignObserver
     const SOURCE  = 'source';
 
     /**
+     * @var string
+     */
+    CONST WLB = "wlb";
+
+    /**
      * @var array
      */
     protected $additionalInformationList = [
+        self::WLB,
         self::OFFSITE,
         self::TERMS,
         self::CARD,
