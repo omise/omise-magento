@@ -3,7 +3,6 @@
 namespace Omise\Payment\Model\Api;
 
 use Exception;
-use OmiseCharge;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Helper\OmiseHelper;
 use \Omise\Payment\Gateway\Http\Client\APMSession;
@@ -16,7 +15,7 @@ class CheckoutSession extends BaseObject
     /**
      * @var APMSession
      */
-    private $aPMSession;
+    private $apmSession;
 
     /**
      * @var OmiseHelper
@@ -27,15 +26,15 @@ class CheckoutSession extends BaseObject
      * Injecting dependencies
      *
      * @param Config $config
-     * @param APMSession $aPMSession
+     * @param APMSession $apmSession
      * @param OmiseHelper $omiseHelper
      */
     public function __construct(
         Config $config,
-        APMSession $aPMSession,
+        APMSession $apmSession,
         OmiseHelper $omiseHelper
     ) {
-        $this->aPMSession = $aPMSession;
+        $this->apmSession = $apmSession;
         $this->config = $config;
         $this->omiseHelper = $omiseHelper;
     }
@@ -48,8 +47,8 @@ class CheckoutSession extends BaseObject
     public function createSession($params)
     {
         try {
-            $endPoint = $this->omiseHelper->checkoutSessionEndPoint();
-            $session = $this->aPMSession->createSession($endPoint, $this->config->getSecretKey(), $params);
+            $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
+            $session = $this->apmSession->createSession($endpoint."api/sessions", $this->config->getSecretKey(), $params);
             $this->refresh($session);
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));

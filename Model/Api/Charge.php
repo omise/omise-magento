@@ -40,7 +40,6 @@ class Charge extends BaseObject
      * Injecting dependencies
      *
      * @param Config $config
-     * @param APMSession $aPMSession
      */
     public function __construct(
         Config $config

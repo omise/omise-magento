@@ -249,7 +249,7 @@ class OmiseHelper extends AbstractHelper
     {
         $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
         if ($isUpaFeatureFlagEnabled) {
-            return $this->isOffsitePaymentMethod($methodCode);
+            return $this->isOffsitePaymentMethod($methodCode) || $this->isOfflinePaymentMethod($methodCode);
         }
         return false;
     }
@@ -262,7 +262,7 @@ class OmiseHelper extends AbstractHelper
     {
         $isSandbox = $this->config->isSandboxEnabled();
         if ($isSandbox) {
-            return "https://checkout-page.staging-omise.co/api/sessions";
+            return "https://checkout-page.staging-omise.co/";
         }
         return "https://checkout-page.omise.co/";
     }

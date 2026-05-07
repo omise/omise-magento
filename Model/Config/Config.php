@@ -128,7 +128,10 @@ class Config
      */
     public function getIsUpaFeatureFlagEnabled()
     {
-        return $this->getValue('is_upa_feature_flag_enabled');
+        if ($this->getValue('is_upa_feature_flag_enabled')) {
+            return true;
+        }
+        return false;
     }
 
     /**

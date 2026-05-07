@@ -3,7 +3,7 @@ namespace Omise\Payment\Gateway\Validator;
 
 use Omise\Payment\Gateway\Validator\CommandResponseValidator;
 use Omise\Payment\Gateway\Validator\Message\Invalid as ErrorInvalid;
-use Omise\Payment\Model\Api\Charge;
+use Omise\Payment\Gateway\Validator\Message\ResponseInvalid as ErrorResponseInvalid;
 
 class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidator
 {
@@ -27,7 +27,7 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
      */
     protected function validateResponse($checkoutSession)
     {
-        if (!empty($checkoutSession->id) && $checkoutSession->object != "checkout_session") {
+        if (empty($checkoutSession->id) || $checkoutSession->object != "checkout_session") {
             return new ErrorInvalid(
                 'Payment failed, invalid payment status,
                 please contact our support if you have any questions'

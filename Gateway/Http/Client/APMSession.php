@@ -2,27 +2,26 @@
 
 namespace Omise\Payment\Gateway\Http\Client;
 use Omise\Payment\Model\Omise;
-use Omise\Payment\Helper\OmiseHelper;
 use OmiseException;
 
 class APMSession extends \OmiseApiResource
 {
+    /**
+     * @var int
+     */
     private $omiseConnectTimeout = 30;
+
+    /**
+     * @var int
+     */
     private $omiseTimeout = 60;
-    /**
-     * @var OmiseHelper
-     */
-    private $omiseHelper;
 
     /**
-     * @param OmiseHelper $omiseHelper
+     * @param string $url
+     * @param string $skey
+     * @param array $params
+     * @return array
      */
-    public function __construct(
-        OmiseHelper $omiseHelper
-    ) {
-        $this->omiseHelper = $omiseHelper;
-    }
-
     public function createSession($url,$skey,$params){
         $result = $this->execute(
             $url,
@@ -36,7 +35,7 @@ class APMSession extends \OmiseApiResource
         
         // If response is invalid or not a JSON.
         if (!$this->isValidAPIResponse($array)) {
-            throw new Exception('Unknown error. (Bad Response)');
+            throw new \Exception('Unknown error. (Bad Response)');
         }
 
         if (!empty($array['object']) && $array['object'] === 'error') {
@@ -46,6 +45,14 @@ class APMSession extends \OmiseApiResource
         return $array;
     }
 
+    /**
+     * @param  string $url
+     * @param  string $requestMethod
+     * @param  string $key
+     * @param  array  $params
+     * @param  bool   $is_json
+     * @return string
+     */
     protected function execute($url, $requestMethod, $key, $params = null,$is_json = false)
     {
         $ch = curl_init($url);
@@ -57,7 +64,7 @@ class APMSession extends \OmiseApiResource
             $error = curl_error($ch);
             curl_close($ch);
 
-            throw new Exception($error);
+            throw new \Exception($error);
         }
 
         // Close.

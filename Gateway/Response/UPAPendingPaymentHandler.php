@@ -4,7 +4,6 @@ namespace Omise\Payment\Gateway\Response;
 
 use Magento\Payment\Gateway\Response\HandlerInterface;
 use Magento\Sales\Model\Order;
-use Omise\Payment\Helper\OmiseHelper;
 
 class UPAPendingPaymentHandler implements HandlerInterface
 {

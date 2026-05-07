@@ -63,19 +63,14 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $omiseHelper;
 
     /**
-     * @param Omise\Payment\Model\Config\Cc $ccConfig
-     * @param Capabilities $capabilities
+     * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
      */
     public function __construct(
-        Cc $ccConfig,
         OmiseMoney $money,
-        Capability $capability,
         OmiseHelper $omiseHelper
     ) {
         $this->money = $money;
-        $this->ccConfig = $ccConfig;
-        $this->capability = $capability;
         $this->omiseHelper = $omiseHelper;
     }
 
@@ -92,7 +87,9 @@ class UPAPaymentDataBuilder implements BuilderInterface
         $currency = $order->getCurrencyCode();
         
         $methodCode = $this->omiseHelper->getMethodId($methodCode);
-        
+        if(empty($methodCode)) {
+            return [];
+        }
         return [
             'amount' => $this->money->setAmountAndCurrency(
                 $order->getGrandTotalAmount(),
@@ -106,7 +103,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
                 'complete_url' => "https://www.omise.co",
                 'cancel_url'   => "https://www.google.com",
             ],
-            "refund_policy_link" => "https://opn.oo0/refund",
+            "refund_policy_link" => "",
             "session_expires_at" => null,
             "expires_at" => null,
             "is_link" => true,
