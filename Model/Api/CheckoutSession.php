@@ -48,7 +48,9 @@ class CheckoutSession extends BaseObject
     {
         try {
             $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
-            $session = $this->apmSession->createSession($endpoint."api/sessions", $this->config->getSecretKey(), $params);
+            $session = $this->apmSession->createSession($endpoint."api/sessions",
+            $this->config->getSecretKey(),
+            $params);
             $this->refresh($session);
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to charge : ' . $e->getMessage()));

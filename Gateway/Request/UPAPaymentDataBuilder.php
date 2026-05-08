@@ -87,7 +87,8 @@ class UPAPaymentDataBuilder implements BuilderInterface
         $currency = $order->getCurrencyCode();
         
         $methodCode = $this->omiseHelper->getMethodId($methodCode);
-        if(empty($methodCode)) {
+        if (empty($methodCode))
+        {
             return [];
         }
         return [

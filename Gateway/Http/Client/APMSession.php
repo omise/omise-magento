@@ -1,6 +1,7 @@
 <?php
 
 namespace Omise\Payment\Gateway\Http\Client;
+
 use Omise\Payment\Model\Omise;
 use OmiseException;
 
@@ -22,7 +23,7 @@ class APMSession extends \OmiseApiResource
      * @param array $params
      * @return array
      */
-    public function createSession($url,$skey,$params){
+    public function createSession($url, $skey, $params){
         $result = $this->execute(
             $url,
             "POST",
@@ -53,7 +54,7 @@ class APMSession extends \OmiseApiResource
      * @param  bool   $is_json
      * @return string
      */
-    protected function execute($url, $requestMethod, $key, $params = null,$is_json = false)
+    protected function execute($url, $requestMethod, $key, $params = null, $is_json = false)
     {
         $ch = curl_init($url);
 
@@ -122,7 +123,7 @@ class APMSession extends \OmiseApiResource
             $options += [CURLOPT_USERAGENT => $user_agent];
         }
 
-        if($is_json){
+        if ($is_json) {
             $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
             $http_query = json_encode($params);
             $options += [CURLOPT_POSTFIELDS => $http_query];
@@ -151,4 +152,3 @@ class APMSession extends \OmiseApiResource
         return $array && count($array) && isset($array['object']);
     }
 }
-
