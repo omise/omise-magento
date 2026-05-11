@@ -116,15 +116,15 @@ class UPAPaymentDataBuilder implements BuilderInterface
                 'cancel_url'   => "https://www.google.com",
             ],
             'metadata'        => [
-				'order_id'  => (string) $order->getOrderIncrementId(),
+                'order_id'  => (string) $order->getOrderIncrementId(),
             ],
             "enable_passkey" => true,
             "is_upa" => true
         ];
-        $locale = substr( strtolower( $locale ), 0, 2 );
-		if (!empty( $locale)) {
+        $locale = substr(strtolower($locale), 0, 2);
+        if (!empty($locale)) {
             $payload['locale'] = $locale;
-		}
+        }
         return $payload;
     }
 }
