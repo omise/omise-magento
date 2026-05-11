@@ -99,8 +99,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
 
         $locale = $this->localeResolver->getLocale();
 
-        if (empty($methodCode))
-        {
+        if (empty($methodCode)) {
             return [];
         }
         $payload = [
@@ -123,8 +122,8 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "is_upa" => true
         ];
         $locale = substr( strtolower( $locale ), 0, 2 );
-		if ( ! empty( $locale ) ) {
-			$payload['locale'] = $locale;
+		if (!empty( $locale)) {
+            $payload['locale'] = $locale;
 		}
         return $payload;
     }
