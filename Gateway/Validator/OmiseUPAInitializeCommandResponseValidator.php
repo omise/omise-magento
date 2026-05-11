@@ -9,7 +9,7 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
 {
     public function validate(array $validationSubject)
     {
-        $checkoutSession = $validationSubject['response']['session'];   
+        $checkoutSession = $validationSubject['response']['session'];
         if (! $checkoutSession instanceof \Omise\Payment\Model\Api\CheckoutSession) {
             return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage()]);
         }
