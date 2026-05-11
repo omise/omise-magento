@@ -9,7 +9,7 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
 {
     public function validate(array $validationSubject)
     {
-        $checkoutSession = $validationSubject['response']['session'];
+        $checkoutSession = $validationSubject['response']['session'];   
         if (! $checkoutSession instanceof \Omise\Payment\Model\Api\CheckoutSession) {
             return $this->createResult(false, [ (new ErrorResponseInvalid)->getMessage()]);
         }
@@ -27,7 +27,9 @@ class OmiseUPAInitializeCommandResponseValidator extends CommandResponseValidato
      */
     protected function validateResponse($checkoutSession)
     {
-        if (empty($checkoutSession->id) || $checkoutSession->object != "checkout_session") {
+        $id = (string) $checkoutSession->id;
+        $object = trim((string) $checkoutSession->object);
+        if (empty($id) || $object != "checkout_session") {
             return new ErrorInvalid(
                 'Payment failed, invalid payment status,
                 please contact our support if you have any questions'

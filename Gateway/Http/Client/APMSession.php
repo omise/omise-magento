@@ -5,7 +5,7 @@ namespace Omise\Payment\Gateway\Http\Client;
 use Omise\Payment\Model\Omise;
 use OmiseException;
 
-class APMSession extends \OmiseApiResource
+class APMSession
 {
     /**
      * @var int
@@ -23,7 +23,8 @@ class APMSession extends \OmiseApiResource
      * @param array $params
      * @return array
      */
-    public function createSession($url, $skey, $params){
+    public function createSession($url, $skey, $params)
+    {
         $result = $this->execute(
             $url,
             "POST",
@@ -42,7 +43,6 @@ class APMSession extends \OmiseApiResource
         if (!empty($array['object']) && $array['object'] === 'error') {
             throw \OmiseException::getInstance($array);
         }
-        
         return $array;
     }
 

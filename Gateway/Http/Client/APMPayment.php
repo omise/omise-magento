@@ -5,7 +5,6 @@ namespace Omise\Payment\Gateway\Http\Client;
 use Omise\Payment\Model\Api\Charge as ApiCharge;
 use Omise\Payment\Model\Api\CheckoutSession;
 use Omise\Payment\Model\Omise;
-use Omise\Payment\Helper\OmiseHelper;
 
 class APMPayment extends AbstractPayment
 {

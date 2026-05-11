@@ -12,9 +12,15 @@ use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capability;
+use Magento\Framework\Locale\Resolver;
 
 class UPAPaymentDataBuilder implements BuilderInterface
 {
+    /**
+     * @var Resolver
+     */
+    private $localeResolver;
+
     /**
      * @var string
      */
@@ -65,13 +71,16 @@ class UPAPaymentDataBuilder implements BuilderInterface
     /**
      * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
+     * @param Resolver $localeResolver
      */
     public function __construct(
         OmiseMoney $money,
-        OmiseHelper $omiseHelper
+        OmiseHelper $omiseHelper,
+        Resolver $localeResolver
     ) {
         $this->money = $money;
         $this->omiseHelper = $omiseHelper;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -87,11 +96,14 @@ class UPAPaymentDataBuilder implements BuilderInterface
         $currency = $order->getCurrencyCode();
         
         $methodCode = $this->omiseHelper->getMethodId($methodCode);
+
+        $locale = $this->localeResolver->getLocale();
+
         if (empty($methodCode))
         {
             return [];
         }
-        return [
+        $payload = [
             'amount' => $this->money->setAmountAndCurrency(
                 $order->getGrandTotalAmount(),
                 $currency
@@ -104,24 +116,16 @@ class UPAPaymentDataBuilder implements BuilderInterface
                 'complete_url' => "https://www.omise.co",
                 'cancel_url'   => "https://www.google.com",
             ],
-            "refund_policy_link" => "",
-            "session_expires_at" => null,
-            "expires_at" => null,
-            "is_link" => true,
-            "multi_charge" => true,
-            "require_save_card" => true,
+            'metadata'        => [
+				'order_id'  => (string) $order->getOrderIncrementId(),
+            ],
             "enable_passkey" => true,
             "is_upa" => true
         ];
-    }
-
-    /**
-     * Set zero_interest_installment to true for installment Maybank
-     */
-    public function enableZeroInterestInstallments($method)
-    {
-        $isInstallment = Installment::CODE === $method->getMethod();
-        $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
-        return $isInstallment && (Installment::MBB_ID === $installmentId);
+        $locale = substr( strtolower( $locale ), 0, 2 );
+		if ( ! empty( $locale ) ) {
+			$payload['locale'] = $locale;
+		}
+        return $payload;
     }
 }
