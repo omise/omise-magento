@@ -18,6 +18,19 @@ class APMSession
     private $omiseTimeout = 60;
 
     /**
+     * @var Omise
+     */
+    private $omise;
+
+    /**
+     * @param Omise $omise
+     */
+    public function __construct(
+        Omise $omise
+    ) {
+        $this->omise = $omise;
+    }
+    /**
      * @param string $url
      * @param string $skey
      * @param array $params
@@ -117,10 +130,11 @@ class APMSession
         }
 
         // Config UserAgent
-        if (defined('OMISE_USER_AGENT_SUFFIX')) {
-            $options += [CURLOPT_USERAGENT => $user_agent . ' ' . OMISE_USER_AGENT_SUFFIX];
+        if ( defined('OMISE_USER_AGENT_SUFFIX') ) {
+            $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
         } else {
-            $options += [CURLOPT_USERAGENT => $user_agent];
+            $this->omise->defineUserAgent();
+            $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
         }
 
         if ($is_json) {

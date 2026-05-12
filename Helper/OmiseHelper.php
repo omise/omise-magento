@@ -273,6 +273,12 @@ class OmiseHelper extends AbstractHelper
      */
     public function getMethodId($code)
     {
+        if (strpos($code, 'mobile_banking_') === 0) {
+            return "mobile_banking";
+        }
+        if (strpos($code, 'installment_') === 0) {
+            return "installment";
+        }
         $codeToId = array_flip($this->omiseCodeByOmiseId);
         return $codeToId[$code] ?? null;
     }
