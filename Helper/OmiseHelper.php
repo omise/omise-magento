@@ -260,10 +260,6 @@ class OmiseHelper extends AbstractHelper
      */
     public function checkoutSessionEndPoint()
     {
-        $isSandbox = $this->config->isSandboxEnabled();
-        if ($isSandbox) {
-            return "https://checkout-page.staging-omise.co/";
-        }
         return "https://checkout-page.omise.co/";
     }
 

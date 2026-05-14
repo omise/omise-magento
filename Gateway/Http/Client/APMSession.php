@@ -121,14 +121,6 @@ class APMSession
             CURLOPT_USERPWD => $userpwd
         ];
 
-        // Config Omise API Version
-        if ($omise_api_version) {
-            $options += [CURLOPT_HTTPHEADER => ['Omise-Version: ' . $omise_api_version,]];
-        }else{
-            $this->omise->defineApiVersion();
-            $options += [CURLOPT_HTTPHEADER => ['Omise-Version: ' . OMISE_API_VERSION,]];
-        }
-
         // Config UserAgent
         if ( defined('OMISE_USER_AGENT_SUFFIX') ) {
             $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
