@@ -97,7 +97,6 @@ class APMSession
      */
     private function genOptions($requestMethod, $userpwd, $params, $is_json)
     {
-        $user_agent = 'OmisePHP/' . OMISE_PHP_LIB_VERSION . ' PHP/' . PHP_VERSION;
         $omise_api_version = defined('OMISE_API_VERSION') ? OMISE_API_VERSION : null;
 
         $options = [
@@ -125,8 +124,9 @@ class APMSession
         // Config Omise API Version
         if ($omise_api_version) {
             $options += [CURLOPT_HTTPHEADER => ['Omise-Version: ' . $omise_api_version,]];
-
-            $user_agent .= ' OmiseAPI/' . $omise_api_version;
+        }else{
+            $this->omise->defineApiVersion();
+            $options += [CURLOPT_HTTPHEADER => ['Omise-Version: ' . OMISE_API_VERSION,]];
         }
 
         // Config UserAgent
