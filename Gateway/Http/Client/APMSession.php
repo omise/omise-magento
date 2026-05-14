@@ -1,33 +1,42 @@
 <?php
 
 namespace Omise\Payment\Gateway\Http\Client;
-use Omise\Payment\Model\Api\Charge as ApiCharge;
+
 use Omise\Payment\Model\Omise;
-use Omise\Payment\Helper\OmiseHelper;
 use OmiseException;
 
-class APMSession extends \OmiseApiResource
+class APMSession
 {
-    private $OMISE_CONNECTTIMEOUT = 30;
-    private $OMISE_TIMEOUT = 60;
     /**
-     * @var OmiseHelper
+     * @var int
      */
-    private $omiseHelper;
+    private $omiseConnectTimeout = 30;
 
     /**
-     * @param ApiCharge $apiCharge,
+     * @var int
+     */
+    private $omiseTimeout = 60;
+
+    /**
+     * @var Omise
+     */
+    private $omise;
+
+    /**
      * @param Omise $omise
-     * @param OmiseHelper $omiseHelper
      */
     public function __construct(
-        ApiCharge $apiCharge,
-        Omise $omise,
-        OmiseHelper $omiseHelper
+        Omise $omise
     ) {
-        $this->omiseHelper = $omiseHelper;
+        $this->omise = $omise;
     }
-
+    /**
+     * @param string $url
+     * @param string $requestMethod
+     * @param string $skey
+     * @param array $params
+     * @return array
+     */
     public function createSession($url,$requestMethod,$skey,$params = null,$is_json = false){
         $result = $this->execute(
             $url,
@@ -38,6 +47,7 @@ class APMSession extends \OmiseApiResource
         );
         
         $array = json_decode($result, true);
+        
         // If response is invalid or not a JSON.
         if (!$this->isValidAPIResponse($array)) {
             throw new \Exception('Unknown error. (Bad Response)');
@@ -46,12 +56,19 @@ class APMSession extends \OmiseApiResource
         if (!empty($array['object']) && $array['object'] === 'error') {
             throw \OmiseException::getInstance($array);
         }
-        
         return $array;
     }
 
-    protected function execute($url, $requestMethod, $key, $params = null,$is_json = false)
-    {   
+    /**
+     * @param  string $url
+     * @param  string $requestMethod
+     * @param  string $key
+     * @param  array  $params
+     * @param  bool   $is_json
+     * @return string
+     */
+    protected function execute($url, $requestMethod, $key, $params = null, $is_json = false)
+    {
         $ch = curl_init($url);
 
         curl_setopt_array($ch, $this->genOptions($requestMethod, $key . ':', $params, $is_json));
@@ -61,7 +78,7 @@ class APMSession extends \OmiseApiResource
             $error = curl_error($ch);
             curl_close($ch);
 
-            throw new Exception($error);
+            throw new \Exception($error);
         }
 
         // Close.
@@ -80,9 +97,6 @@ class APMSession extends \OmiseApiResource
      */
     private function genOptions($requestMethod, $userpwd, $params, $is_json)
     {
-        $user_agent = 'OmisePHP/' . OMISE_PHP_LIB_VERSION . ' PHP/' . PHP_VERSION;
-        $omise_api_version = defined('OMISE_API_VERSION') ? OMISE_API_VERSION : null;
-
         $options = [
             // Set the HTTP version to 1.1.
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -98,28 +112,22 @@ class APMSession extends \OmiseApiResource
             // Make HTTP error code above 400 an error.
             // CURLOPT_FAILONERROR => true,
             // Time before the request is aborted.
-            CURLOPT_TIMEOUT => $this->OMISE_TIMEOUT,
+            CURLOPT_TIMEOUT => $this->omiseTimeout,
             // Time before the request is aborted when attempting to connect.
-            CURLOPT_CONNECTTIMEOUT => $this->OMISE_CONNECTTIMEOUT,
+            CURLOPT_CONNECTTIMEOUT => $this->omiseConnectTimeout,
             // Authentication.
             CURLOPT_USERPWD => $userpwd
         ];
 
-        // Config Omise API Version
-        if ($omise_api_version) {
-            $options += [CURLOPT_HTTPHEADER => ['Omise-Version: ' . $omise_api_version,]];
-
-            $user_agent .= ' OmiseAPI/' . $omise_api_version;
-        }
-
         // Config UserAgent
-        if (defined('OMISE_USER_AGENT_SUFFIX')) {
-            $options += [CURLOPT_USERAGENT => $user_agent . ' ' . OMISE_USER_AGENT_SUFFIX];
+        if ( defined('OMISE_USER_AGENT_SUFFIX') ) {
+            $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
         } else {
-            $options += [CURLOPT_USERAGENT => $user_agent];
+            $this->omise->defineUserAgent();
+            $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
         }
 
-        if($is_json){
+        if ($is_json) {
             $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
             $http_query = json_encode($params);
             $options += [CURLOPT_POSTFIELDS => $http_query];
@@ -148,4 +156,3 @@ class APMSession extends \OmiseApiResource
         return $array && count($array) && isset($array['object']);
     }
 }
-

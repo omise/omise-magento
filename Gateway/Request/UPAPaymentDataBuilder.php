@@ -13,9 +13,16 @@ use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Capability;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\Locale\Resolver;
+use Magento\Store\Model\StoreManagerInterface;
 
 class UPAPaymentDataBuilder implements BuilderInterface
 {
+    /**
+     * @var Resolver
+     */
+    private $localeResolver;
+
     /**
      * @var string
      */
@@ -64,28 +71,25 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $omiseHelper;
 
     /**
-     * @var UrlInterface
+     * @var StoreManagerInterface
      */
-    protected $urlBuilder;
+    private $storeManager;
 
     /**
-     * @param Omise\Payment\Model\Config\Cc $ccConfig
-     * @param Capabilities $capabilities
+     * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
-     * @param UrlInterface $urlBuilder
+     * @param Resolver $localeResolver
      */
     public function __construct(
-        Cc $ccConfig,
         OmiseMoney $money,
-        Capability $capability,
         OmiseHelper $omiseHelper,
-        UrlInterface $urlBuilder
+        Resolver $localeResolver,
+        StoreManagerInterface $storeManager
     ) {
         $this->money = $money;
-        $this->ccConfig = $ccConfig;
-        $this->capability = $capability;
         $this->omiseHelper = $omiseHelper;
-        $this->urlBuilder = $urlBuilder;
+        $this->localeResolver = $localeResolver;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -97,14 +101,17 @@ class UPAPaymentDataBuilder implements BuilderInterface
     {
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
-        $method  = $payment->getPayment();
-        $store_id = $order->getStoreId();
         $methodCode = $payment->getPayment()->getMethod();
         $currency = $order->getCurrencyCode();
-        
-        $methodCode = $this->omiseHelper->getMethodId($methodCode);
-        
-        $requestBody = [
+        $store = $this->storeManager->getStore($order->getStoreId());
+        $methodId = $this->omiseHelper->getMethodId($methodCode);
+
+        $locale = $this->localeResolver->getLocale();
+
+        if (empty($methodId)) {
+            return [];
+        }
+        $payload = [
             'amount' => $this->money->setAmountAndCurrency(
                 $order->getGrandTotalAmount(),
                 $currency
@@ -112,35 +119,22 @@ class UPAPaymentDataBuilder implements BuilderInterface
             'currency'        => $currency,
             'order_id'        => (string) $order->getOrderIncrementId(),
             'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
-            'payment_methods' => [$methodCode],
+            'payment_methods' => [$methodId],
             'redirect_urls'   => [
                 'complete_url' => $this->urlBuilder->getUrl('omise/callback/upacallback'),
                 'cancel_url'   => $this->urlBuilder->getUrl('omise/payment/cancel'),
             ],
-            "refund_policy_link" => "https://opn.oo0/refund",
-            "session_expires_at" => null,
-            "expires_at" => null,
-            "is_link" => true,
-            "multi_charge" => true,
-            "require_save_card" => true,
-            "enable_passkey" => true,
+            'metadata'        => [
+                'order_id'  => (string) $order->getOrderIncrementId(),
+                'store_id' => $order->getStoreId(),
+                'store_name' => $store->getName()
+            ],
             "is_upa" => true
         ];
-        /*$locale = substr( strtolower( get_locale() ), 0, 2 );
-        if ( ! empty( $locale ) ) {
+        $locale = substr(strtolower($locale), 0, 2);
+        if (!empty($locale)) {
             $payload['locale'] = $locale;
         }
-        $payload['locale'] = $locale;*/
-        return $requestBody;
-    }
-
-    /**
-     * Set zero_interest_installment to true for installment Maybank
-     */
-    public function enableZeroInterestInstallments($method)
-    {
-        $isInstallment = Installment::CODE === $method->getMethod();
-        $installmentId = $method->getAdditionalInformation(InstallmentDataAssignObserver::OFFSITE);
-        return $isInstallment && (Installment::MBB_ID === $installmentId);
+        return $payload;
     }
 }
