@@ -14,7 +14,6 @@ use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Psr\Log\LoggerInterface;
 use Magento\Framework\App\Request\Http;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 
@@ -57,6 +56,30 @@ class UPACallback extends Action
      */
     protected $omiseCheckoutSession;
 
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var CheckoutSession
+     */
+    protected $checkoutSession;
+
+    /**
+     * @var Http
+     */
+    protected $request;
+
+    /**
+     * @param Context $context
+     * @param Session $session
+     * @param Omise $omise
+     * @param Charge $charge
+     * @param OmiseHelper $helper
+     * @param OmiseEmailHelper $emailHelper
+     * @param Config $config
+     */
     public function __construct(
         Context $context,
         Session $session,
@@ -66,9 +89,8 @@ class UPACallback extends Action
         OmiseEmailHelper $emailHelper,
         Config $config,
         CheckoutSession $checkoutSession,
-        LoggerInterface $logger,
         Http $request,
-        OmiseCheckoutSession $omiseCheckoutSession
+        OmiseCheckoutSession $omiseCheckoutSession,
     ) {
         parent::__construct($context);
 
@@ -79,7 +101,6 @@ class UPACallback extends Action
         $this->emailHelper = $emailHelper;
         $this->config = $config;
         $this->checkoutSession  = $checkoutSession;
-        $this->logger = $logger;
         $this->request = $request;
         $this->omiseCheckoutSession = $omiseCheckoutSession;
 
@@ -114,26 +135,16 @@ class UPACallback extends Action
      * @return void
      */
     public function execute()
-    {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-closed.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info("UPA CallBack CALLED");
-        
+    {   
         $order = $this->session->getLastRealOrder();
         $status = $this->getRequest()->getParam('status');
         $chargeId = $this->getRequest()->getParam('chargeId');
-
-        $logger->info("Status : ".$status);
-        $logger->info("Charge ID : ".$chargeId);
 
         if (!$this->isValid($order)) {
             return $this->redirect(self::PATH_CART);
         }
 
-        $orderState = $order->getState();
-        $logger->info("Order State : ".$orderState);
-        
+        $orderState = $order->getState();        
         if ($orderState === Order::STATE_PROCESSING) {
             return $this->redirect(self::PATH_SUCCESS);
         }
@@ -141,20 +152,16 @@ class UPACallback extends Action
         try {
             $payment = $order->getPayment();
             $charge = $this->charge->find($chargeId);
-            $logger->info("HERE");
             if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
                 throw new LocalizedException(
                     __('Couldn\'t retrieve charge transaction. Please contact administrator.')
                 );
             }
-            $logger->info("HERE 2");
             if ($charge instanceof \Omise\Payment\Model\Api\Error) {
                 // restoring the cart
                 $this->checkoutSession->restoreQuote();
                 throw new LocalizedException(__($charge->getMessage()));
             }
-            $logger->info("HERE 3");
-
             $paymentMethod = $payment->getMethod();
 
             if ($charge->isFailed()) {
@@ -163,6 +170,7 @@ class UPACallback extends Action
 
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
+                $this->handleSuccess($order, $charge->id, $payment, $paymentMethod);
                 return $this->redirect(self::PATH_SUCCESS);
             }
 
@@ -176,7 +184,6 @@ class UPACallback extends Action
             $this->handlePending($order, $payment);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
-
             return $this->redirect(self::PATH_CART);
         }
     }
@@ -221,7 +228,7 @@ class UPACallback extends Action
         $paymentMethodLabel = $this->helper->getOmiseLabelByOmiseCode($paymentMethod);
         // Add transaction.
         $payment->addTransactionCommentsToOrder(
-            $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
+            $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
             __(
                 "Amount of %1 has been paid via Omise $paymentMethodLabel payment",
                 $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
@@ -269,11 +276,6 @@ class UPACallback extends Action
      */
     private function isValid($order)
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/omise-closed.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info("UPA isValid called");
-
         if (! $order->getId()) {
             $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order
             again or contact our support if you have any questions.'));

@@ -24,36 +24,6 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $localeResolver;
 
     /**
-     * @var string
-     */
-    const AMOUNT = 'amount';
-
-    /**
-     * @var string
-     */
-    const CURRENCY = 'currency';
-
-    /**
-     * @var string
-     */
-    const DESCRIPTION = 'description';
-
-    /**
-     * @var string
-     */
-    const METADATA = 'metadata';
-
-    /**
-     * @var string
-     */
-    const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
-
-    /**
-     * @var string
-     */
-    const WEBHOOKS_ENDPOINT = 'webhook_endpoints';
-
-    /**
      * @var \Omise\Payment\Model\Config\Cc
      */
     private $ccConfig;
@@ -62,8 +32,6 @@ class UPAPaymentDataBuilder implements BuilderInterface
      * @var OmiseMoney
      */
     private $money;
-
-    private $capability;
 
     /**
      * @var OmiseHelper
@@ -76,20 +44,29 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $storeManager;
 
     /**
+     * @var UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
      * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
      * @param Resolver $localeResolver
+     * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         OmiseMoney $money,
         OmiseHelper $omiseHelper,
         Resolver $localeResolver,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        UrlInterface $urlBuilder
     ) {
         $this->money = $money;
         $this->omiseHelper = $omiseHelper;
         $this->localeResolver = $localeResolver;
         $this->storeManager = $storeManager;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Omise\Payment\Model\Api;
 
 use Exception;
+use OmiseApiResource;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Helper\OmiseHelper;
 use \Omise\Payment\Gateway\Http\Client\APMSession;
@@ -49,7 +50,7 @@ class CheckoutSession extends BaseObject
         try {
             $endpoint = $this->omiseHelper->checkoutSessionEndPoint();
             $session = $this->apmSession->createSession(
-                $endpoint."api/sessions", 
+                $endpoint."api/sessions",
                 OmiseApiResource::REQUEST_POST,
                 $this->config->getSecretKey(),
                 $params,
@@ -70,10 +71,10 @@ class CheckoutSession extends BaseObject
         try {
             $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
             $session = $this->apmSession->createSession(
-                $endpoint."api/sessions",
+                $endpoint."api/sessions/".$sessionId,
                 OmiseApiResource::REQUEST_GET,
                 $this->config->getSecretKey(),
-                $sessionId
+                []
             );
             $this->refresh($session);
         } catch (Exception $e) {
