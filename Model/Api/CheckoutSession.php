@@ -6,7 +6,7 @@ use Exception;
 use OmiseApiResource;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Helper\OmiseHelper;
-use \Omise\Payment\Gateway\Http\Client\APMSession;
+use Omise\Payment\Gateway\Http\Client\APMSession;
 use Magento\Framework\Exception\LocalizedException;
 
 class CheckoutSession extends BaseObject
@@ -73,8 +73,7 @@ class CheckoutSession extends BaseObject
             $session = $this->apmSession->createSession(
                 $endpoint."api/sessions/".$sessionId,
                 OmiseApiResource::REQUEST_GET,
-                $this->config->getSecretKey(),
-                []
+                $this->config->getSecretKey()
             );
             $this->refresh($session);
         } catch (Exception $e) {

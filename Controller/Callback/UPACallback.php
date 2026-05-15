@@ -2,20 +2,21 @@
 namespace Omise\Payment\Controller\Callback;
 
 use Exception;
-use Magento\Checkout\Model\Session;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Payment\Transaction;
+use Magento\Checkout\Model\Session;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge;
-use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Request\Http;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
+use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface as TransactionBuilderInterface;
+use Magento\Framework\App\Action\Action;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Payment\Transaction;
+use Magento\Framework\Exception\LocalizedException;
 
 #[\AllowDynamicProperties]
 class UPACallback extends Action
@@ -50,12 +51,7 @@ class UPACallback extends Action
      * @var \Omise\Payment\Helper\OmiseEmailHelper
      */
     protected $emailHelper;
-
-    /**
-     * @var OmiseCheckoutSession
-     */
-    protected $omiseCheckoutSession;
-
+    
     /**
      * @var Config
      */
@@ -68,18 +64,32 @@ class UPACallback extends Action
 
     /**
      * @var Http
-     */
+     */    
     protected $request;
 
     /**
-     * @param Context $context
-     * @param Session $session
-     * @param Omise $omise
-     * @param Charge $charge
-     * @param OmiseHelper $helper
-     * @param OmiseEmailHelper $emailHelper
-     * @param Config $config
+     * @var OmiseCheckoutSession
      */
+    protected $omiseCheckoutSession;
+
+    /**
+     * @var TransactionBuilderInterface
+     */
+    protected $transactionBuilder;
+
+    /**
+      * @param Context $context
+      * @param Session $session
+      * @param Omise   $omise
+      * @param Charge  $charge
+      * @param OmiseHelper $helper
+      * @param OmiseEmailHelper $emailHelper
+      * @param Config $config
+      * @param CheckoutSession $checkoutSession
+      * @param Http $request
+      * @param OmiseCheckoutSession $omiseCheckoutSession
+      * @param TransactionBuilderInterface $transactionBuilder
+      */
     public function __construct(
         Context $context,
         Session $session,
@@ -91,9 +101,9 @@ class UPACallback extends Action
         CheckoutSession $checkoutSession,
         Http $request,
         OmiseCheckoutSession $omiseCheckoutSession,
+        TransactionBuilderInterface $transactionBuilder
     ) {
         parent::__construct($context);
-
         $this->session = $session;
         $this->omise   = $omise;
         $this->charge  = $charge;
@@ -103,7 +113,7 @@ class UPACallback extends Action
         $this->checkoutSession  = $checkoutSession;
         $this->request = $request;
         $this->omiseCheckoutSession = $omiseCheckoutSession;
-
+        $this->transactionBuilder = $transactionBuilder;
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
         $this->omise->defineApiKeys();
@@ -135,7 +145,7 @@ class UPACallback extends Action
      * @return void
      */
     public function execute()
-    {   
+    {
         $order = $this->session->getLastRealOrder();
         $status = $this->getRequest()->getParam('status');
         $chargeId = $this->getRequest()->getParam('chargeId');
@@ -144,7 +154,7 @@ class UPACallback extends Action
             return $this->redirect(self::PATH_CART);
         }
 
-        $orderState = $order->getState();        
+        $orderState = $order->getState();
         if ($orderState === Order::STATE_PROCESSING) {
             return $this->redirect(self::PATH_SUCCESS);
         }
@@ -170,7 +180,33 @@ class UPACallback extends Action
 
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                $this->handleSuccess($order, $charge->id, $payment, $paymentMethod);
+                $payment->setTransactionId($charge->id);
+                $payment->setLastTransId($charge->id);
+                $payment->setIsTransactionClosed(true);
+
+                $transaction = $this->transactionBuilder
+                    ->setPayment($payment)
+                    ->setOrder($order)
+                    ->setTransactionId($charge->id)
+                    ->setAdditionalInformation([
+                        Transaction::RAW_DETAILS => [
+                            'omise_charge_id' => $charge->id,
+                            'status' => $charge->status
+                        ]
+                    ])
+                    ->setFailSafe(true)
+                    ->build(Transaction::TYPE_CAPTURE);
+
+                $payment->addTransactionCommentsToOrder(
+                    $transaction,
+                    __(
+                        'Omise payment captured successfully. Charge ID: %1',
+                        $charge->id
+                    )
+                );
+                $transaction->setIsClosed(true);
+                $payment->save();
+                $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
 

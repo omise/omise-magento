@@ -5,13 +5,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseMoney;
-use Omise\Payment\Observer\InstallmentDataAssignObserver;
-use Omise\Payment\Model\Config\Installment;
-use Omise\Payment\Model\Config\Cc;
-use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Model\Capability;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Locale\Resolver;
 use Magento\Store\Model\StoreManagerInterface;
@@ -22,11 +16,6 @@ class UPAPaymentDataBuilder implements BuilderInterface
      * @var Resolver
      */
     private $localeResolver;
-
-    /**
-     * @var \Omise\Payment\Model\Config\Cc
-     */
-    private $ccConfig;
 
     /**
      * @var OmiseMoney
