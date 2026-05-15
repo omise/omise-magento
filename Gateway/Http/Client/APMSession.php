@@ -35,9 +35,10 @@ class APMSession
      * @param string $requestMethod
      * @param string $skey
      * @param array $params
+     * @param bool $is_json
      * @return array
      */
-    public function createSession($url,$requestMethod,$skey,$params = [],$is_json = false){
+    public function createSession($url, $requestMethod, $skey, $params = [], $is_json = false) {
         $result = $this->execute(
             $url,
             $requestMethod,

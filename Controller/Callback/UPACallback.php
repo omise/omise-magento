@@ -51,7 +51,7 @@ class UPACallback extends Action
      * @var \Omise\Payment\Helper\OmiseEmailHelper
      */
     protected $emailHelper;
-    
+
     /**
      * @var Config
      */
@@ -64,7 +64,7 @@ class UPACallback extends Action
 
     /**
      * @var Http
-     */    
+     */
     protected $request;
 
     /**
@@ -78,18 +78,18 @@ class UPACallback extends Action
     protected $transactionBuilder;
 
     /**
-      * @param Context $context
-      * @param Session $session
-      * @param Omise   $omise
-      * @param Charge  $charge
-      * @param OmiseHelper $helper
-      * @param OmiseEmailHelper $emailHelper
-      * @param Config $config
-      * @param CheckoutSession $checkoutSession
-      * @param Http $request
-      * @param OmiseCheckoutSession $omiseCheckoutSession
-      * @param TransactionBuilderInterface $transactionBuilder
-      */
+     * @param Context $context
+     * @param Session $session
+     * @param Omise   $omise
+     * @param Charge  $charge
+     * @param OmiseHelper $helper
+     * @param OmiseEmailHelper $emailHelper
+     * @param Config $config
+     * @param CheckoutSession $checkoutSession
+     * @param Http $request
+     * @param OmiseCheckoutSession $omiseCheckoutSession
+     * @param TransactionBuilderInterface $transactionBuilder
+     */
     public function __construct(
         Context $context,
         Session $session,
