@@ -337,7 +337,8 @@ class UPACallback extends Action
 
         $paymentMethod = $payment->getMethod();
 
-        if (!$this->helper->isOffsitePaymentMethod($paymentMethod) && !$this->helper->isOfflinePaymentMethod($paymentMethod)) {
+        if (!$this->helper->isOffsitePaymentMethod($paymentMethod) 
+            && !$this->helper->isOfflinePaymentMethod($paymentMethod)) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')
