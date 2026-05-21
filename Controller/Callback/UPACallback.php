@@ -18,7 +18,6 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Magento\Framework\Exception\LocalizedException;
 
-#[\AllowDynamicProperties]
 class UPACallback extends Action
 {
     /**
@@ -147,7 +146,6 @@ class UPACallback extends Action
     public function execute()
     {
         $order = $this->session->getLastRealOrder();
-        $status = $this->getRequest()->getParam('status');
         $chargeId = $this->getRequest()->getParam('chargeId');
 
         if (!$this->isValid($order)) {
@@ -178,12 +176,11 @@ class UPACallback extends Action
                 return $this->handleFailure($charge);
             }
 
+            $payment->setTransactionId($charge->id);
+            $payment->setLastTransId($charge->id);
+            
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                $payment->setTransactionId($charge->id);
-                $payment->setLastTransId($charge->id);
-                $payment->setIsTransactionClosed(true);
-
                 $transaction = $this->transactionBuilder
                     ->setPayment($payment)
                     ->setOrder($order)
@@ -196,22 +193,10 @@ class UPACallback extends Action
                     ])
                     ->setFailSafe(true)
                     ->build(Transaction::TYPE_CAPTURE);
-
-                $payment->addTransactionCommentsToOrder(
-                    $transaction,
-                    __(
-                        'Omise payment captured successfully. Charge ID: %1',
-                        $charge->id
-                    )
-                );
-                $transaction->setIsClosed(true);
                 $payment->save();
                 $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
-
-            $payment->setTransactionId($charge->id);
-            $payment->setLastTransId($charge->id);
 
             if ($charge->isSuccessful()) {
                 return $this->handleSuccess($order, $charge->id, $payment, $paymentMethod);
@@ -235,7 +220,7 @@ class UPACallback extends Action
         $this->checkoutSession->restoreQuote();
         $failureMessage = $charge->failure_message ?
             ucfirst($charge->failure_message) :
-            'Payment cancelled';
+            __('Payment cancelled');
         $errorMessage = __(
             "Payment failed. $failureMessage, please contact our support if you have any questions."
         );
@@ -292,9 +277,9 @@ class UPACallback extends Action
         $transaction->setIsClosed(false);
         $payment->addTransactionCommentsToOrder(
             $transaction,
-            __('The payment is under processing.<br/>Due to Bank process, this might take up to an hour to
-            complete. Click "Accept" or "Deny" to accept or deny the payment manually, after the result of
-            the processing has been updated (check the result on the Omise Dashboard).')
+            __('The payment is under processing.<br/>Due to bank processing, this might take up to an hour to
+             complete. The payment status will be updated once the processing result is available (you can
+             check the latest status on the Omise Dashboard).')
         );
 
         $order->save();
@@ -341,7 +326,7 @@ class UPACallback extends Action
         }
 
         $orderState = $order->getState();
-        $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_CANCELED, Order::STATE_PROCESSING];
+        $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_PROCESSING];
         
         if (!in_array($orderState, $validOrderStates)) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
@@ -352,7 +337,7 @@ class UPACallback extends Action
 
         $paymentMethod = $payment->getMethod();
 
-        if (!$this->helper->isOffsitePaymentMethod($paymentMethod)) {
+        if (!$this->helper->isOffsitePaymentMethod($paymentMethod) && !$this->helper->isOfflinePaymentMethod($paymentMethod)) {
             $this->invalid(
                 $order,
                 __('Invalid payment method. Please contact our support if you have any questions.')

@@ -87,8 +87,14 @@ class UPAPaymentDataBuilder implements BuilderInterface
             'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
             'payment_methods' => [$methodId],
             'redirect_urls'   => [
-                'complete_url' => $this->urlBuilder->getUrl('omise/callback/upacallback'),
-                'cancel_url'   => $this->urlBuilder->getUrl('omise/payment/cancel'),
+                'complete_url' => $this->urlBuilder->getUrl(
+                     'omise/callback/upacallback',
+                     ['_query' => ['order_id' => (string) $order->getOrderIncrementId()]]
+                 ),
+                 'cancel_url'   => $this->urlBuilder->getUrl(
+                     'omise/payment/cancel',
+                     ['_query' => ['order_id' => (string) $order->getOrderIncrementId()]]
+                 ),
             ],
             'metadata'        => [
                 'order_id'  => (string) $order->getOrderIncrementId(),

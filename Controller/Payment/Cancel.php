@@ -33,9 +33,7 @@ class Cancel extends Action
             if ($lastOrderId) {
                 $order = $this->orderRepository->get($lastOrderId);
                 if ($order->getState() !== \Magento\Sales\Model\Order::STATE_CANCELED) {
-                    $order->setState(\Magento\Sales\Model\Order::STATE_CANCELED);
-                    $order->setStatus(\Magento\Sales\Model\Order::STATE_CANCELED);
-                    $order->addStatusHistoryComment('Payment cancelled by customer (Omise cancel).');
+                    $order->registerCancellation('Payment cancelled by customer (Omise cancel).');
                     $this->orderRepository->save($order);
                 }
             }
