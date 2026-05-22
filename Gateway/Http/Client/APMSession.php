@@ -30,37 +30,33 @@ class APMSession
     ) {
         $this->omise = $omise;
     }
+
     /**
-     * @param string $url
-     * @param string $requestMethod
-     * @param string $skey
-     * @param array $params
-     * @param bool $is_json
+     * @param  string $url
+     * @param  string $requestMethod
+     * @param  string $key
+     * @param  array  $params
+     * @param  bool   $is_json
      * @return array
      */
-    public function processSession($url, $requestMethod, $skey, $params = [], $is_json = false)
+    public function processSession($url, $requestMethod, $key, $params = null, $is_json = false)
     {
-        $result = $this->execute(
-            $url,
-            $requestMethod,
-            $skey,
-            $params,
-            $is_json
-        );
-        
-        $array = json_decode($result, true);
-        
-        // If response is invalid or not a JSON.
-        if (!$this->isValidAPIResponse($array)) {
-            throw new \Exception('Unknown error. (Bad Response)');
-        }
+        try {
+            $response = $this->execute($url, $requestMethod, $key, $params, $is_json);
+            $array = json_decode($response, true);
+            // If response is invalid or not a JSON.
+            if (!$this->isValidAPIResponse($array)) {
+                throw new \Exception('Unknown error. (Bad Response)');
+            }
 
-        if (!empty($array['object']) && $array['object'] === 'error') {
-            throw \OmiseException::getInstance($array);
+            if (!empty($array['object']) && $array['object'] === 'error') {
+                throw \OmiseException::getInstance($array);
+            }
+            return $array;
+        } catch (OmiseException $e) {
+            throw new OmiseException($e->getMessage());
         }
-        return $array;
     }
-
     /**
      * @param  string $url
      * @param  string $requestMethod
@@ -153,7 +149,7 @@ class APMSession
      *
      * @return boolean
      */
-    protected static function isValidAPIResponse($array)
+    private static function isValidAPIResponse($array)
     {
         return $array && count($array) && isset($array['object']);
     }

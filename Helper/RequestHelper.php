@@ -4,6 +4,7 @@ namespace Omise\Payment\Helper;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\HTTP\Header;
+use Omise\Payment\Gateway\Http\Client\APMSession;
 
 class RequestHelper
 {
@@ -14,15 +15,27 @@ class RequestHelper
     private $request;
 
     /**
+     * @var APMSession
+     */
+    private $apmSession;
+
+    /**
      * @var \Magento\Framework\HTTP\Header
      */
     protected $header;
 
+    /**
+     * @param RequestInterface $request
+     * @param Header $header
+     * @param APMSession $apmSession
+     */
     public function __construct(
         RequestInterface $request,
-        Header $header
+        Header $header,
+        APMSession $apmSession
     ) {
         $this->request = $request;
+        $this->apmSession = $apmSession;
         $this->header = $header;
     }
 
@@ -95,5 +108,25 @@ class RequestHelper
     public function isMobilePlatform()
     {
         return 'WEB' !== $this->getPlatformType();
+    }
+
+    /**
+     * Request helper for UPA session API
+     * @param string $url
+     * @param string $requestMethod
+     * @param string $skey
+     * @param array $params
+     * @param bool $is_json
+     * @return array
+     */
+    public function request($url, $requestMethod, $skey, $params = [], $is_json = false)
+    {
+        return $this->apmSession->processSession(
+            $url,
+            $requestMethod,
+            $skey,
+            $params,
+            $is_json
+        );
     }
 }

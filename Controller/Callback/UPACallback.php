@@ -192,8 +192,7 @@ class UPACallback extends Action
                         ]
                     ])
                     ->setFailSafe(true)
-                    ->build(Transaction::TYPE_CAPTURE);
-                $payment->save();
+                    ->build(Transaction::TYPE_PAYMENT);
                 $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
