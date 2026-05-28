@@ -193,6 +193,14 @@ class UPACallback extends Action
                     ])
                     ->setFailSafe(true)
                     ->build(Transaction::TYPE_PAYMENT);
+
+                $payment->addTransactionCommentsToOrder(
+                    $transaction,
+                    __(
+                        'Omise payment captured successfully. Charge ID: %1',
+                        $charge->id
+                    )
+                );
                 $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
@@ -337,15 +345,6 @@ class UPACallback extends Action
         }
 
         $paymentMethod = $payment->getMethod();
-
-        if (!$this->helper->isOffsitePaymentMethod($paymentMethod) 
-            && !$this->helper->isOfflinePaymentMethod($paymentMethod)) {
-            $this->invalid(
-                $order,
-                __('Invalid payment method. Please contact our support if you have any questions.')
-            );
-            return false;
-        }
 
         if (!$payment->getAdditionalInformation('session_id')) {
             $this->cancel(
