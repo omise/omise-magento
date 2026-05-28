@@ -221,7 +221,8 @@ class UPACallback extends Action
             ucfirst($charge->failure_message) :
             __('Payment cancelled');
         $errorMessage = __(
-            "Payment failed. $failureMessage, please contact our support if you have any questions."
+            'Payment failed. %1, please contact our support if you have any questions.',
+            $failureMessage
         );
 
         // This cancels the order, logs error and displays message in cart page
@@ -250,8 +251,9 @@ class UPACallback extends Action
         $payment->addTransactionCommentsToOrder(
             $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
             __(
-                "Amount of %1 has been paid via Omise $paymentMethodLabel payment",
-                $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                "Amount of %1 has been paid via Omise %2 payment",
+                $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()),
+                $paymentMethodLabel
             )
         );
 

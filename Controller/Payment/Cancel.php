@@ -37,9 +37,10 @@ class Cancel extends Action
                     $this->orderRepository->save($order);
                 }
             }
-            $this->checkoutSession->restoreQuote();
         } catch (\Exception $e) {
             $this->logger->info('Order Cancel Error: ' . $e->getMessage());
+        }finally {
+            $this->checkoutSession->restoreQuote();
         }
         return $this->_redirect('checkout/cart');
     }

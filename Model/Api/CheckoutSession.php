@@ -71,7 +71,7 @@ class CheckoutSession extends BaseObject
     public function getSessionInfo($sessionId)
     {
         try {
-            $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
+            $endpoint = $this->omiseHelper->checkoutSessionEndPoint();
             $session = $this->requestHelper->request(
                 $endpoint."api/sessions/".$sessionId,
                 OmiseApiResource::REQUEST_GET,

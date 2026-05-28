@@ -89,11 +89,11 @@ class UPAPaymentDataBuilder implements BuilderInterface
             'redirect_urls'   => [
                 'complete_url' => $this->urlBuilder->getUrl(
                     'omise/callback/upacallback',
-                    ['_query' => ['order_id' => (string) $order->getOrderIncrementId()]]
+                    ['_query' => ['order_id' => (string)$order->getOrderIncrementId()]]
                  ),
                  'cancel_url'   => $this->urlBuilder->getUrl(
                     'omise/payment/cancel',
-                    ['_query' => ['order_id' => (string) $order->getOrderIncrementId()]]
+                    ['_query' => ['order_id' => (string)$order->getOrderIncrementId()]]
                  ),
             ],
             'metadata'        => [
