@@ -119,7 +119,7 @@ class RequestHelper
      * @param bool $is_json
      * @return array
      */
-    public function request($url, $requestMethod, $skey, $params = [], $is_json = false)
+    public function sendSessionRequest($url, $requestMethod, $skey, $params = [], $is_json = false)
     {
         return $this->apmSession->processSession(
             $url,

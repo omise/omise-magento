@@ -42,6 +42,6 @@ class Cancel extends Action
         }finally {
             $this->checkoutSession->restoreQuote();
         }
-        return $this->_redirect('checkout/cart');
+        return $this->_redirect('checkout/cart', ['_secure' => true]);
     }
 }

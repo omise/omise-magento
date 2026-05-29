@@ -31,7 +31,8 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->requestMock = $this->createMock(RequestMockInterface::class);
         $this->headerMock = $this->createMock('\Magento\Framework\HTTP\Header');
-        $this->model = new RequestHelper($this->requestMock, $this->headerMock);
+        $this->apmSessionMock = $this->createMock('\Omise\Payment\Gateway\Http\Client\APMSession');
+        $this->model = new RequestHelper($this->requestMock, $this->headerMock, $this->apmSessionMock);
     }
 
     /**

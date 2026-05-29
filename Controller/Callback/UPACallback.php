@@ -344,8 +344,6 @@ class UPACallback extends Action
             return false;
         }
 
-        $paymentMethod = $payment->getMethod();
-
         if (!$payment->getAdditionalInformation('session_id')) {
             $this->cancel(
                 $order,

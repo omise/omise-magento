@@ -27,7 +27,7 @@ class CheckoutSession extends BaseObject
      * Injecting dependencies
      *
      * @param Config $config
-     * @param RequestHelper $apmSession
+     * @param RequestHelper $requestHelper
      * @param OmiseHelper $omiseHelper
      */
     public function __construct(
@@ -43,13 +43,13 @@ class CheckoutSession extends BaseObject
     /**
      * @param array $params
      *
-     * @return self
+     * @return self|LocalizedException
      */
     public function createSession($params)
     {
         try {
-            $endpoint = $this->omiseHelper->checkoutSessionEndPoint();
-            $session = $this->requestHelper->request(
+            $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
+            $session = $this->requestHelper->sendSessionRequest(
                 $endpoint."api/sessions",
                 OmiseApiResource::REQUEST_POST,
                 $this->config->getSecretKey(),
@@ -66,13 +66,13 @@ class CheckoutSession extends BaseObject
     /**
      * @param string $sessionId
      *
-     * @return Omise\Payment\Model\Api\Error|self
+     * @return LocalizedException|self
      */
     public function getSessionInfo($sessionId)
     {
         try {
-            $endpoint = $this->omiseHelper->checkoutSessionEndPoint();
-            $session = $this->requestHelper->request(
+            $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
+            $session = $this->requestHelper->sendSessionRequest(
                 $endpoint."api/sessions/".$sessionId,
                 OmiseApiResource::REQUEST_GET,
                 $this->config->getSecretKey()
