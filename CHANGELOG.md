@@ -1,5 +1,5 @@
 # CHANGELOG
-## [v3.12.0 _(Apr, 21, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.12.0)
+## [v3.12.0 _(June, 09, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.12.0)
 - Compatible module with omise-php lib version 3.0.0  (PR: [#515](https://github.com/omise/omise-magento/pull/515))
 
 ## [v3.11.0 _(Apr, 21, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.11.0)
