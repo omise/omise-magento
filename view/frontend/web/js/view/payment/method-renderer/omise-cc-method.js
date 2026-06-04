@@ -273,7 +273,7 @@ define(
                 this.startPerformingPlaceOrderAction()
                 const selectedBillingAddress = quote.billingAddress()
                 const tokenData = {
-                    email: quote.guestEmail ?? window.checkoutConfig.customerData.email,
+                    email: quote.guestEmail?.() ?? window.checkoutConfig.customerData.email,
                     billingAddress: null
                 }
                 if (this.billingAddressCountries.indexOf(selectedBillingAddress.countryId) > -1) {
