@@ -10,7 +10,7 @@
                click: selectPaymentMethod,
                visible: isRadioButtonVisible(),
                enable: isActive()" />
-        <label class="omise-payment-method-title label" data-bind="attr: {'for': getCode()}">
+        <label class="omise-payment-method-title" data-bind="attr: {'for': getCode()}" class="label">
             <span data-bind="text: getTitle()"></span>
             <!-- ko if: getLogo() -->
             <img class="omise-custom-fpx" data-bind="attr: { src: require.toUrl('Omise_Payment/'+logo.file), alt: logo.name } ,

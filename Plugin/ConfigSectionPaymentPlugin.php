@@ -69,9 +69,7 @@ class ConfigSectionPaymentPlugin
         $this->messageManager = $messageManager;
         $this->scopeConfig = $scopeConfig;
         // using same version as omise-php 3.0.0(2019-05-29)
-        if (!defined('OMISE_API_VERSION')) {
-            define('OMISE_API_VERSION', '2019-05-29');
-        }
+        define('OMISE_API_VERSION', '2019-05-29');
     }
 
     /**
