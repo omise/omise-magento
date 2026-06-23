@@ -19,7 +19,7 @@ jobs:
     - name: Create folder and file
       run: |
         mkdir -p app/etc && cd app/etc && touch vendor_path.php
-    - uses: graycoreio/github-actions-magento2/unit-test@main
+    - uses: graycoreio/github-actions-magento2/unit-test@v6.0.0
       with:
         php_version: ${{ matrix.php_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}

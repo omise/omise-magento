@@ -3,7 +3,7 @@
 namespace Omise\Payment\Gateway\Request;
 
 use Omise\Payment\Model\Config\Fpx;
-use Omise\Payment\Model\Capabilities;
+use Omise\Payment\Model\Capability;
 
 use Omise\Payment\Model\Config\Atome;
 use Omise\Payment\Model\Config\Boost;
@@ -124,9 +124,9 @@ class APMBuilder implements BuilderInterface
     protected $money;
 
     /**
-     * @var Capabilities
+     * @var Capability
      */
-    protected $capabilities;
+    protected $capability;
 
     /**
      * @var Config
@@ -145,13 +145,13 @@ class APMBuilder implements BuilderInterface
     public function __construct(
         ReturnUrlHelper $returnUrl,
         Config $config,
-        Capabilities $capabilities,
+        Capability $capability,
         OmiseMoney $money,
         RequestHelper $requestHelper
     ) {
         $this->returnUrl = $returnUrl;
         $this->config = $config;
-        $this->capabilities = $capabilities;
+        $this->capability = $capability;
         $this->money = $money;
         $this->requestHelper = $requestHelper;
     }
@@ -345,8 +345,8 @@ class APMBuilder implements BuilderInterface
 
     private function getShopeepaySource()
     {
-        $isShopeepayJumpAppEnabled = $this->capabilities->isBackendEnabled(Shopeepay::JUMPAPP_ID);
-        $isShopeepayEnabled = $this->capabilities->isBackendEnabled(Shopeepay::ID);
+        $isShopeepayJumpAppEnabled = $this->capability->isBackendEnabled(Shopeepay::JUMPAPP_ID);
+        $isShopeepayEnabled = $this->capability->isBackendEnabled(Shopeepay::ID);
 
         // If user is in mobile and jump app is enabled then return shopeepay_jumpapp as source
         if ($this->requestHelper->isMobilePlatform() && $isShopeepayJumpAppEnabled) {
@@ -410,8 +410,8 @@ class APMBuilder implements BuilderInterface
 
     public function getTruemoneySourceData($method)
     {
-        $isJumpAppEnabled = $this->capabilities->isBackendEnabled(Truemoney::JUMPAPP_ID);
-        $isWalletEnabled = $this->capabilities->isBackendEnabled(Truemoney::ID);
+        $isJumpAppEnabled = $this->capability->isBackendEnabled(Truemoney::JUMPAPP_ID);
+        $isWalletEnabled = $this->capability->isBackendEnabled(Truemoney::ID);
 
         if (!$isJumpAppEnabled && $isWalletEnabled) {
             return [

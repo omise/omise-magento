@@ -15,7 +15,7 @@ class Cc extends Config
      * Backends identifier
      * @var string
      */
-    const ID = 'credit_card';
+    const ID = 'card';
 
     public function getCardThemeConfig()
     {

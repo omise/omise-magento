@@ -24,7 +24,7 @@ class TruemoneyAPMBuilderTest extends APMBuilderTest
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capabilities,
+            $this->capability,
             new OmiseMoney(),
             $this->requestHelper
         );
@@ -45,10 +45,10 @@ class TruemoneyAPMBuilderTest extends APMBuilderTest
     {
         // isBackendEnabled is called twice in the actual method. Here,
         // we are setting the return values on those consecutive calls
-        $this->capabilities->method('isBackendEnabled')
+        $this->capability->method('isBackendEnabled')
             ->will($this->onConsecutiveCalls(false, true));
 
-        $this->capabilities->method('isBackendEnabled')
+        $this->capability->method('isBackendEnabled')
             ->willReturn(true);
         $this->infoMock->method('getMethod')->willReturn(Truemoney::CODE);
         $this->returnUrlHelper->method('create')->willReturn([
@@ -59,7 +59,7 @@ class TruemoneyAPMBuilderTest extends APMBuilderTest
         $this->builder = new APMBuilder(
             $this->returnUrlHelper,
             $this->config,
-            $this->capabilities,
+            $this->capability,
             new OmiseMoney(),
             $this->requestHelper
         );

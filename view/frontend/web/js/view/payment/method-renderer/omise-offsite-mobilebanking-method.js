@@ -64,10 +64,9 @@ define(
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
             code: 'omise_offsite_mobilebanking',
             restrictedToCurrencies: ['thb'],
-            capabilities: null,
+            capability: null,
 
             /**
             * Initiate observable fields
@@ -80,7 +79,7 @@ define(
                         'omiseOffsite'
                     ]);
 
-                this.capabilities = checkoutConfig.omise_payment_list[this.code];
+                this.capability = checkoutConfig.omise_payment_list[this.code];
 
                 // filter provider for checkout page
                 this.providers = this.get_available_providers()
@@ -112,22 +111,25 @@ define(
             },
 
             /**
-            * Get a provider list form capabilities api and filter only support type
+            * Get a provider list from capability api and filter only support type
             *
             * @return {Array}
             */
             get_available_providers: function () {
-                let _providers = Object.values(this.capabilities);
+                let _providers = Object.values(this.capability);
+                const filteredProviders = [];
 
-                return ko.observableArray(providers.filter((a1) => _providers.find(a2 => {
-                    if (a1.id === a2._id) {
-                        // set currencies from api if is undefined use default value
-                        if (a2?.currencies !== null) {
-                            a1.currencies = a2.currencies
+                for (const a1 of providers) {
+                    for (const a2 of _providers) {
+                        if (a1.id === a2.name) {
+                            a1.currencies = (a2?.currencies || []).map(c => c.toLowerCase());
+                            filteredProviders.push(a1);
+                            break;
                         }
-                        return true
                     }
-                })))
+                }
+
+                return ko.observableArray(filteredProviders);
             }
 
         });
