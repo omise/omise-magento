@@ -39,7 +39,7 @@ class APMSession
      * @param  bool   $is_json
      * @return array
      */
-    public function processSession($url, $requestMethod, $key, $params = null, $is_json = false)
+    public function request($url, $requestMethod, $key, $params = null, $is_json = false)
     {
         try {
             $response = $this->execute($url, $requestMethod, $key, $params, $is_json);

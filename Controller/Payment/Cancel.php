@@ -32,7 +32,11 @@ class Cancel extends Action
             $lastOrderId = $this->checkoutSession->getLastOrderId();
             if ($lastOrderId) {
                 $order = $this->orderRepository->get($lastOrderId);
-                if ($order->getState() !== \Magento\Sales\Model\Order::STATE_CANCELED) {
+                $allowedStates = [
+                    \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT,
+                    \Magento\Sales\Model\Order::STATE_PAYMENT_REVIEW
+                ];
+                if (in_array($order->getState(), $allowedStates)) {
                     $order->registerCancellation('Payment cancelled by customer (Omise cancel).');
                     $this->orderRepository->save($order);
                 }

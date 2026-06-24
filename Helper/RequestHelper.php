@@ -121,7 +121,7 @@ class RequestHelper
      */
     public function sendSessionRequest($url, $requestMethod, $skey, $params = [], $is_json = false)
     {
-        return $this->apmSession->processSession(
+        return $this->apmSession->request(
             $url,
             $requestMethod,
             $skey,

@@ -125,17 +125,21 @@ class UPACallback extends Action
      */
     private function validateChargeId($payment, $chargeId)
     {
-        $sessionId = $payment->getAdditionalInformation('session_id');
-        $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+        try {
+            $sessionId = $payment->getAdditionalInformation('session_id');
+            $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
 
-        if (!is_array($checkoutSessionInfo->payments)) {
-            return false;
-        }
-        
-        foreach ($checkoutSessionInfo->payments as $charge) {
-            if ($charge['charge_id'] === $chargeId) {
-                return true;
+            if (!is_array($checkoutSessionInfo->payments)) {
+                return false;
             }
+            
+            foreach ($checkoutSessionInfo->payments as $charge) {
+                if ($charge['charge_id'] === $chargeId) {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            return false;
         }
         return false;
     }
@@ -197,8 +201,7 @@ class UPACallback extends Action
                 $payment->addTransactionCommentsToOrder(
                     $transaction,
                     __(
-                        'Omise payment captured successfully. Charge ID: %1',
-                        $charge->id
+                        'Omise payment captured successfully.'
                     )
                 );
                 $order->save();
