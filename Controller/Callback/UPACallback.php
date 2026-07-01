@@ -119,32 +119,6 @@ class UPACallback extends Action
     }
 
     /**
-     * @var Magento\Sales\Model\Order\Payment
-     * @var string
-     * @return bool
-     */
-    private function validateChargeId($payment, $chargeId)
-    {
-        try {
-            $sessionId = $payment->getAdditionalInformation('session_id');
-            $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-
-            if (!is_array($checkoutSessionInfo->payments)) {
-                return false;
-            }
-            
-            foreach ($checkoutSessionInfo->payments as $charge) {
-                if ($charge['charge_id'] === $chargeId) {
-                    return true;
-                }
-            }
-        } catch (\Exception $e) {
-            return false;
-        }
-        return false;
-    }
-
-    /**
      * @return void
      */
     public function execute()
@@ -179,9 +153,6 @@ class UPACallback extends Action
             if ($charge->isFailed()) {
                 return $this->handleFailure($charge);
             }
-
-            $payment->setTransactionId($charge->id);
-            $payment->setLastTransId($charge->id);
             
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
@@ -197,19 +168,15 @@ class UPACallback extends Action
                     ])
                     ->setFailSafe(true)
                     ->build(Transaction::TYPE_PAYMENT);
-
-                $payment->addTransactionCommentsToOrder(
-                    $transaction,
-                    __(
-                        'Omise payment captured successfully.'
-                    )
-                );
                 $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
 
+            $payment->setTransactionId($charge->id);
+            $payment->setLastTransId($charge->id);
+            
             if ($charge->isSuccessful()) {
-                return $this->handleSuccess($order, $charge->id, $payment, $paymentMethod);
+                return $this->handleSuccess($order, $charge->id, $payment, $paymentMethod, $charge);
             }
 
             $this->handlePending($order, $payment);
@@ -247,27 +214,39 @@ class UPACallback extends Action
      * @param string $chargeId
      * @param object $payment
      * @param string $paymentMethod
+     * @param object $charge
      */
-    private function handleSuccess($order, $chargeId, $payment, $paymentMethod)
+    private function handleSuccess($order, $chargeId, $payment, $paymentMethod, $charge)
     {
         // Update order state and status.
         $order->setState(Order::STATE_PROCESSING);
         $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-        $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $chargeId);
+        $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $chargeId, $charge->capture);
         $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
         $paymentMethodLabel = $this->helper->getOmiseLabelByOmiseCode($paymentMethod);
-        // Add transaction.
-        $payment->addTransactionCommentsToOrder(
-            $payment->addTransaction(Transaction::TYPE_CAPTURE, $invoice),
-            __(
-                "Amount of %1 has been paid via Omise %2 payment",
-                $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal()),
-                $paymentMethodLabel
-            )
-        );
-
+        
+        if ($charge->capture) {
+            // Add transaction.
+            $payment->addTransactionCommentsToOrder(
+                $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
+                __(
+                    'Captured amount of %1 online via Omise Gateway.',
+                    $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
+                )
+            );
+        } else {
+            $payment->addTransactionCommentsToOrder(
+                $payment->addTransaction(Transaction::TYPE_AUTH),
+                $payment->prependMessage(
+                    __(
+                        'Authorized amount of %1 via Omise Gateway.',
+                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                    )
+                )
+            );
+        }
         $order->save();
         return $this->redirect(self::PATH_SUCCESS);
     }
@@ -406,5 +385,31 @@ class UPACallback extends Action
 
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
+    }
+
+    /**
+     * @var Magento\Sales\Model\Order\Payment
+     * @var string
+     * @return bool
+     */
+    private function validateChargeId($payment, $chargeId)
+    {
+        try {
+            $sessionId = $payment->getAdditionalInformation('session_id');
+            $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+
+            if (!is_array($checkoutSessionInfo->payments)) {
+                return false;
+            }
+            
+            foreach ($checkoutSessionInfo->payments as $charge) {
+                if ($charge['charge_id'] === $chargeId) {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+        return false;
     }
 }

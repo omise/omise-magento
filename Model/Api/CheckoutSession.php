@@ -49,7 +49,7 @@ class CheckoutSession extends BaseObject
     {
         try {
             $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
-            $session = $this->requestHelper->sendSessionRequest(
+            $session = $this->requestHelper->sendUpaSessionRequest(
                 $endpoint."api/sessions",
                 OmiseApiResource::REQUEST_POST,
                 $this->config->getSecretKey(),
@@ -72,7 +72,7 @@ class CheckoutSession extends BaseObject
     {
         try {
             $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
-            $session = $this->requestHelper->sendSessionRequest(
+            $session = $this->requestHelper->sendUpaSessionRequest(
                 $endpoint."api/sessions/".$sessionId,
                 OmiseApiResource::REQUEST_GET,
                 $this->config->getSecretKey()

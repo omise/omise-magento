@@ -43,7 +43,7 @@ class Cancel extends Action
             }
         } catch (\Exception $e) {
             $this->logger->info('Order Cancel Error: ' . $e->getMessage());
-        }finally {
+        } finally {
             $this->checkoutSession->restoreQuote();
         } 
         return $this->_redirect('checkout/cart', ['_secure' => true]);
