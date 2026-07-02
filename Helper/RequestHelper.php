@@ -10,8 +10,7 @@ use OmiseException;
 class RequestHelper
 {
     /**
-     * @var Magento\Framework\App\RequestInterface;
-
+     * @var \Magento\Framework\App\RequestInterface
      */
     private $request;
 
