@@ -43,7 +43,8 @@ class CheckoutSession extends BaseObject
     /**
      * @param array $params
      *
-     * @return self|LocalizedException
+     * @return self
+     * @throws LocalizedException
      */
     public function createSession($params)
     {
@@ -66,7 +67,8 @@ class CheckoutSession extends BaseObject
     /**
      * @param string $sessionId
      *
-     * @return LocalizedException|self
+     * @return self
+     * @throws LocalizedException
      */
     public function getSessionInfo($sessionId)
     {

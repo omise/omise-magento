@@ -156,7 +156,7 @@ class UPACallback extends Action
             
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                $transaction = $this->transactionBuilder
+                $this->transactionBuilder
                     ->setPayment($payment)
                     ->setOrder($order)
                     ->setTransactionId($charge->id)
@@ -176,10 +176,10 @@ class UPACallback extends Action
             $payment->setLastTransId($charge->id);
             
             if ($charge->isSuccessful()) {
-                return $this->handleSuccess($order, $charge->id, $payment, $paymentMethod, $charge);
+                return $this->handleSuccess($order, $charge, $payment);
             }
 
-            $this->handlePending($order, $payment);
+            return $this->handlePending($order, $payment);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
             return $this->redirect(self::PATH_CART);
@@ -211,20 +211,18 @@ class UPACallback extends Action
      * Mark order as success
      *
      * @param object $order
-     * @param string $chargeId
-     * @param object $payment
-     * @param string $paymentMethod
      * @param object $charge
+     * @param object $payment
      */
-    private function handleSuccess($order, $chargeId, $payment, $paymentMethod, $charge)
+    private function handleSuccess($order, $charge, $payment)
     {
         // Update order state and status.
         $order->setState(Order::STATE_PROCESSING);
         $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-        $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $chargeId, $charge->capture);
+        $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id, $charge->capture);
         $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
-
+        $paymentMethod = $payment->getMethod();
         $paymentMethodLabel = $this->helper->getOmiseLabelByOmiseCode($paymentMethod);
         
         if ($charge->capture) {
@@ -317,7 +315,7 @@ class UPACallback extends Action
         }
 
         $orderState = $order->getState();
-        $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_PROCESSING];
+        $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_PAYMENT_REVIEW, Order::STATE_PROCESSING];
         
         if (!in_array($orderState, $validOrderStates)) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
