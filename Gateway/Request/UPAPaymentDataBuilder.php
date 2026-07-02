@@ -5,13 +5,8 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseMoney;
-use Omise\Payment\Observer\InstallmentDataAssignObserver;
-use Omise\Payment\Model\Config\Installment;
-use Omise\Payment\Model\Config\Cc;
-use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Model\Capability;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\Locale\Resolver;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -23,46 +18,9 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $localeResolver;
 
     /**
-     * @var string
-     */
-    const AMOUNT = 'amount';
-
-    /**
-     * @var string
-     */
-    const CURRENCY = 'currency';
-
-    /**
-     * @var string
-     */
-    const DESCRIPTION = 'description';
-
-    /**
-     * @var string
-     */
-    const METADATA = 'metadata';
-
-    /**
-     * @var string
-     */
-    const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
-
-    /**
-     * @var string
-     */
-    const WEBHOOKS_ENDPOINT = 'webhook_endpoints';
-
-    /**
-     * @var \Omise\Payment\Model\Config\Cc
-     */
-    private $ccConfig;
-
-    /**
      * @var OmiseMoney
      */
     private $money;
-
-    private $capability;
 
     /**
      * @var OmiseHelper
@@ -75,20 +33,29 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $storeManager;
 
     /**
+     * @var UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
      * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
      * @param Resolver $localeResolver
+     * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlBuilder
      */
     public function __construct(
         OmiseMoney $money,
         OmiseHelper $omiseHelper,
         Resolver $localeResolver,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        UrlInterface $urlBuilder
     ) {
         $this->money = $money;
         $this->omiseHelper = $omiseHelper;
         $this->localeResolver = $localeResolver;
         $this->storeManager = $storeManager;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -120,8 +87,14 @@ class UPAPaymentDataBuilder implements BuilderInterface
             'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
             'payment_methods' => [$methodId],
             'redirect_urls'   => [
-                'complete_url' => "https://www.omise.co",
-                'cancel_url'   => "https://www.google.com",
+                'complete_url' => $this->urlBuilder->getUrl(
+                    'omise/callback/upacallback',
+                    ['_secure' => true]
+                ),
+                'cancel_url'   => $this->urlBuilder->getUrl(
+                    'omise/payment/cancel',
+                    ['_secure' => true]
+                ),
             ],
             'metadata'        => [
                 'order_id'  => (string) $order->getOrderIncrementId(),

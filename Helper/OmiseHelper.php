@@ -258,7 +258,7 @@ class OmiseHelper extends AbstractHelper
      * @param int
      * @return string
      */
-    public function checkoutSessionEndPoint()
+    public function checkoutSessionEndpoint()
     {
         return "https://checkout-page.omise.co/";
     }
