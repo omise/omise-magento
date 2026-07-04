@@ -4,14 +4,37 @@ namespace Omise\Payment\Model;
 use Magento\Payment\Gateway\Command\CommandPoolInterface;
 use Omise\Payment\Helper\OmiseHelper;
 use Magento\Checkout\Model\Session;
+use Omise\Payment\Model\Config\Installment;
 
 class DynamicCommandPool implements CommandPoolInterface
 {
+    /**
+     * @var CommandPoolInterface
+     */
     private $apmPool;
+
+    /**
+     * @var CommandPoolInterface
+     */
     private $upaPool;
+    
+    /**
+     * @var OmiseHelper
+     */
     private $omiseHelper;
+
+    /**
+     * @var Session
+     */
     private $checkoutSession;
 
+    /**
+     * DynamicCommandPool constructor.
+     * @param CommandPoolInterface $apmPool
+     * @param CommandPoolInterface $upaPool
+     * @param OmiseHelper $omiseHelper
+     * @param Session $checkoutSession
+     */
     public function __construct(
         CommandPoolInterface $apmPool,
         CommandPoolInterface $upaPool,
@@ -24,13 +47,32 @@ class DynamicCommandPool implements CommandPoolInterface
         $this->checkoutSession = $checkoutSession;
     }
 
+    /**
+     * @param string $commandCode
+     * @return \Magento\Payment\Gateway\Command\CommandInterface
+     */
     public function get($commandCode)
     {
         $quote = $this->checkoutSession->getQuote();
         $methodCode = null;
+        $isInstallment = $wlb = 0;
+        $methodCode = null;
 
         if ($quote && $quote->getPayment()) {
             $methodCode = $quote->getPayment()->getMethod();
+            $payment = $quote->getPayment();
+            if ($methodCode == Installment::CODE) {
+                $isInstallment = 1;
+                $wlb = $payment->getAdditionalInformation('wlb');
+            }
+        }
+
+        if ($isInstallment) {
+            if ($this->omiseHelper->isAllowUpa($methodCode) && !$wlb) {
+                return $this->upaPool->get($commandCode);
+            } else {
+                return $this->apmPool->get($commandCode);
+            }
         }
 
         if (!empty($methodCode) && $this->omiseHelper->isAllowUpa($methodCode)) {

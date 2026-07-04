@@ -272,7 +272,7 @@ class OmiseHelper extends AbstractHelper
         if (strpos($code, 'mobile_banking_') === 0) {
             return "mobile_banking";
         }
-        if (strpos($code, 'installment_') === 0) {
+        if (strpos($code, 'omise_offsite_installment') === 0) {
             return "installment";
         }
         $codeToId = array_flip($this->omiseCodeByOmiseId);
