@@ -25,6 +25,11 @@ define(
                         component: 'Omise_Payment/js/view/payment/method-renderer/' + rendererName.replace(/_/g, '-') + '-method'
                     });
                 }
+            }else if(rendererName == "omise_offsite_mobilebanking" && UPA_FEATURE){
+                rendererList.push({
+                    type: rendererName,
+                    component: 'Omise_Payment/js/view/payment/method-renderer/omise-offsite-upa-mobilebanking' + '-method'
+                });
             }else{
                 rendererList.push({
                     type: rendererName,
