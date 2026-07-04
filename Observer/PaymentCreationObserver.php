@@ -44,7 +44,7 @@ class PaymentCreationObserver implements ObserverInterface
 
         // Offline QR code payment and convenience store emails
         if ($this->_helper->isOfflinePaymentMethod($paymentMethod)) {
-            $this->_email->sendEmail($order);
+            //$this->_email->sendEmail($order);
         }
 
         return $this;
