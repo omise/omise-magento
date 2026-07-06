@@ -15,18 +15,16 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/omise-offsite-upa-mobilebanking'
+                template: 'Omise_Payment/payment/offline-common-form'
             },
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
+            restrictedToCurrencies: ['thb'],
             code: 'omise_offsite_mobilebanking',
 
             getData: function () {
                 return {
-                    method: this.item.method,
-                    additional_data: {
-                    }
+                    method: this.item.method
                 };
             }
         });
