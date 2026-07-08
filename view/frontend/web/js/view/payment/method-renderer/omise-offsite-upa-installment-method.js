@@ -17,6 +17,7 @@ define(
             defaults: {
                 template: 'Omise_Payment/payment/offline-common-form'
             },
+            isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
             code: 'omise_offsite_installment',
             restrictedToCurrencies: ['thb', 'myr'],
 
@@ -24,7 +25,7 @@ define(
                 return {
                     method: this.item.method,
                     additional_data: {
-                        isWlb: checkoutConfig.omise_wlb_enabled
+                        is_wlb: checkoutConfig.omise_wlb_enabled
                     }
                 };
             }
