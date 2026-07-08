@@ -15,19 +15,16 @@ define(
 
         return Component.extend(Base).extend({
             defaults: {
-                template: 'Omise_Payment/payment/omise-offsite-upa-installment'
+                template: 'Omise_Payment/payment/offline-common-form'
             },
-
-            isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
             code: 'omise_offsite_installment',
-            restrictedToCurrencies: ['sgd', 'thb'],
+            restrictedToCurrencies: ['thb', 'myr'],
 
             getData: function () {
                 return {
                     method: this.item.method,
                     additional_data: {
-                        wlb: checkoutConfig.omise_wlb_enable
+                        isWlb: checkoutConfig.omise_wlb_enabled
                     }
                 };
             }
