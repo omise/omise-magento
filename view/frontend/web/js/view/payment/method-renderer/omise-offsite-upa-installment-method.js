@@ -24,7 +24,7 @@ define(
                 return {
                     method: this.item.method,
                     additional_data: {
-                        isWlb: checkoutConfig.omise_wlb_enabled
+                        is_wlb: checkoutConfig.omise_wlb_enabled
                     }
                 };
             }
