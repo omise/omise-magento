@@ -60,10 +60,9 @@ class DynamicCommandPool implements CommandPoolInterface
 
         if ($quote && $quote->getPayment()) {
             $methodCode = $quote->getPayment()->getMethod();
-            $payment = $quote->getPayment();
         }
 
-        $isWlbInstallment = $methodCode == Installment::CODE && $payment->getAdditionalInformation(InstallmentDataAssignObserver::WLB) == true ? true : false;
+        $isWlbInstallment = $methodCode == Installment::CODE && $quote->getPayment() && $quote->getPayment()->getAdditionalInformation(InstallmentDataAssignObserver::WLB) == true ? true : false;
 
         if (!empty($methodCode) && $this->omiseHelper->isAllowUpa($methodCode) && !$isWlbInstallment) {
             return $this->upaPool->get($commandCode);

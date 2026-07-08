@@ -29,6 +29,12 @@ define(
             );
         });
 
+        rendererList.push(
+            {
+                type: 'omise_offline_conveniencestore',
+                component: 'Omise_Payment/js/view/payment/method-renderer/omise-offline-conveniencestore-method'
+            }
+        );
         return Component.extend({});
     }
 );
