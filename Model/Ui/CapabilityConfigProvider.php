@@ -72,7 +72,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
 
             $this->filterActiveBackends($code, $configs['omise_payment_list']);
         }
-        $configs['omise_wlb_enable'] = $this->isWlbEnabled($configs['omise_payment_list']);
+        $configs['omise_wlb_enabled'] = $this->isWlbEnabled($configs['omise_payment_list']);
         $configs['omise_upa_feature'] = $this->config->getIsUpaFeatureFlagEnabled();
         return $configs;
     }
@@ -84,9 +84,9 @@ class CapabilityConfigProvider implements ConfigProviderInterface
      */
     private function isWlbEnabled($omise_payment_list)
     {
-        if (array_key_exists('omise_offsite_installment', $omise_payment_list)) {
-            foreach ($omise_payment_list['omise_offsite_installment'] as $method) {
-                if (str_starts_with($method->name, 'installment_wlb')) {
+        if (array_key_exists(OmiseInstallmentConfig::CODE, $omise_payment_list)) {
+            foreach ($omise_payment_list[OmiseInstallmentConfig::CODE] as $method) {
+                if (isset($method->name) && strpos($method->name, 'installment_wlb') === 0) {
                     return true;
                 }
             }

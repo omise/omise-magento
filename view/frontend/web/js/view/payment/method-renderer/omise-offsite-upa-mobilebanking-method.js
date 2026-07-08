@@ -17,8 +17,6 @@ define(
             defaults: {
                 template: 'Omise_Payment/payment/offline-common-form'
             },
-
-            isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
             restrictedToCurrencies: ['thb'],
             code: 'omise_offsite_mobilebanking',
 

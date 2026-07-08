@@ -5,6 +5,7 @@ use Magento\Payment\Gateway\Command\CommandPoolInterface;
 use Omise\Payment\Helper\OmiseHelper;
 use Magento\Checkout\Model\Session;
 use Omise\Payment\Model\Config\Installment;
+use Omise\Payment\Observer\InstallmentDataAssignObserver;
 
 class DynamicCommandPool implements CommandPoolInterface
 {
@@ -62,7 +63,7 @@ class DynamicCommandPool implements CommandPoolInterface
             $payment = $quote->getPayment();
         }
 
-        $isWlbInstallment = $methodCode == Installment::CODE && $payment->getAdditionalInformation('isWlb') == true ? true : false;
+        $isWlbInstallment = $methodCode == Installment::CODE && $payment->getAdditionalInformation(InstallmentDataAssignObserver::WLB) == true ? true : false;
 
         if (!empty($methodCode) && $this->omiseHelper->isAllowUpa($methodCode) && !$isWlbInstallment) {
             return $this->upaPool->get($commandCode);
