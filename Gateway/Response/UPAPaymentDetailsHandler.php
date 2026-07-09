@@ -4,6 +4,7 @@ namespace Omise\Payment\Gateway\Response;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
 use Magento\Sales\Model\Order\Payment\Transaction;
+use Omise\Payment\Helper\OmiseHelper;
 
 class UPAPaymentDetailsHandler implements HandlerInterface
 {
@@ -13,12 +14,20 @@ class UPAPaymentDetailsHandler implements HandlerInterface
     protected $transactionBuilder;
 
     /**
+     * @var OmiseHelper
+     */
+    protected $helper;
+
+    /**
      * @param Transaction\BuilderInterface $transactionBuilder
+     * @param OmiseHelper $helper
      */
     public function __construct(
-        \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder
+        \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder,
+        OmiseHelper $helper
     ) {
         $this->transactionBuilder = $transactionBuilder;
+        $this->helper = $helper;
     }
     
     /**
@@ -29,7 +38,8 @@ class UPAPaymentDetailsHandler implements HandlerInterface
         $payment       = SubjectReader::readPayment($handlingSubject);
         $payment       = $payment->getPayment();
         
-        $paymentType   = ($response['session']->object == "checkout_session") ? $response['session']->object : null;
+        $methodId = $this->helper->getMethodId($payment->getMethod());
+        $paymentType   = ($response['session']->object == "checkout_session") ? $methodId : null;
         $order         = $payment->getOrder();
 
         $payment->setAdditionalInformation('upa_redirect_uri', $response['session']->redirect_url);
