@@ -82,7 +82,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
      * @var array
      * @return bool
      */
-    private function isWlbEnabled($omise_payment_list): bool
+    private function isWlbEnabled(array $omise_payment_list): bool
     {
         if (array_key_exists(OmiseInstallmentConfig::CODE, $omise_payment_list)) {
             foreach ($omise_payment_list[OmiseInstallmentConfig::CODE] as $method) {
