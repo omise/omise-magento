@@ -79,7 +79,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
 
     /**
      * Check the Wlb active or not
-     * @var array
+     * @param array $omise_payment_list
      * @return bool
      */
     private function isWlbEnabled(array $omise_payment_list): bool
