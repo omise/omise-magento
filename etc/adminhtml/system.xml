@@ -30,6 +30,7 @@
                     <label>Text Color</label>
                     <comment>Enter HEX color. Example: #FFFFFF</comment>
                     <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\ColorPicker</frontend_model>
+                    <backend_model>Omise\Payment\Model\Config\Backend\HexColor</backend_model>
                 </field>
                 <field id="test_public_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for test</label>
