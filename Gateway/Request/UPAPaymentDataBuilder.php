@@ -72,8 +72,8 @@ class UPAPaymentDataBuilder implements BuilderInterface
         $store = $this->storeManager->getStore($order->getStoreId());
         $methodId = $this->omiseHelper->getMethodId($methodCode);
 
-        $upaThemeColor = $this->omiseHelper->getConfig('upa_theme_color');
-        $upaTextColor = $this->omiseHelper->getConfig('upa_text_color');
+        $upaThemeColor = $this->omiseHelper->getConfig('upa_theme_color') ?: '#173799';
+        $upaTextColor = $this->omiseHelper->getConfig('upa_text_color') ?: '#FFFFFF';
 
         $locale = $this->localeResolver->getLocale();
 
