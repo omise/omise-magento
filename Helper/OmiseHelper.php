@@ -34,6 +34,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class OmiseHelper extends AbstractHelper
 {
@@ -215,13 +216,21 @@ class OmiseHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
      * @param Header $header
      * @param Config $config
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        Config $config
+        Config $config,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->config = $config;
+        $this->scopeConfig = $scopeConfig;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
