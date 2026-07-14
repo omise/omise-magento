@@ -104,13 +104,11 @@ class UPAPaymentDataBuilder implements BuilderInterface
                 'store_id' => $order->getStoreId(),
                 'store_name' => $store->getName()
             ],
+            'style'        => [
+                'theme_color'  => $upaThemeColor,
+                'text_color'  => $upaTextColor
+            ],
             "is_upa" => true
-        ];
-
-        
-        $payload['style'] = [
-            'theme_color'  => $upaThemeColor,
-            'text_color'  => $upaTextColor
         ];
         
         $locale = substr(strtolower($locale), 0, 2);
