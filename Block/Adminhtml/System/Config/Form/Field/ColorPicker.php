@@ -13,8 +13,9 @@ class ColorPicker extends Field
     protected function _getElementHtml(AbstractElement $element)
     {
         $html = parent::_getElementHtml($element);
-        $id = $element->getHtmlId();
-        $value = $element->getValue() ?: '#1979C3';
+        $id = preg_replace('/[^A-Za-z0-9_\-]/', '_', (string) $element->getHtmlId());
+        $rawValue = (string) $element->getValue();
+        $value = (preg_match('/^#[0-9A-Fa-f]{6}$/', $rawValue) ? $rawValue : '#1979C3');
         $html .= <<<HTML
         <style>
         #$id-wrapper{

@@ -243,11 +243,14 @@ class OmiseHelper extends AbstractHelper
      *
      * @return string
      */
-    public function getConfig($fieldId)
+    public function getConfig(string $fieldId, ?int $storeId = null)
     {
         $path = 'payment/omise/' . $fieldId;
-
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(
+            $path,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 
     /**
