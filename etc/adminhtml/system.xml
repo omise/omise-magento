@@ -21,6 +21,17 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled, supported payment methods will create payment sessions through Omise hosted checkout page.</comment>
                 </field>
+                <field id="upa_theme_color" translate="label comment" type="text" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Theme Color</label>
+                    <comment>Enter HEX color. Example: #173799</comment>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\ColorPicker</frontend_model>
+                </field>
+                <field id="upa_text_color" translate="label comment" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Text Color</label>
+                    <comment>Enter HEX color. Example: #FFFFFF</comment>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\ColorPicker</frontend_model>
+                    <backend_model>Omise\Payment\Model\Config\Backend\HexColor</backend_model>
+                </field>
                 <field id="test_public_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for test</label>
                     <comment>The "Test" mode public key can be found in Omise Dashboard.</comment>

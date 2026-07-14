@@ -72,6 +72,9 @@ class UPAPaymentDataBuilder implements BuilderInterface
         $store = $this->storeManager->getStore($order->getStoreId());
         $methodId = $this->omiseHelper->getMethodId($methodCode);
 
+        $upaThemeColor = $this->omiseHelper->getConfig('upa_theme_color', $order->getStoreId());
+        $upaTextColor = $this->omiseHelper->getConfig('upa_text_color', $order->getStoreId());
+
         $locale = $this->localeResolver->getLocale();
 
         if (empty($methodId)) {
@@ -101,8 +104,13 @@ class UPAPaymentDataBuilder implements BuilderInterface
                 'store_id' => $order->getStoreId(),
                 'store_name' => $store->getName()
             ],
+            'style'        => [
+                'theme_color'  => $upaThemeColor,
+                'text_color'  => $upaTextColor
+            ],
             "is_upa" => true
         ];
+        
         $locale = substr(strtolower($locale), 0, 2);
         if (!empty($locale)) {
             $payload['locale'] = $locale;
