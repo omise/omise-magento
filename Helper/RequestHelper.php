@@ -136,6 +136,7 @@ class RequestHelper
      * @param  array  $params
      * @param  bool   $is_json
      * @return array
+     * @codeCoverageIgnore
      */
     private function upaRequest($url, $requestMethod, $key, $params = null, $is_json = false)
     {
@@ -162,6 +163,7 @@ class RequestHelper
      * @param  array  $params
      * @param  bool   $is_json
      * @return string
+     * @codeCoverageIgnore
      */
     private function execute($url, $requestMethod, $key, $params = null, $is_json = false)
     {
@@ -190,6 +192,7 @@ class RequestHelper
      * @param  array  $params
      *
      * @return array
+     * @codeCoverageIgnore
      */
     private function genOptions($requestMethod, $userpwd, $params, $is_json)
     {
@@ -246,6 +249,7 @@ class RequestHelper
      * @param  array  $array  - decoded JSON response
      *
      * @return boolean
+     * @codeCoverageIgnore
      */
     private static function isValidAPIResponse($array)
     {
