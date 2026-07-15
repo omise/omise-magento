@@ -216,7 +216,7 @@ class RequestHelper
         ];
 
         // Config UserAgent
-        if ( defined('OMISE_USER_AGENT_SUFFIX') ) {
+        if (defined('OMISE_USER_AGENT_SUFFIX')) {
             $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
         } else {
             $this->omise->defineUserAgent();
