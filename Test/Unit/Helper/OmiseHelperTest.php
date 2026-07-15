@@ -15,7 +15,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     protected $configMock;
 
     protected $scopeConfig;
-    
+
     protected $model;
 
     private $authorizeUri = 'https://somefakeuri.com/redirect';
@@ -29,7 +29,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
         $this->scopeConfig = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
-        $this->configMock = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
         $this->model = new OmiseHelper($this->configMock, $this->scopeConfig);
     }
 
