@@ -5,6 +5,9 @@ namespace Omise\Payment\Block\Adminhtml\System\Config\Form\Field;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ColorPicker extends Field
 {
     /**
