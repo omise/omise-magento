@@ -114,6 +114,7 @@ class OmiseUPAInitializeCommandResponseValidatorTest extends TestCase
     /**
      * Covers:
      * $object != checkout_session
+     * @uses \Omise\Payment\Gateway\Validator\Message\ResponseInvalid
      */
     public function testInvalidWhenObjectIsWrong(): void
     {

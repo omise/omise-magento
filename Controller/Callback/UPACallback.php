@@ -151,7 +151,7 @@ class UPACallback extends Action
             $paymentMethod = $payment->getMethod();
 
             if ($charge->isFailed()) {
-                return $this->handleFailure($charge);
+                $this->handleFailure($charge);
             }
             
             // Do not proceed if webhook is enabled
