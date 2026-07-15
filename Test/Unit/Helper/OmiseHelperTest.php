@@ -195,4 +195,131 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
             ]]
         ];
     }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getConfigReturnsValue()
+    {
+        $this->scopeConfig->expects($this->once())
+            ->method('getValue')
+            ->with(
+                'payment/omise/upa_theme_color',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                null
+            )
+            ->willReturn('#1979C3');
+
+        $this->assertEquals(
+            '#1979C3',
+            $this->model->getConfig('upa_theme_color')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isAllowUpaReturnsTrue()
+    {
+        $this->configMock->expects($this->once())
+            ->method('getIsUpaFeatureFlagEnabled')
+            ->willReturn(true);
+
+        $this->assertTrue(
+            $this->model->isAllowUpa(\Omise\Payment\Model\Config\Promptpay::CODE)
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isAllowUpaReturnsFalseWhenFeatureDisabled()
+    {
+        $this->configMock->expects($this->once())
+            ->method('getIsUpaFeatureFlagEnabled')
+            ->willReturn(false);
+
+        $this->assertFalse(
+            $this->model->isAllowUpa(\Omise\Payment\Model\Config\Promptpay::CODE)
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isAllowUpaReturnsFalseForUnsupportedMethod()
+    {
+        $this->configMock->expects($this->once())
+            ->method('getIsUpaFeatureFlagEnabled')
+            ->willReturn(true);
+
+        $this->assertFalse(
+            $this->model->isAllowUpa(\Omise\Payment\Model\Config\CcGooglePay::CODE)
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function checkoutSessionEndpointReturnsCorrectUrl()
+    {
+        $this->assertEquals(
+            'https://checkout-page.omise.co/',
+            $this->model->checkoutSessionEndpoint()
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsMobileBanking()
+    {
+        $this->assertEquals(
+            'mobile_banking',
+            $this->model->getMethodId('omise_offsite_mobilebanking_bay')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsInstallment()
+    {
+        $this->assertEquals(
+            'installment',
+            $this->model->getMethodId('omise_offsite_installment_bay')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsMappedId()
+    {
+        $this->assertEquals(
+            \Omise\Payment\Model\Config\Promptpay::ID,
+            $this->model->getMethodId(
+                \Omise\Payment\Model\Config\Promptpay::CODE
+            )
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsNull()
+    {
+        $this->assertNull(
+            $this->model->getMethodId('unknown_method')
+        );
+    }
 }
