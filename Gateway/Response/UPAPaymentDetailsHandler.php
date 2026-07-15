@@ -39,7 +39,9 @@ class UPAPaymentDetailsHandler implements HandlerInterface
         $payment       = $payment->getPayment();
         
         $methodId = $this->helper->getMethodId($payment->getMethod());
-        $paymentType   = ($response['session']->object === "checkout_session") ? ($methodId ?? $response['session']->object) : null;
+        $paymentType = $response['session']->object === 'checkout_session'
+            ? ($methodId ?? $response['session']->object)
+            : null;
         $order         = $payment->getOrder();
 
         $payment->setAdditionalInformation('upa_redirect_uri', $response['session']->redirect_url);
