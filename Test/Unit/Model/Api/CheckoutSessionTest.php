@@ -126,8 +126,7 @@ class CheckoutSessionTest extends TestCase
             );
 
         $this->expectException(LocalizedException::class);
-        $this->expectExceptionMessage('Failed to create session');
-
+        $this->expectExceptionMessage('Failed to create session : API Error');
         $model->createSession($params);
     }
 
@@ -198,8 +197,7 @@ class CheckoutSessionTest extends TestCase
             );
 
         $this->expectException(LocalizedException::class);
-        $this->expectExceptionMessage('Failed to get session info');
-
+        $this->expectExceptionMessage('Failed to get session info : API Error');
         $model->getSessionInfo($sessionId);
     }
 }
