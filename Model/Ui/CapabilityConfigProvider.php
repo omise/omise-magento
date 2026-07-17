@@ -116,7 +116,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
         } elseif ($code === Truemoney::CODE) {
             $backend = $this->getTruemoneyBackendByType($mergedBackends[$code]);
         } else {
-            $backend = $configs['omise_payment_list'][$code] = $mergedBackends[$code];
+            $backend = $mergedBackends[$code];
         }
 
         $paymentList[$code] = $backend;
