@@ -148,10 +148,8 @@ class UPACallback extends Action
                 $this->checkoutSession->restoreQuote();
                 throw new LocalizedException(__($charge->getMessage()));
             }
-            $paymentMethod = $payment->getMethod();
-
             if ($charge->isFailed()) {
-                $this->handleFailure($charge);
+                return $this->handleFailure($charge);
             }
             
             // Do not proceed if webhook is enabled
@@ -222,8 +220,6 @@ class UPACallback extends Action
 
         $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id, $charge->capture);
         $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
-        $paymentMethod = $payment->getMethod();
-        $paymentMethodLabel = $this->helper->getOmiseLabelByOmiseCode($paymentMethod);
         
         if ($charge->capture) {
             // Add transaction.

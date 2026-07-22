@@ -37,6 +37,9 @@ class UPACallbackTest extends TestCase
     private $omiseCheckoutSession;
     private $transactionBuilder;
     private $messageManager;
+    private const ORDER_ID = 1;
+    private const SESSION_ID = 'session_123';
+    private const CHARGE_ID = 'chrg_test_123';
 
     protected function setUp(): void
     {
@@ -97,280 +100,61 @@ class UPACallbackTest extends TestCase
     }
 
     /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     * @param Payment|null $payment
+     * @param int|null $id
+     * @param string $state
+     * @return Order
      */
-    public function testExecuteWithMissingPayment()
-    {
-        $order = $this->createMock(Order::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn(null);
-
-        $controller = $this->getController();
-
-        $controller->expects($this->once())
-            ->method('_redirect')
-            ->with('checkout/cart', ['_secure' => true]);
-
-        $controller->execute();
+    private function createOrder(
+        ?Payment $payment = null,
+        ?int $id = null,
+        bool $allowstatus = false,
+        string $state = Order::STATE_PENDING_PAYMENT
+    ): Order {
+        if($allowstatus) {
+            return $this->createConfiguredMock(Order::class, [
+                'getId' => $id,
+                'getPayment' => $payment,
+                'getState' => $state,
+            ]);
+        }
+        return $this->createConfiguredMock(Order::class, [
+            'getId' => $id,
+            'getPayment' => $payment
+        ]);
     }
 
     /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     * @param string $sessionId
+     * @param string $method
+     * @return Payment
      */
-    public function testExecuteWithInvalidPaymentsArray()
-    {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')->willReturn(1);
-        $order->method('getPayment')->willReturn($payment);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = null;
-
-        $this->omiseCheckoutSession->method('getSessionInfo')
-            ->willReturn($sessionInfo);
-
-        $controller = $this->getController();
-
-        $controller->expects($this->once())
-            ->method('_redirect');
-
-        $controller->execute();
+    private function createPayment(
+        string $sessionId = '',
+        bool $allowMethod = false,
+        string $method = 'omise_promptpay'
+    ): Payment {
+        if($allowMethod) {
+            return $this->createConfiguredMock(Payment::class, [
+                'getAdditionalInformation' => $sessionId,
+                'getMethod' => $method
+            ]);
+        }
+        return $this->createConfiguredMock(Payment::class, [
+            'getAdditionalInformation' => $sessionId,
+        ]);
     }
 
     /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     * @param array $payments
+     * @return \stdClass
      */
-    public function testExecuteWithInvalidPaymentsData()
+    private function createSessionInfo(array $payments): \stdClass
     {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')->willReturn(1);
-        $order->method('getPayment')->willReturn($payment);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
         $sessionInfo = new \stdClass();
-        
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test_123']
-        ];
-        $this->omiseCheckoutSession->method('getSessionInfo')
-            ->willReturn($sessionInfo);
+        $sessionInfo->payments = $payments;
 
-        $controller = $this->getController();
-
-        $controller->expects($this->once())
-            ->method('_redirect');
-
-        $controller->execute();
-    }
-
-    /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
-     */
-    public function testExecuteWithInvalidOrderState()
-    {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')->willReturn(1);
-        $order->method('getPayment')->willReturn($payment);
-
-        $payment->method('getAdditionalInformation')
-            ->willReturn('session_123');
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_COMPLETE);
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
-
-        $this->request->method('getParam')
-            ->willReturn('chrg_test');
-
-        $this->omiseCheckoutSession->method('getSessionInfo')
-            ->willReturn($sessionInfo);
-
-        $controller = $this->getController();
-
-        $controller->expects($this->once())
-            ->method('_redirect');
-
-        $controller->execute();
-    }
-
-    /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
-     */
-    public function testExecuteWithoutSessionId()
-    {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')->willReturn(1);
-        $order->method('getPayment')->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->willReturn('');
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
-
-        $this->request->method('getParam')
-            ->willReturn('chrg_test');
-
-        $this->omiseCheckoutSession->method('getSessionInfo')
-            ->willReturn($sessionInfo);
-
-        $order->expects($this->once())
-        ->method('hasInvoices')
-        ->willReturn(false);
-
-        $order->expects($this->once())
-            ->method('registerCancellation')
-            ->willReturnSelf();
-
-        $order->expects($this->once())
-            ->method('save')
-            ->willReturnSelf();
-
-        $this->messageManager->expects($this->once())
-            ->method('addErrorMessage');
-
-        $this->session->expects($this->once())
-            ->method('restoreQuote');
-
-        $controller = $this->getController();
-
-        $controller->expects($this->once())
-            ->method('_redirect')
-            ->with('checkout/cart', ['_secure' => true]);
-
-        $controller->execute();
-    }
-
-    /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
-     */
-    public function testExecuteWithChargeFailure()
-    {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $this->request->method('getParam')
-            ->with('chargeId')
-            ->willReturn('chrg_test');
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
-
-        $this->omiseCheckoutSession
-            ->method('getSessionInfo')
-            ->with('session_123')
-            ->willReturn($sessionInfo);
-
-        $charge = $this->getMockBuilder(
-            \Omise\Payment\Model\Api\BaseObject::class
-        )
-            ->disableOriginalConstructor()
-            ->addMethods(['isFailed', 'isSuccessful'])
-            ->getMock();
-
-        $charge->id = 'chrg_test';
-        $charge->failure_message = 'bank rejected';
-
-        $charge->method('isFailed')
-            ->willReturn(true);
-
-        $this->charge->expects($this->once())
-            ->method('find')
-            ->with('chrg_test')
-            ->willReturn($charge);
-
-        $this->checkoutSession->expects($this->once())
-            ->method('restoreQuote');
-
-        $order->expects($this->once())
-            ->method('hasInvoices')
-            ->willReturn(false);
-
-        $order->expects($this->once())
-            ->method('registerCancellation')
-            ->willReturnSelf();
-
-        $order->expects($this->once())
-            ->method('save')
-            ->willReturnSelf();
-
-        $this->messageManager->expects($this->once())
-            ->method('addErrorMessage');
-
-        $controller = $this->getController();
-
-        $controller->expects($this->once())
-            ->method('_redirect')
-            ->with('checkout/cart', ['_secure' => true]);
-
-        $controller->execute();
+        return $sessionInfo;
     }
 
     /**
@@ -378,8 +162,8 @@ class UPACallbackTest extends TestCase
      */
     public function testExecuteWithSuccessfulCharge()
     {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
+        $payment = $this->createPayment(self::SESSION_ID, true, 'omise_promptpay');
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
 
         $invoice = $this->getMockBuilder(
             \Magento\Sales\Model\Order\Invoice::class
@@ -400,30 +184,13 @@ class UPACallbackTest extends TestCase
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $payment->method('getMethod')
-            ->willReturn('omise_promptpay');
-
         $this->request->method('getParam')
             ->with('chargeId')
-            ->willReturn('chrg_test');
+            ->willReturn(self::CHARGE_ID);
 
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
 
 
         $this->omiseCheckoutSession
@@ -437,7 +204,7 @@ class UPACallbackTest extends TestCase
             ->addMethods(['isFailed', 'isSuccessful'])
             ->getMock();
 
-        $charge->id = 'chrg_test';
+        $charge->id = self::CHARGE_ID;
 
         $charge->method('isFailed')
             ->willReturn(false);
@@ -449,17 +216,17 @@ class UPACallbackTest extends TestCase
 
         $this->charge->expects($this->once())
             ->method('find')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturn($charge);
 
         $payment->expects($this->once())
             ->method('setTransactionId')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturnSelf();
 
         $payment->expects($this->once())
             ->method('setLastTransId')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturnSelf();
 
         $this->config->method('isWebhookEnabled')
@@ -484,17 +251,12 @@ class UPACallbackTest extends TestCase
 
         $this->helper->expects($this->once())
             ->method('createInvoiceAndMarkAsPaid')
-            ->with($order, 'chrg_test')
+            ->with($order, self::CHARGE_ID)
             ->willReturn($invoice);
 
         $this->emailHelper->expects($this->once())
             ->method('sendInvoiceAndConfirmationEmails')
             ->with($order);
-
-        $this->helper->expects($this->once())
-            ->method('getOmiseLabelByOmiseCode')
-            ->with('omise_promptpay')
-            ->willReturn('PromptPay');
 
         $invoice->method('getBaseGrandTotal')
             ->willReturn(100);
@@ -542,39 +304,30 @@ class UPACallbackTest extends TestCase
     /**
      * @covers \Omise\Payment\Controller\Callback\UPACallback
      */
-    public function testExecuteWithPendingCharge()
+    public function testExecuteWithSuccessfulAuthorizedCharge()
     {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
+        $payment = $this->createPayment(self::SESSION_ID, true, 'omise_creditcard');
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
         $transaction = $this->createMock(Transaction::class);
 
         $orderConfig = $this->createMock(
             \Magento\Sales\Model\Order\Config::class
         );
 
+        $currency = $this->createMock(
+            \Magento\Directory\Model\Currency::class
+        );
+
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->willReturn('session_123');
-
         $this->request->method('getParam')
             ->with('chargeId')
-            ->willReturn('chrg_test');
+            ->willReturn(self::CHARGE_ID);
 
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
 
         $this->omiseCheckoutSession
             ->method('getSessionInfo')
@@ -587,7 +340,137 @@ class UPACallbackTest extends TestCase
             ->addMethods(['isFailed', 'isSuccessful'])
             ->getMock();
 
-        $charge->id = 'chrg_test';
+        $charge->id = self::CHARGE_ID;
+        $charge->capture = false;
+
+        $charge->method('isFailed')
+            ->willReturn(false);
+
+        $charge->method('isSuccessful')
+            ->willReturn(true);
+
+        $this->charge->method('find')
+            ->willReturn($charge);
+
+        $payment->expects($this->once())
+            ->method('setTransactionId')
+            ->with(self::CHARGE_ID)
+            ->willReturnSelf();
+
+        $payment->expects($this->once())
+            ->method('setLastTransId')
+            ->with(self::CHARGE_ID)
+            ->willReturnSelf();
+
+        $this->config->method('isWebhookEnabled')
+            ->willReturn(false);
+
+        $order->expects($this->once())
+            ->method('setState')
+            ->with(Order::STATE_PROCESSING)
+            ->willReturnSelf();
+
+        $order->method('getConfig')
+            ->willReturn($orderConfig);
+
+        $orderConfig->method('getStateDefaultStatus')
+            ->willReturn('processing');
+
+        $order->expects($this->once())
+            ->method('setStatus')
+            ->with('processing')
+            ->willReturnSelf();
+
+        $this->helper->expects($this->once())
+            ->method('createInvoiceAndMarkAsPaid')
+            ->with($order, self::CHARGE_ID, false);
+
+        $this->emailHelper->expects($this->once())
+            ->method('sendInvoiceAndConfirmationEmails')
+            ->with($order);
+
+        $this->helper->method('getOmiseLabelByOmiseCode')
+            ->willReturn('Credit Card');
+
+        $order->method('getBaseCurrency')
+            ->willReturn($currency);
+
+        $order->method('getTotalDue')
+            ->willReturn(100);
+
+        $currency->method('formatTxt')
+            ->willReturn('100.00');
+
+        $payment->expects($this->once())
+            ->method('prependMessage')
+            ->willReturn('Authorized message');
+
+        $payment->expects($this->once())
+            ->method('addTransaction')
+            ->with(Transaction::TYPE_AUTH)
+            ->willReturn($transaction);
+
+        $payment->expects($this->once())
+            ->method('addTransactionCommentsToOrder')
+            ->with(
+                $transaction,
+                'Authorized message'
+            )
+            ->willReturnSelf();
+
+        $order->expects($this->once())
+            ->method('save')
+            ->willReturnSelf();
+
+        $controller = $this->getController();
+
+        $redirectResult = $this->createMock(Redirect::class);
+
+        $controller->expects($this->once())
+            ->method('_redirect')
+            ->with(
+                'checkout/onepage/success',
+                ['_secure' => true]
+            )
+            ->willReturn($redirectResult);
+
+        $this->assertSame($redirectResult, $controller->execute());
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteWithPendingCharge()
+    {
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
+        $transaction = $this->createMock(Transaction::class);
+
+        $orderConfig = $this->createMock(\Magento\Sales\Model\Order\Config::class);
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $this->request->method('getParam')
+            ->with('chargeId')
+            ->willReturn(self::CHARGE_ID);
+
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
+        
+        $this->omiseCheckoutSession
+            ->method('getSessionInfo')
+            ->willReturn($sessionInfo);
+
+        $charge = $this->getMockBuilder(
+            \Omise\Payment\Model\Api\BaseObject::class
+        )
+            ->disableOriginalConstructor()
+            ->addMethods(['isFailed', 'isSuccessful'])
+            ->getMock();
+
+        $charge->id = self::CHARGE_ID;
 
         $charge->method('isFailed')
             ->willReturn(false);
@@ -597,17 +480,17 @@ class UPACallbackTest extends TestCase
 
         $this->charge->expects($this->once())
             ->method('find')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturn($charge);
 
         $payment->expects($this->once())
             ->method('setTransactionId')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturnSelf();
 
         $payment->expects($this->once())
             ->method('setLastTransId')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturnSelf();
 
         $this->config->method('isWebhookEnabled')
@@ -669,30 +552,72 @@ class UPACallbackTest extends TestCase
         $result = $controller->execute();
         $this->assertSame($redirectResult, $result);
     }
-    
+
     /**
      * @covers \Omise\Payment\Controller\Callback\UPACallback
      */
-    public function testExecuteInvalidOrderRedirectsToCart()
+    public function testExecuteWithChargeFailure()
     {
-        $order = $this->createMock(Order::class);
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
 
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
-        $order->method('getId')
-            ->willReturn(null);
-
         $this->request->method('getParam')
             ->with('chargeId')
-            ->willReturn('chrg_test');
-        
+            ->willReturn(self::CHARGE_ID);
+
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
+
+        $this->omiseCheckoutSession
+            ->method('getSessionInfo')
+            ->with('session_123')
+            ->willReturn($sessionInfo);
+
+        $charge = $this->getMockBuilder(
+            \Omise\Payment\Model\Api\BaseObject::class
+        )
+            ->disableOriginalConstructor()
+            ->addMethods(['isFailed', 'isSuccessful'])
+            ->getMock();
+
+        $charge->id = self::CHARGE_ID;
+        $charge->failure_message = 'bank rejected';
+
+        $charge->method('isFailed')
+            ->willReturn(true);
+
+        $this->charge->expects($this->once())
+            ->method('find')
+            ->with(self::CHARGE_ID)
+            ->willReturn($charge);
+
+        $this->checkoutSession->expects($this->once())
+            ->method('restoreQuote');
+
+        $order->expects($this->once())
+            ->method('hasInvoices')
+            ->willReturn(false);
+
+        $order->expects($this->once())
+            ->method('registerCancellation')
+            ->willReturnSelf();
+
+        $order->expects($this->once())
+            ->method('save')
+            ->willReturnSelf();
+
+        $this->messageManager->expects($this->once())
+            ->method('addErrorMessage');
+
         $controller = $this->getController();
 
         $controller->expects($this->once())
             ->method('_redirect')
-            ->with('checkout/cart', ['_secure' => true])
-            ->willReturn($this->createMock(Redirect::class));
+            ->with('checkout/cart', ['_secure' => true]);
 
         $controller->execute();
     }
@@ -700,30 +625,121 @@ class UPACallbackTest extends TestCase
     /**
      * @covers \Omise\Payment\Controller\Callback\UPACallback
      */
-    public function testExecuteProcessingOrderRedirectsToSuccess()
+    public function testExecuteWithWebhookEnabledBuildsTransactionAndRedirectsToSuccess()
     {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
+        $transaction = $this->createMock(Transaction::class);
 
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
         $this->request->method('getParam')
-            ->willReturn('chrg_test');
+            ->with('chargeId')
+            ->willReturn(self::CHARGE_ID);
 
-        $order->method('getId')
-            ->willReturn(1);
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
 
-        $order->method('getPayment')
-            ->willReturn($payment);
+        $this->omiseCheckoutSession
+            ->method('getSessionInfo')
+            ->willReturn($sessionInfo);
 
-        $payment->method('getAdditionalInformation')
-            ->willReturn('session_123');
+        $charge = $this->getMockBuilder(
+            \Omise\Payment\Model\Api\BaseObject::class
+        )
+        ->disableOriginalConstructor()
+        ->addMethods(['isFailed', 'isSuccessful'])
+        ->getMock();
 
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
+        $charge->id = self::CHARGE_ID;
+        $charge->status = 'pending';
+
+        $charge->method('isFailed')
+            ->willReturn(false);
+
+        $charge->method('isSuccessful')
+            ->willReturn(false);
+
+        $this->charge->method('find')
+            ->with(self::CHARGE_ID)
+            ->willReturn($charge);
+
+        $this->config->method('isWebhookEnabled')
+            ->willReturn(true);
+
+        $this->transactionBuilder->expects($this->once())
+            ->method('setPayment')
+            ->with($payment)
+            ->willReturnSelf();
+
+        $this->transactionBuilder->expects($this->once())
+            ->method('setOrder')
+            ->with($order)
+            ->willReturnSelf();
+
+        $this->transactionBuilder->expects($this->once())
+            ->method('setTransactionId')
+            ->with(self::CHARGE_ID)
+            ->willReturnSelf();
+
+        $this->transactionBuilder->expects($this->once())
+            ->method('setAdditionalInformation')
+            ->with([
+                Transaction::RAW_DETAILS => [
+                    'omise_charge_id' => self::CHARGE_ID,
+                    'status' => 'pending'
+                ]
+            ])
+            ->willReturnSelf();
+
+        $this->transactionBuilder->expects($this->once())
+            ->method('setFailSafe')
+            ->with(true)
+            ->willReturnSelf();
+
+        $this->transactionBuilder->expects($this->once())
+            ->method('build')
+            ->with(Transaction::TYPE_PAYMENT)
+            ->willReturn($transaction);
+
+        $order->expects($this->once())
+            ->method('save')
+            ->willReturnSelf();
+
+        $controller = $this->getController();
+
+        $redirectResult = $this->createMock(Redirect::class);
+
+        $controller->expects($this->once())
+            ->method('_redirect')
+            ->with('checkout/onepage/success', ['_secure' => true])
+            ->willReturn($redirectResult);
+
+        $result = $controller->execute();
+
+        $this->assertInstanceOf(Redirect::class, $result);
+        $this->assertSame($redirectResult, $result);
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteProcessingOrderRedirectsToSuccess()
+    {
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID);
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $this->request->method('getParam')
+            ->willReturn(self::CHARGE_ID);
+
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
 
         $this->omiseCheckoutSession
             ->method('getSessionInfo')
@@ -745,37 +761,196 @@ class UPACallbackTest extends TestCase
 
         $controller->execute();
     }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteWithMissingPayment()
+    {
+        $order = $this->createOrder(null, self::ORDER_ID);
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $controller = $this->getController();
+
+        $controller->expects($this->once())
+            ->method('_redirect')
+            ->with('checkout/cart', ['_secure' => true]);
+
+        $controller->execute();
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteWithInvalidOrderState()
+    {
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_COMPLETE);
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
+
+        $this->request->method('getParam')
+            ->willReturn(self::CHARGE_ID);
+
+        $this->omiseCheckoutSession->method('getSessionInfo')
+            ->willReturn($sessionInfo);
+
+        $controller = $this->getController();
+
+        $controller->expects($this->once())
+            ->method('_redirect');
+
+        $controller->execute();
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteWithoutSessionId()
+    {
+        $payment = $this->createPayment();
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
+
+        $this->request->method('getParam')
+            ->willReturn(self::CHARGE_ID);
+
+        $this->omiseCheckoutSession->method('getSessionInfo')
+            ->willReturn($sessionInfo);
+
+        $order->expects($this->once())
+        ->method('hasInvoices')
+        ->willReturn(false);
+
+        $order->expects($this->once())
+            ->method('registerCancellation')
+            ->willReturnSelf();
+
+        $order->expects($this->once())
+            ->method('save')
+            ->willReturnSelf();
+
+        $this->messageManager->expects($this->once())
+            ->method('addErrorMessage');
+
+        $this->session->expects($this->once())
+            ->method('restoreQuote');
+
+        $controller = $this->getController();
+
+        $controller->expects($this->once())
+            ->method('_redirect')
+            ->with('checkout/cart', ['_secure' => true]);
+
+        $controller->execute();
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteWithInvalidPaymentsArray()
+    {
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $sessionInfo = new \stdClass();
+        $sessionInfo->payments = null;
+
+        $this->omiseCheckoutSession->method('getSessionInfo')
+            ->willReturn($sessionInfo);
+
+        $controller = $this->getController();
+
+        $controller->expects($this->once())
+            ->method('_redirect');
+
+        $controller->execute();
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteWithInvalidPaymentsData()
+    {
+        $payment = $this->createPayment(self::SESSION_ID);
+
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
+        
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
+
+        $this->omiseCheckoutSession->method('getSessionInfo')
+            ->willReturn($sessionInfo);
+
+        $controller = $this->getController();
+
+        $controller->expects($this->once())
+            ->method('_redirect');
+
+        $controller->execute();
+    }
+    
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback
+     */
+    public function testExecuteInvalidOrderRedirectsToCart()
+    {
+        $order = $this->createOrder();
+
+        $this->session->method('getLastRealOrder')
+            ->willReturn($order);
+
+        $this->request->method('getParam')
+            ->with('chargeId')
+            ->willReturn(self::CHARGE_ID);
+        
+        $controller = $this->getController();
+
+        $controller->expects($this->once())
+            ->method('_redirect')
+            ->with('checkout/cart', ['_secure' => true])
+            ->willReturn($this->createMock(Redirect::class));
+
+        $controller->execute();
+    }
     
     /**
      * @covers \Omise\Payment\Controller\Callback\UPACallback
      */
     public function testExecuteChargeFindThrowsException()
     {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
 
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
         $this->request->method('getParam')
-            ->willReturn('chrg_test');
+            ->willReturn(self::CHARGE_ID);
 
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->willReturn('session_123');
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
 
         $this->omiseCheckoutSession
             ->method('getSessionInfo')
@@ -817,33 +992,19 @@ class UPACallbackTest extends TestCase
     */
     public function testExecuteChargeErrorRestoresQuoteAndRedirectsToCart()
     {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
+        $payment = $this->createPayment(self::SESSION_ID);
+        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
 
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
         $this->request->method('getParam')
             ->with('chargeId')
-            ->willReturn('chrg_test');
+            ->willReturn(self::CHARGE_ID);
 
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
+        $sessionInfo = $this->createSessionInfo([
+            ['charge_id' => self::CHARGE_ID]
+        ]);
 
         $this->omiseCheckoutSession
             ->method('getSessionInfo')
@@ -853,7 +1014,7 @@ class UPACallbackTest extends TestCase
             ->method('restoreQuote');
 
         $this->charge->method('find')
-            ->with('chrg_test')
+            ->with(self::CHARGE_ID)
             ->willReturn(new \Omise\Payment\Model\Api\Error(['message' => 'Failed message']));
 
         $order->expects($this->once())
@@ -880,273 +1041,5 @@ class UPACallbackTest extends TestCase
             ->willReturn($this->createMock(Redirect::class));
 
         $controller->execute();
-    }
-
-    /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
-     */
-    public function testExecuteWithWebhookEnabledBuildsTransactionAndRedirectsToSuccess()
-    {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-        $transaction = $this->createMock(Transaction::class);
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $this->request->method('getParam')
-            ->with('chargeId')
-            ->willReturn('chrg_test');
-
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
-
-        $this->omiseCheckoutSession
-            ->method('getSessionInfo')
-            ->willReturn($sessionInfo);
-
-        $charge = $this->getMockBuilder(
-            \Omise\Payment\Model\Api\BaseObject::class
-        )
-        ->disableOriginalConstructor()
-        ->addMethods(['isFailed', 'isSuccessful'])
-        ->getMock();
-
-        $charge->id = 'chrg_test';
-        $charge->status = 'pending';
-
-        $charge->method('isFailed')
-            ->willReturn(false);
-
-        $charge->method('isSuccessful')
-            ->willReturn(false);
-
-        $this->charge->method('find')
-            ->with('chrg_test')
-            ->willReturn($charge);
-
-        $this->config->method('isWebhookEnabled')
-            ->willReturn(true);
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setPayment')
-            ->with($payment)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setOrder')
-            ->with($order)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setTransactionId')
-            ->with('chrg_test')
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setAdditionalInformation')
-            ->with([
-                Transaction::RAW_DETAILS => [
-                    'omise_charge_id' => 'chrg_test',
-                    'status' => 'pending'
-                ]
-            ])
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setFailSafe')
-            ->with(true)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('build')
-            ->with(Transaction::TYPE_PAYMENT)
-            ->willReturn($transaction);
-
-        $order->expects($this->once())
-            ->method('save')
-            ->willReturnSelf();
-
-        $controller = $this->getController();
-
-        $redirectResult = $this->createMock(Redirect::class);
-
-        $controller->expects($this->once())
-            ->method('_redirect')
-            ->with('checkout/onepage/success', ['_secure' => true])
-            ->willReturn($redirectResult);
-
-        $result = $controller->execute();
-
-        $this->assertInstanceOf(Redirect::class, $result);
-        $this->assertSame($redirectResult, $result);
-    }
-
-    /**
-     * @covers \Omise\Payment\Controller\Callback\UPACallback
-     */
-    public function testExecuteWithSuccessfulAuthorizedCharge()
-    {
-        $order = $this->createMock(Order::class);
-        $payment = $this->createMock(Payment::class);
-        $transaction = $this->createMock(Transaction::class);
-
-        $orderConfig = $this->createMock(
-            \Magento\Sales\Model\Order\Config::class
-        );
-
-        $currency = $this->createMock(
-            \Magento\Directory\Model\Currency::class
-        );
-
-        $this->session->method('getLastRealOrder')
-            ->willReturn($order);
-
-        $order->method('getId')
-            ->willReturn(1);
-
-        $order->method('getPayment')
-            ->willReturn($payment);
-
-        $order->method('getState')
-            ->willReturn(Order::STATE_PENDING_PAYMENT);
-
-        $payment->method('getAdditionalInformation')
-            ->with('session_id')
-            ->willReturn('session_123');
-
-        $payment->method('getMethod')
-            ->willReturn('omise_creditcard');
-
-        $this->request->method('getParam')
-            ->with('chargeId')
-            ->willReturn('chrg_test');
-
-        $sessionInfo = new \stdClass();
-        $sessionInfo->payments = [
-            ['charge_id' => 'chrg_test']
-        ];
-
-        $this->omiseCheckoutSession
-            ->method('getSessionInfo')
-            ->willReturn($sessionInfo);
-
-        $charge = $this->getMockBuilder(
-            \Omise\Payment\Model\Api\BaseObject::class
-        )
-            ->disableOriginalConstructor()
-            ->addMethods(['isFailed', 'isSuccessful'])
-            ->getMock();
-
-        $charge->id = 'chrg_test';
-        $charge->capture = false;
-
-        $charge->method('isFailed')
-            ->willReturn(false);
-
-        $charge->method('isSuccessful')
-            ->willReturn(true);
-
-        $this->charge->method('find')
-            ->willReturn($charge);
-
-        $payment->expects($this->once())
-            ->method('setTransactionId')
-            ->with('chrg_test')
-            ->willReturnSelf();
-
-        $payment->expects($this->once())
-            ->method('setLastTransId')
-            ->with('chrg_test')
-            ->willReturnSelf();
-
-        $this->config->method('isWebhookEnabled')
-            ->willReturn(false);
-
-        $order->expects($this->once())
-            ->method('setState')
-            ->with(Order::STATE_PROCESSING)
-            ->willReturnSelf();
-
-        $order->method('getConfig')
-            ->willReturn($orderConfig);
-
-        $orderConfig->method('getStateDefaultStatus')
-            ->willReturn('processing');
-
-        $order->expects($this->once())
-            ->method('setStatus')
-            ->with('processing')
-            ->willReturnSelf();
-
-        $this->helper->expects($this->once())
-            ->method('createInvoiceAndMarkAsPaid')
-            ->with($order, 'chrg_test', false);
-
-        $this->emailHelper->expects($this->once())
-            ->method('sendInvoiceAndConfirmationEmails')
-            ->with($order);
-
-        $this->helper->method('getOmiseLabelByOmiseCode')
-            ->willReturn('Credit Card');
-
-        $order->method('getBaseCurrency')
-            ->willReturn($currency);
-
-        $order->method('getTotalDue')
-            ->willReturn(100);
-
-        $currency->method('formatTxt')
-            ->willReturn('100.00');
-
-        $payment->expects($this->once())
-            ->method('prependMessage')
-            ->willReturn('Authorized message');
-
-        $payment->expects($this->once())
-            ->method('addTransaction')
-            ->with(Transaction::TYPE_AUTH)
-            ->willReturn($transaction);
-
-        $payment->expects($this->once())
-            ->method('addTransactionCommentsToOrder')
-            ->with(
-                $transaction,
-                'Authorized message'
-            )
-            ->willReturnSelf();
-
-        $order->expects($this->once())
-            ->method('save')
-            ->willReturnSelf();
-
-        $controller = $this->getController();
-
-        $redirectResult = $this->createMock(Redirect::class);
-
-        $controller->expects($this->once())
-            ->method('_redirect')
-            ->with(
-                'checkout/onepage/success',
-                ['_secure' => true]
-            )
-            ->willReturn($redirectResult);
-
-        $this->assertSame($redirectResult, $controller->execute());
     }
 }

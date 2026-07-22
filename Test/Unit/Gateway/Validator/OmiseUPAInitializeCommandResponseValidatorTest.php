@@ -32,6 +32,7 @@ class TestableOmiseUPAInitializeCommandResponseValidator extends OmiseUPAInitial
         );
     }
 }
+
 /**
  * @covers \Omise\Payment\Gateway\Validator\OmiseUPAInitializeCommandResponseValidator
  * @uses \Omise\Payment\Model\Api\BaseObject

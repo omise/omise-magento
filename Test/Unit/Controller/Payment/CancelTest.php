@@ -23,10 +23,10 @@ class CancelTest extends TestCase
     {
         $context = $this->createMock(Context::class);
         $checkoutSession = $this->getMockBuilder(CheckoutSession::class)
-        ->disableOriginalConstructor()
-        ->onlyMethods(['restoreQuote'])
-        ->addMethods(['getLastOrderId'])
-        ->getMock();
+            ->disableOriginalConstructor()
+            ->onlyMethods(['restoreQuote'])
+            ->addMethods(['getLastOrderId'])
+            ->getMock();
         $orderRepository = $this->createMock(OrderRepositoryInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
         $order = $this->createMock(Order::class);
@@ -52,8 +52,7 @@ class CancelTest extends TestCase
             ->method('save')
             ->with($order);
 
-        $checkoutSession->expects($this->once())
-            ->method('restoreQuote');
+        $checkoutSession->expects($this->once())->method('restoreQuote');
 
         $controller = $this->getMockBuilder(Cancel::class)
             ->setConstructorArgs([
@@ -80,10 +79,10 @@ class CancelTest extends TestCase
     {
         $context = $this->createMock(Context::class);
         $checkoutSession = $this->getMockBuilder(CheckoutSession::class)
-        ->disableOriginalConstructor()
-        ->onlyMethods(['restoreQuote'])
-        ->addMethods(['getLastOrderId'])
-        ->getMock();
+            ->disableOriginalConstructor()
+            ->onlyMethods(['restoreQuote'])
+            ->addMethods(['getLastOrderId'])
+            ->getMock();
         $orderRepository = $this->createMock(OrderRepositoryInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
 

@@ -102,36 +102,6 @@ class CheckoutSessionTest extends TestCase
 
     /**
      * @covers Omise\Payment\Model\Api\CheckoutSession
-     */
-    public function testCreateSessionThrowsLocalizedException()
-    {
-        $params = [
-            'amount' => 1000
-        ];
-
-        $model = new CheckoutSession(
-            $this->config,
-            $this->requestHelper,
-            $this->omiseHelper
-        );
-
-        $this->omiseHelper->expects($this->once())
-            ->method('checkoutSessionEndpoint')
-            ->willReturn('https://api.omise.co/');
-
-        $this->requestHelper->expects($this->once())
-            ->method('sendUpaSessionRequest')
-            ->willThrowException(
-                new Exception('API Error')
-            );
-
-        $this->expectException(LocalizedException::class);
-        $this->expectExceptionMessage('Failed to create session : API Error');
-        $model->createSession($params);
-    }
-
-    /**
-     * @covers Omise\Payment\Model\Api\CheckoutSession
      * @uses \Omise\Payment\Model\Api\BaseObject
      */
     public function testGetSessionInfoSuccess()
@@ -171,6 +141,36 @@ class CheckoutSessionTest extends TestCase
         $this->assertSame($model, $result);
         $this->assertEquals('sess_test_123', $model->id);
         $this->assertEquals('checkout_session', $model->object);
+    }
+
+    /**
+     * @covers Omise\Payment\Model\Api\CheckoutSession
+     */
+    public function testCreateSessionThrowsLocalizedException()
+    {
+        $params = [
+            'amount' => 1000
+        ];
+
+        $model = new CheckoutSession(
+            $this->config,
+            $this->requestHelper,
+            $this->omiseHelper
+        );
+
+        $this->omiseHelper->expects($this->once())
+            ->method('checkoutSessionEndpoint')
+            ->willReturn('https://api.omise.co/');
+
+        $this->requestHelper->expects($this->once())
+            ->method('sendUpaSessionRequest')
+            ->willThrowException(
+                new Exception('API Error')
+            );
+
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('Failed to create session : API Error');
+        $model->createSession($params);
     }
 
     /**

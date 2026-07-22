@@ -59,44 +59,25 @@ class UPAPaymentDetailsHandlerTest extends TestCase
         $session->object = 'checkout_session';
         $session->id = $sessionId;
         $session->redirect_url = $redirectUrl;
-
-        $response = [
-            'session' => $session
-        ];
-
-        /**
-         * Currency
-         */
+        $response = ['session' => $session];
+        
         $currency = $this->createMock(
             \Magento\Directory\Model\Currency::class
         );
-
         $currency->expects($this->once())
             ->method('formatTxt')
             ->with(100)
             ->willReturn('USD 100.00');
+        
+        $order = $this->createConfiguredMock(Order::class, [
+            'getBaseCurrency'    => $currency,
+            'getTotalDue'         => 100
+        ]);
 
-        /**
-         * Order
-         */
-        $order = $this->createMock(Order::class);
-
-        $order->method('getBaseCurrency')
-            ->willReturn($currency);
-
-        $order->method('getTotalDue')
-            ->willReturn(100);
-
-        /**
-         * Payment
-         */
-        $payment = $this->createMock(Payment::class);
-
-        $payment->method('getOrder')
-            ->willReturn($order);
-
-        $payment->method('getMethod')
-            ->willReturn('omise_promptpay');
+        $payment = $this->createConfiguredMock(Payment::class, [
+            'getOrder' => $order,
+            'getMethod' => 'omise_promptpay'
+        ]);
 
         $this->helper->expects($this->once())
             ->method('getMethodId')
@@ -119,12 +100,7 @@ class UPAPaymentDetailsHandlerTest extends TestCase
             ->with($this->isType('object'))
             ->willReturn('Processing amount of USD 100.00 via Omise Checkout Gateway.');
 
-        /**
-         * Payment Data Object
-         */
-        $paymentDO = $this->createMock(
-            PaymentDataObjectInterface::class
-        );
+        $paymentDO = $this->createMock(PaymentDataObjectInterface::class);
 
         $paymentDO->method('getPayment')
             ->willReturn($payment);
@@ -133,16 +109,10 @@ class UPAPaymentDetailsHandlerTest extends TestCase
             'payment' => $paymentDO
         ];
 
-        /**
-         * Transaction
-         */
         $transaction = $this->createMock(
             Transaction::class
         );
 
-        /**
-         * Transaction Builder
-         */
         $this->transactionBuilder->expects($this->once())
             ->method('setPayment')
             ->with($payment)
@@ -175,9 +145,6 @@ class UPAPaymentDetailsHandlerTest extends TestCase
             ->with(Transaction::TYPE_PAYMENT)
             ->willReturn($transaction);
 
-        /**
-         * Verify order comment
-         */
         $payment->expects($this->once())
             ->method('addTransactionCommentsToOrder')
             ->with(

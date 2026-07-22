@@ -47,29 +47,23 @@ class UPAPaymentDataBuilderTest extends TestCase
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->getMockBuilder(InfoMock::class)->getMock();
-        $order = $this->createMock(OrderAdapterInterface::class);
         $store = $this->createMock(StoreInterface::class);
+        $order = $this->createConfiguredMock(OrderAdapterInterface::class,
+            [
+                'getCurrencyCode'    => 'THB',
+                'getStoreId'         => 1,
+                'getGrandTotalAmount'=> 100.00,
+                'getOrderIncrementId'=> '100000001',
+            ]
+        );
 
-    
         $payment->method('getMethod')
-        ->willReturn('omise_upa');
+            ->willReturn('omise_upa');
 
         $paymentDO = new PaymentDataObject(
             $order,
             $payment
         );
-
-        $order->method('getCurrencyCode')
-            ->willReturn('THB');
-
-        $order->method('getStoreId')
-            ->willReturn(1);
-
-        $order->method('getGrandTotalAmount')
-            ->willReturn(100.00);
-
-        $order->method('getOrderIncrementId')
-            ->willReturn('100000001');
 
         $store->method('getName')
             ->willReturn('Default Store');
@@ -142,51 +136,19 @@ class UPAPaymentDataBuilderTest extends TestCase
     /**
      * @covers Omise\Payment\Gateway\Request\UPAPaymentDataBuilder
      */
-    public function testBuildReturnsEmptyArrayWhenMethodIdIsEmpty(): void
-    {
-        $paymentDO = $this->createMock(PaymentDataObject::class);
-        $payment = $this->createMock(InfoMock::class);
-        $order = $this->createMock(OrderAdapterInterface::class);
-
-        $payment->method('getMethod')
-            ->willReturn('omise_upa');
-
-        $paymentDO = new PaymentDataObject(
-            $order,
-            $payment
-        );
-
-        $payment->method('getMethod')
-            ->willReturn('omise_upa');
-
-        $order->method('getStoreId')
-            ->willReturn(1);
-
-        $this->storeManager->method('getStore')
-            ->willReturn(
-                $this->createMock(StoreInterface::class)
-            );
-
-        $this->omiseHelper->expects($this->once())
-            ->method('getMethodId')
-            ->willReturn('');
-
-        $result = $this->builder->build([
-            'payment' => $paymentDO
-        ]);
-
-        $this->assertSame([], $result);
-    }
-
-    /**
-     * @covers Omise\Payment\Gateway\Request\UPAPaymentDataBuilder
-     */
     public function testBuildWithoutLocale(): void
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->createMock(InfoMock::class);
-        $order = $this->createMock(OrderAdapterInterface::class);
         $store = $this->createMock(StoreInterface::class);
+        $order = $this->createConfiguredMock(OrderAdapterInterface::class,
+            [
+                'getCurrencyCode'    => 'THB',
+                'getStoreId'         => 1,
+                'getGrandTotalAmount'=> 100.00,
+                'getOrderIncrementId'=> '100000001',
+            ]
+        );
 
         $payment->method('getMethod')
             ->willReturn('omise_upa');
@@ -195,18 +157,6 @@ class UPAPaymentDataBuilderTest extends TestCase
             $order,
             $payment
         );
-
-        $order->method('getCurrencyCode')
-            ->willReturn('THB');
-
-        $order->method('getStoreId')
-            ->willReturn(1);
-
-        $order->method('getGrandTotalAmount')
-            ->willReturn(100);
-
-        $order->method('getOrderIncrementId')
-            ->willReturn('100000001');
 
         $store->method('getName')
             ->willReturn('Default Store');
@@ -241,5 +191,38 @@ class UPAPaymentDataBuilderTest extends TestCase
         ]);
 
         $this->assertArrayNotHasKey('locale', $result);
+    }
+
+    /**
+     * @covers Omise\Payment\Gateway\Request\UPAPaymentDataBuilder
+     */
+    public function testBuildReturnsEmptyArrayWhenMethodIdIsEmpty(): void
+    {
+        $paymentDO = $this->createMock(PaymentDataObject::class);
+        $payment = $this->createMock(InfoMock::class);
+        $order = $this->createConfiguredMock(OrderAdapterInterface::class,[ 'getStoreId' => 1]);
+
+        $payment->method('getMethod')
+            ->willReturn('omise_upa');
+
+        $paymentDO = new PaymentDataObject(
+            $order,
+            $payment
+        );
+
+        $this->storeManager->method('getStore')
+            ->willReturn(
+                $this->createMock(StoreInterface::class)
+            );
+
+        $this->omiseHelper->expects($this->once())
+            ->method('getMethodId')
+            ->willReturn('');
+
+        $result = $this->builder->build([
+            'payment' => $paymentDO
+        ]);
+
+        $this->assertSame([], $result);
     }
 }

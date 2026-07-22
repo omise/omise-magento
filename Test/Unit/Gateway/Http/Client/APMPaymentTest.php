@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
  */
 class APMPaymentTest extends TestCase
 {
+    private const CHARGE_ID = 'chrg_test_123';
+    private const SESSION_ID = 'sess_test_123';
     /**
      * @covers ::__construct
      * @covers ::placeRequest
@@ -42,7 +44,7 @@ class APMPaymentTest extends TestCase
         $checkoutSession->expects($this->once())
             ->method('createSession')
             ->with($body)
-            ->willReturn('session_123');
+            ->willReturn(self::SESSION_ID);
 
         $client = new APMPayment(
             $apiCharge,
@@ -53,7 +55,7 @@ class APMPaymentTest extends TestCase
         $result = $client->placeRequest($transfer);
 
         $this->assertSame(
-            ['session' => 'session_123'],
+            ['session' => self::SESSION_ID],
             $result
         );
     }
@@ -85,7 +87,7 @@ class APMPaymentTest extends TestCase
         $apiCharge->expects($this->once())
             ->method('create')
             ->with($body)
-            ->willReturn('charge_123');
+            ->willReturn(self::CHARGE_ID);
 
         $client = new APMPayment(
             $apiCharge,
@@ -96,7 +98,7 @@ class APMPaymentTest extends TestCase
         $result = $client->placeRequest($transfer);
 
         $this->assertSame(
-            ['charge' => 'charge_123'],
+            ['charge' => self::CHARGE_ID],
             $result
         );
     }
