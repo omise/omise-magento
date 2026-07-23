@@ -111,7 +111,7 @@ class UPACallbackTest extends TestCase
         bool $allowstatus = false,
         string $state = Order::STATE_PENDING_PAYMENT
     ): Order {
-        if($allowstatus) {
+        if ($allowstatus) {
             return $this->createConfiguredMock(Order::class, [
                 'getId' => $id,
                 'getPayment' => $payment,
@@ -134,7 +134,7 @@ class UPACallbackTest extends TestCase
         bool $allowMethod = false,
         string $method = 'omise_promptpay'
     ): Payment {
-        if($allowMethod) {
+        if ($allowMethod) {
             return $this->createConfiguredMock(Payment::class, [
                 'getAdditionalInformation' => $sessionId,
                 'getMethod' => $method
@@ -191,7 +191,6 @@ class UPACallbackTest extends TestCase
         $sessionInfo = $this->createSessionInfo([
             ['charge_id' => self::CHARGE_ID]
         ]);
-
 
         $this->omiseCheckoutSession
             ->method('getSessionInfo')
@@ -270,7 +269,7 @@ class UPACallbackTest extends TestCase
 
         $payment->expects($this->once())
             ->method('addTransaction')
-            ->with(Transaction::TYPE_PAYMENT,$invoice,$this->anything())
+            ->with(Transaction::TYPE_PAYMENT, $invoice, $this->anything())
             ->willReturn($transaction);
 
         $payment->expects($this->once())
@@ -989,7 +988,7 @@ class UPACallbackTest extends TestCase
     /**
      * @covers \Omise\Payment\Controller\Callback\UPACallback
      * @uses \Omise\Payment\Model\Api\Error
-    */
+     */
     public function testExecuteChargeErrorRestoresQuoteAndRedirectsToCart()
     {
         $payment = $this->createPayment(self::SESSION_ID);

@@ -129,23 +129,23 @@ class OmiseUPAInitializeCommandResponseValidatorTest extends TestCase
     }
     
     /**
-      * Covers:
-      * $object != checkout_session
-      */
+     * Covers:
+     * $object != checkout_session
+     */
     public function testInvalidWhenObjectIsWrong(): void
-     {
-         $validator = $this->createValidator();
-         $session = $this->createSession(
-             'sess_test_123',
-             'not_checkout_session'
-         );
-         $result = $validator->validate([
-             'response' => [
-                 'session' => $session
-             ]
-         ]);
-         $this->assertFalse($result->isValid());
-     }
+    {
+        $validator = $this->createValidator();
+        $session = $this->createSession(
+            'sess_test_123',
+            'not_checkout_session'
+        );
+        $result = $validator->validate([
+            'response' => [
+                'session' => $session
+            ]
+        ]);
+        $this->assertFalse($result->isValid());
+    }
 
     /**
      * Covers:

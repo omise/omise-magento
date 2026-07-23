@@ -36,8 +36,8 @@ class CheckoutSessionTest extends TestCase
     }
     
     /**
-    * @covers Omise\Payment\Model\Api\CheckoutSession
-    */
+     * @covers Omise\Payment\Model\Api\CheckoutSession
+     */
     public function testConstruct()
     {
         $model = new CheckoutSession(
@@ -55,7 +55,7 @@ class CheckoutSessionTest extends TestCase
     /**
      * @covers Omise\Payment\Model\Api\CheckoutSession
      * @uses \Omise\Payment\Model\Api\BaseObject
-    */
+     */
     public function testCreateSessionSuccess()
     {
         $params = [

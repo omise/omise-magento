@@ -103,8 +103,8 @@ class UPAPaymentDataBuilderTest extends TestCase
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
-            ]
-        );
+            ]);
+
         $result = $this->builder->build([
             'payment' => $paymentDO
         ]);
@@ -141,7 +141,8 @@ class UPAPaymentDataBuilderTest extends TestCase
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->createMock(InfoMock::class);
         $store = $this->createMock(StoreInterface::class);
-        $order = $this->createConfiguredMock(OrderAdapterInterface::class,
+        $order = $this->createConfiguredMock(
+            OrderAdapterInterface::class,
             [
                 'getCurrencyCode'    => 'THB',
                 'getStoreId'         => 1,
@@ -167,12 +168,11 @@ class UPAPaymentDataBuilderTest extends TestCase
         $this->omiseHelper->method('getMethodId')
             ->willReturn('promptpay');
         
-            $this->omiseHelper->method('getConfig')
+        $this->omiseHelper->method('getConfig')
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
-            ]
-        );
+            ]);
 
         $this->localeResolver->method('getLocale')
             ->willReturn('');
@@ -200,7 +200,7 @@ class UPAPaymentDataBuilderTest extends TestCase
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->createMock(InfoMock::class);
-        $order = $this->createConfiguredMock(OrderAdapterInterface::class,[ 'getStoreId' => 1]);
+        $order = $this->createConfiguredMock(OrderAdapterInterface::class, [ 'getStoreId' => 1]);
 
         $payment->method('getMethod')
             ->willReturn('omise_upa');

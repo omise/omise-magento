@@ -145,7 +145,7 @@ class RequestHelper
             $array = json_decode($response, true);
             // If response is invalid or not a JSON.
             if (!$this->isValidAPIResponse($array)) {
-                throw new \Exception('Unknown error. (Bad Response)');
+                throw new \LocalizedException('Unknown error. (Bad Response)');
             }
 
             if (!empty($array['object']) && $array['object'] === 'error') {
