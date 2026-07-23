@@ -23,6 +23,11 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     private $headerMock;
 
     /**
+     * @var \Omise\Payment\Model\Omise
+     */
+    private $omiseMock;
+
+    /**
      * This function is called before the test runs.
      * Ideal for setting the values to variables or objects.
      * @coversNothing

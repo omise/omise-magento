@@ -4,13 +4,11 @@ namespace Omise\Payment\Test\Unit\Gateway\Validator;
 
 use PHPUnit\Framework\TestCase;
 use Magento\Payment\Gateway\Validator\Result;
-use Magento\Payment\Gateway\Validator\ResultInterfaceFactory;
 use Omise\Payment\Gateway\Validator\OmiseUPAInitializeCommandResponseValidator;
 use Omise\Payment\Model\Api\CheckoutSession;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Helper\OmiseHelper;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 use ReflectionClass;
 
 class TestableOmiseUPAInitializeCommandResponseValidator extends OmiseUPAInitializeCommandResponseValidator
@@ -114,10 +112,10 @@ class OmiseUPAInitializeCommandResponseValidatorTest extends TestCase
 
     /**
      * Covers:
-     * $object != checkout_session
+     * session is not CheckoutSession instance
      * @uses \Omise\Payment\Gateway\Validator\Message\ResponseInvalid
      */
-    public function testInvalidWhenObjectIsWrong(): void
+    public function testInvalidWhenSessionIsNotCheckoutSessionInstance(): void
     {
         $validator = $this->createValidator();
 
@@ -129,6 +127,25 @@ class OmiseUPAInitializeCommandResponseValidatorTest extends TestCase
 
         $this->assertFalse($result->isValid());
     }
+    
+    /**
+      * Covers:
+      * $object != checkout_session
+      */
+    public function testInvalidWhenObjectIsWrong(): void
+     {
+         $validator = $this->createValidator();
+         $session = $this->createSession(
+             'sess_test_123',
+             'not_checkout_session'
+         );
+         $result = $validator->validate([
+             'response' => [
+                 'session' => $session
+             ]
+         ]);
+         $this->assertFalse($result->isValid());
+     }
 
     /**
      * Covers:

@@ -19,6 +19,7 @@ class CapabilityConfigProviderTest extends TestCase
     private $capabilityMock;
     private $requestHelper;
     private $paymentListsMock;
+    private $configMock;
 
     protected function setUp(): void
     {
