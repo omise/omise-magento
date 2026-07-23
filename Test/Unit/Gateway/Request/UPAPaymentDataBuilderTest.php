@@ -48,7 +48,8 @@ class UPAPaymentDataBuilderTest extends TestCase
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->getMockBuilder(InfoMock::class)->getMock();
         $store = $this->createMock(StoreInterface::class);
-        $order = $this->createConfiguredMock(OrderAdapterInterface::class,
+        $order = $this->createConfiguredMock(
+            OrderAdapterInterface::class,
             [
                 'getCurrencyCode'    => 'THB',
                 'getStoreId'         => 1,

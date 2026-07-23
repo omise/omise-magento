@@ -11,26 +11,6 @@ use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Helper\OmiseHelper;
 use ReflectionClass;
 
-class TestableOmiseUPAInitializeCommandResponseValidator extends OmiseUPAInitializeCommandResponseValidator
-{
-    public function __construct()
-    {
-        // Skip parent constructor
-    }
-
-    protected function createResult(
-        $isValid,
-        array $failsDescription = [],
-        array $errorCodes = []
-    ) {
-        return new Result(
-            $isValid,
-            $failsDescription,
-            $errorCodes
-        );
-    }
-}
-
 /**
  * @covers \Omise\Payment\Gateway\Validator\OmiseUPAInitializeCommandResponseValidator
  * @uses \Omise\Payment\Model\Api\BaseObject
