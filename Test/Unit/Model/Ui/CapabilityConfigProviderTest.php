@@ -11,6 +11,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\Shopeepay;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Ui\CapabilityConfigProvider;
+use Omise\Payment\Model\Config\Config;
 
 class CapabilityConfigProviderTest extends TestCase
 {
@@ -18,6 +19,7 @@ class CapabilityConfigProviderTest extends TestCase
     private $capabilityMock;
     private $requestHelper;
     private $paymentListsMock;
+    private $configMock;
 
     protected function setUp(): void
     {
@@ -36,6 +38,10 @@ class CapabilityConfigProviderTest extends TestCase
         $this->paymentListsMock = $this->getMockBuilder(PaymentMethodListInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->configMock = $this->getMockBuilder(Config::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -47,7 +53,8 @@ class CapabilityConfigProviderTest extends TestCase
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->requestHelper
+            $this->requestHelper,
+            $this->configMock
         );
 
         $backends = [
@@ -82,7 +89,8 @@ class CapabilityConfigProviderTest extends TestCase
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->requestHelper
+            $this->requestHelper,
+            $this->configMock
         );
 
         $paymentList = [];
@@ -99,7 +107,8 @@ class CapabilityConfigProviderTest extends TestCase
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->requestHelper
+            $this->requestHelper,
+            $this->configMock
         );
 
         $backends = [
@@ -128,7 +137,8 @@ class CapabilityConfigProviderTest extends TestCase
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->requestHelper
+            $this->requestHelper,
+            $this->configMock
         );
 
         $backends = [
@@ -157,7 +167,8 @@ class CapabilityConfigProviderTest extends TestCase
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->requestHelper
+            $this->requestHelper,
+            $this->configMock
         );
 
         $backends = [
@@ -252,7 +263,8 @@ class CapabilityConfigProviderTest extends TestCase
             $this->capabilityMock,
             $this->paymentListsMock,
             $this->storeManagerMock,
-            $this->requestHelper
+            $this->requestHelper,
+            $this->configMock
         );
 
         $result = $provider->getConfig();

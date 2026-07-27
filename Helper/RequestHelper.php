@@ -6,6 +6,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\HTTP\Header;
 use Omise\Payment\Model\Omise;
 use OmiseException;
+use Magento\Framework\Exception\LocalizedException;
 
 class RequestHelper
 {
@@ -136,6 +137,7 @@ class RequestHelper
      * @param  array  $params
      * @param  bool   $is_json
      * @return array
+     * @codeCoverageIgnore
      */
     private function upaRequest($url, $requestMethod, $key, $params = null, $is_json = false)
     {
@@ -144,7 +146,7 @@ class RequestHelper
             $array = json_decode($response, true);
             // If response is invalid or not a JSON.
             if (!$this->isValidAPIResponse($array)) {
-                throw new \Exception('Unknown error. (Bad Response)');
+                throw new LocalizedException(__("Unknown error. (Bad Response)"));
             }
 
             if (!empty($array['object']) && $array['object'] === 'error') {
@@ -162,6 +164,7 @@ class RequestHelper
      * @param  array  $params
      * @param  bool   $is_json
      * @return string
+     * @codeCoverageIgnore
      */
     private function execute($url, $requestMethod, $key, $params = null, $is_json = false)
     {
@@ -190,6 +193,7 @@ class RequestHelper
      * @param  array  $params
      *
      * @return array
+     * @codeCoverageIgnore
      */
     private function genOptions($requestMethod, $userpwd, $params, $is_json)
     {
@@ -216,7 +220,7 @@ class RequestHelper
         ];
 
         // Config UserAgent
-        if ( defined('OMISE_USER_AGENT_SUFFIX') ) {
+        if (defined('OMISE_USER_AGENT_SUFFIX')) {
             $options += [CURLOPT_USERAGENT => OMISE_USER_AGENT_SUFFIX];
         } else {
             $this->omise->defineUserAgent();
@@ -246,6 +250,7 @@ class RequestHelper
      * @param  array  $array  - decoded JSON response
      *
      * @return boolean
+     * @codeCoverageIgnore
      */
     private static function isValidAPIResponse($array)
     {

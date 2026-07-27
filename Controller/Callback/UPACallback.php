@@ -148,8 +148,6 @@ class UPACallback extends Action
                 $this->checkoutSession->restoreQuote();
                 throw new LocalizedException(__($charge->getMessage()));
             }
-            $paymentMethod = $payment->getMethod();
-
             if ($charge->isFailed()) {
                 return $this->handleFailure($charge);
             }
@@ -222,15 +220,13 @@ class UPACallback extends Action
 
         $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id, $charge->capture);
         $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
-        $paymentMethod = $payment->getMethod();
-        $paymentMethodLabel = $this->helper->getOmiseLabelByOmiseCode($paymentMethod);
         
         if ($charge->capture) {
             // Add transaction.
             $payment->addTransactionCommentsToOrder(
                 $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
                 __(
-                    'Captured amount of %1 online via Omise Gateway.',
+                    $comment = __('Amount of %1 has been paid via Omise Gateway.'),
                     $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                 )
             );
