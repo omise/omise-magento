@@ -44,7 +44,7 @@ class APMPaymentTest extends TestCase
         $checkoutSession->expects($this->once())
             ->method('createSession')
             ->with($body)
-            ->willReturn(self::SESSION_ID);
+            ->willReturn($checkoutSession);
 
         $client = new APMPayment(
             $apiCharge,
@@ -55,7 +55,7 @@ class APMPaymentTest extends TestCase
         $result = $client->placeRequest($transfer);
 
         $this->assertSame(
-            ['session' => self::SESSION_ID],
+            ['session' => $checkoutSession],
             $result
         );
     }

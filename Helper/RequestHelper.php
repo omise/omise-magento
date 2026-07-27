@@ -6,6 +6,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\HTTP\Header;
 use Omise\Payment\Model\Omise;
 use OmiseException;
+use Magento\Framework\Exception\LocalizedException;
 
 class RequestHelper
 {
@@ -145,7 +146,7 @@ class RequestHelper
             $array = json_decode($response, true);
             // If response is invalid or not a JSON.
             if (!$this->isValidAPIResponse($array)) {
-                throw new \LocalizedException(__("Unknown error. (Bad Response)"));
+                throw new LocalizedException(__("Unknown error. (Bad Response)"));
             }
 
             if (!empty($array['object']) && $array['object'] === 'error') {

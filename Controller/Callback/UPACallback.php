@@ -226,7 +226,7 @@ class UPACallback extends Action
             $payment->addTransactionCommentsToOrder(
                 $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
                 __(
-                    'Captured amount of %1 online via Omise Gateway.',
+                    $comment = __('Amount of %1 has been paid via Omise Gateway.'),
                     $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
                 )
             );
