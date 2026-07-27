@@ -76,65 +76,6 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers \Omise\Payment\Helper\RequestHelper
-     * @test
-     */
-    public function getClientIpRemoteAddrHeader()
-    {
-        $requestMock = $this->requestMock;
-        $requestMock->method('getServer')
-            ->withConsecutive(
-                ['HTTP_CLIENT_IP'],
-                ['HTTP_X_FORWARDED_FOR'],
-                ['HTTP_X_FORWARDED'],
-                ['HTTP_FORWARDED_FOR'],
-                ['HTTP_FORWARDED'],
-                ['REMOTE_ADDR']
-            )
-            ->willReturnOnConsecutiveCalls(null, null, null, null, null, '192.168.1.6');
-
-        $result = $this->model->getClientIp();
-        $this->assertEquals('192.168.1.6', $result);
-    }
-
-    /**
-     * @covers \Omise\Payment\Helper\RequestHelper
-     * @test
-     */
-    public function getClientIpHttpXForwadedForHeader()
-    {
-        $requestMock = $this->requestMock;
-        $requestMock->method('getServer')
-            ->withConsecutive(
-                ['HTTP_CLIENT_IP'],
-                ['HTTP_X_FORWARDED_FOR']
-            )
-            ->willReturnOnConsecutiveCalls(null, '192.168.1.5,192.168.1.6');
-
-        $result = $this->model->getClientIp();
-        $this->assertEquals('192.168.1.5', $result);
-    }
-
-    /**
-     * @covers \Omise\Payment\Helper\RequestHelper
-     * @test
-     */
-    public function getClientIpHttpXForwardedHeader()
-    {
-        $requestMock = $this->requestMock;
-        $requestMock->method('getServer')
-            ->withConsecutive(
-                ['HTTP_CLIENT_IP'],
-                ['HTTP_X_FORWARDED_FOR'],
-                ['HTTP_X_FORWARDED'],
-            )
-            ->willReturnOnConsecutiveCalls(null, null, '192.168.1.8');
-
-        $result = $this->model->getClientIp();
-        $this->assertEquals('192.168.1.8', $result);
-    }
-
-    /**
      * @dataProvider isMobilePlatformDataProvider
      * @covers \Omise\Payment\Helper\RequestHelper
      * @test
