@@ -269,10 +269,10 @@ class UPACallbackTest extends TestCase
 
         $payment->expects($this->once())
             ->method('addTransaction')
-            ->with(Transaction::TYPE_PAYMENT, $invoice, $this->anything())
+            ->with(Transaction::TYPE_PAYMENT, $invoice)
             ->willReturn($transaction);
 
-        $expectedMessage = __('Payment of %1 was captured by Omise.', '100.00');
+        $expectedMessage = __('Amount of %1 has been paid via Omise Gateway.', '100.00');
         $payment->expects($this->once())
             ->method('addTransactionCommentsToOrder')
             ->with(
