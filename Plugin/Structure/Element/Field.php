@@ -19,8 +19,9 @@ class Field
      * @param OmiseHelper $omiseHelper
      */
     public function __construct(
-        private readonly OmiseHelper $omiseHelper
+        OmiseHelper $omiseHelper
     ) {
+        $this->omiseHelper = $omiseHelper;
     }
 
     /**

@@ -227,7 +227,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $this->configMock->expects($this->once())
             ->method('getIsUpaFeatureFlagEnabled')
             ->willReturn(true);
-        
+
         $this->deploymentConfig->expects($this->once())
             ->method('get')
             ->with(
@@ -235,7 +235,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
                 false
             )
             ->willReturn(true);
-        
 
         $this->assertTrue(
             $this->model->isAllowUpa(\Omise\Payment\Model\Config\Promptpay::CODE)
