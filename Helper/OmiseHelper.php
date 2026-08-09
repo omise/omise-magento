@@ -35,9 +35,16 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\DeploymentConfig;
 
 class OmiseHelper extends AbstractHelper
 {
+    /**
+     * Path to check if UPA feature is enabled in deployment config.
+     * @var string
+     */
+    protected const UPA_FEATURE_PATH = 'omise_payment/omise_feature_upa';
+
     /**
      * @var array
      */
@@ -221,16 +228,24 @@ class OmiseHelper extends AbstractHelper
     protected $scopeConfig;
 
     /**
+     * @var DeploymentConfig $deploymentConfig
+     */
+    protected $deploymentConfig;
+
+    /**
      * @param Header $header
      * @param Config $config
      * @param ScopeConfigInterface $scopeConfig
+     * @param DeploymentConfig $deploymentConfig
      */
     public function __construct(
         Config $config,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        DeploymentConfig $deploymentConfig
     ) {
         $this->config = $config;
         $this->scopeConfig = $scopeConfig;
+        $this->deploymentConfig = $deploymentConfig;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -254,13 +269,25 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
+     * Check whether merchant-specific feature is enabled.
+     */
+    public function isUpaFeatureEnabled(): bool
+    {
+        return (bool) $this->deploymentConfig->get(
+            self::UPA_FEATURE_PATH,
+            false
+        );
+    }
+    
+    /**
      * @param string $methodcode
      * @return bool
      */
     public function isAllowUpa($methodCode)
     {
         $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
-        if ($isUpaFeatureFlagEnabled) {
+        $upaFeatureEnabled = $this->isUpaFeatureEnabled();
+        if ($isUpaFeatureFlagEnabled && $upaFeatureEnabled) {
             return $this->isOffsitePaymentMethod($methodCode) || $this->isOfflinePaymentMethod($methodCode);
         }
         return false;

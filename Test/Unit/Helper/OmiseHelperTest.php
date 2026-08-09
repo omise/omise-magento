@@ -29,7 +29,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
         $this->scopeConfig = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
-        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig);
+        $this->deploymentConfig = $this->createMock('Magento\Framework\App\DeploymentConfig');
+        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig, $this->deploymentConfig);
     }
 
     /**
@@ -226,6 +227,15 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $this->configMock->expects($this->once())
             ->method('getIsUpaFeatureFlagEnabled')
             ->willReturn(true);
+        
+        $this->deploymentConfig->expects($this->once())
+            ->method('get')
+            ->with(
+                'omise_payment/omise_feature_upa',
+                false
+            )
+            ->willReturn(true);
+        
 
         $this->assertTrue(
             $this->model->isAllowUpa(\Omise\Payment\Model\Config\Promptpay::CODE)
