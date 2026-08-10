@@ -9,11 +9,19 @@ use Omise\Payment\Helper\OmiseHelper;
 
 class Field
 {
+    /**
+     * @var array
+     */
     private const UPA_FIELD_IDS = [
         'is_upa_feature_flag_enabled',
         'upa_theme_color',
         'upa_text_color',
     ];
+
+    /**
+     * @var OmiseHelper
+     */
+    private $omiseHelper;
 
     /**
      * @param OmiseHelper $omiseHelper
@@ -44,6 +52,6 @@ class Field
             return true;
         }
 
-        return $this->omiseHelper->isUpaFeatureEnabled()? true : false;
+        return $this->omiseHelper->isUpaFeatureEnabled();
     }
 }

@@ -16,6 +16,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     protected $scopeConfig;
 
+    protected $deploymentConfig;
+
     protected $model;
 
     private $authorizeUri = 'https://somefakeuri.com/redirect';
