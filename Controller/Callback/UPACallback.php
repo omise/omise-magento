@@ -149,7 +149,8 @@ class UPACallback extends Action
                 throw new LocalizedException(__($charge->getMessage()));
             }
             if ($charge->isFailed()) {
-                return $this->handleFailure($charge);
+                $this->handleFailure($charge);
+                return;
             }
             
             // Do not proceed if webhook is enabled
