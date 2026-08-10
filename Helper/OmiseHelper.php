@@ -31,13 +31,20 @@ use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
-
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\DeploymentConfig;
 
 class OmiseHelper extends AbstractHelper
 {
+    /**
+     * Path to check if UPA feature is enabled in deployment config.
+     * @var string
+     */
+    protected const UPA_FEATURE_PATH = 'omise_payment/omise_feature_upa';
+
     /**
      * @var array
      */
@@ -216,13 +223,29 @@ class OmiseHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
+     * @var DeploymentConfig $deploymentConfig
+     */
+    protected $deploymentConfig;
+
+    /**
      * @param Header $header
      * @param Config $config
+     * @param ScopeConfigInterface $scopeConfig
+     * @param DeploymentConfig $deploymentConfig
      */
-    public function __construct(Config $config)
-    {
+    public function __construct(
+        Config $config,
+        ScopeConfigInterface $scopeConfig,
+        DeploymentConfig $deploymentConfig
+    ) {
         $this->config = $config;
-
+        $this->scopeConfig = $scopeConfig;
+        $this->deploymentConfig = $deploymentConfig;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -235,11 +258,64 @@ class OmiseHelper extends AbstractHelper
      *
      * @return string
      */
-    public function getConfig($fieldId)
+    public function getConfig(string $fieldId, ?int $storeId = null)
     {
         $path = 'payment/omise/' . $fieldId;
+        return $this->scopeConfig->getValue(
+            $path,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
 
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
+    /**
+     * Check whether merchant-specific feature is enabled.
+     */
+    public function isUpaFeatureEnabled(): bool
+    {
+        return (bool) $this->deploymentConfig->get(
+            self::UPA_FEATURE_PATH,
+            false
+        );
+    }
+    
+    /**
+     * @param string $methodcode
+     * @return bool
+     */
+    public function isAllowUpa($methodCode)
+    {
+        $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
+        $upaFeatureEnabled = $this->isUpaFeatureEnabled();
+        if ($isUpaFeatureFlagEnabled && $upaFeatureEnabled) {
+            return $this->isOffsitePaymentMethod($methodCode) || $this->isOfflinePaymentMethod($methodCode);
+        }
+        return false;
+    }
+
+    /**
+     * @param int
+     * @return string
+     */
+    public function checkoutSessionEndpoint()
+    {
+        return "https://checkout-page.omise.co/";
+    }
+
+    /**
+     * @var string
+     * @return string
+     */
+    public function getMethodId($code)
+    {
+        if (strpos($code, 'omise_offsite_mobilebanking') === 0) {
+            return "mobile_banking";
+        }
+        if (strpos($code, 'omise_offsite_installment') === 0) {
+            return "installment";
+        }
+        $codeToId = array_flip($this->omiseCodeByOmiseId);
+        return $codeToId[$code] ?? null;
     }
 
     /**

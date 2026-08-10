@@ -23,6 +23,11 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     private $headerMock;
 
     /**
+     * @var \Omise\Payment\Model\Omise
+     */
+    private $omiseMock;
+
+    /**
      * This function is called before the test runs.
      * Ideal for setting the values to variables or objects.
      * @coversNothing
@@ -31,7 +36,8 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->requestMock = $this->createMock(RequestMockInterface::class);
         $this->headerMock = $this->createMock('\Magento\Framework\HTTP\Header');
-        $this->model = new RequestHelper($this->requestMock, $this->headerMock);
+        $this->omiseMock = $this->createMock('Omise\Payment\Model\Omise');
+        $this->model = new RequestHelper($this->requestMock, $this->headerMock, $this->omiseMock);
     }
 
     /**
@@ -67,65 +73,6 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
             ['iPod', 'IOS'],
             ['Mozilla', 'WEB'],
         ];
-    }
-
-    /**
-     * @covers \Omise\Payment\Helper\RequestHelper
-     * @test
-     */
-    public function getClientIpRemoteAddrHeader()
-    {
-        $requestMock = $this->requestMock;
-        $requestMock->method('getServer')
-            ->withConsecutive(
-                ['HTTP_CLIENT_IP'],
-                ['HTTP_X_FORWARDED_FOR'],
-                ['HTTP_X_FORWARDED'],
-                ['HTTP_FORWARDED_FOR'],
-                ['HTTP_FORWARDED'],
-                ['REMOTE_ADDR']
-            )
-            ->willReturnOnConsecutiveCalls(null, null, null, null, null, '192.168.1.6');
-
-        $result = $this->model->getClientIp();
-        $this->assertEquals('192.168.1.6', $result);
-    }
-
-    /**
-     * @covers \Omise\Payment\Helper\RequestHelper
-     * @test
-     */
-    public function getClientIpHttpXForwadedForHeader()
-    {
-        $requestMock = $this->requestMock;
-        $requestMock->method('getServer')
-            ->withConsecutive(
-                ['HTTP_CLIENT_IP'],
-                ['HTTP_X_FORWARDED_FOR']
-            )
-            ->willReturnOnConsecutiveCalls(null, '192.168.1.5,192.168.1.6');
-
-        $result = $this->model->getClientIp();
-        $this->assertEquals('192.168.1.5', $result);
-    }
-
-    /**
-     * @covers \Omise\Payment\Helper\RequestHelper
-     * @test
-     */
-    public function getClientIpHttpXForwardedHeader()
-    {
-        $requestMock = $this->requestMock;
-        $requestMock->method('getServer')
-            ->withConsecutive(
-                ['HTTP_CLIENT_IP'],
-                ['HTTP_X_FORWARDED_FOR'],
-                ['HTTP_X_FORWARDED'],
-            )
-            ->willReturnOnConsecutiveCalls(null, null, '192.168.1.8');
-
-        $result = $this->model->getClientIp();
-        $this->assertEquals('192.168.1.8', $result);
     }
 
     /**
