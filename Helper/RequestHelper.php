@@ -229,6 +229,7 @@ class RequestHelper
 
         if ($is_json) {
             $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
+            $options[CURLOPT_HTTPHEADER][] = 'Accept: application/json';
             $http_query = json_encode($params);
             $options += [CURLOPT_POSTFIELDS => $http_query];
             return $options;
