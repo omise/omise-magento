@@ -72,6 +72,7 @@ class CapabilityConfigProvider implements ConfigProviderInterface
 
             $this->filterActiveBackends($code, $configs['omise_payment_list']);
         }
+
         $configs['omise_wlb_enabled'] = $this->isWlbEnabled($configs['omise_payment_list']);
         $configs['omise_upa_feature'] = $this->config->getIsUpaFeatureFlagEnabled();
         return $configs;
