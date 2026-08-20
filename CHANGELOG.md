@@ -1,5 +1,5 @@
 # CHANGELOG
-## [v3.14.0 _(June, 20, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.12.0)
+## [v3.14.0 _(Aug, 20, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.14.0)
 - Fix Payment Flow Issue. (PR: [#546](https://github.com/omise/omise-magento/pull/546))
 
 ## [v3.13.0 _(Aug, 20, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.13.0)
