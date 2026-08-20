@@ -11,9 +11,6 @@
             <omise>
                 <sandbox_status>0</sandbox_status>
                 <model>OmiseAdapter</model>
-                <is_upa_feature_flag_enabled>0</is_upa_feature_flag_enabled>
-                <upa_theme_color>#173799</upa_theme_color>
-                <upa_text_color>#FFFFFF</upa_text_color>
                 <generate_invoice_at_order_status>pending_payment</generate_invoice_at_order_status>
                 <webhook_status>1</webhook_status>
                 <dynamic_webhooks>0</dynamic_webhooks>
