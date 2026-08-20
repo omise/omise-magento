@@ -1,7 +1,4 @@
 # CHANGELOG
-## [v3.13.0 _(Aug, 20, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.13.0)
-- Improve Checkout Payment Flow (PR: [#532](https://github.com/omise/omise-magento/pull/532))
-
 ## [v3.12.0 _(June, 23, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.12.0)
 - Compatible module with omise-php lib version 3.0.0  (PR: [#515](https://github.com/omise/omise-magento/pull/515))
 

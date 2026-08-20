@@ -25,11 +25,9 @@ class PendingPaymentHandler implements HandlerInterface
      */
     public function handle(array $handlingSubject, array $response)
     {
-        if (array_key_exists('charge', $response) && !empty($response['charge'])) {
-            $is3dsecured = $this->helper->is3DSecureEnabled($response['charge']);
-            if (!$is3dsecured) {
-                return;
-            }
+        $is3dsecured = $this->helper->is3DSecureEnabled($response['charge']);
+        if (!$is3dsecured) {
+            return;
         }
         $stateObject = $handlingSubject['stateObject'];
         $stateObject->setState(Order::STATE_PENDING_PAYMENT);
