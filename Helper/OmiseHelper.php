@@ -40,6 +40,16 @@ use Magento\Framework\App\DeploymentConfig;
 class OmiseHelper extends AbstractHelper
 {
     /**
+     * @var string
+     */
+    protected const UPACHECKOUTSANDBOX = 'https://checkout-page.staging-omise.co/';
+
+    /**
+     * @var string
+     */
+    protected const UPACHECKOUTLIVE = 'https://checkout-page.omise.co/';
+
+    /**
      * Path to check if UPA feature is enabled in deployment config.
      * @var string
      */
@@ -299,7 +309,10 @@ class OmiseHelper extends AbstractHelper
      */
     public function checkoutSessionEndpoint()
     {
-        return "https://checkout-page.omise.co/";
+        if($this->config->isSandboxEnabled()) {
+            return self::UPACHECKOUTSANDBOX;
+        }   
+        return self::UPACHECKOUTLIVE;
     }
 
     /**
