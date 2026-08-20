@@ -39,12 +39,6 @@ abstract class AbstractPayment implements ClientInterface
      *
      * @var string
      */
-    const SESSION = 'session';
-
-    /**
-     *
-     * @var string
-     */
     const REFUND = 'refund';
 
     /**
