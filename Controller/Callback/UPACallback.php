@@ -27,30 +27,30 @@ class UPACallback extends Action
     const PATH_SUCCESS = 'checkout/onepage/success';
 
     /**
-	 * UPA/charge statuses that represent terminal success states.
-	 *
-	 * @var string[]
-	 */
-	private const SUCCESS_STATUSES = array(
-		'successful',
-		'succeeded',
-		'completed',
-		'complete',
-		'paid',
-	);
+     * UPA/charge statuses that represent terminal success states.
+     *
+     * @var string[]
+     */
+    private const SUCCESS_STATUSES = [
+        'successful',
+        'succeeded',
+        'completed',
+        'complete',
+        'paid',
+    ];
 
-	/**
-	 * UPA/charge statuses that represent terminal failure states.
-	 *
-	 * @var string[]
-	 */
-	private const FAILED_STATUSES = array(
-		'failed',
-		'expired',
-		'reversed',
-		'cancelled',
-		'canceled',
-	);
+    /**
+     * UPA/charge statuses that represent terminal failure states.
+     *
+     * @var string[]
+     */
+    private const FAILED_STATUSES = [
+        'failed',
+        'expired',
+        'reversed',
+        'cancelled',
+        'canceled',
+    ];
 
     /**
      * @var \Magento\Checkout\Model\Session
@@ -152,37 +152,37 @@ class UPACallback extends Action
     public function pickPayment($payments, $sessionStatus)
     {
         if ( empty( $payments ) ) {
-			return null;
-		}
+            return null;
+        }
 
-		foreach ( $payments as $payment ) {
-			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-			if ( in_array( strtolower( (string) $payment_status ), self::SUCCESS_STATUSES, true ) ) {
-				return $payment;
-			}
-		}
+        foreach ( $payments as $payment ) {
+            $payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
+            if ( in_array( strtolower( (string) $payment_status ), self::SUCCESS_STATUSES, true ) ) {
+                return $payment;
+            }
+        }
 
-		foreach ( $payments as $payment ) {
-			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-			if ( in_array( strtolower( (string) $payment_status ), self::FAILED_STATUSES, true ) && ! empty( $payment['charge_id'] ) ) {
-				return $payment;
-			}
-		}
+        foreach ( $payments as $payment ) {
+            $payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
+            if ( in_array( strtolower( (string) $payment_status ), self::FAILED_STATUSES, true ) && ! empty( $payment['charge_id'] ) ) {
+                return $payment;
+            }
+        }
 
-		foreach ( $payments as $payment ) {
-			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-			if ( $payment_status === $sessionStatus && ! empty( $payment['charge_id'] ) ) {
-				return $payment;
-			}
-		}
+        foreach ( $payments as $payment ) {
+            $payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
+            if ( $payment_status === $sessionStatus && ! empty( $payment['charge_id'] ) ) {
+                return $payment;
+            }
+        }
 
-		foreach ( $payments as $payment ) {
-			if ( ! empty( $payment['charge_id'] ) ) {
-				return $payment;
-			}
-		}
+        foreach ( $payments as $payment ) {
+            if ( ! empty( $payment['charge_id'] ) ) {
+                return $payment;
+            }
+        }
 
-		return end( $payments );
+        return end( $payments );
     }
 
     /**
@@ -190,7 +190,7 @@ class UPACallback extends Action
      */
     public function execute()
     {
-        $terminalPayment = array();
+        $terminalPayment = [];
         $order = $this->session->getLastRealOrder();
 
         if (!$this->isValid($order)) {
