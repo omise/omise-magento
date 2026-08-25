@@ -870,6 +870,7 @@ class UPACallbackTest extends TestCase
 
         $sessionInfo = new \stdClass();
         $sessionInfo->payments = null;
+        $sessionInfo->status = '';
 
         $this->omiseCheckoutSession
             ->expects($this->once())
