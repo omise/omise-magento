@@ -151,7 +151,7 @@ class UPACallback extends Action
      */
     public function pickPayment($payments, $sessionStatus)
     {
-        if ( empty( $payments ) ) {
+        if (!is_array($payments) || empty($payments)) {
             return null;
         }
 
