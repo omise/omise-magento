@@ -27,6 +27,32 @@ class UPACallback extends Action
     const PATH_SUCCESS = 'checkout/onepage/success';
 
     /**
+	 * UPA/charge statuses that represent terminal success states.
+	 *
+	 * @var string[]
+	 */
+	private const SUCCESS_STATUSES = array(
+		'successful',
+		'succeeded',
+		'completed',
+		'complete',
+		'paid',
+	);
+
+	/**
+	 * UPA/charge statuses that represent terminal failure states.
+	 *
+	 * @var string[]
+	 */
+	private const FAILED_STATUSES = array(
+		'failed',
+		'expired',
+		'reversed',
+		'cancelled',
+		'canceled',
+	);
+
+    /**
      * @var \Magento\Checkout\Model\Session
      */
     protected $session;
@@ -119,12 +145,53 @@ class UPACallback extends Action
     }
 
     /**
+     * @param array $payments
+     * @param string $sessionStatus
+     * @return array|null
+     */
+    public function pickPayment($payments, $sessionStatus)
+    {
+        if ( empty( $payments ) ) {
+			return null;
+		}
+
+		foreach ( $payments as $payment ) {
+			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
+			if ( in_array( strtolower( (string) $payment_status ), self::SUCCESS_STATUSES, true ) ) {
+				return $payment;
+			}
+		}
+
+		foreach ( $payments as $payment ) {
+			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
+			if ( in_array( strtolower( (string) $payment_status ), self::FAILED_STATUSES, true ) && ! empty( $payment['charge_id'] ) ) {
+				return $payment;
+			}
+		}
+
+		foreach ( $payments as $payment ) {
+			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
+			if ( $payment_status === $sessionStatus && ! empty( $payment['charge_id'] ) ) {
+				return $payment;
+			}
+		}
+
+		foreach ( $payments as $payment ) {
+			if ( ! empty( $payment['charge_id'] ) ) {
+				return $payment;
+			}
+		}
+
+		return end( $payments );
+    }
+
+    /**
      * @return void
      */
     public function execute()
     {
+        $terminalPayment = array();
         $order = $this->session->getLastRealOrder();
-        $chargeId = $this->getRequest()->getParam('chargeId');
 
         if (!$this->isValid($order)) {
             return $this->redirect(self::PATH_CART);
@@ -137,8 +204,42 @@ class UPACallback extends Action
 
         try {
             $payment = $order->getPayment();
-            $charge = $this->charge->find($chargeId);
-            if (! $charge instanceof \Omise\Payment\Model\Api\BaseObject) {
+            $sessionId = $payment->getAdditionalInformation('session_id');
+
+            if (empty($sessionId)) {
+                $this->cancel(
+                    $order,
+                    __('Cannot retrieve a session reference id. Please contact our support to confirm your payment.')
+                );
+                $this->checkoutSession->restoreQuote();
+                return $this->redirect(self::PATH_CART);
+            }
+
+            if ($sessionId) {
+                $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+                $payments = $checkoutSessionInfo->payments;
+                $sessionStatus = $checkoutSessionInfo->status;
+                $terminalPayment = $this->pickPayment($payments, $sessionStatus);
+            } else {
+                $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
+                support if you have any questions.'));
+                $this->checkoutSession->restoreQuote();
+                return $this->redirect(self::PATH_CART);
+            }
+
+            if ( !empty($terminalPayment) && !empty($terminalPayment['charge_id'])) {
+                $chargeId = $terminalPayment['charge_id'];
+                $charge = $this->charge->find($chargeId);
+            } else {
+                $this->invalid(
+                    $order,
+                    __('The URL is invalid. Please contact our support if you have any questions.')
+                );
+                $this->checkoutSession->restoreQuote();
+                return $this->redirect(self::PATH_CART);
+            }
+
+            if ( !$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
                 throw new LocalizedException(
                     __('Couldn\'t retrieve charge transaction. Please contact administrator.')
                 );
@@ -162,7 +263,8 @@ class UPACallback extends Action
                     ->setAdditionalInformation([
                         Transaction::RAW_DETAILS => [
                             'omise_charge_id' => $charge->id,
-                            'status' => $charge->status
+                            'status' => $charge->status,
+                            'charge_id' => $charge->id
                         ]
                     ])
                     ->setFailSafe(true)
@@ -173,6 +275,7 @@ class UPACallback extends Action
 
             $payment->setTransactionId($charge->id);
             $payment->setLastTransId($charge->id);
+            $payment->setAdditionalInformation('charge_id', $charge->id);
             
             if ($charge->isSuccessful()) {
                 return $this->handleSuccess($order, $charge, $payment);
@@ -299,34 +402,12 @@ class UPACallback extends Action
             return false;
         }
 
-        $chargeId = $this->request->getParam('chargeId');
-        $isValidCharge = $this->validateChargeId($payment, $chargeId);
-
-        if (!$chargeId || !$isValidCharge) {
-            $this->invalid(
-                $order,
-                __('The URL is invalid. Please contact our support if you have any questions.')
-            );
-
-            return false;
-        }
-
         $orderState = $order->getState();
         $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_PAYMENT_REVIEW, Order::STATE_PROCESSING];
         
         if (!in_array($orderState, $validOrderStates)) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
             support if you have any questions.'));
-
-            return false;
-        }
-
-        if (!$payment->getAdditionalInformation('session_id')) {
-            $this->cancel(
-                $order,
-                __('Cannot retrieve a session reference id. Please contact our support to confirm your payment.')
-            );
-            $this->session->restoreQuote();
 
             return false;
         }
@@ -380,31 +461,5 @@ class UPACallback extends Action
 
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
-    }
-
-    /**
-     * @var Magento\Sales\Model\Order\Payment
-     * @var string
-     * @return bool
-     */
-    private function validateChargeId($payment, $chargeId)
-    {
-        try {
-            $sessionId = $payment->getAdditionalInformation('session_id');
-            $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-
-            if (!is_array($checkoutSessionInfo->payments)) {
-                return false;
-            }
-            
-            foreach ($checkoutSessionInfo->payments as $charge) {
-                if ($charge['charge_id'] === $chargeId) {
-                    return true;
-                }
-            }
-        } catch (\Exception $e) {
-            return false;
-        }
-        return false;
     }
 }
