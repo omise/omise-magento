@@ -155,34 +155,34 @@ class UPACallback extends Action
             return null;
         }
 
-        foreach ( $payments as $payment ) {
-            $payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-            if ( in_array( strtolower( (string) $payment_status ), self::SUCCESS_STATUSES, true ) ) {
+        foreach ($payments as $payment) {
+            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
+            if (in_array(strtolower((string) $paymentStatus), self::SUCCESS_STATUSES, true)) {
                 return $payment;
             }
         }
 
-        foreach ( $payments as $payment ) {
-            $payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-            if ( in_array( strtolower( (string) $payment_status ), self::FAILED_STATUSES, true ) && ! empty( $payment['charge_id'] ) ) {
+        foreach ($payments as $payment) {
+            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
+            if (in_array(strtolower((string) $paymentStatus), self::FAILED_STATUSES, true) && !empty($payment['charge_id'])) {
                 return $payment;
             }
         }
 
-        foreach ( $payments as $payment ) {
-            $payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-            if ( $payment_status === $sessionStatus && ! empty( $payment['charge_id'] ) ) {
+        foreach ($payments as $payment) {
+            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
+            if ($paymentStatus === $sessionStatus && !empty($payment['charge_id'])) {
                 return $payment;
             }
         }
 
-        foreach ( $payments as $payment ) {
-            if ( ! empty( $payment['charge_id'] ) ) {
+        foreach ($payments as $payment) {
+            if (!empty($payment['charge_id'])) {
                 return $payment;
             }
         }
 
-        return end( $payments );
+        return end($payments);
     }
 
     /**
@@ -227,7 +227,7 @@ class UPACallback extends Action
                 return $this->redirect(self::PATH_CART);
             }
 
-            if ( !empty($terminalPayment) && !empty($terminalPayment['charge_id'])) {
+            if (!empty($terminalPayment) && !empty($terminalPayment['charge_id'])) {
                 $chargeId = $terminalPayment['charge_id'];
                 $charge = $this->charge->find($chargeId);
             } else {
@@ -239,7 +239,7 @@ class UPACallback extends Action
                 return $this->redirect(self::PATH_CART);
             }
 
-            if ( !$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
+            if (!$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
                 throw new LocalizedException(
                     __('Couldn\'t retrieve charge transaction. Please contact administrator.')
                 );
@@ -386,7 +386,7 @@ class UPACallback extends Action
      */
     private function isValid($order)
     {
-        if (! $order->getId()) {
+        if (!$order->getId()) {
             $this->messageManager->addErrorMessage(__('The order session no longer exists, please make an order
             again or contact our support if you have any questions.'));
 
