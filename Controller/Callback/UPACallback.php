@@ -164,7 +164,13 @@ class UPACallback extends Action
 
         foreach ($payments as $payment) {
             $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
-            if (in_array(strtolower((string) $paymentStatus), self::FAILED_STATUSES, true) && !empty($payment['charge_id'])) {
+            $isFailedPayment = in_array(
+                strtolower((string) $paymentStatus),
+                self::FAILED_STATUSES,
+                true
+            );
+
+            if ($isFailedPayment && !empty($payment['charge_id'])) {
                 return $payment;
             }
         }
