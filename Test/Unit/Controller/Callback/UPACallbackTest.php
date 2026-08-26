@@ -808,7 +808,7 @@ class UPACallbackTest extends TestCase
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
-        $request = $this->request->method('getParam')
+        $this->request->method('getParam')
             ->willReturn(self::CHARGE_ID);
 
         $controller = $this->getController();

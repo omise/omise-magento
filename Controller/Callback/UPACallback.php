@@ -149,7 +149,7 @@ class UPACallback extends Action
      * @param string $sessionStatus
      * @return array|null
      */
-    public function pickPayment($payments, $sessionStatus)
+    private function pickPayment($payments, $sessionStatus)
     {
         if (!is_array($payments) || empty($payments)) {
             return null;
@@ -157,7 +157,7 @@ class UPACallback extends Action
 
         foreach ($payments as $payment) {
             $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
-            if (in_array(strtolower((string) $paymentStatus), self::SUCCESS_STATUSES, true)) {
+            if (!empty($payment['charge_id']) && in_array(strtolower((string) $paymentStatus), self::SUCCESS_STATUSES, true)) {
                 return $payment;
             }
         }
@@ -220,18 +220,11 @@ class UPACallback extends Action
                 $this->checkoutSession->restoreQuote();
                 return $this->redirect(self::PATH_CART);
             }
-
-            if ($sessionId) {
-                $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-                $payments = $checkoutSessionInfo->payments;
-                $sessionStatus = $checkoutSessionInfo->status;
-                $terminalPayment = $this->pickPayment($payments, $sessionStatus);
-            } else {
-                $this->invalid($order, __('Cannot retrieve a payment detail from the request. Please contact our
-                support if you have any questions.'));
-                $this->checkoutSession->restoreQuote();
-                return $this->redirect(self::PATH_CART);
-            }
+            
+            $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+            $payments = $checkoutSessionInfo->payments;
+            $sessionStatus = $checkoutSessionInfo->status;
+            $terminalPayment = $this->pickPayment($payments, $sessionStatus);
 
             if (!empty($terminalPayment) && !empty($terminalPayment['charge_id'])) {
                 $chargeId = $terminalPayment['charge_id'];
