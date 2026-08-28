@@ -27,32 +27,6 @@ class UPACallback extends Action
     const PATH_SUCCESS = 'checkout/onepage/success';
 
     /**
-     * UPA/charge statuses that represent terminal success states.
-     *
-     * @var string[]
-     */
-    private const SUCCESS_STATUSES = [
-        'successful',
-        'succeeded',
-        'completed',
-        'complete',
-        'paid',
-    ];
-
-    /**
-     * UPA/charge statuses that represent terminal failure states.
-     *
-     * @var string[]
-     */
-    private const FAILED_STATUSES = [
-        'failed',
-        'expired',
-        'reversed',
-        'cancelled',
-        'canceled',
-    ];
-
-    /**
      * @var \Magento\Checkout\Model\Session
      */
     protected $session;
@@ -145,53 +119,6 @@ class UPACallback extends Action
     }
 
     /**
-     * @param array $payments
-     * @param string $sessionStatus
-     * @return array|null
-     */
-    private function pickPayment($payments, $sessionStatus)
-    {
-        if (!is_array($payments) || empty($payments)) {
-            return null;
-        }
-
-        foreach ($payments as $payment) {
-            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
-            if (!empty($payment['charge_id']) && in_array(strtolower((string) $paymentStatus), self::SUCCESS_STATUSES, true)) {
-                return $payment;
-            }
-        }
-
-        foreach ($payments as $payment) {
-            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
-            $isFailedPayment = in_array(
-                strtolower((string) $paymentStatus),
-                self::FAILED_STATUSES,
-                true
-            );
-
-            if ($isFailedPayment && !empty($payment['charge_id'])) {
-                return $payment;
-            }
-        }
-
-        foreach ($payments as $payment) {
-            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
-            if ($paymentStatus === $sessionStatus && !empty($payment['charge_id'])) {
-                return $payment;
-            }
-        }
-
-        foreach ($payments as $payment) {
-            if (!empty($payment['charge_id'])) {
-                return $payment;
-            }
-        }
-
-        return end($payments);
-    }
-
-    /**
      * @return void
      */
     public function execute()
@@ -210,21 +137,10 @@ class UPACallback extends Action
 
         try {
             $payment = $order->getPayment();
-            $sessionId = $payment->getAdditionalInformation('session_id');
-
-            if (empty($sessionId)) {
-                $this->cancel(
-                    $order,
-                    __('Cannot retrieve a session reference id. Please contact our support to confirm your payment.')
-                );
-                $this->checkoutSession->restoreQuote();
-                return $this->redirect(self::PATH_CART);
-            }
-            
-            $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+            $checkoutSessionInfo = $this->getCheckoutSession($payment);
             $payments = $checkoutSessionInfo->payments;
             $sessionStatus = $checkoutSessionInfo->status;
-            $terminalPayment = $this->pickPayment($payments, $sessionStatus);
+            $terminalPayment = $this->getFinalPayment($payments, $sessionStatus);
 
             if (!empty($terminalPayment) && !empty($terminalPayment['charge_id'])) {
                 $chargeId = $terminalPayment['charge_id'];
@@ -331,16 +247,6 @@ class UPACallback extends Action
                 __(
                     $comment = __('Amount of %1 has been paid via Omise Gateway.'),
                     $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                )
-            );
-        } else {
-            $payment->addTransactionCommentsToOrder(
-                $payment->addTransaction(Transaction::TYPE_AUTH),
-                $payment->prependMessage(
-                    __(
-                        'Authorized amount of %1 via Omise Gateway.',
-                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
-                    )
                 )
             );
         }
@@ -460,5 +366,52 @@ class UPACallback extends Action
 
         $order->registerCancellation($message)->save();
         $this->messageManager->addErrorMessage($message);
+    }
+
+    /**
+     * @param array $payments
+     * @return \Omise\Payment\Model\Api\CheckoutSession|null
+     */
+    private function getCheckoutSession($payment)
+    {
+        $sessionId = $payment->getAdditionalInformation('session_id');
+        if (empty($sessionId)) {
+            $this->checkoutSession->restoreQuote();
+            throw new LocalizedException(
+                __('Cannot retrieve a session reference id. Please contact our support to confirm your payment.')
+            );
+        }
+        
+        $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+        return $checkoutSessionInfo;
+    }
+
+    /**
+     * @param array $payments
+     * @param string $sessionStatus
+     * @return array|null
+     */
+    private function getFinalPayment($payments, $sessionStatus)
+    {
+        if (!is_array($payments) || empty($payments)) {
+            return null;
+        }
+
+        $paymentsWithChargeId = array_filter($payments, function ($payment) {
+            return !empty($payment['charge_id']);
+        });
+
+        if (empty($paymentsWithChargeId)) {
+            return end($payments);
+        }
+
+        foreach ($paymentsWithChargeId as $payment) {
+            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
+            if ($paymentStatus === strtolower((string) $sessionStatus)) {
+                return $payment;
+            }
+        }
+
+        return end($paymentsWithChargeId);
     }
 }

@@ -161,6 +161,72 @@ class UPACallbackTest extends TestCase
     }
 
     /**
+     * Invoke the private payment selection method.
+     *
+     * @param array $payments
+     * @param string $sessionStatus
+     * @return array|null
+     */
+    private function getFinalPayment(array $payments, string $sessionStatus = '')
+    {
+        $controller = $this->getController();
+        $method = new \ReflectionMethod(UPACallback::class, 'getFinalPayment');
+        $method->setAccessible(true);
+
+        return $method->invoke($controller, $payments, $sessionStatus);
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
+     * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
+     */
+    public function testGetFinalPaymentReturnsLastPaymentWhenAllPaymentsLackChargeId()
+    {
+        $payments = [
+            ['status' => 'pending'],
+            ['status' => 'failed'],
+        ];
+
+        $this->assertSame($payments[1], $this->getFinalPayment($payments, 'failed'));
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
+     * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
+     */
+    public function testGetFinalPaymentReturnsPaymentMatchingSessionStatus()
+    {
+        $payments = [
+            ['status' => 'pending', 'charge_id' => 'chrg_pending'],
+            ['status' => 'SUCCESSFUL', 'charge_id' => self::CHARGE_ID],
+            ['status' => 'successful'],
+        ];
+
+        $this->assertSame(
+            $payments[1],
+            $this->getFinalPayment($payments, 'successful')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
+     * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
+     */
+    public function testGetFinalPaymentReturnsLastPaymentWithChargeIdAsFallback()
+    {
+        $payments = [
+            ['status' => 'pending', 'charge_id' => 'chrg_pending'],
+            ['status' => 'failed'],
+            ['status' => 'processing', 'charge_id' => self::CHARGE_ID],
+        ];
+
+        $this->assertSame(
+            $payments[2],
+            $this->getFinalPayment($payments, 'successful')
+        );
+    }
+
+    /**
      * @covers \Omise\Payment\Controller\Callback\UPACallback
      */
     public function testExecuteWithSuccessfulCharge()
@@ -314,16 +380,21 @@ class UPACallbackTest extends TestCase
      */
     public function testExecuteWithSuccessfulAuthorizedCharge()
     {
-        $payment = $this->createPayment(self::SESSION_ID, true, 'omise_creditcard');
-        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
-        $transaction = $this->createMock(Transaction::class);
+        $payment = $this->createPayment(
+            self::SESSION_ID,
+            true,
+            'omise_creditcard'
+        );
+
+        $order = $this->createOrder(
+            $payment,
+            self::ORDER_ID,
+            true,
+            Order::STATE_PENDING_PAYMENT
+        );
 
         $orderConfig = $this->createMock(
             \Magento\Sales\Model\Order\Config::class
-        );
-
-        $currency = $this->createMock(
-            \Magento\Directory\Model\Currency::class
         );
 
         $this->session->method('getLastRealOrder')
@@ -387,6 +458,7 @@ class UPACallbackTest extends TestCase
             ->willReturn($orderConfig);
 
         $orderConfig->method('getStateDefaultStatus')
+            ->with(Order::STATE_PROCESSING)
             ->willReturn('processing');
 
         $order->expects($this->once())
@@ -402,34 +474,15 @@ class UPACallbackTest extends TestCase
             ->method('sendInvoiceAndConfirmationEmails')
             ->with($order);
 
-        $this->helper->method('getOmiseLabelByOmiseCode')
-            ->willReturn('Credit Card');
+        // No transaction/message is created for authorized charge.
+        $payment->expects($this->never())
+            ->method('prependMessage');
 
-        $order->method('getBaseCurrency')
-            ->willReturn($currency);
+        $payment->expects($this->never())
+            ->method('addTransaction');
 
-        $order->method('getTotalDue')
-            ->willReturn(100);
-
-        $currency->method('formatTxt')
-            ->willReturn('100.00');
-
-        $payment->expects($this->once())
-            ->method('prependMessage')
-            ->willReturn('Authorized message');
-
-        $payment->expects($this->once())
-            ->method('addTransaction')
-            ->with(Transaction::TYPE_AUTH)
-            ->willReturn($transaction);
-
-        $payment->expects($this->once())
-            ->method('addTransactionCommentsToOrder')
-            ->with(
-                $transaction,
-                'Authorized message'
-            )
-            ->willReturnSelf();
+        $payment->expects($this->never())
+            ->method('addTransactionCommentsToOrder');
 
         $order->expects($this->once())
             ->method('save')
@@ -447,7 +500,10 @@ class UPACallbackTest extends TestCase
             )
             ->willReturn($redirectResult);
 
-        $this->assertSame($redirectResult, $controller->execute());
+        $this->assertSame(
+            $redirectResult,
+            $controller->execute()
+        );
     }
 
     /**
