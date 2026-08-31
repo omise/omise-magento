@@ -138,6 +138,16 @@ class UPACallback extends Action
         try {
             $payment = $order->getPayment();
             $checkoutSessionInfo = $this->getCheckoutSession($payment);
+
+            if (!$checkoutSessionInfo || !isset($checkoutSessionInfo->payments) || !is_array($checkoutSessionInfo->payments) || empty($checkoutSessionInfo->payments)) {
+                $this->invalid(
+                    $order,
+                    __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.')
+                );
+                $this->checkoutSession->restoreQuote();
+                return $this->redirect(self::PATH_CART);
+            }
+
             $payments = $checkoutSessionInfo->payments;
             $sessionStatus = $checkoutSessionInfo->status;
             $terminalPayment = $this->getFinalPayment($payments, $sessionStatus);
