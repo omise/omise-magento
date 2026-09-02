@@ -123,7 +123,7 @@ class UPACallback extends Action
      */
     public function execute()
     {
-        $terminalPayment = [];
+        $finalPayment = [];
         $order = $this->session->getLastRealOrder();
 
         if (!$this->isValid($order)) {
@@ -137,31 +137,23 @@ class UPACallback extends Action
 
         try {
             $payment = $order->getPayment();
-            $checkoutSessionInfo = $this->getCheckoutSession($payment);
+            $checkoutSession = $this->getCheckoutSession($payment);
+            $sessionPayments = $checkoutSession->payments;
 
-            if (!$checkoutSessionInfo || !isset($checkoutSessionInfo->payments) || !is_array($checkoutSessionInfo->payments) || empty($checkoutSessionInfo->payments)) {
-                $this->invalid(
-                    $order,
-                    __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.')
-                );
-                $this->checkoutSession->restoreQuote();
-                return $this->redirect(self::PATH_CART);
+            if($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
+                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
+                return $this->redirectBackToCart($order, $errorMessage);
             }
 
-            $payments = $checkoutSessionInfo->payments;
-            $sessionStatus = $checkoutSessionInfo->status;
-            $terminalPayment = $this->getFinalPayment($payments, $sessionStatus);
+            $sessionStatus = $checkoutSession->status;
+            $finalPayment = $this->getFinalPayment($sessionPayments, $sessionStatus);
 
-            if (!empty($terminalPayment) && !empty($terminalPayment['charge_id'])) {
-                $chargeId = $terminalPayment['charge_id'];
+            if (!empty($finalPayment) && !empty($finalPayment['charge_id'])) {
+                $chargeId = $finalPayment['charge_id'];
                 $charge = $this->charge->find($chargeId);
             } else {
-                $this->invalid(
-                    $order,
-                    __('The URL is invalid. Please contact our support if you have any questions.')
-                );
-                $this->checkoutSession->restoreQuote();
-                return $this->redirect(self::PATH_CART);
+                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
+                return $this->redirectBackToCart($order,$errorMessage);
             }
 
             if (!$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
@@ -378,8 +370,15 @@ class UPACallback extends Action
         $this->messageManager->addErrorMessage($message);
     }
 
+    private function redirectBackToCart($order, $errorMessage)
+    {
+        $this->invalid($order, $errorMessage);
+        $this->checkoutSession->restoreQuote();
+        return $this->redirect(self::PATH_CART);
+    }
+
     /**
-     * @param array $payments
+     * @param Magento\Sales\Model\Order\Payment $payment
      * @return \Omise\Payment\Model\Api\CheckoutSession|null
      */
     private function getCheckoutSession($payment)
@@ -392,8 +391,8 @@ class UPACallback extends Action
             );
         }
         
-        $checkoutSessionInfo = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-        return $checkoutSessionInfo;
+        $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+        return $checkoutSession;
     }
 
     /**
@@ -412,7 +411,7 @@ class UPACallback extends Action
         });
 
         if (empty($paymentsWithChargeId)) {
-            return end($payments);
+            return null;
         }
 
         foreach ($paymentsWithChargeId as $payment) {

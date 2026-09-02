@@ -180,14 +180,16 @@ class UPACallbackTest extends TestCase
      * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
      * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
      */
-    public function testGetFinalPaymentReturnsLastPaymentWhenAllPaymentsLackChargeId()
+    public function testGetFinalPaymentReturnsNullWhenAllPaymentsLackChargeId()
     {
         $payments = [
             ['status' => 'pending'],
             ['status' => 'failed'],
         ];
 
-        $this->assertSame($payments[1], $this->getFinalPayment($payments, 'failed'));
+        $this->assertNull(
+            $this->getFinalPayment($payments, 'failed')
+        );
     }
 
     /**
