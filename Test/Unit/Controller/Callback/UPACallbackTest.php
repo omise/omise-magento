@@ -149,12 +149,83 @@ class UPACallbackTest extends TestCase
      * @param array $payments
      * @return \stdClass
      */
-    private function createSessionInfo(array $payments): \stdClass
-    {
+    private function createSessionInfo(
+        array $payments,
+        string $status = ''
+    ): \stdClass {
         $sessionInfo = new \stdClass();
         $sessionInfo->payments = $payments;
+        $sessionInfo->status = $status;
 
         return $sessionInfo;
+    }
+
+    /**
+     * Invoke the private payment selection method.
+     *
+     * @param array $payments
+     * @param string $sessionStatus
+     * @return array|null
+     */
+    private function getFinalPayment(array $payments, string $sessionStatus = '')
+    {
+        $controller = $this->getController();
+        $method = new \ReflectionMethod(UPACallback::class, 'getFinalPayment');
+        $method->setAccessible(true);
+
+        return $method->invoke($controller, $payments, $sessionStatus);
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
+     * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
+     */
+    public function testGetFinalPaymentReturnsNullWhenAllPaymentsLackChargeId()
+    {
+        $payments = [
+            ['status' => 'pending'],
+            ['status' => 'failed'],
+        ];
+
+        $this->assertNull(
+            $this->getFinalPayment($payments, 'failed')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
+     * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
+     */
+    public function testGetFinalPaymentReturnsPaymentMatchingSessionStatus()
+    {
+        $payments = [
+            ['status' => 'pending', 'charge_id' => 'chrg_pending'],
+            ['status' => 'SUCCESSFUL', 'charge_id' => self::CHARGE_ID],
+            ['status' => 'successful'],
+        ];
+
+        $this->assertSame(
+            $payments[1],
+            $this->getFinalPayment($payments, 'successful')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::getFinalPayment
+     * @uses \Omise\Payment\Controller\Callback\UPACallback::__construct
+     */
+    public function testGetFinalPaymentReturnsLastPaymentWithChargeIdAsFallback()
+    {
+        $payments = [
+            ['status' => 'pending', 'charge_id' => 'chrg_pending'],
+            ['status' => 'failed'],
+            ['status' => 'processing', 'charge_id' => self::CHARGE_ID],
+        ];
+
+        $this->assertSame(
+            $payments[2],
+            $this->getFinalPayment($payments, 'successful')
+        );
     }
 
     /**
@@ -189,11 +260,16 @@ class UPACallbackTest extends TestCase
             ->willReturn(self::CHARGE_ID);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'charge_id' => self::CHARGE_ID,
+                'status' => 'successful'
+            ]
+        ], 'successful');
 
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $charge = $this->getMockBuilder(
@@ -306,16 +382,21 @@ class UPACallbackTest extends TestCase
      */
     public function testExecuteWithSuccessfulAuthorizedCharge()
     {
-        $payment = $this->createPayment(self::SESSION_ID, true, 'omise_creditcard');
-        $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
-        $transaction = $this->createMock(Transaction::class);
+        $payment = $this->createPayment(
+            self::SESSION_ID,
+            true,
+            'omise_creditcard'
+        );
+
+        $order = $this->createOrder(
+            $payment,
+            self::ORDER_ID,
+            true,
+            Order::STATE_PENDING_PAYMENT
+        );
 
         $orderConfig = $this->createMock(
             \Magento\Sales\Model\Order\Config::class
-        );
-
-        $currency = $this->createMock(
-            \Magento\Directory\Model\Currency::class
         );
 
         $this->session->method('getLastRealOrder')
@@ -326,11 +407,16 @@ class UPACallbackTest extends TestCase
             ->willReturn(self::CHARGE_ID);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'charge_id' => self::CHARGE_ID,
+                'status' => 'successful'
+            ]
+        ], 'successful');
 
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $charge = $this->getMockBuilder(
@@ -374,6 +460,7 @@ class UPACallbackTest extends TestCase
             ->willReturn($orderConfig);
 
         $orderConfig->method('getStateDefaultStatus')
+            ->with(Order::STATE_PROCESSING)
             ->willReturn('processing');
 
         $order->expects($this->once())
@@ -389,34 +476,15 @@ class UPACallbackTest extends TestCase
             ->method('sendInvoiceAndConfirmationEmails')
             ->with($order);
 
-        $this->helper->method('getOmiseLabelByOmiseCode')
-            ->willReturn('Credit Card');
+        // No transaction/message is created for authorized charge.
+        $payment->expects($this->never())
+            ->method('prependMessage');
 
-        $order->method('getBaseCurrency')
-            ->willReturn($currency);
+        $payment->expects($this->never())
+            ->method('addTransaction');
 
-        $order->method('getTotalDue')
-            ->willReturn(100);
-
-        $currency->method('formatTxt')
-            ->willReturn('100.00');
-
-        $payment->expects($this->once())
-            ->method('prependMessage')
-            ->willReturn('Authorized message');
-
-        $payment->expects($this->once())
-            ->method('addTransaction')
-            ->with(Transaction::TYPE_AUTH)
-            ->willReturn($transaction);
-
-        $payment->expects($this->once())
-            ->method('addTransactionCommentsToOrder')
-            ->with(
-                $transaction,
-                'Authorized message'
-            )
-            ->willReturnSelf();
+        $payment->expects($this->never())
+            ->method('addTransactionCommentsToOrder');
 
         $order->expects($this->once())
             ->method('save')
@@ -434,7 +502,10 @@ class UPACallbackTest extends TestCase
             )
             ->willReturn($redirectResult);
 
-        $this->assertSame($redirectResult, $controller->execute());
+        $this->assertSame(
+            $redirectResult,
+            $controller->execute()
+        );
     }
 
     /**
@@ -460,7 +531,9 @@ class UPACallbackTest extends TestCase
         ]);
         
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $charge = $this->getMockBuilder(
@@ -569,12 +642,16 @@ class UPACallbackTest extends TestCase
             ->willReturn(self::CHARGE_ID);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'charge_id' => self::CHARGE_ID,
+                'status' => 'pending'
+            ]
+        ], 'pending');
 
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
-            ->with('session_123')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $charge = $this->getMockBuilder(
@@ -639,11 +716,16 @@ class UPACallbackTest extends TestCase
             ->willReturn(self::CHARGE_ID);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'charge_id' => self::CHARGE_ID,
+                'status' => 'failed'
+            ]
+        ], 'failed');
 
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $charge = $this->getMockBuilder(
@@ -689,7 +771,8 @@ class UPACallbackTest extends TestCase
             ->with([
                 Transaction::RAW_DETAILS => [
                     'omise_charge_id' => self::CHARGE_ID,
-                    'status' => 'pending'
+                    'status' => 'pending',
+                    'charge_id' => self::CHARGE_ID
                 ]
             ])
             ->willReturnSelf();
@@ -737,16 +820,7 @@ class UPACallbackTest extends TestCase
         $this->request->method('getParam')
             ->willReturn(self::CHARGE_ID);
 
-        $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
-
-        $this->omiseCheckoutSession
-            ->method('getSessionInfo')
-            ->willReturn($sessionInfo);
-
-        $order->expects($this->exactly(2))
-            ->method('getState')
+        $order->method('getState')
             ->willReturn(Order::STATE_PROCESSING);
 
         $controller = $this->getController();
@@ -792,15 +866,8 @@ class UPACallbackTest extends TestCase
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
-        $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
-
         $this->request->method('getParam')
             ->willReturn(self::CHARGE_ID);
-
-        $this->omiseCheckoutSession->method('getSessionInfo')
-            ->willReturn($sessionInfo);
 
         $controller = $this->getController();
 
@@ -821,19 +888,12 @@ class UPACallbackTest extends TestCase
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
 
-        $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
-
-        $this->request->method('getParam')
-            ->willReturn(self::CHARGE_ID);
-
-        $this->omiseCheckoutSession->method('getSessionInfo')
-            ->willReturn($sessionInfo);
+        $this->checkoutSession->expects($this->once())
+            ->method('restoreQuote');
 
         $order->expects($this->once())
-        ->method('hasInvoices')
-        ->willReturn(false);
+            ->method('hasInvoices')
+            ->willReturn(false);
 
         $order->expects($this->once())
             ->method('registerCancellation')
@@ -846,15 +906,12 @@ class UPACallbackTest extends TestCase
         $this->messageManager->expects($this->once())
             ->method('addErrorMessage');
 
-        $this->session->expects($this->once())
-            ->method('restoreQuote');
-
         $controller = $this->getController();
 
         $controller->expects($this->once())
             ->method('_redirect')
             ->with('checkout/cart', ['_secure' => true]);
-
+        $this->assertSame('', $payment->getAdditionalInformation('session_id'));
         $controller->execute();
     }
 
@@ -871,8 +928,12 @@ class UPACallbackTest extends TestCase
 
         $sessionInfo = new \stdClass();
         $sessionInfo->payments = null;
+        $sessionInfo->status = '';
 
-        $this->omiseCheckoutSession->method('getSessionInfo')
+        $this->omiseCheckoutSession
+            ->expects($this->once())
+            ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $controller = $this->getController();
@@ -896,10 +957,15 @@ class UPACallbackTest extends TestCase
             ->willReturn($order);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'status' => 'pending'
+            ]
+        ], 'pending');
 
-        $this->omiseCheckoutSession->method('getSessionInfo')
+        $this->omiseCheckoutSession
+            ->expects($this->once())
+            ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $controller = $this->getController();
@@ -949,11 +1015,16 @@ class UPACallbackTest extends TestCase
             ->willReturn(self::CHARGE_ID);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'charge_id' => self::CHARGE_ID,
+                'status' => 'successful'
+            ]
+        ], 'successful');
 
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $this->charge->expects($this->once())
@@ -1003,11 +1074,16 @@ class UPACallbackTest extends TestCase
             ->willReturn(self::CHARGE_ID);
 
         $sessionInfo = $this->createSessionInfo([
-            ['charge_id' => self::CHARGE_ID]
-        ]);
+            [
+                'charge_id' => self::CHARGE_ID,
+                'status' => 'successful'
+            ]
+        ], 'successful');
 
         $this->omiseCheckoutSession
+            ->expects($this->once())
             ->method('getSessionInfo')
+            ->with(self::SESSION_ID)
             ->willReturn($sessionInfo);
 
         $this->checkoutSession->expects($this->once())

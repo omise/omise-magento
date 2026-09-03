@@ -8,8 +8,4 @@
     <type name="\Magento\Config\Model\Config">
         <plugin name="admin_system_config_save_plugin" type="Omise\Payment\Plugin\ConfigSectionPaymentPlugin" sortOrder="1" />
     </type>
-
-    <type name="Magento\Config\Model\Config\Structure\Element\Field">
-        <plugin name="omise_payment_upa_config_visibility" type="Omise\Payment\Plugin\Structure\Element\Field" sortOrder="10"/>
-    </type>
 </config>
