@@ -140,7 +140,7 @@ class UPACallback extends Action
             $checkoutSession = $this->getCheckoutSession($payment);
             $sessionPayments = $checkoutSession->payments;
 
-            if($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
+            if ($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
                 $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
@@ -153,7 +153,7 @@ class UPACallback extends Action
                 $charge = $this->charge->find($chargeId);
             } else {
                 $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
-                return $this->redirectBackToCart($order,$errorMessage);
+                return $this->redirectBackToCart($order, $errorMessage);
             }
 
             if (!$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
