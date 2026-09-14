@@ -171,28 +171,14 @@ class UPACallback extends Action
                 return;
             }
             
+            // Do not proceed if webhook is enabled
+            if ($this->config->isWebhookEnabled()) {
+                return $this->redirect(self::PATH_SUCCESS);
+            }
+            
             $payment->setTransactionId($charge->id);
             $payment->setLastTransId($charge->id);
             $payment->setAdditionalInformation('charge_id', $charge->id);
-
-            // Do not proceed if webhook is enabled
-            if ($this->config->isWebhookEnabled()) {
-                $this->transactionBuilder
-                    ->setPayment($payment)
-                    ->setOrder($order)
-                    ->setTransactionId($charge->id)
-                    ->setAdditionalInformation([
-                        Transaction::RAW_DETAILS => [
-                            'omise_charge_id' => $charge->id,
-                            'status' => $charge->status,
-                            'charge_id' => $charge->id
-                        ]
-                    ])
-                    ->setFailSafe(true)
-                    ->build(Transaction::TYPE_PAYMENT);
-                $order->save();
-                return $this->redirect(self::PATH_SUCCESS);
-            }
 
             if ($charge->isSuccessful()) {
                 return $this->handleSuccess($order, $charge, $payment);
