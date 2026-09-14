@@ -140,7 +140,7 @@ class UPACallback extends Action
             $checkoutSession = $this->getCheckoutSession($payment);
             $sessionPayments = $checkoutSession->payments;
 
-            if($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
+            if ($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
                 $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
@@ -153,7 +153,7 @@ class UPACallback extends Action
                 $charge = $this->charge->find($chargeId);
             } else {
                 $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
-                return $this->redirectBackToCart($order,$errorMessage);
+                return $this->redirectBackToCart($order, $errorMessage);
             }
 
             if (!$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
@@ -173,27 +173,13 @@ class UPACallback extends Action
             
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                $this->transactionBuilder
-                    ->setPayment($payment)
-                    ->setOrder($order)
-                    ->setTransactionId($charge->id)
-                    ->setAdditionalInformation([
-                        Transaction::RAW_DETAILS => [
-                            'omise_charge_id' => $charge->id,
-                            'status' => $charge->status,
-                            'charge_id' => $charge->id
-                        ]
-                    ])
-                    ->setFailSafe(true)
-                    ->build(Transaction::TYPE_PAYMENT);
-                $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
-
+            
             $payment->setTransactionId($charge->id);
             $payment->setLastTransId($charge->id);
             $payment->setAdditionalInformation('charge_id', $charge->id);
-            
+
             if ($charge->isSuccessful()) {
                 return $this->handleSuccess($order, $charge, $payment);
             }
