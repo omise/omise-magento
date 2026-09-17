@@ -216,12 +216,16 @@ class APMBuilder implements BuilderInterface
                 if ($source !== null) {
                     $paymentInfo[self::SOURCE] = $source;
                 }
-
-                if($this->config->isSandboxEnabled()) {
+                
+                if ($this->config->isSandboxEnabled()) {
                     $paymentInfo[self::DESCRIPTION] = 'Magento 2 Order id ' . $order->getOrderIncrementId();
                     $customWlbDescription = $this->deploymentConfig->get(self::OMISE_CUSTOM_WLB_DESCRIPTION);
-                    if(!empty($customWlbDescription) && !empty($paymentInfo[self::DESCRIPTION])) {
-                        $paymentInfo[self::DESCRIPTION] = str_replace('{original_description}', $paymentInfo[self::DESCRIPTION], $customWlbDescription);
+                    if (!empty($customWlbDescription) && !empty($paymentInfo[self::DESCRIPTION])) {
+                        $paymentInfo[self::DESCRIPTION] = str_replace(
+                            '{original_description}',
+                            $paymentInfo[self::DESCRIPTION],
+                            $customWlbDescription
+                        );
                     }
                 }
                 break;
