@@ -27,10 +27,10 @@ use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\PayPay;
 use Omise\Payment\Model\Config\WeChatPay;
-
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Magento\Payment\Gateway\Helper\SubjectReader;
+use Magento\Framework\App\DeploymentConfig;
 use Omise\Payment\Observer\FpxDataAssignObserver;
 use Omise\Payment\Observer\AtomeDataAssignObserver;
 use Magento\Payment\Gateway\Request\BuilderInterface;
@@ -96,6 +96,11 @@ class APMBuilder implements BuilderInterface
     /**
      * @var string
      */
+    const DESCRIPTION = 'description';
+
+    /**
+     * @var string
+     */
     const ZERO_INTEREST_INSTALLMENTS = 'zero_interest_installments';
 
     /**
@@ -112,6 +117,11 @@ class APMBuilder implements BuilderInterface
      * @var string
      */
     const SOURCE_IP = 'ip';
+
+    /**
+     * @var string
+     */
+    const OMISE_CUSTOM_WLB_DESCRIPTION = 'omise_custom_wlb_description';
 
     /**
      * @var \Omise\Payment\Helper\ReturnUrlHelper
@@ -139,21 +149,33 @@ class APMBuilder implements BuilderInterface
     private $requestHelper;
 
     /**
+     * @var DeploymentConfig
+     */
+    private $deploymentConfig;
+
+    /**
      * @param $helper    \Omise\Payment\Helper\OmiseHelper
      * @param $returnUrl \Omise\Payment\Helper\ReturnUrl
+     * @param $config    \Omise\Payment\Model\Config\Config
+     * @param $capability \Omise\Payment\Model\Capability
+     * @param $money     OmiseMoney
+     * @param $requestHelper \Omise\Payment\Helper\RequestHelper
+     * @param $deploymentConfig \Magento\Framework\App\DeploymentConfig
      */
     public function __construct(
         ReturnUrlHelper $returnUrl,
         Config $config,
         Capability $capability,
         OmiseMoney $money,
-        RequestHelper $requestHelper
+        RequestHelper $requestHelper,
+        DeploymentConfig $deploymentConfig
     ) {
         $this->returnUrl = $returnUrl;
         $this->config = $config;
         $this->capability = $capability;
         $this->money = $money;
         $this->requestHelper = $requestHelper;
+        $this->deploymentConfig = $deploymentConfig;
     }
 
     /**
@@ -193,6 +215,14 @@ class APMBuilder implements BuilderInterface
                 $source = $method->getAdditionalInformation(InstallmentDataAssignObserver::SOURCE);
                 if ($source !== null) {
                     $paymentInfo[self::SOURCE] = $source;
+                }
+
+                if($this->config->isSandboxEnabled()) {
+                    $paymentInfo[self::DESCRIPTION] = 'Magento 2 Order id ' . $order->getOrderIncrementId();
+                    $customWlbDescription = $this->deploymentConfig->get(self::OMISE_CUSTOM_WLB_DESCRIPTION);
+                    if(!empty($customWlbDescription) && !empty($paymentInfo[self::DESCRIPTION])) {
+                        $paymentInfo[self::DESCRIPTION] = str_replace('{original_description}', $paymentInfo[self::DESCRIPTION], $customWlbDescription);
+                    }
                 }
                 break;
             case Truemoney::CODE:
