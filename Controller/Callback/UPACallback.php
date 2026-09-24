@@ -132,7 +132,7 @@ class UPACallback extends Action
 
         $orderState = $order->getState();
         if ($orderState === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_SUCCESS);
+            return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
         }
 
         try {
@@ -187,7 +187,7 @@ class UPACallback extends Action
                     ->setFailSafe(true)
                     ->build(Transaction::TYPE_PAYMENT);
                 $order->save();
-                return $this->redirect(self::PATH_SUCCESS);
+                return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
             }
 
             $payment->setTransactionId($charge->id);
@@ -253,7 +253,7 @@ class UPACallback extends Action
             );
         }
         $order->save();
-        return $this->redirect(self::PATH_SUCCESS);
+        return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
     }
 
     /**
@@ -282,7 +282,7 @@ class UPACallback extends Action
 
         // TODO: Should redirect users to a page that tell users that
         // their payment is in review instead of success page.
-        return $this->redirect(self::PATH_SUCCESS);
+        return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
     }
 
     /**
@@ -311,7 +311,7 @@ class UPACallback extends Action
 
         $orderState = $order->getState();
         $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_PAYMENT_REVIEW, Order::STATE_PROCESSING];
-        
+
         if (!in_array($orderState, $validOrderStates)) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
             support if you have any questions.'));
@@ -334,12 +334,13 @@ class UPACallback extends Action
 
     /**
      * @param  string $path
+     * @param  array  $arguments
      *
      * @return \Magento\Framework\App\ResponseInterface
      */
-    protected function redirect($path)
+    protected function redirect($path, array $arguments = [])
     {
-        return $this->_redirect($path, ['_secure' => true]);
+        return $this->_redirect($path, array_merge(['_secure' => true], $arguments));
     }
 
     /**
