@@ -132,7 +132,7 @@ class UPACallback extends Action
 
         $orderState = $order->getState();
         if ($orderState === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_SUCCESS);
+            return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
         }
 
         try {
@@ -171,24 +171,9 @@ class UPACallback extends Action
                 return;
             }
             
-            // The webhook will update the payment status asynchronously.
+            // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                $transaction = $this->transactionBuilder
-                    ->setPayment($payment)
-                    ->setOrder($order)
-                    ->setTransactionId($charge->id)
-                    ->setAdditionalInformation([
-                        Transaction::RAW_DETAILS => [
-                            'omise_charge_id' => $charge->id,
-                            'status' => $charge->status,
-                            'charge_id' => $charge->id
-                        ]
-                    ])
-                    ->setFailSafe(true)
-                    ->build(Transaction::TYPE_PAYMENT);
-
-                $order->save();
-                return $this->redirect(self::PATH_SUCCESS);
+                return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
             }
             
             $payment->setTransactionId($charge->id);
@@ -254,7 +239,7 @@ class UPACallback extends Action
             );
         }
         $order->save();
-        return $this->redirect(self::PATH_SUCCESS);
+        return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
     }
 
     /**
@@ -283,7 +268,7 @@ class UPACallback extends Action
 
         // TODO: Should redirect users to a page that tell users that
         // their payment is in review instead of success page.
-        return $this->redirect(self::PATH_SUCCESS);
+        return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
     }
 
     /**
@@ -340,7 +325,7 @@ class UPACallback extends Action
      */
     protected function redirect($path, array $arguments = [])
     {
-        return $this->_redirect($path, array_merge(['_secure' => true], $arguments));
+        return $this->_redirect($path, ['_secure' => true]);
     }
 
     /**
