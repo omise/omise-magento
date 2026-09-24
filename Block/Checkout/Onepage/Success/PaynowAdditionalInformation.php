@@ -9,6 +9,9 @@ class PaynowAdditionalInformation extends AdditionalInformation
      */
     protected function _toHtml()
     {
+        if ($this->getRequest()->getParam('upa') === 'true') {
+            return '';
+        }
         if ($this->getPaymentType() !== 'paynow') {
             return;
         }

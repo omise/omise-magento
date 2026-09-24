@@ -31,6 +31,9 @@ class ConveniencestoreAdditionalInformation extends \Magento\Framework\View\Elem
     protected function _toHtml()
     {
         $order = $this->_checkoutSession->getLastRealOrder();
+        if ($this->getRequest()->getParam('upa') === 'true') {
+            return '';
+        }
         $paymentData = $order->getPayment()->getData();
         $paymentAdditionalInfo = $paymentData['additional_information'];
 

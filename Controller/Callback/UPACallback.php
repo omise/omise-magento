@@ -171,8 +171,23 @@ class UPACallback extends Action
                 return;
             }
             
-            // Do not proceed if webhook is enabled
+            // The webhook will update the payment status asynchronously.
             if ($this->config->isWebhookEnabled()) {
+                $transaction = $this->transactionBuilder
+                    ->setPayment($payment)
+                    ->setOrder($order)
+                    ->setTransactionId($charge->id)
+                    ->setAdditionalInformation([
+                        Transaction::RAW_DETAILS => [
+                            'omise_charge_id' => $charge->id,
+                            'status' => $charge->status,
+                            'charge_id' => $charge->id
+                        ]
+                    ])
+                    ->setFailSafe(true)
+                    ->build(Transaction::TYPE_PAYMENT);
+
+                $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
             
@@ -323,9 +338,9 @@ class UPACallback extends Action
      *
      * @return \Magento\Framework\App\ResponseInterface
      */
-    protected function redirect($path)
+    protected function redirect($path, array $arguments = [])
     {
-        return $this->_redirect($path, ['_secure' => true]);
+        return $this->_redirect($path, array_merge(['_secure' => true], $arguments));
     }
 
     /**
