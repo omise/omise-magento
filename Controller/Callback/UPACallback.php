@@ -132,7 +132,7 @@ class UPACallback extends Action
 
         $orderState = $order->getState();
         if ($orderState === Order::STATE_PROCESSING) {
-            return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
+            return $this->redirect(self::PATH_SUCCESS);
         }
 
         try {
@@ -173,7 +173,7 @@ class UPACallback extends Action
             
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
+                return $this->redirect(self::PATH_SUCCESS);
             }
             
             $payment->setTransactionId($charge->id);
@@ -239,7 +239,7 @@ class UPACallback extends Action
             );
         }
         $order->save();
-        return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
+        return $this->redirect(self::PATH_SUCCESS);
     }
 
     /**
@@ -268,7 +268,7 @@ class UPACallback extends Action
 
         // TODO: Should redirect users to a page that tell users that
         // their payment is in review instead of success page.
-        return $this->redirect(self::PATH_SUCCESS, ['upa' => 'true']);
+        return $this->redirect(self::PATH_SUCCESS);
     }
 
     /**
@@ -323,7 +323,7 @@ class UPACallback extends Action
      *
      * @return \Magento\Framework\App\ResponseInterface
      */
-    protected function redirect($path, array $arguments = [])
+    protected function redirect($path)
     {
         return $this->_redirect($path, ['_secure' => true]);
     }
