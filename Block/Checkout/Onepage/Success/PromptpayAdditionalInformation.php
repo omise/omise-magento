@@ -9,6 +9,9 @@ class PromptpayAdditionalInformation extends AdditionalInformation
      */
     protected function _toHtml()
     {
+        if ($this->isUpaPayment()) {
+            return ;
+        }
         if ($this->getPaymentType() !== 'promptpay') {
             return;
         }

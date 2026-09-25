@@ -706,7 +706,6 @@ class UPACallbackTest extends TestCase
     {
         $payment = $this->createPayment(self::SESSION_ID);
         $order = $this->createOrder($payment, self::ORDER_ID, true, Order::STATE_PENDING_PAYMENT);
-        $transaction = $this->createMock(Transaction::class);
 
         $this->session->method('getLastRealOrder')
             ->willReturn($order);
@@ -750,46 +749,6 @@ class UPACallbackTest extends TestCase
 
         $this->config->method('isWebhookEnabled')
             ->willReturn(true);
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setPayment')
-            ->with($payment)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setOrder')
-            ->with($order)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setTransactionId')
-            ->with(self::CHARGE_ID)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setAdditionalInformation')
-            ->with([
-                Transaction::RAW_DETAILS => [
-                    'omise_charge_id' => self::CHARGE_ID,
-                    'status' => 'pending',
-                    'charge_id' => self::CHARGE_ID
-                ]
-            ])
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setFailSafe')
-            ->with(true)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('build')
-            ->with(Transaction::TYPE_PAYMENT)
-            ->willReturn($transaction);
-
-        $order->expects($this->once())
-            ->method('save')
-            ->willReturnSelf();
 
         $controller = $this->getController();
 

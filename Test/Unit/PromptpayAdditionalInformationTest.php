@@ -3,14 +3,15 @@
 namespace Omise\Payment\Test\Unit;
 
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Payment;
 use PHPUnit\Framework\TestCase;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Framework\App\Request\Http;
 use Omise\Payment\Block\Checkout\Onepage\Success\PromptpayAdditionalInformation;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Backend\Block\Widget\Grid\Column\Renderer\Currency;
-use Mockery as m;
+use Magento\Directory\Model\Currency;
 
 class PromptpayAdditionalInformationTest extends TestCase
 {
@@ -21,16 +22,18 @@ class PromptpayAdditionalInformationTest extends TestCase
     private $eventManagerMock;
     private $scopeConfigMock;
     private $currencyMock;
+    private $requestMock;
 
     protected function setUp(): void
     {
-        $this->contextMock =  m::mock(Context::class)->makePartial();
-        $this->checkoutSessionMock =  m::mock(Session::class);
-        $this->orderMock =  m::mock(Order::class);
-        $this->eventManagerMock =  m::mock(ManagerInterface::class);
-        $this->scopeConfigMock =  m::mock(ScopeConfigInterface::class);
-        $this->currencyMock =  m::mock(Currency::class)->makePartial();
-        $this->paymentMock =  m::mock();
+        $this->contextMock = $this->createMock(Context::class);
+        $this->checkoutSessionMock = $this->createMock(Session::class);
+        $this->orderMock = $this->createMock(Order::class);
+        $this->eventManagerMock = $this->createMock(ManagerInterface::class);
+        $this->scopeConfigMock = $this->createMock(ScopeConfigInterface::class);
+        $this->currencyMock = $this->createMock(Currency::class);
+        $this->paymentMock = $this->createMock(Payment::class);
+        $this->requestMock = $this->createMock(Http::class);
     }
 
     /**
@@ -39,22 +42,29 @@ class PromptpayAdditionalInformationTest extends TestCase
      */
     public function testPromptpayAdditionalInformation()
     {
-        $this->paymentMock->shouldReceive('getData')->andReturn([
+        $this->paymentMock->expects($this->once())
+            ->method('getData')
+            ->willReturn([
             "amount_ordered" => 1000,
             "additional_information" => [
                 "charge_expires_at" => "2023-09-29T06:49:35Z",
                 "payment_type" => "promptpay"
             ]
         ]);
-        $this->eventManagerMock->shouldReceive('dispatch')->times(2);
-        $this->scopeConfigMock->shouldReceive('getValue')->once();
+        $this->eventManagerMock->expects($this->exactly(2))
+            ->method('dispatch');
+        $this->scopeConfigMock->expects($this->once())
+            ->method('getValue');
 
-        $this->contextMock->shouldReceive('getEventManager')->andReturn($this->eventManagerMock);
-        $this->contextMock->shouldReceive('getScopeConfig')->andReturn($this->scopeConfigMock);
+        $this->contextMock->method('getEventManager')->willReturn($this->eventManagerMock);
+        $this->contextMock->method('getScopeConfig')->willReturn($this->scopeConfigMock);
+        $this->contextMock->method('getRequest')->willReturn($this->requestMock);
+        $this->requestMock->method('getParam')->with('upa')->willReturn(null);
 
-        $this->orderMock->shouldReceive('getPayment')->andReturn($this->paymentMock);
-        $this->orderMock->shouldReceive('getOrderCurrency')->andReturn($this->currencyMock);
-        $this->checkoutSessionMock->shouldReceive('getLastRealOrder')->andReturn($this->orderMock);
+        $this->orderMock->method('getPayment')->willReturn($this->paymentMock);
+        $this->orderMock->method('getOrderCurrency')->willReturn($this->currencyMock);
+        $this->currencyMock->method('getCurrencyCode')->willReturn('THB');
+        $this->checkoutSessionMock->method('getLastRealOrder')->willReturn($this->orderMock);
         $model = new PromptpayAdditionalInformation($this->contextMock, $this->checkoutSessionMock, []);
 
         $html = $model->toHtml();
