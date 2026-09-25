@@ -2,7 +2,9 @@
 
 namespace Omise\Payment\Test\Unit\Gateway\Request\APMBuilders;
 
+use Magento\Framework\App\DeploymentConfig;
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
+use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Helper\ReturnUrlHelper;
 use Omise\Payment\Model\Capability;
@@ -17,12 +19,16 @@ abstract class APMBuilderTest extends TestCase
     protected $returnUrlHelper;
     protected $config;
     protected $capability;
+    protected $omiseHelper;
+    protected $deploymentConfig;
     protected $orderMock;
     protected $infoMock;
 
     protected function setUp(): void
     {
         $this->requestHelper = $this->getMockBuilder(RequestHelper::class)->disableOriginalConstructor()->getMock();
+        $this->omiseHelper = $this->getMockBuilder(OmiseHelper::class)->disableOriginalConstructor()->getMock();
+        $this->deploymentConfig = $this->getMockBuilder(DeploymentConfig::class)->disableOriginalConstructor()->getMock();
         $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
         $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $this->capability = $this->getMockBuilder(Capability::class)->disableOriginalConstructor()->getMock();

@@ -79,6 +79,11 @@ class UPAPaymentDataBuilderTest extends TestCase
             ->with('omise_upa')
             ->willReturn('promptpay');
 
+        $this->omiseHelper->expects($this->once())
+            ->method('getDescription')
+            ->with($order)
+            ->willReturn('Magento Order id 100000001');
+
         $this->localeResolver->expects($this->once())
             ->method('getLocale')
             ->willReturn('en_US');
