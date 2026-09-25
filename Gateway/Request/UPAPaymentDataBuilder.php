@@ -87,7 +87,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
             )->toSubunit(),
             'currency'        => $currency,
             'order_id'        => (string) $order->getOrderIncrementId(),
-            'description'     => 'Magento Order id ' . $order->getOrderIncrementId(),
+            'description'     => $this->omiseHelper->getDescription($order),
             'payment_methods' => [$methodId],
             'redirect_urls'   => [
                 'complete_url' => $this->urlBuilder->getUrl(

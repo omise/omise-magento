@@ -28,6 +28,7 @@ use Omise\Payment\Model\Config\Rabbitlinepay;
 use Omise\Payment\Model\Config\PayPay;
 use Omise\Payment\Model\Config\WeChatPay;
 use Omise\Payment\Helper\OmiseMoney;
+use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Framework\App\DeploymentConfig;
@@ -144,6 +145,11 @@ class APMBuilder implements BuilderInterface
     protected $config;
 
     /**
+     * @var \Omise\Payment\Helper\OmiseHelper
+     */
+    private $omiseHelper;
+
+    /**
      * @var \Omise\Payment\Helper\RequestHelper
      */
     private $requestHelper;
@@ -167,6 +173,7 @@ class APMBuilder implements BuilderInterface
         Config $config,
         Capability $capability,
         OmiseMoney $money,
+        OmiseHelper $omiseHelper,
         RequestHelper $requestHelper,
         DeploymentConfig $deploymentConfig
     ) {
@@ -174,6 +181,7 @@ class APMBuilder implements BuilderInterface
         $this->config = $config;
         $this->capability = $capability;
         $this->money = $money;
+        $this->omiseHelper = $omiseHelper;
         $this->requestHelper = $requestHelper;
         $this->deploymentConfig = $deploymentConfig;
     }
@@ -218,7 +226,7 @@ class APMBuilder implements BuilderInterface
                 }
                 
                 if ($this->config->isSandboxEnabled()) {
-                    $paymentInfo[self::DESCRIPTION] = 'Magento 2 Order id ' . $order->getOrderIncrementId();
+                    $paymentInfo[self::DESCRIPTION] = $this->omiseHelper->getDescription($order);
                     $customWlbDescription = $this->deploymentConfig->get(self::OMISE_CUSTOM_WLB_DESCRIPTION);
                     if (!empty($customWlbDescription) && !empty($paymentInfo[self::DESCRIPTION])) {
                         $paymentInfo[self::DESCRIPTION] = str_replace(
