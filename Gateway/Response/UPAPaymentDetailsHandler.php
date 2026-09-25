@@ -42,7 +42,7 @@ class UPAPaymentDetailsHandler implements HandlerInterface
         $order->addStatusHistoryComment(
             $payment->prependMessage(
                 __(
-                    'Processing amount of %1 via Omise Checkout Gateway. checkout session ID: %2',
+                    'Processing amount of %1 via Omise Checkout session ID: %2',
                     $order->getBaseCurrency()->formatTxt($order->getTotalDue()),
                     $response['session']->id
                 )
