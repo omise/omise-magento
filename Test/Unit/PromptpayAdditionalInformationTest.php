@@ -48,6 +48,7 @@ class PromptpayAdditionalInformationTest extends TestCase
             "amount_ordered" => 1000,
             "additional_information" => [
                 "charge_expires_at" => "2023-09-29T06:49:35Z",
+                "image_code" => "https://example.com/promptpay-qr.png",
                 "payment_type" => "promptpay"
             ]
         ]);
@@ -71,5 +72,56 @@ class PromptpayAdditionalInformationTest extends TestCase
         $this->assertNotNull($html);
 
         $this->assertEquals("2023-09-29T06:49:35Z", $model->getChargeExpiresAt());
+        $this->assertSame('1,000.00 THB', $model->getData('order_amount'));
+        $this->assertSame('https://example.com/promptpay-qr.png', $model->getData('image_code'));
+    }
+
+    /**
+     * @covers Omise\Payment\Block\Checkout\Onepage\Success\PromptpayAdditionalInformation
+     * @covers Omise\Payment\Block\Checkout\Onepage\Success\AdditionalInformation
+     */
+    public function testDoesNotRenderForUpaPayment()
+    {
+        $this->contextMock->method('getEventManager')->willReturn($this->eventManagerMock);
+        $this->contextMock->method('getScopeConfig')->willReturn($this->scopeConfigMock);
+        $this->eventManagerMock->method('dispatch');
+        $this->paymentMock->method('getData')
+            ->willReturn([
+                'amount_ordered' => 1000,
+                'additional_information' => [
+                    'payment_type' => 'promptpay',
+                    'session_id' => 'session_123'
+                ]
+            ]);
+        $this->orderMock->method('getPayment')->willReturn($this->paymentMock);
+        $this->checkoutSessionMock->method('getLastRealOrder')->willReturn($this->orderMock);
+
+        $model = new PromptpayAdditionalInformation($this->contextMock, $this->checkoutSessionMock, []);
+
+        $this->assertEmpty($model->toHtml());
+    }
+
+    /**
+     * @covers Omise\Payment\Block\Checkout\Onepage\Success\PromptpayAdditionalInformation
+     * @covers Omise\Payment\Block\Checkout\Onepage\Success\AdditionalInformation
+     */
+    public function testDoesNotRenderForNonPromptpayPayment()
+    {
+        $this->contextMock->method('getEventManager')->willReturn($this->eventManagerMock);
+        $this->contextMock->method('getScopeConfig')->willReturn($this->scopeConfigMock);
+        $this->eventManagerMock->method('dispatch');
+        $this->paymentMock->method('getData')
+            ->willReturn([
+                'amount_ordered' => 1000,
+                'additional_information' => [
+                    'payment_type' => 'truemoney'
+                ]
+            ]);
+        $this->orderMock->method('getPayment')->willReturn($this->paymentMock);
+        $this->checkoutSessionMock->method('getLastRealOrder')->willReturn($this->orderMock);
+
+        $model = new PromptpayAdditionalInformation($this->contextMock, $this->checkoutSessionMock, []);
+
+        $this->assertEmpty($model->toHtml());
     }
 }
