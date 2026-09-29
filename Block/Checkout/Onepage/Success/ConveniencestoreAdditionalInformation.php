@@ -31,11 +31,12 @@ class ConveniencestoreAdditionalInformation extends \Magento\Framework\View\Elem
     protected function _toHtml()
     {
         $order = $this->_checkoutSession->getLastRealOrder();
-        if ($this->isUpaPayment()) {
-            return ;
-        }
         $paymentData = $order->getPayment()->getData();
         $paymentAdditionalInfo = $paymentData['additional_information'];
+
+        if (array_key_exists('session_id', $paymentAdditionalInfo) && !empty($paymentAdditionalInfo['session_id'])) {
+            return;
+        }
 
         if (!array_key_exists('payment_type', $paymentAdditionalInfo)) {
             return;
