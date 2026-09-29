@@ -12,7 +12,6 @@ use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Request\Http;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
-use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface as TransactionBuilderInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
@@ -72,11 +71,6 @@ class UPACallback extends Action
     protected $omiseCheckoutSession;
 
     /**
-     * @var TransactionBuilderInterface
-     */
-    protected $transactionBuilder;
-
-    /**
      * @param Context $context
      * @param Session $session
      * @param Omise   $omise
@@ -87,7 +81,6 @@ class UPACallback extends Action
      * @param CheckoutSession $checkoutSession
      * @param Http $request
      * @param OmiseCheckoutSession $omiseCheckoutSession
-     * @param TransactionBuilderInterface $transactionBuilder
      */
     public function __construct(
         Context $context,
@@ -99,8 +92,7 @@ class UPACallback extends Action
         Config $config,
         CheckoutSession $checkoutSession,
         Http $request,
-        OmiseCheckoutSession $omiseCheckoutSession,
-        TransactionBuilderInterface $transactionBuilder
+        OmiseCheckoutSession $omiseCheckoutSession
     ) {
         parent::__construct($context);
         $this->session = $session;
@@ -112,7 +104,6 @@ class UPACallback extends Action
         $this->checkoutSession  = $checkoutSession;
         $this->request = $request;
         $this->omiseCheckoutSession = $omiseCheckoutSession;
-        $this->transactionBuilder = $transactionBuilder;
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
         $this->omise->defineApiKeys();

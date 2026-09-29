@@ -10,7 +10,6 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
 use Magento\Sales\Model\Order\Payment\Transaction;
-use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface;
 use Omise\Payment\Controller\Callback\UPACallback;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Helper\OmiseHelper;
@@ -35,7 +34,6 @@ class UPACallbackTest extends TestCase
     private $checkoutSession;
     private $request;
     private $omiseCheckoutSession;
-    private $transactionBuilder;
     private $messageManager;
     private const ORDER_ID = 1;
     private const SESSION_ID = 'session_123';
@@ -60,7 +58,6 @@ class UPACallbackTest extends TestCase
         $this->omiseCheckoutSession = $this->createMock(
             \Omise\Payment\Model\Api\CheckoutSession::class
         );
-        $this->transactionBuilder = $this->createMock(BuilderInterface::class);
 
         $this->messageManager = $this->createMock(ManagerInterface::class);
 
@@ -86,8 +83,7 @@ class UPACallbackTest extends TestCase
                 $this->config,
                 $this->checkoutSession,
                 $this->request,
-                $this->omiseCheckoutSession,
-                $this->transactionBuilder
+                $this->omiseCheckoutSession
                 ]
             )
             ->onlyMethods(['_redirect', 'getRequest'])
