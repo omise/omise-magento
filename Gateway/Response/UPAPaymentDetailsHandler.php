@@ -3,30 +3,21 @@ namespace Omise\Payment\Gateway\Response;
 
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Response\HandlerInterface;
-use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Helper\OmiseHelper;
 
 class UPAPaymentDetailsHandler implements HandlerInterface
 {
-    /**
-     * @var \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface
-     */
-    protected $transactionBuilder;
-
     /**
      * @var OmiseHelper
      */
     protected $helper;
 
     /**
-     * @param Transaction\BuilderInterface $transactionBuilder
      * @param OmiseHelper $helper
      */
     public function __construct(
-        \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder,
         OmiseHelper $helper
     ) {
-        $this->transactionBuilder = $transactionBuilder;
         $this->helper = $helper;
     }
     
@@ -48,19 +39,12 @@ class UPAPaymentDetailsHandler implements HandlerInterface
         $payment->setAdditionalInformation('session_id', $response['session']->id);
         $payment->setAdditionalInformation('payment_type', $paymentType);
 
-        $transaction = $this->transactionBuilder
-                            ->setPayment($payment)
-                            ->setOrder($order)
-                            ->setTransactionId($response['session']->id)
-                            ->setAdditionalInformation([Transaction::RAW_DETAILS => (array) $payment])
-                            ->setFailSafe(true)
-                            ->build(Transaction::TYPE_PAYMENT);
-        $payment->addTransactionCommentsToOrder(
-            $transaction,
+        $order->addStatusHistoryComment(
             $payment->prependMessage(
                 __(
-                    'Processing amount of %1 via Omise Checkout Gateway.',
-                    $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                    'Processing amount of %1 via Omise Checkout session ID: %2',
+                    $order->getBaseCurrency()->formatTxt($order->getTotalDue()),
+                    $response['session']->id
                 )
             )
         );

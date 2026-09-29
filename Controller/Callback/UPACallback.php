@@ -12,7 +12,6 @@ use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Request\Http;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
-use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface as TransactionBuilderInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
@@ -72,11 +71,6 @@ class UPACallback extends Action
     protected $omiseCheckoutSession;
 
     /**
-     * @var TransactionBuilderInterface
-     */
-    protected $transactionBuilder;
-
-    /**
      * @param Context $context
      * @param Session $session
      * @param Omise   $omise
@@ -87,7 +81,6 @@ class UPACallback extends Action
      * @param CheckoutSession $checkoutSession
      * @param Http $request
      * @param OmiseCheckoutSession $omiseCheckoutSession
-     * @param TransactionBuilderInterface $transactionBuilder
      */
     public function __construct(
         Context $context,
@@ -99,8 +92,7 @@ class UPACallback extends Action
         Config $config,
         CheckoutSession $checkoutSession,
         Http $request,
-        OmiseCheckoutSession $omiseCheckoutSession,
-        TransactionBuilderInterface $transactionBuilder
+        OmiseCheckoutSession $omiseCheckoutSession
     ) {
         parent::__construct($context);
         $this->session = $session;
@@ -112,7 +104,6 @@ class UPACallback extends Action
         $this->checkoutSession  = $checkoutSession;
         $this->request = $request;
         $this->omiseCheckoutSession = $omiseCheckoutSession;
-        $this->transactionBuilder = $transactionBuilder;
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
         $this->omise->defineApiKeys();
@@ -140,7 +131,7 @@ class UPACallback extends Action
             $checkoutSession = $this->getCheckoutSession($payment);
             $sessionPayments = $checkoutSession->payments;
 
-            if($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
+            if ($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
                 $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
@@ -153,7 +144,7 @@ class UPACallback extends Action
                 $charge = $this->charge->find($chargeId);
             } else {
                 $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
-                return $this->redirectBackToCart($order,$errorMessage);
+                return $this->redirectBackToCart($order, $errorMessage);
             }
 
             if (!$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
@@ -173,27 +164,13 @@ class UPACallback extends Action
             
             // Do not proceed if webhook is enabled
             if ($this->config->isWebhookEnabled()) {
-                $this->transactionBuilder
-                    ->setPayment($payment)
-                    ->setOrder($order)
-                    ->setTransactionId($charge->id)
-                    ->setAdditionalInformation([
-                        Transaction::RAW_DETAILS => [
-                            'omise_charge_id' => $charge->id,
-                            'status' => $charge->status,
-                            'charge_id' => $charge->id
-                        ]
-                    ])
-                    ->setFailSafe(true)
-                    ->build(Transaction::TYPE_PAYMENT);
-                $order->save();
                 return $this->redirect(self::PATH_SUCCESS);
             }
-
+            
             $payment->setTransactionId($charge->id);
             $payment->setLastTransId($charge->id);
             $payment->setAdditionalInformation('charge_id', $charge->id);
-            
+
             if ($charge->isSuccessful()) {
                 return $this->handleSuccess($order, $charge, $payment);
             }

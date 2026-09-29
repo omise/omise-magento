@@ -5,8 +5,6 @@ namespace Omise\Payment\Test\Unit\Gateway\Response;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment;
-use Magento\Sales\Model\Order\Payment\Transaction;
-use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface;
 use Omise\Payment\Gateway\Response\UPAPaymentDetailsHandler;
 use Omise\Payment\Helper\OmiseHelper;
 use PHPUnit\Framework\TestCase;
@@ -16,11 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class UPAPaymentDetailsHandlerTest extends TestCase
 {
-    /**
-     * @var BuilderInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $transactionBuilder;
-
     /**
      * @var OmiseHelper|\PHPUnit\Framework\MockObject\MockObject
      */
@@ -33,16 +26,11 @@ class UPAPaymentDetailsHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->transactionBuilder = $this->createMock(
-            BuilderInterface::class
-        );
-
         $this->helper = $this->createMock(
             OmiseHelper::class
         );
 
         $this->handler = new UPAPaymentDetailsHandler(
-            $this->transactionBuilder,
             $this->helper
         );
     }
@@ -109,46 +97,9 @@ class UPAPaymentDetailsHandlerTest extends TestCase
             'payment' => $paymentDO
         ];
 
-        $transaction = $this->createMock(
-            Transaction::class
-        );
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setPayment')
-            ->with($payment)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setOrder')
-            ->with($order)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setTransactionId')
-            ->with($sessionId)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setAdditionalInformation')
-            ->with([
-                Transaction::RAW_DETAILS => (array)$payment
-            ])
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('setFailSafe')
-            ->with(true)
-            ->willReturnSelf();
-
-        $this->transactionBuilder->expects($this->once())
-            ->method('build')
-            ->with(Transaction::TYPE_PAYMENT)
-            ->willReturn($transaction);
-
-        $payment->expects($this->once())
-            ->method('addTransactionCommentsToOrder')
+        $order->expects($this->once())
+            ->method('addStatusHistoryComment')
             ->with(
-                $transaction,
                 'Processing amount of USD 100.00 via Omise Checkout Gateway.'
             );
 
