@@ -57,7 +57,8 @@ class CcConfigProvider implements ConfigProviderInterface
                     'cards'                         => $this->getCards(),
                     'locale'                        => $this->omiseCcConfig->getStoreLocale(),
                     'formDesign'                    => $theme->getFormDesign($selectedTheme, $customDesign),
-                    'theme'                         => $selectedTheme
+                    'theme'                         => $selectedTheme,
+                    'omise_cc_allow_card_icon' => $this->omiseCcConfig->getAllowedCardsIcon()
                 ],
             ]
         ];

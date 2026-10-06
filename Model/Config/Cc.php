@@ -26,4 +26,20 @@ class Cc extends Config
     {
         return $this->getValue('card_form_theme', self::CODE);
     }
+
+    /**
+     * Get the card brands icons enabled in the payment configuration.
+     *
+     * @return array
+     */
+    public function getAllowedCardsIcon()
+    {
+        $allowedCardsIcon = $this->getValue('allow_card_icon', self::CODE);
+
+        if (is_array($allowedCardsIcon)) {
+            return $allowedCardsIcon;
+        }
+
+        return $allowedCardsIcon ? explode(',', $allowedCardsIcon) : [];
+    }
 }
