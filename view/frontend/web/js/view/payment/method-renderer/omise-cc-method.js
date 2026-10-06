@@ -160,7 +160,7 @@ define(
                     customCardFormHideRememberCard: hideRememberCard
                 }
 
-                if (Array.isArray(allowedCardIcons) && allowedCardIcons.length > 0) {
+                if (Array.isArray(allowedCardIcons)) {
                     cardFormConfig.customCardFormBrandIcons = allowedCardIcons
                     cardFormConfig.cardBrands = allowedCardIcons.join(' ')
                 }
