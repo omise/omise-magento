@@ -35,11 +35,9 @@ class Cc extends Config
     public function getAllowedCardsIcon()
     {
         $allowedCardsIcon = $this->getValue('allow_card_icon', self::CODE);
-
         if (is_array($allowedCardsIcon)) {
             return $allowedCardsIcon;
         }
-
         return $allowedCardsIcon ? explode(',', $allowedCardsIcon) : [];
     }
 }

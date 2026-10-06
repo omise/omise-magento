@@ -6,6 +6,10 @@ use Magento\Framework\Option\ArrayInterface;
 
 class CardBrandIcon implements ArrayInterface
 {
+    /**
+     * Return array of supported card brand icons
+     * @return array
+     */
     public function toOptionArray()
     {
         return [
@@ -20,7 +24,7 @@ class CardBrandIcon implements ArrayInterface
             [
                 'value' => 'amex',
                 'label' => __('American Express'),
-            ],
+            ],      
             [
                 'value' => 'jcb',
                 'label' => __('JCB'),
