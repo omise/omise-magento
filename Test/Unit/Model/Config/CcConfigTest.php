@@ -8,35 +8,27 @@ use PHPUnit\Framework\TestCase;
 class CcConfigTest extends TestCase
 {
     /**
-     * @covers \Omise\Payment\Model\Config\Cc::getAllowedCardsIcon
+     * @covers \Omise\Payment\Model\Config\Cc::getSupportedCardIcons
      */
-    public function testGetAllowedCardsIconReturnsConfiguredCommaSeparatedValues(): void
+    public function testGetSupportedCardIconsReturnsConfiguredCommaSeparatedValues(): void
     {
         $config = $this->createConfigMock('visa,mastercard,amex');
 
-        $this->assertSame(['visa', 'mastercard', 'amex'], $config->getAllowedCardsIcon());
+        $this->assertSame(['visa', 'mastercard', 'amex'], $config->getSupportedCardIcons());
     }
 
     /**
-     * @covers \Omise\Payment\Model\Config\Cc::getAllowedCardsIcon
+     * @covers \Omise\Payment\Model\Config\Cc::getSupportedCardIcons
      */
-    public function testGetAllowedCardsIconReturnsArrayConfigurationAsIs(): void
-    {
-        $allowedIcons = ['visa', 'mastercard'];
-        $config = $this->createConfigMock($allowedIcons);
-
-        $this->assertSame($allowedIcons, $config->getAllowedCardsIcon());
-    }
-
     /**
-     * @covers \Omise\Payment\Model\Config\Cc::getAllowedCardsIcon
+     * @covers \Omise\Payment\Model\Config\Cc::getSupportedCardIcons
      * @dataProvider emptyConfigValueProvider
      */
-    public function testGetAllowedCardsIconReturnsEmptyArrayWhenNoIconsAreConfigured($emptyValue): void
+    public function testGetSupportedCardIconsReturnsEmptyArrayWhenNoIconsAreConfigured($emptyValue): void
     {
         $config = $this->createConfigMock($emptyValue);
 
-        $this->assertSame([], $config->getAllowedCardsIcon());
+        $this->assertSame([], $config->getSupportedCardIcons());
     }
 
     public static function emptyConfigValueProvider(): array
@@ -56,7 +48,7 @@ class CcConfigTest extends TestCase
 
         $config->expects($this->once())
             ->method('getValue')
-            ->with('allow_card_icon', Cc::CODE)
+            ->with('supported_card_icons', Cc::CODE)
             ->willReturn($value);
 
         return $config;

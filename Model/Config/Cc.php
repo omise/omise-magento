@@ -32,12 +32,9 @@ class Cc extends Config
      *
      * @return array
      */
-    public function getAllowedCardsIcon()
+    public function getSupportedCardIcons()
     {
-        $allowedCardsIcon = $this->getValue('allow_card_icon', self::CODE);
-        if (is_array($allowedCardsIcon)) {
-            return $allowedCardsIcon;
-        }
-        return $allowedCardsIcon ? explode(',', $allowedCardsIcon) : [];
+        $supportedCardIcons = $this->getValue('supported_card_icons', self::CODE);
+        return $supportedCardIcons ? explode(',', $supportedCardIcons) : [];
     }
 }

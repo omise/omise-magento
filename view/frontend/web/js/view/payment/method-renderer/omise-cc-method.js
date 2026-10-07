@@ -124,7 +124,7 @@ define(
                 }
 
                 const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
-                const allowedCardIcons = window.checkoutConfig.payment.omise_cc.omise_cc_allow_card_icon
+                const supportedCardIcons = window.checkoutConfig.payment.omise_cc.supported_card_icons
                 const { font, input, checkbox } = formDesign
                 let iframeElementHeight = iframeHeightMatching[input.height]
                 if (hideRememberCard) {
@@ -160,9 +160,9 @@ define(
                     customCardFormHideRememberCard: hideRememberCard
                 }
 
-                if (Array.isArray(allowedCardIcons)) {
-                    cardFormConfig.customCardFormBrandIcons = allowedCardIcons
-                    cardFormConfig.cardBrands = allowedCardIcons.join(' ')
+                if (Array.isArray(supportedCardIcons) && supportedCardIcons.length > 0) {
+                    cardFormConfig.customCardFormBrandIcons = supportedCardIcons
+                    cardFormConfig.cardBrands = supportedCardIcons.join(' ')
                 }
 
                 OmiseCard.configure(cardFormConfig)

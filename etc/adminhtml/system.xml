@@ -109,9 +109,9 @@
                             <![CDATA[Credit/debit card secure form design on checkout page. <a style="cursor:pointer" onclick="cardFormCustomization.showModal()"><b>Click here</b></a> for more secure card form customization.]]>
                         </comment>
                     </field>
-                    <field id="allow_card_icon" translate="label" type="multiselect" sortOrder="114" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Allow Card Icons</label>
-                        <config_path>payment/omise_cc/allow_card_icon</config_path>
+                    <field id="supported_card_icons" translate="label" type="multiselect" sortOrder="114" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Supported card icons</label>
+                        <config_path>payment/omise_cc/supported_card_icons</config_path>
                         <source_model>Omise\Payment\Model\Source\CardBrandIcon</source_model>
                     </field>
                     <field id="card_form_theme_config" sortOrder="113" showInDefault="1" showInWebsite="1" showInStore="1">
