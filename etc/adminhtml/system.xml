@@ -60,6 +60,7 @@
                 <field id="dynamic_webhooks" translate="label comment" type="select" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable dynamic webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting</frontend_model>
                     <depends>
                         <field id="webhook_status">1</field>
                     </depends>
