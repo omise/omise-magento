@@ -24,7 +24,7 @@ class CardBrandIcon implements ArrayInterface
             [
                 'value' => 'amex',
                 'label' => __('American Express'),
-            ],      
+            ],
             [
                 'value' => 'jcb',
                 'label' => __('JCB'),
