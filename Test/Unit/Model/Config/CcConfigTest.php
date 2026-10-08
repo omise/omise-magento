@@ -16,10 +16,7 @@ class CcConfigTest extends TestCase
 
         $this->assertSame(['visa', 'mastercard', 'amex'], $config->getSupportedCardIcons());
     }
-
-    /**
-     * @covers \Omise\Payment\Model\Config\Cc::getSupportedCardIcons
-     */
+    
     /**
      * @covers \Omise\Payment\Model\Config\Cc::getSupportedCardIcons
      * @dataProvider emptyConfigValueProvider
