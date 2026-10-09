@@ -5,7 +5,7 @@ namespace Omise\Payment\Test\Unit\Gateway\Request;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
-use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Gateway\Request\UPAPaymentDataBuilder;
 use Omise\Payment\Helper\OmiseHelper;
@@ -47,7 +47,7 @@ class UPAPaymentDataBuilderTest extends TestCase
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->getMockBuilder(InfoMock::class)->getMock();
-        $store = $this->createMock(StoreInterface::class);
+        $store = $this->createMock(Store::class);
         $order = $this->createConfiguredMock(
             OrderAdapterInterface::class,
             [
@@ -146,7 +146,7 @@ class UPAPaymentDataBuilderTest extends TestCase
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->createMock(InfoMock::class);
-        $store = $this->createMock(StoreInterface::class);
+        $store = $this->createMock(Store::class);
         $order = $this->createConfiguredMock(
             OrderAdapterInterface::class,
             [
@@ -222,7 +222,7 @@ class UPAPaymentDataBuilderTest extends TestCase
 
         $this->storeManager->method('getStore')
             ->willReturn(
-                $this->createMock(StoreInterface::class)
+                $this->createMock(Store::class)
             );
 
         $this->omiseHelper->expects($this->once())
