@@ -51,6 +51,7 @@
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting</frontend_model>
                     <comment>
                         <![CDATA[Enable webhooks to receive updates when charge and refund events occur. To learn more, see <a href="https://docs.opn.ooo/api-webhooks">our webhooks documentation</a>. </br></br>
                         Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="https://dashboard.omise.co/v2/settings/webhooks">Omise Payments dashboard</a> (HTTPS only).
@@ -60,6 +61,7 @@
                 <field id="dynamic_webhooks" translate="label comment" type="select" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable dynamic webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting</frontend_model>
                     <depends>
                         <field id="webhook_status">1</field>
                     </depends>

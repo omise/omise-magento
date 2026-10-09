@@ -65,6 +65,14 @@ class Config
     }
 
     /**
+     * @return string
+     */
+    public function checkoutSessionEndpoint()
+    {
+        return 'https://checkout-page.omise.co/';
+    }
+
+    /**
      * Change the store ID from the default store to fetch store specific values
      *
      * @param  integer|null  $storeId

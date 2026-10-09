@@ -35,6 +35,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 
 class OmiseHelper extends AbstractHelper
 {
@@ -219,18 +220,26 @@ class OmiseHelper extends AbstractHelper
      * @var ScopeConfigInterface
      */
     protected $scopeConfig;
+
+    /**
+     * @var OmiseCheckoutSession
+     */
+    protected $omiseCheckoutSession;
     
     /**
      * @param Header $header
      * @param Config $config
      * @param ScopeConfigInterface $scopeConfig
+     * @param OmiseCheckoutSession $omiseCheckoutSession
      */
     public function __construct(
         Config $config,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        OmiseCheckoutSession $omiseCheckoutSession
     ) {
         $this->config = $config;
         $this->scopeConfig = $scopeConfig;
+        $this->omiseCheckoutSession = $omiseCheckoutSession;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -272,7 +281,7 @@ class OmiseHelper extends AbstractHelper
      */
     public function checkoutSessionEndpoint()
     {
-        return "https://checkout-page.omise.co/";
+        return $this->config->checkoutSessionEndpoint();
     }
 
     /**
@@ -400,7 +409,7 @@ class OmiseHelper extends AbstractHelper
         $payment = $order->getPayment();
         $method = $payment->getMethodInstance();
         $methodCode = $method->getCode();
-        return strpos($methodCode, "omise") > -1;
+        return strpos($methodCode, 'omise') !== false;
     }
 
     /**
@@ -420,7 +429,26 @@ class OmiseHelper extends AbstractHelper
     public function getOrderChargeId($order)
     {
         if ($this->isOrderOmisePayment($order)) {
-            return $order->getPayment()->getAdditionalInformation('charge_id');
+            if($order->getPayment()->getAdditionalInformation('charge_id')) {
+                return $order->getPayment()->getAdditionalInformation('charge_id');
+            }
+            if ($order->getPayment()->getAdditionalInformation('session_id')){
+                $payment = $order->getPayment();
+                $sessionId = $payment->getAdditionalInformation('session_id');
+                $this->config->setStoreId($order->getStoreId());
+                $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+                
+                if($checkoutSession) {
+                    $sessionPayments = $checkoutSession->payments;
+                    $sessionStatus = $checkoutSession->status;
+                    if (is_array($sessionPayments) && !empty($sessionPayments)) {
+                        $finalPayment = $this->getFinalPayment($sessionPayments, $sessionStatus);
+                        if (!empty($finalPayment) && !empty($finalPayment['charge_id'])) {
+                            return $finalPayment['charge_id'];
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -521,5 +549,33 @@ class OmiseHelper extends AbstractHelper
     public function hasShopeepayFailed($paymentMethod, $isChargeSuccess)
     {
         return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
+    }
+
+    /**
+     * @param array $payments
+     * @param string $sessionStatus
+     * @return array|null
+     */
+    private function getFinalPayment($payments, $sessionStatus)
+    {
+        if (!is_array($payments) || empty($payments)) {
+            return null;
+        }
+
+        $paymentsWithChargeId = array_filter($payments, function ($payment) {
+            return !empty($payment['charge_id']);
+        });
+
+        if (empty($paymentsWithChargeId)) {
+            return null;
+        }
+
+        foreach ($paymentsWithChargeId as $payment) {
+            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
+            if ($paymentStatus === strtolower((string) $sessionStatus)) {
+                return $payment;
+            }
+        }
+        return end($paymentsWithChargeId);
     }
 }

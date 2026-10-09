@@ -5,7 +5,7 @@ namespace Omise\Payment\Test\Unit\Gateway\Request;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
-use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Omise\Payment\Gateway\Request\UPAPaymentDataBuilder;
 use Omise\Payment\Helper\OmiseHelper;
@@ -47,7 +47,7 @@ class UPAPaymentDataBuilderTest extends TestCase
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->getMockBuilder(InfoMock::class)->getMock();
-        $store = $this->createMock(StoreInterface::class);
+        $store = $this->createMock(Store::class);
         $order = $this->createConfiguredMock(
             OrderAdapterInterface::class,
             [
@@ -68,6 +68,8 @@ class UPAPaymentDataBuilderTest extends TestCase
 
         $store->method('getName')
             ->willReturn('Default Store');
+        $store->method('getBaseUrl')
+            ->willReturn('https://example.com/');
 
         $this->storeManager->expects($this->once())
             ->method('getStore')
@@ -99,11 +101,13 @@ class UPAPaymentDataBuilderTest extends TestCase
                 'https://example.com/cancel'
             );
 
-        $this->omiseHelper->expects($this->exactly(2))
+        $this->omiseHelper->expects($this->exactly(4))
             ->method('getConfig')
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
+                ['dynamic_webhooks', 1, '1'],
+                ['webhook_status', 1, '1'],
             ]);
 
         $result = $this->builder->build([
@@ -129,6 +133,7 @@ class UPAPaymentDataBuilderTest extends TestCase
                 'theme_color' => '#000000',
                 'text_color' => '#FFFFFF'
             ],
+            'webhooks' => ['https://example.com/omise/callback/webhook'],
             'is_upa' => true,
             'locale' => 'en'
         ], $result);
@@ -141,7 +146,7 @@ class UPAPaymentDataBuilderTest extends TestCase
     {
         $paymentDO = $this->createMock(PaymentDataObject::class);
         $payment = $this->createMock(InfoMock::class);
-        $store = $this->createMock(StoreInterface::class);
+        $store = $this->createMock(Store::class);
         $order = $this->createConfiguredMock(
             OrderAdapterInterface::class,
             [
@@ -162,6 +167,8 @@ class UPAPaymentDataBuilderTest extends TestCase
 
         $store->method('getName')
             ->willReturn('Default Store');
+        $store->method('getBaseUrl')
+            ->willReturn('https://example.com/');
 
         $this->storeManager->method('getStore')
             ->willReturn($store);
@@ -173,6 +180,8 @@ class UPAPaymentDataBuilderTest extends TestCase
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
+                ['dynamic_webhooks', 1, '1'],
+                ['webhook_status', 1, '1'],
             ]);
 
         $this->localeResolver->method('getLocale')
@@ -213,7 +222,7 @@ class UPAPaymentDataBuilderTest extends TestCase
 
         $this->storeManager->method('getStore')
             ->willReturn(
-                $this->createMock(StoreInterface::class)
+                $this->createMock(Store::class)
             );
 
         $this->omiseHelper->expects($this->once())
