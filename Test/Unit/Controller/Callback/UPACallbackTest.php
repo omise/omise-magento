@@ -43,6 +43,9 @@ class UPACallbackTest extends TestCase
 
     /**
      * @covers ::execute
+     * @uses ::__construct
+     * @uses ::isValid
+     * @uses ::redirect
      */
     public function testExecuteRedirectsValidPendingOrderToSuccess(): void
     {
@@ -66,6 +69,9 @@ class UPACallbackTest extends TestCase
 
     /**
      * @covers ::execute
+     * @uses ::__construct
+     * @uses ::isValid
+     * @uses ::redirect
      */
     public function testExecuteRedirectsProcessingOrderToSuccess(): void
     {
@@ -89,6 +95,9 @@ class UPACallbackTest extends TestCase
 
     /**
      * @covers ::execute
+     * @uses ::__construct
+     * @uses ::isValid
+     * @uses ::redirect
      */
     public function testExecuteRedirectsToCartWhenOrderIsMissing(): void
     {
@@ -108,6 +117,10 @@ class UPACallbackTest extends TestCase
 
     /**
      * @covers ::execute
+     * @uses ::__construct
+     * @uses ::invalid
+     * @uses ::isValid
+     * @uses ::redirect
      */
     public function testExecuteRedirectsToCartWhenPaymentIsMissing(): void
     {
