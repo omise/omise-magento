@@ -86,8 +86,10 @@ class ConfigSectionPaymentPlugin
             $omiseConfigData = $coreConfig->toArray()['groups']['omise'];
             if (!empty($omiseConfigData['fields']['is_upa_feature_flag_enabled']['value'])) {
                 $groups = $coreConfig->getGroups();
+                $groups['omise']['fields']['webhook_status'] = ['value' => 1];
                 $groups['omise']['fields']['dynamic_webhooks'] = ['value' => 1];
                 $coreConfig->setData('groups', $groups);
+                $omiseConfigData['fields']['webhook_status'] = ['value' => 1];
                 $omiseConfigData['fields']['dynamic_webhooks'] = ['value' => 1];
             }
             $keys = $this->getKeys($omiseConfigData);

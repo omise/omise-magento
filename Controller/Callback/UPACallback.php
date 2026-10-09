@@ -5,17 +5,8 @@ use Exception;
 use Magento\Framework\App\Action\Context;
 use Magento\Checkout\Model\Session;
 use Omise\Payment\Model\Omise;
-use Omise\Payment\Model\Api\Charge;
-use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Helper\OmiseEmailHelper;
-use Omise\Payment\Model\Config\Cc as Config;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\App\Request\Http;
-use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Payment\Transaction;
-use Magento\Framework\Exception\LocalizedException;
 
 class UPACallback extends Action
 {
@@ -36,74 +27,18 @@ class UPACallback extends Action
     protected $omise;
 
     /**
-     * @var \Omise\Payment\Model\Api\Charge
-     */
-    protected $charge;
-
-    /**
-     * @var \Omise\Payment\Helper\OmiseHelper
-     */
-    protected $helper;
-
-    /**
-     * @var \Omise\Payment\Helper\OmiseEmailHelper
-     */
-    protected $emailHelper;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var CheckoutSession
-     */
-    protected $checkoutSession;
-
-    /**
-     * @var Http
-     */
-    protected $request;
-
-    /**
-     * @var OmiseCheckoutSession
-     */
-    protected $omiseCheckoutSession;
-
-    /**
      * @param Context $context
      * @param Session $session
      * @param Omise   $omise
-     * @param Charge  $charge
-     * @param OmiseHelper $helper
-     * @param OmiseEmailHelper $emailHelper
-     * @param Config $config
-     * @param CheckoutSession $checkoutSession
-     * @param Http $request
-     * @param OmiseCheckoutSession $omiseCheckoutSession
      */
     public function __construct(
         Context $context,
         Session $session,
-        Omise   $omise,
-        Charge  $charge,
-        OmiseHelper $helper,
-        OmiseEmailHelper $emailHelper,
-        Config $config,
-        CheckoutSession $checkoutSession,
-        Http $request,
-        OmiseCheckoutSession $omiseCheckoutSession
+        Omise   $omise
     ) {
         parent::__construct($context);
         $this->session = $session;
         $this->omise   = $omise;
-        $this->charge  = $charge;
-        $this->helper  = $helper;
-        $this->emailHelper = $emailHelper;
-        $this->config = $config;
-        $this->checkoutSession  = $checkoutSession;
-        $this->request = $request;
-        $this->omiseCheckoutSession = $omiseCheckoutSession;
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
         $this->omise->defineApiKeys();
@@ -114,7 +49,6 @@ class UPACallback extends Action
      */
     public function execute()
     {
-        $finalPayment = [];
         $order = $this->session->getLastRealOrder();
 
         if (!$this->isValid($order)) {
@@ -127,139 +61,11 @@ class UPACallback extends Action
         }
 
         try {
-            $payment = $order->getPayment();
-            $checkoutSession = $this->getCheckoutSession($payment);
-            $sessionPayments = $checkoutSession->payments;
-
-            if ($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
-                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
-                return $this->redirectBackToCart($order, $errorMessage);
-            }
-
-            $sessionStatus = $checkoutSession->status;
-            $finalPayment = $this->getFinalPayment($sessionPayments, $sessionStatus);
-
-            if (!empty($finalPayment) && !empty($finalPayment['charge_id'])) {
-                $chargeId = $finalPayment['charge_id'];
-                $charge = $this->charge->find($chargeId);
-            } else {
-                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
-                return $this->redirectBackToCart($order, $errorMessage);
-            }
-
-            if (!$charge instanceof \Omise\Payment\Model\Api\BaseObject) {
-                throw new LocalizedException(
-                    __('Couldn\'t retrieve charge transaction. Please contact administrator.')
-                );
-            }
-            if ($charge instanceof \Omise\Payment\Model\Api\Error) {
-                // restoring the cart
-                $this->checkoutSession->restoreQuote();
-                throw new LocalizedException(__($charge->getMessage()));
-            }
-            if ($charge->isFailed()) {
-                $this->handleFailure($charge);
-                return;
-            }
-            
-            // Do not proceed if webhook is enabled
-            if ($this->config->isWebhookEnabled()) {
-                return $this->redirect(self::PATH_SUCCESS);
-            }
-            
-            $payment->setTransactionId($charge->id);
-            $payment->setLastTransId($charge->id);
-            $payment->setAdditionalInformation('charge_id', $charge->id);
-
-            if ($charge->isSuccessful()) {
-                return $this->handleSuccess($order, $charge, $payment);
-            }
-
-            return $this->handlePending($order, $payment);
+            return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
             return $this->redirect(self::PATH_CART);
         }
-    }
-
-    /**
-     * Mark order as failed
-     *
-     * @param object $charge
-     */
-    private function handleFailure($charge)
-    {
-        // restoring the cart
-        $this->checkoutSession->restoreQuote();
-        $failureMessage = $charge->failure_message ?
-            ucfirst($charge->failure_message) :
-            __('Payment cancelled');
-        $errorMessage = __(
-            'Payment failed. %1, please contact our support if you have any questions.',
-            $failureMessage
-        );
-
-        // This cancels the order, logs error and displays message in cart page
-        throw new \Magento\Framework\Exception\LocalizedException($errorMessage);
-    }
-
-    /**
-     * Mark order as success
-     *
-     * @param object $order
-     * @param object $charge
-     * @param object $payment
-     */
-    private function handleSuccess($order, $charge, $payment)
-    {
-        // Update order state and status.
-        $order->setState(Order::STATE_PROCESSING);
-        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-
-        $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id, $charge->capture);
-        $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
-        
-        if ($charge->capture) {
-            // Add transaction.
-            $payment->addTransactionCommentsToOrder(
-                $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
-                __(
-                    $comment = __('Amount of %1 has been paid via Omise Gateway.'),
-                    $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                )
-            );
-        }
-        $order->save();
-        return $this->redirect(self::PATH_SUCCESS);
-    }
-
-    /**
-     * Mark order as pending
-     *
-     * @param object $order
-     * @param object $payment
-     */
-    private function handlePending($order, $payment)
-    {
-        // Update order state and status.
-        $order->setState(Order::STATE_PAYMENT_REVIEW);
-        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PAYMENT_REVIEW));
-
-        // Add transaction.
-        $transaction = $payment->addTransaction(Transaction::TYPE_PAYMENT);
-        $transaction->setIsClosed(false);
-        $payment->addTransactionCommentsToOrder(
-            $transaction,
-            __('The payment is under processing.<br/>Due to bank processing, this might take up to an hour to
-             complete. The payment status will be updated once the processing result is available (you can
-             check the latest status on the Omise Dashboard).')
-        );
-
-        $order->save();
-
-        // TODO: Should redirect users to a page that tell users that
-        // their payment is in review instead of success page.
-        return $this->redirect(self::PATH_SUCCESS);
     }
 
     /**
@@ -300,16 +106,6 @@ class UPACallback extends Action
     }
 
     /**
-     * @param  \Magento\Sales\Model\Order $order
-     *
-     * @return \Magento\Sales\Api\Data\InvoiceInterface
-     */
-    protected function invoice(Order $order)
-    {
-        return $order->getInvoiceCollection()->getLastItem();
-    }
-
-    /**
      * @param  string $path
      *
      * @return \Magento\Framework\App\ResponseInterface
@@ -329,75 +125,5 @@ class UPACallback extends Action
         $order->save();
 
         $this->messageManager->addErrorMessage($message);
-    }
-
-    /**
-     * @param \Magento\Sales\Model\Order       $order
-     * @param \Magento\Framework\Phrase|string $message
-     */
-    protected function cancel(Order $order, $message)
-    {
-        if ($order->hasInvoices()) {
-            $invoice = $this->invoice($order);
-            $invoice->cancel();
-            $order->addRelatedObject($invoice);
-        }
-
-        $order->registerCancellation($message)->save();
-        $this->messageManager->addErrorMessage($message);
-    }
-
-    private function redirectBackToCart($order, $errorMessage)
-    {
-        $this->invalid($order, $errorMessage);
-        $this->checkoutSession->restoreQuote();
-        return $this->redirect(self::PATH_CART);
-    }
-
-    /**
-     * @param Magento\Sales\Model\Order\Payment $payment
-     * @return \Omise\Payment\Model\Api\CheckoutSession|null
-     */
-    private function getCheckoutSession($payment)
-    {
-        $sessionId = $payment->getAdditionalInformation('session_id');
-        if (empty($sessionId)) {
-            $this->checkoutSession->restoreQuote();
-            throw new LocalizedException(
-                __('Cannot retrieve a session reference id. Please contact our support to confirm your payment.')
-            );
-        }
-        
-        $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-        return $checkoutSession;
-    }
-
-    /**
-     * @param array $payments
-     * @param string $sessionStatus
-     * @return array|null
-     */
-    private function getFinalPayment($payments, $sessionStatus)
-    {
-        if (!is_array($payments) || empty($payments)) {
-            return null;
-        }
-
-        $paymentsWithChargeId = array_filter($payments, function ($payment) {
-            return !empty($payment['charge_id']);
-        });
-
-        if (empty($paymentsWithChargeId)) {
-            return null;
-        }
-
-        foreach ($paymentsWithChargeId as $payment) {
-            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
-            if ($paymentStatus === strtolower((string) $sessionStatus)) {
-                return $payment;
-            }
-        }
-
-        return end($paymentsWithChargeId);
     }
 }

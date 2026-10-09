@@ -10,8 +10,16 @@ use Magento\Store\Model\ScopeInterface;
 
 class UpaWebhookSetting extends Field
 {
+    /**
+     * @var ScopeConfigInterface
+     */
     private $scopeConfig;
 
+    /**
+     * @param Context $context
+     * @param ScopeConfigInterface $scopeConfig
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         ScopeConfigInterface $scopeConfig,
@@ -21,6 +29,10 @@ class UpaWebhookSetting extends Field
         parent::__construct($context, $data);
     }
 
+    /**
+     * @param AbstractElement $element
+     * @return string
+     */
     protected function _getElementHtml(AbstractElement $element)
     {
         $request = $this->getRequest();

@@ -9,33 +9,38 @@ define([], function () {
 
         upaFlag.dataset.webhookToggleBound = '1';
 
-        var dynamicWebhooksName = 'groups[omise][fields][dynamic_webhooks][value]';
+        var webhookFieldNames = [
+            'groups[omise][fields][webhook_status][value]',
+            'groups[omise][fields][dynamic_webhooks][value]'
+        ];
 
         function updateWebhookFields() {
             var enabled = upaFlag.value === '1';
 
-            var dynamicWebhooks = document.querySelector('[name="' + dynamicWebhooksName + '"]');
-            if (!dynamicWebhooks || dynamicWebhooks.type === 'hidden') {
-                return;
-            }
+            webhookFieldNames.forEach(function (fieldName) {
+                var field = document.querySelector('[name="' + fieldName + '"]');
+                if (!field || field.type === 'hidden') {
+                    return;
+                }
 
-            var hidden = document.querySelector('input[type="hidden"][name="' + dynamicWebhooksName + '"]');
-            if (enabled) {
-                dynamicWebhooks.value = '1';
-                dynamicWebhooks.disabled = true;
-                if (!hidden) {
-                    hidden = document.createElement('input');
-                    hidden.type = 'hidden';
-                    hidden.name = dynamicWebhooksName;
-                    hidden.value = '1';
-                    dynamicWebhooks.parentNode.appendChild(hidden);
+                var hidden = document.querySelector('input[type="hidden"][name="' + fieldName + '"]');
+                if (enabled) {
+                    field.value = '1';
+                    field.disabled = true;
+                    if (!hidden) {
+                        hidden = document.createElement('input');
+                        hidden.type = 'hidden';
+                        hidden.name = fieldName;
+                        hidden.value = '1';
+                        field.parentNode.appendChild(hidden);
+                    }
+                } else {
+                    field.disabled = false;
+                    if (hidden) {
+                        hidden.remove();
+                    }
                 }
-            } else {
-                dynamicWebhooks.disabled = false;
-                if (hidden) {
-                    hidden.remove();
-                }
-            }
+            });
         }
 
         upaFlag.addEventListener('change', updateWebhookFields);
