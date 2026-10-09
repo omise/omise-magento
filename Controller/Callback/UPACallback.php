@@ -1,7 +1,6 @@
 <?php
 namespace Omise\Payment\Controller\Callback;
 
-use Exception;
 use Magento\Framework\App\Action\Context;
 use Magento\Checkout\Model\Session;
 use Omise\Payment\Model\Omise;
@@ -60,12 +59,7 @@ class UPACallback extends Action
             return $this->redirect(self::PATH_SUCCESS);
         }
 
-        try {
-            return $this->redirect(self::PATH_SUCCESS);
-        } catch (Exception $e) {
-            $this->cancel($order, $e->getMessage());
-            return $this->redirect(self::PATH_CART);
-        }
+        return $this->redirect(self::PATH_SUCCESS);
     }
 
     /**

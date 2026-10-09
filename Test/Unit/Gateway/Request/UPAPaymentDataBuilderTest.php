@@ -68,6 +68,8 @@ class UPAPaymentDataBuilderTest extends TestCase
 
         $store->method('getName')
             ->willReturn('Default Store');
+        $store->method('getBaseUrl')
+            ->willReturn('https://example.com/');
 
         $this->storeManager->expects($this->once())
             ->method('getStore')
@@ -99,11 +101,13 @@ class UPAPaymentDataBuilderTest extends TestCase
                 'https://example.com/cancel'
             );
 
-        $this->omiseHelper->expects($this->exactly(2))
+        $this->omiseHelper->expects($this->exactly(4))
             ->method('getConfig')
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
+                ['dynamic_webhooks', 1, '1'],
+                ['webhook_status', 1, '1'],
             ]);
 
         $result = $this->builder->build([
@@ -129,6 +133,7 @@ class UPAPaymentDataBuilderTest extends TestCase
                 'theme_color' => '#000000',
                 'text_color' => '#FFFFFF'
             ],
+            'webhooks' => ['https://example.com/omise/callback/webhook'],
             'is_upa' => true,
             'locale' => 'en'
         ], $result);
@@ -162,6 +167,8 @@ class UPAPaymentDataBuilderTest extends TestCase
 
         $store->method('getName')
             ->willReturn('Default Store');
+        $store->method('getBaseUrl')
+            ->willReturn('https://example.com/');
 
         $this->storeManager->method('getStore')
             ->willReturn($store);
@@ -173,6 +180,8 @@ class UPAPaymentDataBuilderTest extends TestCase
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
+                ['dynamic_webhooks', 1, '1'],
+                ['webhook_status', 1, '1'],
             ]);
 
         $this->localeResolver->method('getLocale')

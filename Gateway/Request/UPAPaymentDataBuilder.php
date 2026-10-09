@@ -118,10 +118,9 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "is_upa" => true
         ];
         
-        if ($dynamicWebhookFlag && $webhookStatus) {
-            $webhookUrl = $store->getBaseUrl() . self::WEBHOOK_URI;
-            $payload['webhooks'] = [$webhookUrl];
-        }
+        $webhookUrl = $store->getBaseUrl() . self::WEBHOOK_URI;
+        $payload['webhooks'] = [$webhookUrl];
+        
         $locale = substr(strtolower($locale), 0, 2);
         if (!empty($locale)) {
             $payload['locale'] = $locale;
