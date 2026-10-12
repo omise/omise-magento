@@ -79,9 +79,6 @@ class UPAPaymentDataBuilder implements BuilderInterface
 
         $upaThemeColor = $this->omiseHelper->getConfig('upa_theme_color', $order->getStoreId());
         $upaTextColor = $this->omiseHelper->getConfig('upa_text_color', $order->getStoreId());
-        $dynamicWebhookFlag = $this->omiseHelper->getConfig('dynamic_webhooks', $order->getStoreId());
-        $webhookStatus = $this->omiseHelper->getConfig('webhook_status', $order->getStoreId());
-
         $locale = $this->localeResolver->getLocale();
 
         if (empty($methodId)) {

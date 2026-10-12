@@ -42,10 +42,10 @@ class UPACallbackTest extends TestCase
     }
 
     /**
-     * @covers ::execute
-     * @uses ::__construct
-     * @uses ::isValid
-     * @uses ::redirect
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::execute
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::__construct
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::isValid
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::redirect
      */
     public function testExecuteRedirectsValidPendingOrderToSuccess(): void
     {
@@ -68,10 +68,10 @@ class UPACallbackTest extends TestCase
     }
 
     /**
-     * @covers ::execute
-     * @uses ::__construct
-     * @uses ::isValid
-     * @uses ::redirect
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::execute
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::__construct
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::isValid
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::redirect
      */
     public function testExecuteRedirectsProcessingOrderToSuccess(): void
     {
@@ -94,10 +94,10 @@ class UPACallbackTest extends TestCase
     }
 
     /**
-     * @covers ::execute
-     * @uses ::__construct
-     * @uses ::isValid
-     * @uses ::redirect
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::execute
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::__construct
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::isValid
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::redirect
      */
     public function testExecuteRedirectsToCartWhenOrderIsMissing(): void
     {
@@ -116,11 +116,11 @@ class UPACallbackTest extends TestCase
     }
 
     /**
-     * @covers ::execute
-     * @uses ::__construct
-     * @uses ::invalid
-     * @uses ::isValid
-     * @uses ::redirect
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::execute
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::__construct
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::invalid
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::isValid
+     * @covers \Omise\Payment\Controller\Callback\UPACallback::redirect
      */
     public function testExecuteRedirectsToCartWhenPaymentIsMissing(): void
     {

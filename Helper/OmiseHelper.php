@@ -437,7 +437,6 @@ class OmiseHelper extends AbstractHelper
                 $sessionId = $payment->getAdditionalInformation('session_id');
                 $this->config->setStoreId($order->getStoreId());
                 $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-                
                 if($checkoutSession) {
                     $sessionPayments = $checkoutSession->payments;
                     $sessionStatus = $checkoutSession->status;

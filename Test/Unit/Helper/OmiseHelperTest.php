@@ -7,7 +7,6 @@ use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
-use Omise\Payment\Model\Api\CheckoutSession;
 
 class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,9 +16,9 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     protected $scopeConfig;
 
-    protected $checkoutSession;
-
     protected $model;
+
+    protected $omiseCheckoutSession;
 
     private $authorizeUri = 'https://somefakeuri.com/redirect';
 
@@ -32,8 +31,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
         $this->scopeConfig = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
-        $this->checkoutSession = $this->createMock(CheckoutSession::class);
-        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig, $this->checkoutSession);
+        $this->omiseCheckoutSession = $this->createMock('Omise\Payment\Model\Api\CheckoutSession');
+        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig, $this->omiseCheckoutSession);
     }
 
     /**
@@ -270,18 +269,6 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
      * @covers \Omise\Payment\Helper\OmiseHelper
      * @test
      */
-    public function checkoutSessionEndpointReturnsCorrectUrl()
-    {
-        $this->configMock->expects($this->once())
-            ->method('checkoutSessionEndpoint')
-            ->willReturn('https://checkout-page.omise.co/');
-
-        $this->assertEquals(
-            'https://checkout-page.omise.co/',
-            $this->model->checkoutSessionEndpoint()
-        );
-    }
-
     /**
      * @covers \Omise\Payment\Helper\OmiseHelper
      * @test

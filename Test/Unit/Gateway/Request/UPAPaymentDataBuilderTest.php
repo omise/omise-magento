@@ -101,13 +101,11 @@ class UPAPaymentDataBuilderTest extends TestCase
                 'https://example.com/cancel'
             );
 
-        $this->omiseHelper->expects($this->exactly(4))
+        $this->omiseHelper->expects($this->exactly(2))
             ->method('getConfig')
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
-                ['dynamic_webhooks', 1, '1'],
-                ['webhook_status', 1, '1'],
             ]);
 
         $result = $this->builder->build([
@@ -180,8 +178,6 @@ class UPAPaymentDataBuilderTest extends TestCase
             ->willReturnMap([
                 ['upa_theme_color', 1, '#000000'],
                 ['upa_text_color', 1, '#FFFFFF'],
-                ['dynamic_webhooks', 1, '1'],
-                ['webhook_status', 1, '1'],
             ]);
 
         $this->localeResolver->method('getLocale')
