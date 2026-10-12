@@ -2,6 +2,7 @@
 
 namespace Omise\Payment\Test\Unit\Block\Adminhtml\System\Config\Form\Field;
 
+use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\RequestInterface;
@@ -12,6 +13,22 @@ use PHPUnit\Framework\TestCase;
 
 class UpaWebhookSettingTest extends TestCase
 {
+    /**
+     * @covers \Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting::__construct
+     * @uses \Magento\Config\Block\System\Config\Form\Field::__construct
+     * @uses \Magento\Backend\Block\Template::__construct
+     */
+    public function testConstructorRunsBeforeMagentoParentRequiresObjectManager(): void
+    {
+        $context = $this->createMock(Context::class);
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("ObjectManager isn't initialized");
+
+        new UpaWebhookSetting($context, $scopeConfig);
+    }
+
     /**
      * @covers \Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting::_getElementHtml
      * @uses \Magento\Config\Block\System\Config\Form\Field::_getElementHtml
