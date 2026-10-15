@@ -14,11 +14,6 @@ use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 class UPAPaymentDataBuilder implements BuilderInterface
 {
     /**
-     * URL for omise upa dynamic webhook.
-     */
-    const WEBHOOK_URI = 'omise/callback/webhook';
-
-    /**
      * @var Resolver
      */
     private $localeResolver;
@@ -44,32 +39,24 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $urlBuilder;
 
     /**
-     * @var Webhook
-     */
-    private $webhook;
-
-    /**
      * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
      * @param Resolver $localeResolver
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlBuilder
-     * @param Webhook $webhook
      */
     public function __construct(
         OmiseMoney $money,
         OmiseHelper $omiseHelper,
         Resolver $localeResolver,
         StoreManagerInterface $storeManager,
-        UrlInterface $urlBuilder,
-        Webhook $webhook
+        UrlInterface $urlBuilder
     ) {
         $this->money = $money;
         $this->omiseHelper = $omiseHelper;
         $this->localeResolver = $localeResolver;
         $this->storeManager = $storeManager;
         $this->urlBuilder = $urlBuilder;
-        $this->webhook = $webhook;
     }
 
     /**
@@ -124,7 +111,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "is_upa" => true
         ];
         
-        $webhookUrl = $this->webhook->getDynamicWebhookUrl();
+        $webhookUrl = $store->getBaseUrl(UrlInterface::URL_TYPE_LINK, true) . Webhook::URI;
         $payload['webhooks'] = [$webhookUrl];
         
         $locale = substr(strtolower($locale), 0, 2);
