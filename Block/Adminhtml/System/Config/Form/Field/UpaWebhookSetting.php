@@ -59,7 +59,7 @@ class UpaWebhookSetting extends Field
             $html = parent::_getElementHtml($element);
         }
 
-        return '<div data-mage-init="{&quot;Omise_Payment/js/upa-webhook-setting&quot;:{}}">'
-            . $html . '</div>';
+        return '<div data-mage-init=\'{"Omise_Payment/js/upa-webhook-setting":{}}\'>'
+        . $html . '</div>';
     }
 }

@@ -121,6 +121,7 @@ class UPACallback extends Action
             }
             if ($charge->isFailed()) {
                 $this->handleFailure($charge);
+                return;
             }
             return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {

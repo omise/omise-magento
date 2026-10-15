@@ -9,6 +9,7 @@ use Omise\Payment\Helper\OmiseHelper;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Locale\Resolver;
 use Magento\Store\Model\StoreManagerInterface;
+use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 
 class UPAPaymentDataBuilder implements BuilderInterface
 {
@@ -43,24 +44,32 @@ class UPAPaymentDataBuilder implements BuilderInterface
     private $urlBuilder;
 
     /**
+     * @var Webhook
+     */
+    private $webhook;
+
+    /**
      * @param OmiseMoney $money
      * @param OmiseHelper $omiseHelper
      * @param Resolver $localeResolver
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlBuilder
+     * @param Webhook $webhook
      */
     public function __construct(
         OmiseMoney $money,
         OmiseHelper $omiseHelper,
         Resolver $localeResolver,
         StoreManagerInterface $storeManager,
-        UrlInterface $urlBuilder
+        UrlInterface $urlBuilder,
+        Webhook $webhook
     ) {
         $this->money = $money;
         $this->omiseHelper = $omiseHelper;
         $this->localeResolver = $localeResolver;
         $this->storeManager = $storeManager;
         $this->urlBuilder = $urlBuilder;
+        $this->webhook = $webhook;
     }
 
     /**
@@ -115,7 +124,7 @@ class UPAPaymentDataBuilder implements BuilderInterface
             "is_upa" => true
         ];
         
-        $webhookUrl = $store->getBaseUrl() . self::WEBHOOK_URI;
+        $webhookUrl = $this->webhook->getDynamicWebhookUrl();
         $payload['webhooks'] = [$webhookUrl];
         
         $locale = substr(strtolower($locale), 0, 2);
