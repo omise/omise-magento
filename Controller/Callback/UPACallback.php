@@ -94,7 +94,8 @@ class UPACallback extends Action
             $sessionPayments = $checkoutSession->payments;
 
             if ($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
-                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
+                $errorMessage = __('The payment session is invalid or no payment information was found. ' .
+                    'Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
 
@@ -105,7 +106,8 @@ class UPACallback extends Action
                 $chargeId = $finalPayment['charge_id'];
                 $charge = $this->charge->find($chargeId);
             } else {
-                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
+                $errorMessage = __('The payment session is invalid or no payment information was found. ' .
+                    'Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
 
@@ -176,7 +178,12 @@ class UPACallback extends Action
         }
 
         $orderState = $order->getState();
-        $validOrderStates = [Order::STATE_CANCELED, Order::STATE_PENDING_PAYMENT, Order::STATE_PAYMENT_REVIEW, Order::STATE_PROCESSING];
+        $validOrderStates = [
+            Order::STATE_CANCELED,
+            Order::STATE_PENDING_PAYMENT,
+            Order::STATE_PAYMENT_REVIEW,
+            Order::STATE_PROCESSING,
+        ];
         
         if (!in_array($orderState, $validOrderStates)) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our

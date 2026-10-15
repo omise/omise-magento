@@ -134,19 +134,3 @@ class UpaWebhookSettingTest extends TestCase
         }
     }
 }
-
-/**
- * Exposes the protected rendering method and request property for unit tests.
- */
-class TestableUpaWebhookSetting extends UpaWebhookSetting
-{
-    public function setRequestForTest(RequestInterface $request): void
-    {
-        $this->_request = $request;
-    }
-
-    public function renderElementHtml(AbstractElement $element): string
-    {
-        return $this->_getElementHtml($element);
-    }
-}

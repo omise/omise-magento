@@ -429,15 +429,15 @@ class OmiseHelper extends AbstractHelper
     public function getOrderChargeId($order)
     {
         if ($this->isOrderOmisePayment($order)) {
-            if($order->getPayment()->getAdditionalInformation('charge_id')) {
+            if ($order->getPayment()->getAdditionalInformation('charge_id')) {
                 return $order->getPayment()->getAdditionalInformation('charge_id');
             }
-            if ($order->getPayment()->getAdditionalInformation('session_id')){
+            if ($order->getPayment()->getAdditionalInformation('session_id')) {
                 $payment = $order->getPayment();
                 $sessionId = $payment->getAdditionalInformation('session_id');
                 $this->config->setStoreId($order->getStoreId());
                 $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
-                if($checkoutSession) {
+                if ($checkoutSession) {
                     $sessionPayments = $checkoutSession->payments;
                     $sessionStatus = $checkoutSession->status;
                     if (is_array($sessionPayments) && !empty($sessionPayments)) {
