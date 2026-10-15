@@ -120,7 +120,7 @@ class UpaWebhookSettingTest extends TestCase
         $html = $block->renderElementHtml($element);
 
         $this->assertStringContainsString(
-            '<div data-mage-init="{&quot;Omise_Payment/js/upa-webhook-setting&quot;:{}}">',
+            "<div data-mage-init='{\"Omise_Payment/js/upa-webhook-setting\":{}}'>",
             $html
         );
         $this->assertStringContainsString('<input id="upa_webhook" />', $html);
