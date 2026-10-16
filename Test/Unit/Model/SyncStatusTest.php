@@ -39,6 +39,10 @@ class SyncStatusTest extends TestCase
 
         $payment = $this->createMock(Payment::class);
         $payment->expects($this->once())
+            ->method('getAdditionalInformation')
+            ->with('session_id')
+            ->willReturn('session_manual_sync_123');
+        $payment->expects($this->once())
             ->method('setTransactionId')
             ->with($charge['id']);
         $payment->expects($this->once())
@@ -65,6 +69,9 @@ class SyncStatusTest extends TestCase
         $emailHelper->expects($this->once())
             ->method('sendInvoiceAndConfirmationEmails')
             ->with($order);
+
+        // SyncStatus reads this property when deciding whether to store the charge ID.
+        $syncStatus->payment = $payment;
 
         $method = new ReflectionMethod(SyncStatus::class, 'markPaymentSuccessful');
         $method->setAccessible(true);
