@@ -2,12 +2,12 @@
 
 namespace Omise\Payment\Test\Unit;
 
-use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Model\Config\Config;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class ConfigTest extends TestCase
 {
@@ -17,9 +17,22 @@ class ConfigTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->scopeConfigMock = m::mock(ScopeConfigInterface::class);
-        $this->storeManagerMock = m::mock(StoreManagerInterface::class);
-        $this->storeMock =  m::mock(StoreInterface::class);
+        $this->scopeConfigMock = $this->createMock(ScopeConfigInterface::class);
+        $this->storeManagerMock = $this->createMock(StoreManagerInterface::class);
+        $this->storeMock = $this->createMock(StoreInterface::class);
+    }
+
+    /**
+     * @covers \Omise\Payment\Model\Config\Config::checkoutSessionEndpoint
+     */
+    public function testCheckoutSessionEndpoint(): void
+    {
+        $config = (new \ReflectionClass(Config::class))->newInstanceWithoutConstructor();
+
+        $this->assertSame(
+            'https://checkout-page.omise.co/',
+            $config->checkoutSessionEndpoint()
+        );
     }
 
     /**
@@ -28,32 +41,17 @@ class ConfigTest extends TestCase
      */
     public function testIsDynamicWebhooksEnabled($webhookEnabled, $dynamicWebhooksEnabled, $expected)
     {
-        $this->scopeConfigMock->shouldReceive('getValue')
-            ->with('general/locale/code', m::any(), m::any())
-            ->andReturn('en');
+        $this->scopeConfigMock->method('getValue')->willReturnMap([
+            ['general/locale/code', ScopeInterface::SCOPE_STORE, 1, 'en'],
+            ['payment/omise/sandbox_status', ScopeInterface::SCOPE_STORE, 1, 1],
+            ['payment/omise/test_public_key', ScopeInterface::SCOPE_STORE, 1, 'pkey_test_xx'],
+            ['payment/omise/test_secret_key', ScopeInterface::SCOPE_STORE, 1, 'pkey_test_xx'],
+            ['payment/omise/dynamic_webhooks', ScopeInterface::SCOPE_STORE, 1, $dynamicWebhooksEnabled],
+            ['payment/omise/webhook_status', ScopeInterface::SCOPE_STORE, 1, $webhookEnabled],
+        ]);
 
-        $this->scopeConfigMock->shouldReceive('getValue')
-            ->with('payment/omise/sandbox_status', m::any(), m::any())
-            ->andReturn(1);
-
-        $this->scopeConfigMock->shouldReceive('getValue')
-            ->with('payment/omise/test_public_key', m::any(), m::any())
-            ->andReturn('pkey_test_xx');
-
-        $this->scopeConfigMock->shouldReceive('getValue')
-            ->with('payment/omise/test_secret_key', m::any(), m::any())
-            ->andReturn('pkey_test_xx');
-
-        $this->scopeConfigMock->shouldReceive('getValue')
-            ->with('payment/omise/dynamic_webhooks', m::any(), m::any())
-            ->andReturn($dynamicWebhooksEnabled);
-
-        $this->scopeConfigMock->shouldReceive('getValue')
-            ->with('payment/omise/webhook_status', m::any(), m::any())
-            ->andReturn($webhookEnabled);
-
-        $this->storeMock->shouldReceive('getId')->andReturn(1);
-        $this->storeManagerMock->shouldReceive('getStore')->andReturn($this->storeMock);
+        $this->storeMock->method('getId')->willReturn(1);
+        $this->storeManagerMock->method('getStore')->willReturn($this->storeMock);
 
         $config = new Config($this->scopeConfigMock, $this->storeManagerMock);
         $result = $config->isDynamicWebhooksEnabled();

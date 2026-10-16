@@ -5,7 +5,6 @@ namespace Omise\Payment\Model\Api;
 use Exception;
 use OmiseApiResource;
 use Omise\Payment\Model\Config\Config;
-use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\RequestHelper;
 use Magento\Framework\Exception\LocalizedException;
 
@@ -19,25 +18,17 @@ class CheckoutSession extends BaseObject
     private $requestHelper;
 
     /**
-     * @var OmiseHelper
-     */
-    private $omiseHelper;
-
-    /**
      * Injecting dependencies
      *
      * @param Config $config
      * @param RequestHelper $requestHelper
-     * @param OmiseHelper $omiseHelper
      */
     public function __construct(
         Config $config,
-        RequestHelper $requestHelper,
-        OmiseHelper $omiseHelper
+        RequestHelper $requestHelper
     ) {
         $this->requestHelper = $requestHelper;
         $this->config = $config;
-        $this->omiseHelper = $omiseHelper;
     }
 
     /**
@@ -49,7 +40,7 @@ class CheckoutSession extends BaseObject
     public function createSession($params)
     {
         try {
-            $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
+            $endpoint = $this->config->checkoutSessionEndpoint();
             $session = $this->requestHelper->sendUpaSessionRequest(
                 $endpoint."api/sessions",
                 OmiseApiResource::REQUEST_POST,
@@ -73,7 +64,7 @@ class CheckoutSession extends BaseObject
     public function getSessionInfo($sessionId)
     {
         try {
-            $endpoint = $this->omiseHelper->checkoutSessionEndpoint();
+            $endpoint = $this->config->checkoutSessionEndpoint();
             $session = $this->requestHelper->sendUpaSessionRequest(
                 $endpoint."api/sessions/".$sessionId,
                 OmiseApiResource::REQUEST_GET,

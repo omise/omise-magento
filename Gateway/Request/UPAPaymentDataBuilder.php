@@ -9,6 +9,7 @@ use Omise\Payment\Helper\OmiseHelper;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Locale\Resolver;
 use Magento\Store\Model\StoreManagerInterface;
+use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 
 class UPAPaymentDataBuilder implements BuilderInterface
 {
@@ -74,7 +75,6 @@ class UPAPaymentDataBuilder implements BuilderInterface
 
         $upaThemeColor = $this->omiseHelper->getConfig('upa_theme_color', $order->getStoreId());
         $upaTextColor = $this->omiseHelper->getConfig('upa_text_color', $order->getStoreId());
-
         $locale = $this->localeResolver->getLocale();
 
         if (empty($methodId)) {
@@ -110,6 +110,9 @@ class UPAPaymentDataBuilder implements BuilderInterface
             ],
             "is_upa" => true
         ];
+        
+        $webhookUrl = $store->getBaseUrl(UrlInterface::URL_TYPE_LINK, true) . Webhook::URI;
+        $payload['webhooks'] = [$webhookUrl];
         
         $locale = substr(strtolower($locale), 0, 2);
         if (!empty($locale)) {

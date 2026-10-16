@@ -8,7 +8,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Omise\Payment\Model\Api\CheckoutSession;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Helper\RequestHelper;
-use Omise\Payment\Helper\OmiseHelper;
 use OmiseApiResource;
 
 class CheckoutSessionTest extends TestCase
@@ -23,16 +22,10 @@ class CheckoutSessionTest extends TestCase
      */
     private $requestHelper;
 
-    /**
-     * @var OmiseHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $omiseHelper;
-
     protected function setUp(): void
     {
         $this->config = $this->createMock(Config::class);
         $this->requestHelper = $this->createMock(RequestHelper::class);
-        $this->omiseHelper = $this->createMock(OmiseHelper::class);
     }
     
     /**
@@ -42,8 +35,7 @@ class CheckoutSessionTest extends TestCase
     {
         $model = new CheckoutSession(
             $this->config,
-            $this->requestHelper,
-            $this->omiseHelper
+            $this->requestHelper
         );
 
         $this->assertInstanceOf(
@@ -70,13 +62,12 @@ class CheckoutSessionTest extends TestCase
 
         $model = new CheckoutSession(
             $this->config,
-            $this->requestHelper,
-            $this->omiseHelper
+            $this->requestHelper
         );
 
-        $this->omiseHelper->expects($this->once())
+        $this->config->expects($this->once())
             ->method('checkoutSessionEndpoint')
-            ->willReturn('https://api.omise.co/');
+            ->willReturn('https://checkout-page.omise.co/');
 
         $this->config->expects($this->once())
             ->method('getSecretKey')
@@ -85,7 +76,7 @@ class CheckoutSessionTest extends TestCase
         $this->requestHelper->expects($this->once())
             ->method('sendUpaSessionRequest')
             ->with(
-                'https://api.omise.co/api/sessions',
+                'https://checkout-page.omise.co/api/sessions',
                 OmiseApiResource::REQUEST_POST,
                 'sk_test',
                 $params,
@@ -115,13 +106,12 @@ class CheckoutSessionTest extends TestCase
 
         $model = new CheckoutSession(
             $this->config,
-            $this->requestHelper,
-            $this->omiseHelper
+            $this->requestHelper
         );
 
-        $this->omiseHelper->expects($this->once())
+        $this->config->expects($this->once())
             ->method('checkoutSessionEndpoint')
-            ->willReturn('https://api.omise.co/');
+            ->willReturn('https://checkout-page.omise.co/');
 
         $this->config->expects($this->once())
             ->method('getSecretKey')
@@ -130,7 +120,7 @@ class CheckoutSessionTest extends TestCase
         $this->requestHelper->expects($this->once())
             ->method('sendUpaSessionRequest')
             ->with(
-                'https://api.omise.co/api/sessions/' . $sessionId,
+                'https://checkout-page.omise.co/api/sessions/' . $sessionId,
                 OmiseApiResource::REQUEST_GET,
                 'sk_test'
             )
@@ -154,13 +144,12 @@ class CheckoutSessionTest extends TestCase
 
         $model = new CheckoutSession(
             $this->config,
-            $this->requestHelper,
-            $this->omiseHelper
+            $this->requestHelper
         );
 
-        $this->omiseHelper->expects($this->once())
+        $this->config->expects($this->once())
             ->method('checkoutSessionEndpoint')
-            ->willReturn('https://api.omise.co/');
+            ->willReturn('https://checkout-page.omise.co/');
 
         $this->requestHelper->expects($this->once())
             ->method('sendUpaSessionRequest')
@@ -182,13 +171,12 @@ class CheckoutSessionTest extends TestCase
 
         $model = new CheckoutSession(
             $this->config,
-            $this->requestHelper,
-            $this->omiseHelper
+            $this->requestHelper
         );
 
-        $this->omiseHelper->expects($this->once())
+        $this->config->expects($this->once())
             ->method('checkoutSessionEndpoint')
-            ->willReturn('https://api.omise.co/');
+            ->willReturn('https://checkout-page.omise.co/');
 
         $this->requestHelper->expects($this->once())
             ->method('sendUpaSessionRequest')

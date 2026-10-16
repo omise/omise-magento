@@ -6,15 +6,10 @@ use Magento\Framework\App\Action\Context;
 use Magento\Checkout\Model\Session;
 use Omise\Payment\Model\Omise;
 use Omise\Payment\Model\Api\Charge;
-use Omise\Payment\Helper\OmiseHelper;
-use Omise\Payment\Helper\OmiseEmailHelper;
-use Omise\Payment\Model\Config\Cc as Config;
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\App\Request\Http;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Payment\Transaction;
 use Magento\Framework\Exception\LocalizedException;
 
 class UPACallback extends Action
@@ -41,29 +36,9 @@ class UPACallback extends Action
     protected $charge;
 
     /**
-     * @var \Omise\Payment\Helper\OmiseHelper
-     */
-    protected $helper;
-
-    /**
-     * @var \Omise\Payment\Helper\OmiseEmailHelper
-     */
-    protected $emailHelper;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * @var CheckoutSession
      */
     protected $checkoutSession;
-
-    /**
-     * @var Http
-     */
-    protected $request;
 
     /**
      * @var OmiseCheckoutSession
@@ -75,11 +50,7 @@ class UPACallback extends Action
      * @param Session $session
      * @param Omise   $omise
      * @param Charge  $charge
-     * @param OmiseHelper $helper
-     * @param OmiseEmailHelper $emailHelper
-     * @param Config $config
      * @param CheckoutSession $checkoutSession
-     * @param Http $request
      * @param OmiseCheckoutSession $omiseCheckoutSession
      */
     public function __construct(
@@ -87,22 +58,14 @@ class UPACallback extends Action
         Session $session,
         Omise   $omise,
         Charge  $charge,
-        OmiseHelper $helper,
-        OmiseEmailHelper $emailHelper,
-        Config $config,
         CheckoutSession $checkoutSession,
-        Http $request,
         OmiseCheckoutSession $omiseCheckoutSession
     ) {
         parent::__construct($context);
         $this->session = $session;
         $this->omise   = $omise;
         $this->charge  = $charge;
-        $this->helper  = $helper;
-        $this->emailHelper = $emailHelper;
-        $this->config = $config;
         $this->checkoutSession  = $checkoutSession;
-        $this->request = $request;
         $this->omiseCheckoutSession = $omiseCheckoutSession;
         $this->omise->defineUserAgent();
         $this->omise->defineApiVersion();
@@ -114,7 +77,6 @@ class UPACallback extends Action
      */
     public function execute()
     {
-        $finalPayment = [];
         $order = $this->session->getLastRealOrder();
 
         if (!$this->isValid($order)) {
@@ -132,7 +94,8 @@ class UPACallback extends Action
             $sessionPayments = $checkoutSession->payments;
 
             if ($checkoutSession && !is_array($sessionPayments) || empty($sessionPayments)) {
-                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
+                $errorMessage = __('The payment session is invalid or no payment information was found. ' .
+                    'Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
 
@@ -143,7 +106,8 @@ class UPACallback extends Action
                 $chargeId = $finalPayment['charge_id'];
                 $charge = $this->charge->find($chargeId);
             } else {
-                $errorMessage = __('The payment session is invalid or no payment information was found. Please contact our support if you have any questions.');
+                $errorMessage = __('The payment session is invalid or no payment information was found. ' .
+                    'Please contact our support if you have any questions.');
                 return $this->redirectBackToCart($order, $errorMessage);
             }
 
@@ -161,21 +125,7 @@ class UPACallback extends Action
                 $this->handleFailure($charge);
                 return;
             }
-            
-            // Do not proceed if webhook is enabled
-            if ($this->config->isWebhookEnabled()) {
-                return $this->redirect(self::PATH_SUCCESS);
-            }
-            
-            $payment->setTransactionId($charge->id);
-            $payment->setLastTransId($charge->id);
-            $payment->setAdditionalInformation('charge_id', $charge->id);
-
-            if ($charge->isSuccessful()) {
-                return $this->handleSuccess($order, $charge, $payment);
-            }
-
-            return $this->handlePending($order, $payment);
+            return $this->redirect(self::PATH_SUCCESS);
         } catch (Exception $e) {
             $this->cancel($order, $e->getMessage());
             return $this->redirect(self::PATH_CART);
@@ -204,65 +154,6 @@ class UPACallback extends Action
     }
 
     /**
-     * Mark order as success
-     *
-     * @param object $order
-     * @param object $charge
-     * @param object $payment
-     */
-    private function handleSuccess($order, $charge, $payment)
-    {
-        // Update order state and status.
-        $order->setState(Order::STATE_PROCESSING);
-        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
-
-        $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge->id, $charge->capture);
-        $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
-        
-        if ($charge->capture) {
-            // Add transaction.
-            $payment->addTransactionCommentsToOrder(
-                $payment->addTransaction(Transaction::TYPE_PAYMENT, $invoice),
-                __(
-                    $comment = __('Amount of %1 has been paid via Omise Gateway.'),
-                    $order->getBaseCurrency()->formatTxt($invoice->getBaseGrandTotal())
-                )
-            );
-        }
-        $order->save();
-        return $this->redirect(self::PATH_SUCCESS);
-    }
-
-    /**
-     * Mark order as pending
-     *
-     * @param object $order
-     * @param object $payment
-     */
-    private function handlePending($order, $payment)
-    {
-        // Update order state and status.
-        $order->setState(Order::STATE_PAYMENT_REVIEW);
-        $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PAYMENT_REVIEW));
-
-        // Add transaction.
-        $transaction = $payment->addTransaction(Transaction::TYPE_PAYMENT);
-        $transaction->setIsClosed(false);
-        $payment->addTransactionCommentsToOrder(
-            $transaction,
-            __('The payment is under processing.<br/>Due to bank processing, this might take up to an hour to
-             complete. The payment status will be updated once the processing result is available (you can
-             check the latest status on the Omise Dashboard).')
-        );
-
-        $order->save();
-
-        // TODO: Should redirect users to a page that tell users that
-        // their payment is in review instead of success page.
-        return $this->redirect(self::PATH_SUCCESS);
-    }
-
-    /**
      * Check if the transaction is valid
      *
      * @param object $order
@@ -287,7 +178,12 @@ class UPACallback extends Action
         }
 
         $orderState = $order->getState();
-        $validOrderStates = [Order::STATE_PENDING_PAYMENT, Order::STATE_PAYMENT_REVIEW, Order::STATE_PROCESSING];
+        $validOrderStates = [
+            Order::STATE_CANCELED,
+            Order::STATE_PENDING_PAYMENT,
+            Order::STATE_PAYMENT_REVIEW,
+            Order::STATE_PROCESSING,
+        ];
         
         if (!in_array($orderState, $validOrderStates)) {
             $this->invalid($order, __('Invalid order status, cannot validate the payment. Please contact our
@@ -367,7 +263,7 @@ class UPACallback extends Action
                 __('Cannot retrieve a session reference id. Please contact our support to confirm your payment.')
             );
         }
-        
+
         $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
         return $checkoutSession;
     }
