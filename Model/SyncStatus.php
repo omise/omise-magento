@@ -124,7 +124,7 @@ class SyncStatus
             $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
             $payment = $order->getPayment();
-            if ($this->payment->getAdditionalInformation('session_id')) {
+            if ($payment->getAdditionalInformation('session_id')) {
                 $payment->setTransactionId($charge['id']);
                 $payment->setLastTransId($charge['id']);
                 $payment->setAdditionalInformation('charge_id', $charge['id']);
