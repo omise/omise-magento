@@ -124,10 +124,12 @@ class SyncStatus
             $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
             $payment = $order->getPayment();
-            $payment->setTransactionId($charge['id']);
-            $payment->setLastTransId($charge['id']);
-            $payment->setAdditionalInformation('charge_id', $charge['id']);
-
+            if ($this->payment->getAdditionalInformation('session_id')) {
+                $payment->setTransactionId($charge['id']);
+                $payment->setLastTransId($charge['id']);
+                $payment->setAdditionalInformation('charge_id', $charge['id']);
+            }
+            
             $order->addStatusHistoryComment(
                 __(
                     'Omise: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',
