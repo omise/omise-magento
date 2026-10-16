@@ -440,9 +440,7 @@ class OmiseHelper extends AbstractHelper
                     $sessionStatus = $checkoutSession->status;
                     if (is_array($sessionPayments) && !empty($sessionPayments)) {
                         $finalPayment = $this->getFinalPayment($sessionPayments, $sessionStatus);
-                        if (!empty($finalPayment) && !empty($finalPayment['charge_id'])) {
-                            return !empty($finalPayment) ? $finalPayment['charge_id'] : null;
-                        }
+                        return !empty($finalPayment) ? $finalPayment['charge_id'] : null;
                     }
                 }
             }
