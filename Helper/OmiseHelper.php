@@ -283,6 +283,17 @@ class OmiseHelper extends AbstractHelper
     {
         return $this->config->checkoutSessionEndpoint();
     }
+    
+    /**
+     * Get the description used for an Omise request.
+     *
+     * @param mixed $order
+     * @return string
+     */
+    public function getDescription($order)
+    {
+        return 'Magento 2 Order id ' . $order->getOrderIncrementId();
+    }
 
     /**
      * @var string
