@@ -1,7 +1,8 @@
 # CHANGELOG
 ## [v4.0.0 _(June, 23, 2026)_](https://github.com/omise/omise-magento/releases/tag/v4.0.0)
-- Improvements in Charge validation for UPA  (PR: [#553](https://github.com/omise/omise-magento/pull/553))
-- Allow Merchant to display selected Brand card-icon on credit-card form(PR: [#522](https://github.com/omise/omise-magento/pull/552))
+- Introduce the new checkout flow  (PR: [#553](https://github.com/omise/omise-magento/pull/553))
+- Allow Merchant to display selected Brand card-icon on credit-card form (PR: [#522](https://github.com/omise/omise-magento/pull/552))
+
 ## [v3.14.0 _(Aug, 20, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.14.0)
 - Fix Payment Flow Issue. (PR: [#546](https://github.com/omise/omise-magento/pull/546))
 
