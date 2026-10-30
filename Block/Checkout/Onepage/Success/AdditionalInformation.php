@@ -52,6 +52,15 @@ class AdditionalInformation extends \Magento\Framework\View\Element\Template
     {
         return $this->paymentType;
     }
+
+    /**
+     * @return bool
+     */
+    protected function isUpaPayment()
+    {
+        return !empty($this->getPaymentAdditionalInformation('session_id'));
+    }
+
     /**
      * returns payment additional information depending on $key.
      * @param string $key

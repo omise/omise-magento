@@ -31,10 +31,11 @@ use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Mobilebanking;
 use Omise\Payment\Model\Config\Rabbitlinepay;
-
 use Magento\Framework\App\Helper\AbstractHelper;
 use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 
 class OmiseHelper extends AbstractHelper
 {
@@ -216,13 +217,29 @@ class OmiseHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
+     * @var OmiseCheckoutSession
+     */
+    protected $omiseCheckoutSession;
+    
+    /**
      * @param Header $header
      * @param Config $config
+     * @param ScopeConfigInterface $scopeConfig
+     * @param OmiseCheckoutSession $omiseCheckoutSession
      */
-    public function __construct(Config $config)
-    {
+    public function __construct(
+        Config $config,
+        ScopeConfigInterface $scopeConfig,
+        OmiseCheckoutSession $omiseCheckoutSession
+    ) {
         $this->config = $config;
-
+        $this->scopeConfig = $scopeConfig;
+        $this->omiseCheckoutSession = $omiseCheckoutSession;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -235,11 +252,52 @@ class OmiseHelper extends AbstractHelper
      *
      * @return string
      */
-    public function getConfig($fieldId)
+    public function getConfig(string $fieldId, ?int $storeId = null)
     {
         $path = 'payment/omise/' . $fieldId;
+        return $this->scopeConfig->getValue(
+            $path,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+    
+    /**
+     * @param string $methodcode
+     * @return bool
+     */
+    public function isAllowUpa($methodCode)
+    {
+        $isUpaFeatureFlagEnabled = $this->config->getIsUpaFeatureFlagEnabled();
+        if ($isUpaFeatureFlagEnabled) {
+            return $this->isOffsitePaymentMethod($methodCode) || $this->isOfflinePaymentMethod($methodCode);
+        }
+        return false;
+    }
 
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
+    /**
+     * @param int
+     * @return string
+     */
+    public function checkoutSessionEndpoint()
+    {
+        return $this->config->checkoutSessionEndpoint();
+    }
+
+    /**
+     * @var string
+     * @return string
+     */
+    public function getMethodId($code)
+    {
+        if (strpos($code, 'omise_offsite_mobilebanking') === 0) {
+            return "mobile_banking";
+        }
+        if (strpos($code, 'omise_offsite_installment') === 0) {
+            return "installment";
+        }
+        $codeToId = array_flip($this->omiseCodeByOmiseId);
+        return $codeToId[$code] ?? null;
     }
 
     /**
@@ -351,7 +409,7 @@ class OmiseHelper extends AbstractHelper
         $payment = $order->getPayment();
         $method = $payment->getMethodInstance();
         $methodCode = $method->getCode();
-        return strpos($methodCode, "omise") > -1;
+        return strpos($methodCode, 'omise') !== false;
     }
 
     /**
@@ -371,7 +429,21 @@ class OmiseHelper extends AbstractHelper
     public function getOrderChargeId($order)
     {
         if ($this->isOrderOmisePayment($order)) {
-            return $order->getPayment()->getAdditionalInformation('charge_id');
+            if ($chargeId = $order->getPayment()->getAdditionalInformation('charge_id')) {
+                return $chargeId;
+            }
+            if ($sessionId = $order->getPayment()->getAdditionalInformation('session_id')) {
+                $this->config->setStoreId($order->getStoreId());
+                $checkoutSession = $this->omiseCheckoutSession->getSessionInfo($sessionId);
+                if ($checkoutSession) {
+                    $sessionPayments = $checkoutSession->payments;
+                    $sessionStatus = $checkoutSession->status;
+                    if (is_array($sessionPayments) && !empty($sessionPayments)) {
+                        $finalPayment = $this->getFinalPayment($sessionPayments, $sessionStatus);
+                        return !empty($finalPayment) ? $finalPayment['charge_id'] : null;
+                    }
+                }
+            }
         }
     }
 
@@ -472,5 +544,33 @@ class OmiseHelper extends AbstractHelper
     public function hasShopeepayFailed($paymentMethod, $isChargeSuccess)
     {
         return $paymentMethod === 'omise_offsite_shopeepay' && !$isChargeSuccess;
+    }
+
+    /**
+     * @param array $payments
+     * @param string $sessionStatus
+     * @return array|null
+     */
+    private function getFinalPayment($payments, $sessionStatus)
+    {
+        if (!is_array($payments) || empty($payments)) {
+            return null;
+        }
+
+        $paymentsWithChargeId = array_filter($payments, function ($payment) {
+            return !empty($payment['charge_id']);
+        });
+
+        if (empty($paymentsWithChargeId)) {
+            return null;
+        }
+
+        foreach ($paymentsWithChargeId as $payment) {
+            $paymentStatus = strtolower(isset($payment['status']) ? (string) $payment['status'] : '');
+            if ($paymentStatus === strtolower((string) $sessionStatus)) {
+                return $payment;
+            }
+        }
+        return end($paymentsWithChargeId);
     }
 }

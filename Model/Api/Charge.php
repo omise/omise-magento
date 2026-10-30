@@ -41,8 +41,9 @@ class Charge extends BaseObject
      *
      * @param Config $config
      */
-    public function __construct(Config $config)
-    {
+    public function __construct(
+        Config $config
+    ) {
         $this->config = $config;
     }
 

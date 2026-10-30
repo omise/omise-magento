@@ -34,6 +34,10 @@ class ConveniencestoreAdditionalInformation extends \Magento\Framework\View\Elem
         $paymentData = $order->getPayment()->getData();
         $paymentAdditionalInfo = $paymentData['additional_information'];
 
+        if (array_key_exists('session_id', $paymentAdditionalInfo) && !empty($paymentAdditionalInfo['session_id'])) {
+            return;
+        }
+
         if (!array_key_exists('payment_type', $paymentAdditionalInfo)) {
             return;
         }

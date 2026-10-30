@@ -7,6 +7,9 @@ use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\CcGooglePay;
 use Omise\Payment\Model\Config\Conveniencestore;
+use Magento\Payment\Model\MethodInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Payment;
 
 class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -14,7 +17,11 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     protected $configMock;
 
+    protected $scopeConfig;
+
     protected $model;
+
+    protected $omiseCheckoutSession;
 
     private $authorizeUri = 'https://somefakeuri.com/redirect';
 
@@ -26,7 +33,9 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
-        $this->model = new OmiseHelper($this->configMock);
+        $this->scopeConfig = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
+        $this->omiseCheckoutSession = $this->createMock('Omise\Payment\Model\Api\CheckoutSession');
+        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig, $this->omiseCheckoutSession);
     }
 
     /**
@@ -191,5 +200,293 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
                 'authorize_uri' => ''
             ]]
         ];
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getConfigReturnsValue()
+    {
+        $this->scopeConfig->expects($this->once())
+            ->method('getValue')
+            ->with(
+                'payment/omise/upa_theme_color',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                null
+            )
+            ->willReturn('#1979C3');
+
+        $this->assertEquals(
+            '#1979C3',
+            $this->model->getConfig('upa_theme_color')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isAllowUpaReturnsTrue()
+    {
+        $this->configMock->expects($this->once())
+            ->method('getIsUpaFeatureFlagEnabled')
+            ->willReturn(true);
+
+        $this->assertTrue(
+            $this->model->isAllowUpa(\Omise\Payment\Model\Config\Promptpay::CODE)
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isAllowUpaReturnsFalseWhenFeatureDisabled()
+    {
+        $this->configMock->expects($this->once())
+            ->method('getIsUpaFeatureFlagEnabled')
+            ->willReturn(false);
+
+        $this->assertFalse(
+            $this->model->isAllowUpa(\Omise\Payment\Model\Config\Promptpay::CODE)
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function isAllowUpaReturnsFalseForUnsupportedMethod()
+    {
+        $this->configMock->expects($this->once())
+            ->method('getIsUpaFeatureFlagEnabled')
+            ->willReturn(true);
+
+        $this->assertFalse(
+            $this->model->isAllowUpa(\Omise\Payment\Model\Config\CcGooglePay::CODE)
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsMobileBanking()
+    {
+        $this->assertEquals(
+            'mobile_banking',
+            $this->model->getMethodId('omise_offsite_mobilebanking_bay')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsInstallment()
+    {
+        $this->assertEquals(
+            'installment',
+            $this->model->getMethodId('omise_offsite_installment_bay')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsMappedId()
+    {
+        $this->assertEquals(
+            \Omise\Payment\Model\Config\Promptpay::ID,
+            $this->model->getMethodId(
+                \Omise\Payment\Model\Config\Promptpay::CODE
+            )
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @test
+     */
+    public function getMethodIdReturnsNull()
+    {
+        $this->assertNull(
+            $this->model->getMethodId('unknown_method')
+        );
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testConstructorInitializesHelperDependencies(): void
+    {
+        $helper = new OmiseHelper(
+            $this->configMock,
+            $this->scopeConfig,
+            $this->omiseCheckoutSession
+        );
+
+        $this->assertInstanceOf(OmiseHelper::class, $helper);
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::checkoutSessionEndpoint
+     */
+    public function testCheckoutSessionEndpointComesFromConfig(): void
+    {
+        $this->configMock->expects($this->once())
+            ->method('checkoutSessionEndpoint')
+            ->willReturn('https://checkout.example/');
+
+        $this->assertSame('https://checkout.example/', $this->model->checkoutSessionEndpoint());
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::isOrderOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper::getOrderChargeId
+     */
+    public function testGetOrderChargeIdReturnsExistingChargeIdWithoutLoadingCheckoutSession(): void
+    {
+        list($order) = $this->createOrderWithPayment('omise_upa', ['charge_id' => 'ch_direct']);
+        $this->omiseCheckoutSession->expects($this->never())->method('getSessionInfo');
+
+        $this->assertSame('ch_direct', $this->model->getOrderChargeId($order));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::isOrderOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper::getOrderChargeId
+     * @covers \Omise\Payment\Helper\OmiseHelper::getFinalPayment
+     */
+    public function testGetOrderChargeIdLoadsSessionAndSelectsPaymentMatchingSessionStatus(): void
+    {
+        list($order) = $this->createOrderWithPayment('omise_upa', ['session_id' => 'sess_123']);
+        $this->configMock->expects($this->once())->method('setStoreId')->with(7);
+        $session = (object) [
+            'payments' => [
+                ['charge_id' => 'ch_pending', 'status' => 'pending'],
+                ['charge_id' => 'ch_succeeded', 'status' => 'succeeded'],
+            ],
+            'status' => 'SUCCEEDED',
+        ];
+        $this->omiseCheckoutSession->expects($this->once())
+            ->method('getSessionInfo')
+            ->with('sess_123')
+            ->willReturn($session);
+
+        $this->assertSame('ch_succeeded', $this->model->getOrderChargeId($order));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::isOrderOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper::getOrderChargeId
+     * @covers \Omise\Payment\Helper\OmiseHelper::getFinalPayment
+     */
+    public function testGetOrderChargeIdFallsBackToLastPaymentWithChargeWhenStatusesDoNotMatch(): void
+    {
+        list($order) = $this->createOrderWithPayment('omise_upa', ['session_id' => 'sess_456']);
+        $session = (object) [
+            'payments' => [
+                ['charge_id' => 'ch_first'],
+                ['status' => 'failed'],
+                ['charge_id' => 'ch_last', 'status' => 'failed'],
+            ],
+            'status' => 'succeeded',
+        ];
+        $this->omiseCheckoutSession->expects($this->once())
+            ->method('getSessionInfo')
+            ->with('sess_456')
+            ->willReturn($session);
+
+        $this->assertSame('ch_last', $this->model->getOrderChargeId($order));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::isOrderOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper::getOrderChargeId
+     * @covers \Omise\Payment\Helper\OmiseHelper::getFinalPayment
+     * @dataProvider emptySessionPaymentsProvider
+     */
+    public function testGetOrderChargeIdReturnsNullWhenSessionHasNoChargePayment($payments): void
+    {
+        list($order) = $this->createOrderWithPayment('omise_upa', ['session_id' => 'sess_empty']);
+        $this->omiseCheckoutSession->expects($this->once())
+            ->method('getSessionInfo')
+            ->willReturn((object) ['payments' => $payments, 'status' => 'succeeded']);
+
+        $this->assertNull($this->model->getOrderChargeId($order));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::isOrderOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper::getOrderChargeId
+     */
+    public function testGetOrderChargeIdReturnsNullWhenCheckoutSessionCannotBeLoaded(): void
+    {
+        list($order) = $this->createOrderWithPayment('omise_upa', ['session_id' => 'sess_missing']);
+        $this->omiseCheckoutSession->expects($this->once())
+            ->method('getSessionInfo')
+            ->with('sess_missing')
+            ->willReturn(null);
+
+        $this->assertNull($this->model->getOrderChargeId($order));
+    }
+
+    public function emptySessionPaymentsProvider(): array
+    {
+        return [
+            'empty list' => [[]],
+            'no charge ids' => [[['status' => 'succeeded']]],
+            'not an array' => ['invalid'],
+        ];
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper
+     * @covers \Omise\Payment\Helper\OmiseHelper::isOrderOmisePayment
+     * @covers \Omise\Payment\Helper\OmiseHelper::getOrderChargeId
+     */
+    public function testGetOrderChargeIdIgnoresNonOmiseOrders(): void
+    {
+        list($order) = $this->createOrderWithPayment('other_payment', ['charge_id' => 'ch_other']);
+        $this->omiseCheckoutSession->expects($this->never())->method('getSessionInfo');
+
+        $this->assertNull($this->model->getOrderChargeId($order));
+    }
+
+    /**
+     * @return array
+     */
+    private function createOrderWithPayment(string $methodCode, array $additionalInformation): array
+    {
+        $method = $this->createMock(MethodInterface::class);
+        $method->method('getCode')->willReturn($methodCode);
+
+        $payment = $this->createMock(Payment::class);
+        $payment->method('getMethodInstance')->willReturn($method);
+        $payment->method('getAdditionalInformation')->willReturnCallback(
+            function ($key) use ($additionalInformation) {
+                return $additionalInformation[$key] ?? null;
+            }
+        );
+
+        $order = $this->createMock(Order::class);
+        $order->method('getPayment')->willReturn($payment);
+        $order->method('getStoreId')->willReturn(7);
+
+        return [$order, $payment];
     }
 }
