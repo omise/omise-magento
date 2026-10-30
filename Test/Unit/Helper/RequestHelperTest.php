@@ -4,7 +4,11 @@ namespace Omise\Payment\Test\Unit\Helper;
 
 use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Test\Mock\RequestMockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
+#[CoversClass(RequestHelper::class)]
 class RequestHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -38,6 +42,29 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
         $this->headerMock = $this->createMock('\Magento\Framework\HTTP\Header');
         $this->omiseMock = $this->createMock('Omise\Payment\Model\Omise');
         $this->model = new RequestHelper($this->requestMock, $this->headerMock, $this->omiseMock);
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\RequestHelper
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testSendUpaSessionRequestDelegatesToUpaRequest(): void
+    {
+        if (!defined('OMISE_USER_AGENT_SUFFIX')) {
+            define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento PHPUnit');
+        }
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Protocol "invalid" not supported');
+
+        $this->model->sendUpaSessionRequest(
+            'invalid://localhost/session',
+            'POST',
+            'skey_test'
+        );
     }
 
     /**
