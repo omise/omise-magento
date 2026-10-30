@@ -41,6 +41,25 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers \Omise\Payment\Helper\RequestHelper
+     */
+    public function testSendUpaSessionRequestDelegatesToUpaRequest(): void
+    {
+        if (!defined('OMISE_USER_AGENT_SUFFIX')) {
+            define('OMISE_USER_AGENT_SUFFIX', 'OmiseMagento PHPUnit');
+        }
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Protocol "invalid" not supported');
+
+        $this->model->sendUpaSessionRequest(
+            'invalid://localhost/session',
+            'POST',
+            'skey_test'
+        );
+    }
+
+    /**
      * Test the function getPlatformType() return correct platform as per user agent
      *
      * @dataProvider platformTypeProvider
