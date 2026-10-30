@@ -46,6 +46,8 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers \Omise\Payment\Helper\RequestHelper
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
      */
     #[RunInSeparateProcess]
     #[PreserveGlobalState(false)]
