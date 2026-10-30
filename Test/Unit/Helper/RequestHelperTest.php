@@ -4,7 +4,11 @@ namespace Omise\Payment\Test\Unit\Helper;
 
 use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Test\Mock\RequestMockInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
+#[CoversClass(RequestHelper::class)]
 class RequestHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -43,6 +47,8 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers \Omise\Payment\Helper\RequestHelper
      */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testSendUpaSessionRequestDelegatesToUpaRequest(): void
     {
         if (!defined('OMISE_USER_AGENT_SUFFIX')) {
