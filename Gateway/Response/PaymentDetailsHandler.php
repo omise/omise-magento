@@ -1,4 +1,5 @@
 <?php
+
 namespace Omise\Payment\Gateway\Response;
 
 use Magento\Payment\Gateway\Helper\SubjectReader;
@@ -18,23 +19,15 @@ class PaymentDetailsHandler implements HandlerInterface
     protected $curlClient;
 
     /**
-     * @var \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface
-     */
-    protected $transactionBuilder;
-
-    /**
      * @param \Omise\Payment\Helper\OmiseHelper $helper
      * @param \Magento\Framework\HTTP\Client\Curl $curl
-     * @param Transaction\BuilderInterface $transactionBuilder
      */
     public function __construct(
         \Omise\Payment\Helper\OmiseHelper $helper,
-        \Magento\Framework\HTTP\Client\Curl $curl,
-        \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface $transactionBuilder
+        \Magento\Framework\HTTP\Client\Curl $curl
     ) {
-        $this->_helper            = $helper;
-        $this->curlClient         = $curl;
-        $this->transactionBuilder = $transactionBuilder;
+        $this->_helper    = $helper;
+        $this->curlClient = $curl;
     }
 
     /**
@@ -48,7 +41,7 @@ class PaymentDetailsHandler implements HandlerInterface
         $this->curlClient->get($url);
         return $this->curlClient->getBody();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -60,28 +53,12 @@ class PaymentDetailsHandler implements HandlerInterface
         $paymentMethod = $payment->getMethod();
         $order         = $payment->getOrder();
 
+        $payment->setTransactionId($response['charge']->id);
         $payment->setAdditionalInformation('charge_id', $response['charge']->id);
         $payment->setAdditionalInformation('charge_authorize_uri', $response['charge']->authorize_uri);
         $payment->setAdditionalInformation('payment_type', $paymentType);
         $payment->setAdditionalInformation('charge_expires_at', $response['charge']->expires_at);
 
-        $transaction = $this->transactionBuilder
-                            ->setPayment($payment)
-                            ->setOrder($order)
-                            ->setTransactionId($response['charge']->id)
-                            ->setAdditionalInformation([Transaction::RAW_DETAILS => (array) $payment])
-                            ->setFailSafe(true)
-                            ->build(Transaction::TYPE_PAYMENT);
-        $payment->addTransactionCommentsToOrder(
-            $transaction,
-            $payment->prependMessage(
-                __(
-                    'Processing amount of %1 via Omise Gateway.',
-                    $order->getBaseCurrency()->formatTxt($order->getTotalDue())
-                )
-            )
-        );
-        
         if ($paymentType === 'bill_payment_tesco_lotus') {
             $barcode = $this->downloadPaymentFile($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
@@ -93,5 +70,21 @@ class PaymentDetailsHandler implements HandlerInterface
                 $response['charge']->source['scannable_code']['image']['download_uri']
             );
         }
+
+        // only save useful payment additional_information into transaction additional_information
+        $payment->setTransactionAdditionalInfo(Transaction::RAW_DETAILS, (array) $payment->getAdditionalInformation());
+
+        // use back payment module function to generate transaction
+        $transaction = $payment->addTransaction(Transaction::TYPE_PAYMENT, null, true);
+
+        $payment->addTransactionCommentsToOrder(
+            $transaction,
+            $payment->prependMessage(
+                __(
+                    'Processing amount of %1 via Opn Payments Gateway.',
+                    $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                )
+            )
+        );
     }
 }
