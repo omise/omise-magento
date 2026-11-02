@@ -1,6 +1,6 @@
 # CHANGELOG
 ## [v4.0.0 _(Nov, 3, 2026)_](https://github.com/omise/omise-magento/releases/tag/v4.0.0)
-Introduce the new checkout flow (PR: [#553](https://github.com/omise/omise-magento/pull/553))
+- Introduce the new checkout flow (PR: [#553](https://github.com/omise/omise-magento/pull/553))
 - Allow Merchant to display selected card brand icons on credit card form (PR: [#522](https://github.com/omise/omise-magento/pull/552))
 
 ## [v3.14.0 _(Aug, 20, 2026)_](https://github.com/omise/omise-magento/releases/tag/v3.14.0)
