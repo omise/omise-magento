@@ -102,6 +102,13 @@ class WebhookCompleteObserver extends WebhookObserver
             $isCaptured
         );
 
+        // Set the charge transaction IDs for UPA payments created through a checkout session.
+        if ($this->payment->getAdditionalInformation('session_id')) {
+            $this->payment->setTransactionId($this->charge->id);
+            $this->payment->setLastTransId($this->charge->id);
+            $this->payment->setAdditionalInformation('charge_id', $this->charge->id);
+        }
+
         $this->emailHelper->sendInvoiceAndConfirmationEmails($this->orderData);
 
         // addTransactionCommentsToOrder with message for authorise or capture

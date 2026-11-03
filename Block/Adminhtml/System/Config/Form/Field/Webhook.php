@@ -56,4 +56,12 @@ class Webhook extends Field
 
         return $this->storeManager->getStore()->getBaseUrl() . self::URI;
     }
+
+    /**
+     * @return string
+     */
+    public function getDynamicWebhookUrl()
+    {
+        return $this->storeManager->getStore()->getBaseUrl() . self::URI;
+    }
 }

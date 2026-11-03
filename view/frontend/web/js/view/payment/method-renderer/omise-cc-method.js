@@ -124,6 +124,7 @@ define(
                 }
 
                 const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
+                const supportedCardIcons = window.checkoutConfig.payment.omise_cc.supported_card_icons
                 const { font, input, checkbox } = formDesign
                 let iframeElementHeight = iframeHeightMatching[input.height]
                 if (hideRememberCard) {
@@ -131,7 +132,7 @@ define(
                 }
                 element.style.height = iframeElementHeight + 'px'
 
-                OmiseCard.configure({
+                const cardFormConfig = {
                     publicKey: self.getPublicKey(),
                     element,
                     locale: localeMatching[locale] ?? 'en',
@@ -157,7 +158,14 @@ define(
                         }
                     },
                     customCardFormHideRememberCard: hideRememberCard
-                })
+                }
+
+                if (Array.isArray(supportedCardIcons) && supportedCardIcons.length > 0) {
+                    cardFormConfig.customCardFormBrandIcons = supportedCardIcons
+                    cardFormConfig.cardBrands = supportedCardIcons.join(' ')
+                }
+
+                OmiseCard.configure(cardFormConfig)
 
                 OmiseCard.open({
                     onCreateTokenSuccess: (payload) => {

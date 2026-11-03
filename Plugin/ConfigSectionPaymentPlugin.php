@@ -84,6 +84,14 @@ class ConfigSectionPaymentPlugin
             //on the admin setting page the setting value will inherit from website scope
             $this->parentScopeType = $this->retrieveParentScope($coreConfig);
             $omiseConfigData = $coreConfig->toArray()['groups']['omise'];
+            if (!empty($omiseConfigData['fields']['is_upa_feature_flag_enabled']['value'])) {
+                $groups = $coreConfig->getGroups();
+                $groups['omise']['fields']['webhook_status'] = ['value' => 1];
+                $groups['omise']['fields']['dynamic_webhooks'] = ['value' => 1];
+                $coreConfig->setData('groups', $groups);
+                $omiseConfigData['fields']['webhook_status'] = ['value' => 1];
+                $omiseConfigData['fields']['dynamic_webhooks'] = ['value' => 1];
+            }
             $keys = $this->getKeys($omiseConfigData);
             
             // if both keys are empty then we ignore the check.

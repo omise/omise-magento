@@ -65,6 +65,14 @@ class Config
     }
 
     /**
+     * @return string
+     */
+    public function checkoutSessionEndpoint()
+    {
+        return 'https://checkout-page.omise.co/';
+    }
+
+    /**
      * Change the store ID from the default store to fetch store specific values
      *
      * @param  integer|null  $storeId
@@ -118,6 +126,19 @@ class Config
             return true;
         }
 
+        return false;
+    }
+
+    /**
+     * Check if Omise's sandbox mode enable or not
+     *
+     * @return bool
+     */
+    public function getIsUpaFeatureFlagEnabled()
+    {
+        if ($this->getValue('is_upa_feature_flag_enabled')) {
+            return true;
+        }
         return false;
     }
 

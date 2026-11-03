@@ -16,6 +16,22 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Enabling sandbox means that all your transactions will be in TEST mode.</comment>
                 </field>
+                <field id="is_upa_feature_flag_enabled" translate="label comment" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>UPA Feature</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, supported payment methods will create payment sessions through Omise hosted checkout page.</comment>
+                </field>
+                <field id="upa_theme_color" translate="label comment" type="text" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Theme Color</label>
+                    <comment>Enter HEX color. Example: #173799</comment>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\ColorPicker</frontend_model>
+                </field>
+                <field id="upa_text_color" translate="label comment" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Text Color</label>
+                    <comment>Enter HEX color. Example: #FFFFFF</comment>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\ColorPicker</frontend_model>
+                    <backend_model>Omise\Payment\Model\Config\Backend\HexColor</backend_model>
+                </field>
                 <field id="test_public_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Public key for test</label>
                     <comment>The "Test" mode public key can be found in Omise Dashboard.</comment>
@@ -35,6 +51,7 @@
                 <field id="webhook_status" translate="label comment" type="select" sortOrder="61" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting</frontend_model>
                     <comment>
                         <![CDATA[Enable webhooks to receive updates when charge and refund events occur. To learn more, see <a href="https://docs.opn.ooo/api-webhooks">our webhooks documentation</a>. </br></br>
                         Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="https://dashboard.omise.co/v2/settings/webhooks">Omise Payments dashboard</a> (HTTPS only).
@@ -44,6 +61,7 @@
                 <field id="dynamic_webhooks" translate="label comment" type="select" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable dynamic webhooks</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Omise\Payment\Block\Adminhtml\System\Config\Form\Field\UpaWebhookSetting</frontend_model>
                     <depends>
                         <field id="webhook_status">1</field>
                     </depends>
@@ -92,6 +110,11 @@
                         <comment>
                             <![CDATA[Credit/debit card secure form design on checkout page. <a style="cursor:pointer" onclick="cardFormCustomization.showModal()"><b>Click here</b></a> for more secure card form customization.]]>
                         </comment>
+                    </field>
+                    <field id="supported_card_icons" translate="label" type="multiselect" sortOrder="114" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Supported card icons</label>
+                        <config_path>payment/omise_cc/supported_card_icons</config_path>
+                        <source_model>Omise\Payment\Model\Source\CardBrandIcon</source_model>
                     </field>
                     <field id="card_form_theme_config" sortOrder="113" showInDefault="1" showInWebsite="1" showInStore="1">
                         <config_path>payment/omise_cc/card_form_theme_config</config_path>
