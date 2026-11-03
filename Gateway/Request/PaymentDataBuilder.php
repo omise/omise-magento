@@ -11,6 +11,7 @@ use Omise\Payment\Model\Config\Cc;
 use Omise\Payment\Model\Config\Config;
 use Omise\Payment\Block\Adminhtml\System\Config\Form\Field\Webhook;
 use Omise\Payment\Model\Capability;
+use Magento\Store\Model\StoreManagerInterface;
 
 class PaymentDataBuilder implements BuilderInterface
 {
@@ -60,18 +61,26 @@ class PaymentDataBuilder implements BuilderInterface
     private $capability;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      * @param Capability $capability
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
-        Capability $capability
+        Capability $capability,
+        StoreManagerInterface $storeManager
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
         $this->capability = $capability;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -84,15 +93,16 @@ class PaymentDataBuilder implements BuilderInterface
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
         $method  = $payment->getPayment();
+        $amount = isset($buildSubject['amount'])
+            ? SubjectReader::readAmount($buildSubject)
+            : $method->getOrder()->getGrandTotal();
         $store_id = $order->getStoreId();
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
-        $manager = $om->get(\Magento\Store\Model\StoreManagerInterface::class);
-        $store = $manager->getStore($store_id);
+        $store = $this->storeManager->getStore($store_id);
         $currency = $order->getCurrencyCode();
 
         $requestBody = [
             self::AMOUNT      => $this->money->setAmountAndCurrency(
-                $order->getGrandTotalAmount(),
+                (float) $amount,
                 $currency
             )->toSubunit(),
             self::CURRENCY    => $currency,

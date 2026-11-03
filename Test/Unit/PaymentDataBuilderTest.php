@@ -82,8 +82,11 @@ class PaymentDataBuilderTest extends TestCase
         $this->ccConfigMock->shouldReceive('getSecureForm')->andReturn($secureFormEnabled);
         $this->ccConfigMock->shouldReceive('isDynamicWebhooksEnabled')->andReturn(true);
 
-        $this->omiseMoneyMock->shouldReceive('setAmountAndCurrency')->andReturn($this->omiseMoneyMock);
-        $this->omiseMoneyMock->shouldReceive('toSubunit')->andReturn($amount * 100);
+        $captureAmount = 50;
+        $this->omiseMoneyMock->shouldReceive('setAmountAndCurrency')
+            ->with($captureAmount, $currency)
+            ->andReturn($this->omiseMoneyMock);
+        $this->omiseMoneyMock->shouldReceive('toSubunit')->andReturn($captureAmount * 100);
 
         $this->storeMock->shouldReceive('getName')->andReturn($storeName);
         $this->storeMock->shouldReceive('getBaseUrl')->andReturn($storeBaseUrl);
@@ -93,7 +96,6 @@ class PaymentDataBuilderTest extends TestCase
         $this->factoryMock->shouldReceive('create')->andReturn($this->storeManagerMock);
 
         $this->orderMock->shouldReceive('getCurrencyCode')->andReturn($currency);
-        $this->orderMock->shouldReceive('getGrandTotalAmount')->andReturn($amount);
         $this->orderMock->shouldReceive('getOrderIncrementId')->andReturn($orderId);
         $this->orderMock->shouldReceive('getStoreId')->andReturn($storeId);
 
@@ -105,9 +107,12 @@ class PaymentDataBuilderTest extends TestCase
             $this->omiseMoneyMock,
             $this->capability
         );
-        $result = $model->build(['payment' => $this->paymentDataMock]);
+        $result = $model->build([
+            'payment' => $this->paymentDataMock,
+            'amount' => $captureAmount,
+        ]);
 
-        $this->assertEquals(100000, $result['amount']);
+        $this->assertEquals($captureAmount * 100, $result['amount']);
         $this->assertEquals('THB', $result['currency']);
         $this->assertEquals([
             'https://omise.co/omise/callback/webhook'
