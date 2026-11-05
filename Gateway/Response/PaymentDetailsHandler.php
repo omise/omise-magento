@@ -77,6 +77,7 @@ class PaymentDetailsHandler implements HandlerInterface
                                     'currency' => (string) $response['charge']->currency,
                                 ],
                             ])
+                            ->setFailSafe(true)
                             ->build(Transaction::TYPE_PAYMENT);
         if ($response['charge']->capturable || $response['charge']->capture) {
             $payment->addTransactionCommentsToOrder(

@@ -92,6 +92,7 @@ class PaymentDataBuilder implements BuilderInterface
     {
         $payment = SubjectReader::readPayment($buildSubject);
         $order   = $payment->getOrder();
+        $store_id = $order->getStoreId();
         $method  = $payment->getPayment();
         $amount = isset($buildSubject['amount'])
             ? SubjectReader::readAmount($buildSubject)

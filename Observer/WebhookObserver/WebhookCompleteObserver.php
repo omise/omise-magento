@@ -71,7 +71,7 @@ class WebhookCompleteObserver extends WebhookObserver
      * @param boolean $isCaptured
      * @param string $amount
      */
-    private function transactionCommentToOrder(bool $isCaptured, string $amount)
+    private function transactionCommentToOrder(bool $isCaptured, string $amount, ?string $sessionId = null)
     {
         if ($isCaptured) {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_PAYMENT, $this->invoice);
@@ -79,6 +79,15 @@ class WebhookCompleteObserver extends WebhookObserver
         } else {
             $transaction = $this->payment->addTransaction(Transaction::TYPE_AUTH, $this->invoice);
             $comment = __('Authorized amount of %1 via Omise Gateway (3-D Secure payment).', $amount);
+        }
+
+        if ($sessionId) {
+            $transaction->setAdditionalInformation(
+                Transaction::RAW_DETAILS,
+                [
+                    'session_id' => (string) $sessionId,
+                ]
+            );
         }
 
         $this->payment->addTransactionCommentsToOrder($transaction, $comment);
@@ -103,7 +112,8 @@ class WebhookCompleteObserver extends WebhookObserver
         );
 
         // Set the charge transaction IDs for UPA payments created through a checkout session.
-        if ($this->payment->getAdditionalInformation('session_id')) {
+        $sessionId = $this->payment->getAdditionalInformation('session_id');
+        if ($sessionId) {
             $this->payment->setTransactionId($this->charge->id);
             $this->payment->setLastTransId($this->charge->id);
             $this->payment->setAdditionalInformation('charge_id', $this->charge->id);
@@ -113,7 +123,11 @@ class WebhookCompleteObserver extends WebhookObserver
 
         // addTransactionCommentsToOrder with message for authorise or capture
         $amount = $isCaptured ? $this->invoice->getBaseGrandTotal() : $this->orderData->getTotalDue();
-        $this->transactionCommentToOrder($isCaptured, $this->orderData->getBaseCurrency()->formatTxt($amount));
+        $this->transactionCommentToOrder(
+            $isCaptured,
+            $this->orderData->getBaseCurrency()->formatTxt($amount),
+            $sessionId
+        );
 
         $this->orderData->save();
     }
