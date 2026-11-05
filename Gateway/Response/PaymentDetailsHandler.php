@@ -69,19 +69,27 @@ class PaymentDetailsHandler implements HandlerInterface
                             ->setPayment($payment)
                             ->setOrder($order)
                             ->setTransactionId($response['charge']->id)
-                            ->setAdditionalInformation([Transaction::RAW_DETAILS => (array) $payment])
+                            ->setAdditionalInformation([
+                                Transaction::RAW_DETAILS => [
+                                    'charge_id' => (string) $response['charge']->id,
+                                    'status' => (string) $response['charge']->status,
+                                    'amount' => (string) $response['charge']->amount,
+                                    'currency' => (string) $response['charge']->currency,
+                                ],
+                            ])
                             ->setFailSafe(true)
                             ->build(Transaction::TYPE_PAYMENT);
-        $payment->addTransactionCommentsToOrder(
-            $transaction,
-            $payment->prependMessage(
-                __(
-                    'Processing amount of %1 via Omise Gateway.',
-                    $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+        if ($response['charge']->capturable || $response['charge']->capture) {
+            $payment->addTransactionCommentsToOrder(
+                $transaction,
+                $payment->prependMessage(
+                    __(
+                        'Processing amount of %1 via Omise Gateway.',
+                        $order->getBaseCurrency()->formatTxt($order->getTotalDue())
+                    )
                 )
-            )
-        );
-        
+            );
+        }
         if ($paymentType === 'bill_payment_tesco_lotus') {
             $barcode = $this->downloadPaymentFile($response['charge']->source['references']['barcode']);
             $payment->setAdditionalInformation('barcode', $barcode);
