@@ -105,7 +105,8 @@ class PaymentDataBuilderTest extends TestCase
         $model = new PaymentDataBuilder(
             $this->ccConfigMock,
             $this->omiseMoneyMock,
-            $this->capability
+            $this->capability,
+            $this->storeManagerMock
         );
         $result = $model->build([
             'payment' => $this->paymentDataMock,

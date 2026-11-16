@@ -96,7 +96,7 @@ class PaymentDataBuilder implements BuilderInterface
         $method  = $payment->getPayment();
         $amount = isset($buildSubject['amount'])
             ? SubjectReader::readAmount($buildSubject)
-            : $method->getOrder()->getGrandTotal();
+            : $order->getGrandTotalAmount();
         $store_id = $order->getStoreId();
         $store = $this->storeManager->getStore($store_id);
         $currency = $order->getCurrencyCode();
