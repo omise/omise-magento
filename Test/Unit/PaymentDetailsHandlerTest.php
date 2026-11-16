@@ -38,6 +38,11 @@ class PaymentDetailsHandlerTest extends TestCase
         $this->chargeMock->id = 'charge_xxx';
         $this->chargeMock->authorize_uri = 'https://omise.co/authorized';
         $this->chargeMock->expires_at = '2023-09-29T06:49:35Z';
+        $this->chargeMock->status = 'successful';
+        $this->chargeMock->amount = 100000;
+        $this->chargeMock->currency = 'thb';
+        $this->chargeMock->capturable = true;
+        $this->chargeMock->capture = false;
     }
 
     /**
