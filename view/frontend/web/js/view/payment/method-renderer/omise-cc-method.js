@@ -36,6 +36,10 @@ define(
 
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
 
+            orderSubmissionInProgress: false,
+
+            orderRequestSent: false,
+
             code: 'omise_cc',
 
             billingAddressCountries: ["US", "GB", "CA"],
@@ -178,17 +182,27 @@ define(
                         else {
                             self.omiseCardError('Something went wrong. Please refresh the page and try again.')
                         }
+                        self.orderSubmissionInProgress = false
+                        self.orderRequestSent = false
                         self.stopPerformingPlaceOrderAction()
                     }
                 })
             },
 
             createOrder: function (self, payload) {
+                if (self.orderRequestSent) {
+                    return
+                }
+
+                self.orderRequestSent = true
                 self.omiseCardToken(payload.token)
                 if (payload.remember) {
                     self.omiseSaveCard(payload.remember)
                 }
-                const failHandler = self.buildFailHandler(this, 300)
+                const failHandler = (response) => {
+                    self.buildFailHandler(self, 300)(response)
+                    self.isPlaceOrderActionAllowed(false)
+                }
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
                     .done((order_id) => {
@@ -300,14 +314,21 @@ define(
                 this.omiseCardError(null)
                 event && event.preventDefault()
 
+                if (this.orderSubmissionInProgress) {
+                    return false
+                }
+                this.orderSubmissionInProgress = true
+
                 if (typeof Omise === 'undefined') {
                     alert($.mage.__('Unable to process the payment, loading the external card processing library is failed. Please contact the merchant.'))
+                    this.orderSubmissionInProgress = false
                     return false
                 }
 
                 let card = this.omiseCard()
 
                 if (card) {
+                    this.orderRequestSent = true
                     this.processOrderWithCard(card)
                     return true
                 }
@@ -318,7 +339,10 @@ define(
 
             processOrderWithCard: function () {
                 const self = this
-                const failHandler = this.buildFailHandler(self, 300)
+                const failHandler = (response) => {
+                    self.buildFailHandler(self, 300)(response)
+                    self.isPlaceOrderActionAllowed(false)
+                }
 
                 self.getPlaceOrderDeferredObject()
                     .fail(failHandler)
