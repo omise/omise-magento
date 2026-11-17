@@ -85,12 +85,13 @@ class Charge extends BaseObject
     }
 
     /**
+     * @param  int $amount Amount to capture in the currency's smallest unit.
      * @return Omise\Payment\Model\Api\Error|self
      */
-    public function capture()
+    public function capture($amount)
     {
         try {
-            $this->refresh($this->object->capture());
+            $this->refresh($this->object->capture(['amount' => $amount]));
         } catch (Exception $e) {
             return new Error([
                 'code'    => 'failed_capture',

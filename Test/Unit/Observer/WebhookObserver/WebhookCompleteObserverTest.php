@@ -48,7 +48,12 @@ class WebhookCompleteObserverTest extends TestCase
         $charge = new Charge($config);
         $refresh = new ReflectionMethod(Charge::class, 'refresh');
         $refresh->setAccessible(true);
-        $refresh->invoke($charge, ['id' => 'ch_webhook_123']);
+        $refresh->invoke($charge, [
+            'id' => 'ch_webhook_123',
+            'status' => 'successful',
+            'amount' => 1250,
+            'currency' => 'thb',
+        ]);
 
         $currency = $this->createMock(Currency::class);
         $currency->method('formatTxt')->with(12.50)->willReturn('12.50');
@@ -75,6 +80,14 @@ class WebhookCompleteObserverTest extends TestCase
             ->method('addTransaction')
             ->with(Transaction::TYPE_PAYMENT, $invoice)
             ->willReturn($transaction);
+        $transaction->expects($hasSessionId ? $this->once() : $this->never())
+            ->method('setAdditionalInformation')
+            ->with(
+                Transaction::RAW_DETAILS,
+                [
+                    'session_id' => 'sess_123',
+                ]
+            );
         $payment->expects($this->once())->method('addTransactionCommentsToOrder');
 
         $order = $this->createMock(Order::class);

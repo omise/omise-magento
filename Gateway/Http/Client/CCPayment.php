@@ -17,7 +17,7 @@ class CCPayment extends AbstractPayment
         if (isset($transferObjectBody[self::CHARGE_ID])) {
             $storeId = $transferObjectBody['metadata']['store_id'];
             $charge = $this->apiCharge->find($transferObjectBody[self::CHARGE_ID], $storeId);
-            return [self::CHARGE => $charge->capture()];
+            return [self::CHARGE => $charge->capture($transferObjectBody['amount'])];
         }
 
         return [self::CHARGE => $this->apiCharge->create($transferObjectBody)];

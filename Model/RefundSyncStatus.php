@@ -31,10 +31,10 @@ class RefundSyncStatus
      */
     public function refund($order, $charge)
     {
-        // Todo: Bring back the credit memo creation logic if we find way to restock the quantity
-
         $order->setState(Order::STATE_PROCESSING);
         $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
+
+        $this->creditMemoService->create($order, $charge['refunded_amount'] / 100);
 
         $order->addStatusHistoryComment(
             __(

@@ -110,7 +110,7 @@ class SyncStatus
         }
 
         // Payment will be already processed for the following states
-        $orderStates = [Order::STATE_COMPLETE, Order::STATE_CLOSED, Order::STATE_PROCESSING];
+        $orderStates = [Order::STATE_COMPLETE, Order::STATE_CLOSED];
 
         if (!in_array($order->getState(), $orderStates)) {
             if ($order->getState() === Order::STATE_CANCELED) {

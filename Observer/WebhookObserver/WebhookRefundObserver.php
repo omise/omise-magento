@@ -51,7 +51,7 @@ class WebhookRefundObserver extends WebhookObserver
      */
     private function closeOrder()
     {
-        // Todo: Bring back the credit memo creation logic if we find way to restock the quantity
+        $this->creditMemoService->create($this->orderData, $this->charge->getRefundedAmount());
 
         $refundContextText = $this->charge->isFullyRefunded() ? 'fully' : 'partially';
 
