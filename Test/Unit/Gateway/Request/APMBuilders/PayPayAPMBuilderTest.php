@@ -27,7 +27,8 @@ class PayPayAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
-            $this->requestHelper
+            $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(

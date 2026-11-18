@@ -32,6 +32,7 @@ class PaymentDataBuilderTest extends TestCase
     private $storeManagerMock;
     private $storeMock;
     private $capability;
+    private $omiseHelperMock;
 
     protected function setUp(): void
     {
@@ -45,6 +46,7 @@ class PaymentDataBuilderTest extends TestCase
         $this->storeManagerMock =  m::mock(StoreManagerInterface::class);
         $this->storeMock =  m::mock(StoreInterface::class);
         $this->capability = m::mock(Capability::class);
+        $this->omiseHelperMock = m::mock(OmiseHelper::class);
     }
 
     /**
@@ -103,7 +105,8 @@ class PaymentDataBuilderTest extends TestCase
         $model = new PaymentDataBuilder(
             $this->ccConfigMock,
             $this->omiseMoneyMock,
-            $this->capability
+            $this->capability,
+            $this->omiseHelperMock
         );
         $result = $model->build(['payment' => $this->paymentDataMock]);
 
