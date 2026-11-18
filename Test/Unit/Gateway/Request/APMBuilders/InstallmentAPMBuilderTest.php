@@ -29,6 +29,7 @@ class InstallmentAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
+            $this->omiseHelper,
             $this->requestHelper,
             $this->deploymentConfig
         );
