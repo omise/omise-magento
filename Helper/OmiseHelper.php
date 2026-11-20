@@ -37,6 +37,7 @@ use Omise\Payment\Model\Config\WeChatPay;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 
+/** @SuppressWarnings("php:S1448") */
 class OmiseHelper extends AbstractHelper
 {
     /**
