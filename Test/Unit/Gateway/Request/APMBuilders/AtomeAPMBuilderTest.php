@@ -41,7 +41,9 @@ class AtomeAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
-            $this->requestHelper
+            $this->omiseHelper,
+            $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(
@@ -73,7 +75,9 @@ class AtomeAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
-            $this->requestHelper
+            $this->omiseHelper,
+            $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(
@@ -106,7 +110,9 @@ class AtomeAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
-            $this->requestHelper
+            $this->omiseHelper,
+            $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(

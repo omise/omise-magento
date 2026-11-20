@@ -26,7 +26,9 @@ class TruemoneyAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
-            $this->requestHelper
+            $this->omiseHelper,
+            $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(
@@ -61,7 +63,9 @@ class TruemoneyAPMBuilderTest extends APMBuilderTest
             $this->config,
             $this->capability,
             new OmiseMoney(),
-            $this->requestHelper
+            $this->omiseHelper,
+            $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(

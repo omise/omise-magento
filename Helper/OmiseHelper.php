@@ -37,6 +37,7 @@ use Omise\Payment\Model\Config\WeChatPay;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
 
+/** @SuppressWarnings("php:S1448") */
 class OmiseHelper extends AbstractHelper
 {
     /**
@@ -282,6 +283,17 @@ class OmiseHelper extends AbstractHelper
     public function checkoutSessionEndpoint()
     {
         return $this->config->checkoutSessionEndpoint();
+    }
+    
+    /**
+     * Get the description used for an Omise request.
+     *
+     * @param mixed $order
+     * @return string
+     */
+    public function getDescription($order)
+    {
+        return 'Magento 2 Order id ' . $order->getOrderIncrementId();
     }
 
     /**
