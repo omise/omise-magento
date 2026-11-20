@@ -225,10 +225,10 @@ class APMBuilder implements BuilderInterface
                     $paymentInfo[self::SOURCE] = $source;
                 }
                 
-                if ($this->config->isSandboxEnabled()) {
+                $customWlbDescription = $this->deploymentConfig->get(self::OMISE_CUSTOM_WLB_DESCRIPTION);
+                if (!empty($customWlbDescription) && $customWlbDescription === '{original_description} - staging') {
                     $paymentInfo[self::DESCRIPTION] = $this->omiseHelper->getDescription($order);
-                    $customWlbDescription = $this->deploymentConfig->get(self::OMISE_CUSTOM_WLB_DESCRIPTION);
-                    if (!empty($customWlbDescription) && !empty($paymentInfo[self::DESCRIPTION])) {
+                    if (!empty($paymentInfo[self::DESCRIPTION])) {
                         $paymentInfo[self::DESCRIPTION] = str_replace(
                             '{original_description}',
                             $paymentInfo[self::DESCRIPTION],
