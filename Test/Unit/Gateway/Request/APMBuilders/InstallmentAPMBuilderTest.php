@@ -57,7 +57,7 @@ class InstallmentAPMBuilderTest extends APMBuilderTest
         $this->deploymentConfig->expects($this->once())
             ->method('get')
             ->with(APMBuilder::OMISE_CUSTOM_WLB_DESCRIPTION)
-            ->willReturn('{original_description} - staging');
+            ->willReturn('Payment for {original_description}');
         $this->omiseHelper->expects($this->once())
             ->method('getDescription')
             ->with($this->orderMock)
@@ -78,6 +78,6 @@ class InstallmentAPMBuilderTest extends APMBuilderTest
             $this->infoMock
         )]);
 
-        $this->assertSame('Order 123 - staging', $result[APMBuilder::DESCRIPTION]);
+        $this->assertSame('Payment for Order 123', $result[APMBuilder::DESCRIPTION]);
     }
 }

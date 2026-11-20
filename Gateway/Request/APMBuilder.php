@@ -226,15 +226,12 @@ class APMBuilder implements BuilderInterface
                 }
                 
                 $customWlbDescription = $this->deploymentConfig->get(self::OMISE_CUSTOM_WLB_DESCRIPTION);
-                if (!empty($customWlbDescription) && $customWlbDescription === '{original_description} - staging') {
-                    $paymentInfo[self::DESCRIPTION] = $this->omiseHelper->getDescription($order);
-                    if (!empty($paymentInfo[self::DESCRIPTION])) {
-                        $paymentInfo[self::DESCRIPTION] = str_replace(
-                            '{original_description}',
-                            $paymentInfo[self::DESCRIPTION],
-                            $customWlbDescription
-                        );
-                    }
+                if (!empty($customWlbDescription)) {
+                    $paymentInfo[self::DESCRIPTION] = str_replace(
+                        '{original_description}',
+                        $this->omiseHelper->getDescription($order),
+                        $customWlbDescription
+                    );
                 }
                 break;
             case Truemoney::CODE:
