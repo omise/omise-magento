@@ -61,7 +61,7 @@ class PaymentDataBuilder implements BuilderInterface
     private $capability;
 
     /**
-    * @var OmiseHelper
+     * @var OmiseHelper
      */
     private $omiseHelper;
 

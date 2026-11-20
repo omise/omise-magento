@@ -31,7 +31,9 @@ class OcbcDigitalAPMBuilderTest extends TestCase
     protected function setUp(): void
     {
         $this->requestHelper = $this->getMockBuilder(RequestHelper::class)->disableOriginalConstructor()->getMock();
-        $this->omiseHelper = $this->getMockBuilder(OmiseHelper::class)->disableOriginalConstructor()->getMock();
+        $this->omiseHelper = $this->getMockBuilder(OmiseHelper::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->deploymentConfig = $this->getMockBuilder(DeploymentConfig::class)->disableOriginalConstructor()->getMock();
         $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
         $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
