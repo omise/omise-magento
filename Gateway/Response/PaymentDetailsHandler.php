@@ -70,12 +70,7 @@ class PaymentDetailsHandler implements HandlerInterface
         ->setOrder($order)
         ->setTransactionId($response['charge']->id)
         ->setAdditionalInformation([
-            Transaction::RAW_DETAILS => [
-                'charge_id' => (string) $response['charge']->id,
-                'status' => (string) $response['charge']->status,
-                'amount' => (string) $response['charge']->amount,
-                'currency' => (string) $response['charge']->currency,
-            ],
+            Transaction::RAW_DETAILS => $this->_helper->getChargeTransactionDetails($response['charge'], null),
         ])
         ->setFailSafe(true)
         ->build(Transaction::TYPE_PAYMENT);

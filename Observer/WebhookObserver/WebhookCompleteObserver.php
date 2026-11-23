@@ -84,9 +84,7 @@ class WebhookCompleteObserver extends WebhookObserver
         if ($sessionId) {
             $transaction->setAdditionalInformation(
                 Transaction::RAW_DETAILS,
-                [
-                    'session_id' => (string) $sessionId,
-                ]
+                $this->helper->getChargeTransactionDetails($this->charge, $sessionId)
             );
         }
 
