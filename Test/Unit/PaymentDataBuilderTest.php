@@ -81,12 +81,13 @@ class PaymentDataBuilderTest extends TestCase
         $this->ccConfigMock->method('isDynamicWebhooksEnabled')->willReturn(true);
 
         $captureAmount = 50;
-        $this->omiseMoneyMock->shouldReceive('setAmountAndCurrency')
+        $this->omiseMoneyMock->expects($this->once())
+            ->method('setAmountAndCurrency')
             ->with($captureAmount, $currency)
-            ->andReturn($this->omiseMoneyMock);
-        $this->omiseMoneyMock->shouldReceive('toSubunit')->andReturn($captureAmount * 100);
-        $this->omiseMoneyMock->method('setAmountAndCurrency')->willReturn($this->omiseMoneyMock);
-        $this->omiseMoneyMock->method('toSubunit')->willReturn($amount * 100);
+            ->willReturn($this->omiseMoneyMock);
+        $this->omiseMoneyMock->expects($this->once())
+            ->method('toSubunit')
+            ->willReturn($captureAmount * 100);
 
         $this->storeMock->method('getName')->willReturn($storeName);
         $this->storeMock->method('getBaseUrl')->willReturn($storeBaseUrl);
@@ -95,9 +96,6 @@ class PaymentDataBuilderTest extends TestCase
         $this->configMock->method('getPreference');
         $this->factoryMock->method('create')->willReturn($this->storeManagerMock);
 
-        $this->orderMock->shouldReceive('getCurrencyCode')->andReturn($currency);
-        $this->orderMock->shouldReceive('getOrderIncrementId')->andReturn($orderId);
-        $this->orderMock->shouldReceive('getStoreId')->andReturn($storeId);
         $this->orderMock->method('getCurrencyCode')->willReturn($currency);
         $this->orderMock->method('getGrandTotalAmount')->willReturn($amount);
         $this->orderMock->method('getOrderIncrementId')->willReturn($orderId);
