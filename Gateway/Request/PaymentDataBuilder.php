@@ -5,6 +5,7 @@ namespace Omise\Payment\Gateway\Request;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Omise\Payment\Helper\OmiseMoney;
+use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Observer\InstallmentDataAssignObserver;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Cc;
@@ -65,22 +66,30 @@ class PaymentDataBuilder implements BuilderInterface
      */
     private $storeManager;
 
+    /*
+     * @var OmiseHelper
+     */
+    private $omiseHelper;
+
     /**
      * @param \Omise\Payment\Helper\OmiseHelper $omiseHelper
      * @param Omise\Payment\Model\Config\Cc $ccConfig
      * @param Capability $capability
      * @param StoreManagerInterface $storeManager
+     * @param OmiseHelper $omiseHelper
      */
     public function __construct(
         Cc $ccConfig,
         OmiseMoney $money,
         Capability $capability,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        OmiseHelper $omiseHelper
     ) {
         $this->money = $money;
         $this->ccConfig = $ccConfig;
         $this->capability = $capability;
         $this->storeManager = $storeManager;
+        $this->omiseHelper = $omiseHelper;
     }
 
     /**
@@ -106,7 +115,7 @@ class PaymentDataBuilder implements BuilderInterface
                 $currency
             )->toSubunit(),
             self::CURRENCY    => $currency,
-            self::DESCRIPTION => 'Magento 2 Order id ' . $order->getOrderIncrementId(),
+            self::DESCRIPTION => $this->omiseHelper->getDescription($order),
             self::METADATA    => [
                 'order_id' => $order->getOrderIncrementId(),
                 'store_id' => $order->getStoreId(),

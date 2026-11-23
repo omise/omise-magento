@@ -4,8 +4,7 @@ namespace Omise\Payment\Test\Unit;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
-use Magento\Sales\Api\Data\OrderInterface;
-use Mockery as m;
+use Magento\Payment\Gateway\Data\OrderAdapterInterface;
 use PHPUnit\Framework\TestCase;
 use Omise\Payment\Gateway\Request\PaymentDataBuilder;
 use Omise\Payment\Helper\OmiseHelper;
@@ -15,7 +14,7 @@ use Magento\Framework\ObjectManager\ConfigInterface;
 use Magento\Framework\ObjectManager\FactoryInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\Store;
 use Omise\Payment\Model\Config\Installment;
 use Omise\Payment\Model\Config\Promptpay;
 use Omise\Payment\Model\Capability;
@@ -32,19 +31,21 @@ class PaymentDataBuilderTest extends TestCase
     private $storeManagerMock;
     private $storeMock;
     private $capability;
+    private $omiseHelperMock;
 
     protected function setUp(): void
     {
-        $this->factoryMock = m::mock(FactoryInterface::class);
-        $this->configMock = m::mock(ConfigInterface::class);
-        $this->omiseMoneyMock = m::mock(OmiseMoney::class);
-        $this->ccConfigMock = m::mock(Cc::class);
-        $this->paymentMock = m::mock(OrderPaymentInterface::class);
-        $this->paymentDataMock = m::mock(PaymentDataObjectInterface::class);
-        $this->orderMock = m::mock(OrderInterface::class);
-        $this->storeManagerMock =  m::mock(StoreManagerInterface::class);
-        $this->storeMock =  m::mock(StoreInterface::class);
-        $this->capability = m::mock(Capability::class);
+        $this->factoryMock = $this->createMock(FactoryInterface::class);
+        $this->configMock = $this->createMock(ConfigInterface::class);
+        $this->omiseMoneyMock = $this->getMockBuilder(OmiseMoney::class)->disableOriginalConstructor()->getMock();
+        $this->ccConfigMock = $this->getMockBuilder(Cc::class)->disableOriginalConstructor()->getMock();
+        $this->paymentMock = $this->createMock(OrderPaymentInterface::class);
+        $this->paymentDataMock = $this->createMock(PaymentDataObjectInterface::class);
+        $this->orderMock = $this->createMock(OrderAdapterInterface::class);
+        $this->storeManagerMock = $this->createMock(StoreManagerInterface::class);
+        $this->storeMock = $this->getMockBuilder(Store::class)->disableOriginalConstructor()->getMock();
+        $this->capability = $this->getMockBuilder(Capability::class)->disableOriginalConstructor()->getMock();
+        $this->omiseHelperMock = $this->getMockBuilder(OmiseHelper::class)->disableOriginalConstructor()->getMock();
     }
 
     /**
@@ -72,41 +73,46 @@ class PaymentDataBuilderTest extends TestCase
         $storeId = 1;
         $storeName = 'opn-store';
         $storeBaseUrl = 'https://omise.co/';
-        $secureFormEnabled = true;
-
         new ObjectManager($this->factoryMock, $this->configMock);
 
-        $this->paymentMock->shouldReceive('getMethod')->andReturn($paymentMethod);
-        $this->paymentMock->shouldReceive('getAdditionalInformation')->andReturn('installment_mbb');
+        $this->paymentMock->method('getMethod')->willReturn($paymentMethod);
+        $this->paymentMock->method('getAdditionalInformation')->willReturn('installment_mbb');
 
-        $this->ccConfigMock->shouldReceive('getSecureForm')->andReturn($secureFormEnabled);
-        $this->ccConfigMock->shouldReceive('isDynamicWebhooksEnabled')->andReturn(true);
+        $this->ccConfigMock->method('isDynamicWebhooksEnabled')->willReturn(true);
 
         $captureAmount = 50;
         $this->omiseMoneyMock->shouldReceive('setAmountAndCurrency')
             ->with($captureAmount, $currency)
             ->andReturn($this->omiseMoneyMock);
         $this->omiseMoneyMock->shouldReceive('toSubunit')->andReturn($captureAmount * 100);
+        $this->omiseMoneyMock->method('setAmountAndCurrency')->willReturn($this->omiseMoneyMock);
+        $this->omiseMoneyMock->method('toSubunit')->willReturn($amount * 100);
 
-        $this->storeMock->shouldReceive('getName')->andReturn($storeName);
-        $this->storeMock->shouldReceive('getBaseUrl')->andReturn($storeBaseUrl);
+        $this->storeMock->method('getName')->willReturn($storeName);
+        $this->storeMock->method('getBaseUrl')->willReturn($storeBaseUrl);
 
-        $this->storeManagerMock->shouldReceive('getStore')->andReturn($this->storeMock);
-        $this->configMock->shouldReceive('getPreference');
-        $this->factoryMock->shouldReceive('create')->andReturn($this->storeManagerMock);
+        $this->storeManagerMock->method('getStore')->willReturn($this->storeMock);
+        $this->configMock->method('getPreference');
+        $this->factoryMock->method('create')->willReturn($this->storeManagerMock);
 
         $this->orderMock->shouldReceive('getCurrencyCode')->andReturn($currency);
         $this->orderMock->shouldReceive('getOrderIncrementId')->andReturn($orderId);
         $this->orderMock->shouldReceive('getStoreId')->andReturn($storeId);
+        $this->orderMock->method('getCurrencyCode')->willReturn($currency);
+        $this->orderMock->method('getGrandTotalAmount')->willReturn($amount);
+        $this->orderMock->method('getOrderIncrementId')->willReturn($orderId);
+        $this->orderMock->method('getStoreId')->willReturn($storeId);
+        $this->omiseHelperMock->method('getDescription')->with($this->orderMock)->willReturn('Magento Order id 123');
 
-        $this->paymentDataMock->shouldReceive('getOrder')->andReturn($this->orderMock);
-        $this->paymentDataMock->shouldReceive('getPayment')->andReturn($this->paymentMock);
+        $this->paymentDataMock->method('getOrder')->willReturn($this->orderMock);
+        $this->paymentDataMock->method('getPayment')->willReturn($this->paymentMock);
 
         $model = new PaymentDataBuilder(
             $this->ccConfigMock,
             $this->omiseMoneyMock,
             $this->capability,
-            $this->storeManagerMock
+            $this->storeManagerMock,
+            $this->omiseHelperMock
         );
         $result = $model->build([
             'payment' => $this->paymentDataMock,

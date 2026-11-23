@@ -3,8 +3,10 @@
 namespace Omise\Payment\Test\Unit;
 
 use Magento\Payment\Gateway\Data\OrderAdapterInterface;
+use Magento\Framework\App\DeploymentConfig;
 use Magento\Payment\Gateway\Data\PaymentDataObject;
 use Omise\Payment\Gateway\Request\APMBuilder;
+use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Helper\RequestHelper;
 use Omise\Payment\Helper\OmiseMoney;
 use Omise\Payment\Helper\ReturnUrlHelper;
@@ -18,6 +20,8 @@ class OcbcDigitalAPMBuilderTest extends TestCase
 {
     private $builder;
     private $requestHelper;
+    private $omiseHelper;
+    private $deploymentConfig;
     private $returnUrlHelper;
     private $config;
     private $capability;
@@ -27,6 +31,10 @@ class OcbcDigitalAPMBuilderTest extends TestCase
     protected function setUp(): void
     {
         $this->requestHelper = $this->getMockBuilder(RequestHelper::class)->disableOriginalConstructor()->getMock();
+        $this->omiseHelper = $this->getMockBuilder(OmiseHelper::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->deploymentConfig = $this->getMockBuilder(DeploymentConfig::class)->disableOriginalConstructor()->getMock();
         $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
         $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $this->capability = $this->getMockBuilder(Capability::class)->disableOriginalConstructor()->getMock();
@@ -51,7 +59,9 @@ class OcbcDigitalAPMBuilderTest extends TestCase
             $this->config,
             $this->capability,
             new OmiseMoney(),
+            $this->omiseHelper,
             $this->requestHelper,
+            $this->deploymentConfig
         );
 
         $result = $this->builder->build(['payment' => new PaymentDataObject(
