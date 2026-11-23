@@ -55,7 +55,10 @@ class PaymentDetailsHandlerTest extends TestCase
         $this->omiseHelperMock->shouldReceive('isPayableByImageCode')->once()->andReturn(false);
         $this->builderMock->shouldReceive('setOrder')->once()->andReturn($this->builderMock);
         $this->builderMock->shouldReceive('setPayment')->once()->andReturn($this->builderMock);
-        $this->builderMock->shouldReceive('setTransactionId')->once()->with('charge_xxx')->andReturn($this->builderMock);
+        $this->builderMock->shouldReceive('setTransactionId')
+            ->once()
+            ->with('charge_xxx')
+            ->andReturn($this->builderMock);
         $this->builderMock->shouldReceive('setAdditionalInformation')->once()->andReturn($this->builderMock);
         $this->builderMock->shouldReceive('setFailSafe')->once()->andReturn($this->builderMock);
         $this->builderMock->shouldReceive('build')->once()->andReturn($this->builderMock);
