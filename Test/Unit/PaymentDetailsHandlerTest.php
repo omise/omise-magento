@@ -87,6 +87,12 @@ class PaymentDetailsHandlerTest extends TestCase
       */
     public function testHandler()
     {
+        $this->chargeMock->status = 'successful';
+        $this->chargeMock->amount = 100000;
+        $this->chargeMock->currency = 'thb';
+        $this->chargeMock->capturable = true;
+        $this->chargeMock->capture = false;
+
         $this->omiseHelperMock->shouldReceive('isPayableByImageCode')->once();
         $this->builderMock->shouldReceive('setOrder')->once()->andReturn($this->builderMock);
         $this->builderMock->shouldReceive('setPayment')->once()->andReturn($this->builderMock);
