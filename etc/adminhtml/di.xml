@@ -5,6 +5,10 @@
         <plugin name="Omise_Payment::before_admin_orderview_plugin" type="Omise\Payment\Plugin\BtnOrderViewPlugin" />
     </type>
 
+    <type name="\Magento\Sales\Block\Adminhtml\Transactions\Detail\Grid">
+        <plugin name="Omise_Payment::after_get_transaction_additional_info_plugin" type="Omise\Payment\Plugin\Magento\Sales\Block\Adminhtml\Transactions\Detail\Grid" />
+    </type>
+
     <type name="\Magento\Config\Model\Config">
         <plugin name="admin_system_config_save_plugin" type="Omise\Payment\Plugin\ConfigSectionPaymentPlugin" sortOrder="1" />
     </type>
