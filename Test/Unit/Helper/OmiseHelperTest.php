@@ -469,6 +469,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers \Omise\Payment\Helper\OmiseHelper::getChargeTransactionDetails
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
      */
     public function testGetChargeTransactionDetailsIncludesSessionId(): void
     {
@@ -490,6 +491,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers \Omise\Payment\Helper\OmiseHelper::getChargeTransactionDetails
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
      */
     public function testGetChargeTransactionDetailsOmitsNullSessionId(): void
     {
@@ -510,6 +512,7 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers \Omise\Payment\Helper\OmiseHelper::getDescription
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
      */
     public function testGetDescriptionUsesOrderIncrementId(): void
     {
