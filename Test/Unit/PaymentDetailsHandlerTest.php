@@ -43,6 +43,16 @@ class PaymentDetailsHandlerTest extends TestCase
         $this->chargeMock->currency = 'thb';
         $this->chargeMock->capturable = true;
         $this->chargeMock->capture = false;
+        $this->omiseHelperMock->shouldReceive('getChargeTransactionDetails')
+            ->once()
+            ->with($this->chargeMock, null)
+            ->andReturn([
+                'charge_id' => 'charge_xxx',
+                'status' => 'successful',
+                'amount' => '100000',
+                'currency' => 'thb',
+            ]
+        );
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Omise\Payment\Test\Unit\Model;
 
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Config as OrderConfig;
-use Magento\Sales\Model\Order\Invoice;
+ use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface as TransactionBuilderInterface;
@@ -110,7 +110,6 @@ class SyncStatusTest extends TestCase
             ->method('build')
             ->with(Transaction::TYPE_PAYMENT)
             ->willReturn($transaction);
-        $order = $this->createMock(Order::class);
         $order->method('getState')->willReturn(Order::STATE_PENDING_PAYMENT);
         $order->method('getConfig')->willReturn($orderConfig);
         $order->method('getPayment')->willReturn($payment);

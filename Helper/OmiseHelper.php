@@ -469,7 +469,7 @@ class OmiseHelper extends AbstractHelper
     public function getChargeTransactionDetails($charge, $sessionId = null)
     {
         $getValue = function ($key) use ($charge) {
-            return is_array($charge) ? $charge[$key] : $charge->$key;
+            return (is_array($charge) || $charge instanceof \ArrayAccess) ? $charge[$key] : $charge->$key;
         };
 
         $details = [
