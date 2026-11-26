@@ -9,8 +9,7 @@ define(
         'Magento_Checkout/js/model/full-screen-loader',
         'Magento_Checkout/js/action/redirect-on-success',
         'Magento_Checkout/js/model/quote',
-        'Magento_Checkout/js/checkout-data',
-        'Magento_Checkout/js/action/select-payment-method'
+        'Magento_Checkout/js/checkout-data'
     ],
     function (
         ko,
@@ -22,8 +21,7 @@ define(
         fullScreenLoader,
         redirectOnSuccessAction,
         quote,
-        checkoutData,
-        selectPaymentMethodAction
+        checkoutData
     ) {
         'use strict'
 
@@ -31,13 +29,16 @@ define(
             defaults: {
                 template: 'Omise_Payment/payment/omise-cc-form'
             },
-
             redirectAfterPlaceOrder: true,
-
             isPlaceOrderActionAllowed: ko.observable(quote.billingAddress() != null),
-
+            orderRequestSent: false,
+            cardFormElement: null,
+            cardFormInitialized: false,
+            cardFormWaitingForScript: false,
+            cardFormSelected: false,
+            cardFormRetryTimer: null,
+            cardFormAutoRetryAttempted: false,
             code: 'omise_cc',
-
             billingAddressCountries: ["US", "GB", "CA"],
 
             /**
@@ -89,22 +90,110 @@ define(
 
             selectPaymentMethod: function () {
                 this._super();
-                selectPaymentMethodAction(this.getData());
                 checkoutData.setSelectedPaymentMethod(this.item.method);
-                OmiseCard.destroy();
-                setTimeout(() => {
-                    const element = document.querySelector('.omise-card-form')
-                    if(element) {
-                        this.applyOmiseJsToElement(this, element)
-                    }
-                }, 300);
-                
+                if (this.cardFormRetryTimer) {
+                    window.clearTimeout(this.cardFormRetryTimer)
+                    this.cardFormRetryTimer = null
+                }
+                window.setTimeout(() => {
+                    this.reopenOmiseCardForm(this.cardFormElement, 'radio selection')
+                }, 300)
                 return true
             },
 
             openOmiseJs: function () {
+                const self = this
                 ko.bindingHandlers.omiseCardForm = {
-                    init: (element) => this.applyOmiseJsToElement(this, element)
+                    init: function (element) {
+                        self.cardFormElement = element
+                    },
+                    update: function (element, valueAccessor) {
+                        self.cardFormSelected = !!ko.unwrap(valueAccessor())
+                        if (self.cardFormSelected) {
+                            self.initializeOmiseCardForm(element)
+                        } else if (self.cardFormInitialized && window.OmiseCard) {
+                            if (self.cardFormRetryTimer) {
+                                window.clearTimeout(self.cardFormRetryTimer)
+                                self.cardFormRetryTimer = null
+                            }
+                            window.OmiseCard.destroy()
+                            self.cardFormInitialized = false
+                            self.cardFormAutoRetryAttempted = false
+                        }
+                    }
+                }
+            },
+
+            initializeOmiseCardForm: function (element) {
+                if (this.cardFormInitialized || this.cardFormElement !== element || !this.cardFormSelected) {
+                    return
+                }
+
+                if (!window.OmiseCard) {
+                    if (!this.cardFormWaitingForScript) {
+                        const script = document.querySelector('script[src*="omise.js"]')
+                        if (script) {
+                            console.warn('[Omise CC] OmiseCard is not ready; waiting for script load', {
+                                scriptSrc: script.src,
+                                scriptReadyState: script.readyState || 'not exposed'
+                            });
+                            this.cardFormWaitingForScript = true
+                            script.addEventListener('load', () => {
+                                this.cardFormWaitingForScript = false
+                                this.initializeOmiseCardForm(element)
+                            }, { once: true })
+                            script.addEventListener('error', (event) => {
+                                this.cardFormWaitingForScript = false
+                                console.error('[Omise CC] Omise script failed to load', event)
+                            }, { once: true })
+                        } else {
+                            console.error('[Omise CC] OmiseCard is unavailable and no omise.js script element was found')
+                        }
+                    }
+                    return
+                }
+
+                try {
+                    this.applyOmiseJsToElement(this, element)
+                    this.cardFormInitialized = true
+                    this.scheduleCardFormRetry(element)
+                } catch (error) {
+                    console.error('[Omise CC] Form initialization threw an error', error)
+                }
+            },
+
+            scheduleCardFormRetry: function (element) {
+                if (this.cardFormAutoRetryAttempted || this.cardFormRetryTimer) {
+                    return
+                }
+
+                this.cardFormRetryTimer = window.setTimeout(() => {
+                    this.cardFormRetryTimer = null
+                    if (!this.cardFormSelected || !element.isConnected || element.querySelector('iframe')) {
+                        return
+                    }
+
+                    this.cardFormAutoRetryAttempted = true
+                    this.reopenOmiseCardForm(element, 'automatic mount retry')
+                }, 500)
+            },
+
+            reopenOmiseCardForm: function (element, reason) {
+                if (!element || !element.isConnected || !this.cardFormSelected || !window.OmiseCard) {
+                    return
+                }
+                if (element.querySelector('iframe')) {
+                    return
+                }
+
+                console.warn('[Omise CC] Reopening Omise form', { reason })
+                window.OmiseCard.destroy()
+                this.cardFormInitialized = false
+                try {
+                    this.applyOmiseJsToElement(this, element)
+                    this.cardFormInitialized = true
+                } catch (error) {
+                    console.error('[Omise CC] Reopen failed', { reason, error })
                 }
             },
 
@@ -178,12 +267,18 @@ define(
                         else {
                             self.omiseCardError('Something went wrong. Please refresh the page and try again.')
                         }
+                        self.orderRequestSent = false
                         self.stopPerformingPlaceOrderAction()
                     }
                 })
             },
 
             createOrder: function (self, payload) {
+                if (self.orderRequestSent) {
+                    return
+                }
+                self.orderRequestSent = true;
+
                 self.omiseCardToken(payload.token)
                 if (payload.remember) {
                     self.omiseSaveCard(payload.remember)

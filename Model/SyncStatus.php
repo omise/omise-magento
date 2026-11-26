@@ -2,6 +2,8 @@
 namespace Omise\Payment\Model;
 
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface as TransactionBuilderInterface;
+use Magento\Sales\Model\Order\Payment\Transaction;
 use Omise\Payment\Helper\OmiseHelper as Helper;
 use Omise\Payment\Helper\OmiseEmailHelper as EmailHelper;
 use Magento\Sales\Model\Order;
@@ -27,6 +29,11 @@ class SyncStatus
     protected $emailHelper;
 
     /**
+     * @var TransactionBuilderInterface
+     */
+    protected $transactionBuilder;
+
+    /**
      * @param Helper $helper
      * @param EmailHelper $emailHelper
      */
@@ -34,12 +41,14 @@ class SyncStatus
         Helper $helper,
         EmailHelper $emailHelper,
         Config $config,
-        RefundSyncStatus $refundSyncStatus
+        RefundSyncStatus $refundSyncStatus,
+        TransactionBuilderInterface $transactionBuilder
     ) {
         $this->helper = $helper;
         $this->emailHelper = $emailHelper;
         $this->config = $config;
         $this->refundSyncStatus = $refundSyncStatus;
+        $this->transactionBuilder = $transactionBuilder;
     }
 
     /**
@@ -120,16 +129,26 @@ class SyncStatus
             $order->setState(Order::STATE_PROCESSING);
             $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_PROCESSING));
 
-            $this->helper->createInvoiceAndMarkAsPaid($order, $charge['id']);
+            $invoice = $this->helper->createInvoiceAndMarkAsPaid($order, $charge['id']);
             $this->emailHelper->sendInvoiceAndConfirmationEmails($order);
 
             $payment = $order->getPayment();
-            if ($payment->getAdditionalInformation('session_id')) {
+            $sessionId = $payment->getAdditionalInformation('session_id');
+            if ($sessionId) {
                 $payment->setTransactionId($charge['id']);
                 $payment->setLastTransId($charge['id']);
                 $payment->setAdditionalInformation('charge_id', $charge['id']);
+                
+                $this->transactionBuilder
+                    ->setPayment($payment)
+                    ->setOrder($order)
+                    ->setTransactionId($charge['id'])
+                    ->setAdditionalInformation([
+                        Transaction::RAW_DETAILS => $this->helper->getChargeTransactionDetails($charge, $sessionId),
+                    ])
+                    ->setFailSafe(true)
+                    ->build(Transaction::TYPE_PAYMENT);
             }
-            
             $order->addStatusHistoryComment(
                 __(
                     'Omise: Payment successful.<br/>An amount %1 %2 has been paid (manual sync).',

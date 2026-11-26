@@ -38,13 +38,71 @@ class PaymentDetailsHandlerTest extends TestCase
         $this->chargeMock->id = 'charge_xxx';
         $this->chargeMock->authorize_uri = 'https://omise.co/authorized';
         $this->chargeMock->expires_at = '2023-09-29T06:49:35Z';
+        $this->chargeMock->status = 'successful';
+        $this->chargeMock->amount = 100000;
+        $this->chargeMock->currency = 'thb';
+        $this->chargeMock->capturable = true;
+        $this->chargeMock->capture = false;
+        $this->omiseHelperMock->shouldReceive('getChargeTransactionDetails')
+            ->once()
+            ->with($this->chargeMock, null)
+            ->andReturn([
+                'charge_id' => 'charge_xxx',
+                'status' => 'successful',
+                'amount' => '100000',
+                'currency' => 'thb',
+            ]
+        );
     }
 
     /**
      * @covers Omise\Payment\Gateway\Response\PaymentDetailsHandler
      */
+    public function testHandlerSkipsCommentsAfterManualCapture()
+    {
+        $this->chargeMock->capturable = false;
+        $this->chargeMock->capture = false;
+        $this->omiseHelperMock->shouldReceive('isPayableByImageCode')->once()->andReturn(false);
+        $this->builderMock->shouldReceive('setOrder')->once()->andReturn($this->builderMock);
+        $this->builderMock->shouldReceive('setPayment')->once()->andReturn($this->builderMock);
+        $this->builderMock->shouldReceive('setTransactionId')
+            ->once()
+            ->with('charge_xxx')
+            ->andReturn($this->builderMock);
+        $this->builderMock->shouldReceive('setAdditionalInformation')->once()->andReturn($this->builderMock);
+        $this->builderMock->shouldReceive('setFailSafe')->once()->andReturn($this->builderMock);
+        $this->builderMock->shouldReceive('build')->once()->andReturn($this->builderMock);
+        $this->infoMock->shouldReceive('getMethod')->once()->andReturn('omise_cc');
+        $this->infoMock->shouldReceive('getOrder')->once()->andReturn($this->orderMock);
+        $this->infoMock->shouldReceive('setAdditionalInformation')->once()->with('charge_id', 'charge_xxx');
+        $this->infoMock->shouldReceive('setAdditionalInformation')->once()
+            ->with('charge_authorize_uri', 'https://omise.co/authorized');
+        $this->infoMock->shouldReceive('setAdditionalInformation')->once()->with('payment_type', null);
+        $this->infoMock->shouldReceive('setAdditionalInformation')->once()
+            ->with('charge_expires_at', '2023-09-29T06:49:35Z');
+        $this->infoMock->shouldNotReceive('prependMessage');
+        $this->infoMock->shouldNotReceive('addTransactionCommentsToOrder');
+        $this->paymentMock->shouldReceive('getPayment')->andReturn($this->infoMock);
+        $model = new PaymentDetailsHandler($this->omiseHelperMock, $this->curlMock, $this->builderMock);
+        try {
+            $model->handle(['payment' => $this->paymentMock], ['charge' => $this->chargeMock]);
+        } finally {
+            m::close();
+        }
+        $this->expectNotToPerformAssertions();
+    }
+
+     /**
+      * @covers Omise\Payment\Gateway\Response\PaymentDetailsHandler
+      */
     public function testHandler()
     {
+        $this->chargeMock->status = 'successful';
+        $this->chargeMock->amount = 100000;
+        $this->chargeMock->currency = 'thb';
+        $this->chargeMock->capturable = true;
+        $this->chargeMock->capture = false;
+
         $this->omiseHelperMock->shouldReceive('isPayableByImageCode')->once();
         $this->builderMock->shouldReceive('setOrder')->once()->andReturn($this->builderMock);
         $this->builderMock->shouldReceive('setPayment')->once()->andReturn($this->builderMock);
