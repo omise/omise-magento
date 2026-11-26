@@ -66,14 +66,14 @@ class PaymentDetailsHandler implements HandlerInterface
         $payment->setAdditionalInformation('charge_expires_at', $response['charge']->expires_at);
 
         $transaction = $this->transactionBuilder
-        ->setPayment($payment)
-        ->setOrder($order)
-        ->setTransactionId($response['charge']->id)
-        ->setAdditionalInformation([
-            Transaction::RAW_DETAILS => $this->_helper->getChargeTransactionDetails($response['charge'], null),
-        ])
-        ->setFailSafe(true)
-        ->build(Transaction::TYPE_PAYMENT);
+                            ->setPayment($payment)
+                            ->setOrder($order)
+                            ->setTransactionId($response['charge']->id)
+                            ->setAdditionalInformation([
+                                Transaction::RAW_DETAILS => $this->_helper->getChargeTransactionDetails($response['charge'], null),
+                            ])
+                            ->setFailSafe(true)
+                            ->build(Transaction::TYPE_PAYMENT);
         if ($response['charge']->capturable || $response['charge']->capture) {
             $payment->addTransactionCommentsToOrder(
                 $transaction,
