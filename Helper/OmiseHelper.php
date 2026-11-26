@@ -460,6 +460,33 @@ class OmiseHelper extends AbstractHelper
     }
 
     /**
+     * Build the common transaction details stored for an transaction detail page.
+     *
+     * @param array|object $charge
+     * @param string|null $sessionId
+     * @return array
+     */
+    public function getChargeTransactionDetails($charge, $sessionId = null)
+    {
+        $getValue = function ($key) use ($charge) {
+            return (is_array($charge) || $charge instanceof \ArrayAccess) ? $charge[$key] : $charge->$key;
+        };
+
+        $details = [
+            'charge_id' => (string) $getValue('id'),
+            'status' => (string) $getValue('status'),
+            'amount' => (string) $getValue('amount'),
+            'currency' => (string) $getValue('currency'),
+        ];
+
+        if ($sessionId !== null) {
+            $details['session_id'] = (string) $sessionId;
+        }
+
+        return $details;
+    }
+
+    /**
      * Checks if 3d secured setting enabled from charge data.
      * @param \Omise\Payment\Model\Api\Charge $charge
      * @return boolean

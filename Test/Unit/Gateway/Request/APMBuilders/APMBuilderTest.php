@@ -30,7 +30,9 @@ abstract class APMBuilderTest extends TestCase
         $this->omiseHelper = $this->getMockBuilder(OmiseHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->deploymentConfig = $this->getMockBuilder(DeploymentConfig::class)->disableOriginalConstructor()->getMock();
+        $this->deploymentConfig = $this->getMockBuilder(DeploymentConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->returnUrlHelper = $this->getMockBuilder(ReturnUrlHelper::class)->disableOriginalConstructor()->getMock();
         $this->config = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $this->capability = $this->getMockBuilder(Capability::class)->disableOriginalConstructor()->getMock();

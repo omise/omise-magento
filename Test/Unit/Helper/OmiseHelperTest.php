@@ -468,6 +468,65 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @covers \Omise\Payment\Helper\OmiseHelper::getChargeTransactionDetails
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testGetChargeTransactionDetailsIncludesSessionId(): void
+    {
+        $charge = [
+            'id' => 'ch_123',
+            'status' => 'successful',
+            'amount' => 2500,
+            'currency' => 'thb',
+        ];
+
+        $this->assertSame([
+            'charge_id' => 'ch_123',
+            'status' => 'successful',
+            'amount' => '2500',
+            'currency' => 'thb',
+            'session_id' => 'sess_123',
+        ], $this->model->getChargeTransactionDetails($charge, 'sess_123'));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper::getChargeTransactionDetails
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testGetChargeTransactionDetailsOmitsNullSessionId(): void
+    {
+        $charge = (object) [
+            'id' => 'ch_456',
+            'status' => 'pending',
+            'amount' => 1000,
+            'currency' => 'jpy',
+        ];
+
+        $this->assertSame([
+            'charge_id' => 'ch_456',
+            'status' => 'pending',
+            'amount' => '1000',
+            'currency' => 'jpy',
+        ], $this->model->getChargeTransactionDetails($charge));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper::getDescription
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testGetDescriptionUsesOrderIncrementId(): void
+    {
+        $order = new class {
+            public function getOrderIncrementId()
+            {
+                return '00001234';
+            }
+        };
+
+        $this->assertSame('Magento 2 Order id 00001234', $this->model->getDescription($order));
+    }
+
+    /**
      * @return array
      */
     private function createOrderWithPayment(string $methodCode, array $additionalInformation): array

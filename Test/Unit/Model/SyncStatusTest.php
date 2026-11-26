@@ -4,7 +4,10 @@ namespace Omise\Payment\Test\Unit\Model;
 
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Config as OrderConfig;
+ use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Order\Payment;
+use Magento\Sales\Model\Order\Payment\Transaction;
+use Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface as TransactionBuilderInterface;
 use Omise\Payment\Helper\OmiseEmailHelper;
 use Omise\Payment\Helper\OmiseHelper;
 use Omise\Payment\Model\Config\Cc;
@@ -18,19 +21,41 @@ class SyncStatusTest extends TestCase
     /**
      * @covers \Omise\Payment\Model\SyncStatus
      */
-    public function testSuccessfulManualSyncStoresChargeIdOnPayment(): void
+    public function testSuccessfulManualSyncCreatesTransactionWithSessionId(): void
     {
         $helper = $this->createMock(OmiseHelper::class);
         $emailHelper = $this->createMock(OmiseEmailHelper::class);
         $config = $this->createMock(Cc::class);
         $refundSyncStatus = $this->createMock(RefundSyncStatus::class);
-        $syncStatus = new SyncStatus($helper, $emailHelper, $config, $refundSyncStatus);
+        $transactionBuilder = $this->createMock(TransactionBuilderInterface::class);
+        $syncStatus = new SyncStatus(
+            $helper,
+            $emailHelper,
+            $config,
+            $refundSyncStatus,
+            $transactionBuilder
+        );
 
-        $charge = ['id' => 'ch_manual_sync_123'];
+        $charge = [
+            'id' => 'ch_manual_sync_123',
+            'status' => 'successful',
+            'amount' => 2500,
+            'currency' => 'thb',
+        ];
         $refundSyncStatus->expects($this->once())
             ->method('shouldRefund')
             ->with($charge)
             ->willReturn(false);
+        $helper->expects($this->once())
+            ->method('getChargeTransactionDetails')
+            ->with($charge, 'session_manual_sync_123')
+            ->willReturn([
+                'charge_id' => $charge['id'],
+                'status' => $charge['status'],
+                'amount' => (string) $charge['amount'],
+                'currency' => $charge['currency'],
+                'session_id' => 'session_manual_sync_123',
+            ]);
 
         $orderConfig = $this->createMock(OrderConfig::class);
         $orderConfig->method('getStateDefaultStatus')
@@ -51,8 +76,40 @@ class SyncStatusTest extends TestCase
         $payment->expects($this->once())
             ->method('setAdditionalInformation')
             ->with('charge_id', $charge['id']);
-
-        $order = $this->createMock(Order::class);
+        $invoice = $this->createMock(Invoice::class);
+        $transaction = $this->createMock(Transaction::class);
+        $transactionBuilder->expects($this->once())
+            ->method('setPayment')
+            ->with($payment)
+            ->willReturnSelf();
+        $transactionBuilder->expects($this->once())
+            ->method('setOrder')
+            ->with($order = $this->createMock(Order::class))
+            ->willReturnSelf();
+        $transactionBuilder->expects($this->once())
+            ->method('setTransactionId')
+            ->with($charge['id'])
+            ->willReturnSelf();
+        $transactionBuilder->expects($this->once())
+            ->method('setAdditionalInformation')
+            ->with([
+                Transaction::RAW_DETAILS => [
+                    'charge_id' => $charge['id'],
+                    'status' => $charge['status'],
+                    'amount' => (string) $charge['amount'],
+                    'currency' => $charge['currency'],
+                    'session_id' => 'session_manual_sync_123',
+                ],
+            ])
+            ->willReturnSelf();
+        $transactionBuilder->expects($this->once())
+            ->method('setFailSafe')
+            ->with(true)
+            ->willReturnSelf();
+        $transactionBuilder->expects($this->once())
+            ->method('build')
+            ->with(Transaction::TYPE_PAYMENT)
+            ->willReturn($transaction);
         $order->method('getState')->willReturn(Order::STATE_PENDING_PAYMENT);
         $order->method('getConfig')->willReturn($orderConfig);
         $order->method('getPayment')->willReturn($payment);
@@ -65,13 +122,11 @@ class SyncStatusTest extends TestCase
 
         $helper->expects($this->once())
             ->method('createInvoiceAndMarkAsPaid')
-            ->with($order, $charge['id']);
+            ->with($order, $charge['id'])
+            ->willReturn($invoice);
         $emailHelper->expects($this->once())
             ->method('sendInvoiceAndConfirmationEmails')
             ->with($order);
-
-        // SyncStatus reads this property when deciding whether to store the charge ID.
-        $syncStatus->payment = $payment;
 
         $method = new ReflectionMethod(SyncStatus::class, 'markPaymentSuccessful');
         $method->setAccessible(true);
