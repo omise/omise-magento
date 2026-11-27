@@ -42,6 +42,7 @@ class CapabilityConfigProviderTest extends TestCase
         $this->configMock = $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
             ->getMock();
+
     }
 
     /**

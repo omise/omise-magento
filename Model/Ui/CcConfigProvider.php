@@ -7,6 +7,8 @@ use Magento\Payment\Model\CcConfig as MagentoCcConfig;
 use Omise\Payment\Block\Adminhtml\System\Config\CardFormCustomization\Theme;
 use Omise\Payment\Model\Config\Cc as OmiseCcConfig;
 use Omise\Payment\Model\Customer;
+use Omise\Payment\Model\Capability;
+use Omise\Payment\Helper\OmiseHelper;
 
 class CcConfigProvider implements ConfigProviderInterface
 {
@@ -25,14 +27,24 @@ class CcConfigProvider implements ConfigProviderInterface
      */
     protected $customer;
 
+    /** @var Capability */
+    private $capability;
+
+    /** @var OmiseHelper */
+    private $omiseHelper;
+
     public function __construct(
         MagentoCcConfig $magentoCcConfig,
         OmiseCcConfig   $omiseCcConfig,
-        Customer        $customer
+        Customer        $customer,
+        Capability $capability,
+        OmiseHelper $omiseHelper
     ) {
         $this->magentoCcConfig = $magentoCcConfig;
         $this->omiseCcConfig   = $omiseCcConfig;
         $this->customer        = $customer;
+        $this->capability = $capability;
+        $this->omiseHelper = $omiseHelper;
     }
 
     /**
@@ -45,6 +57,9 @@ class CcConfigProvider implements ConfigProviderInterface
         $theme = new Theme();
         $customDesign = $this->omiseCcConfig->getCardThemeConfig();
         $selectedTheme = $this->omiseCcConfig->getCardTheme();
+        $configuredCardIcons = $this->omiseCcConfig->getSupportedCardIcons();
+        $apiCardIcons = $this->omiseHelper->normalizeCardBrands($this->capability->getCardBrands());
+        $supportedCardIcons = array_values(array_intersect($configuredCardIcons, $apiCardIcons));
         return [
             'payment' => [
                 'ccform' => [
@@ -58,7 +73,7 @@ class CcConfigProvider implements ConfigProviderInterface
                     'locale'                        => $this->omiseCcConfig->getStoreLocale(),
                     'formDesign'                    => $theme->getFormDesign($selectedTheme, $customDesign),
                     'theme'                         => $selectedTheme,
-                    'supported_card_icons'     => $this->omiseCcConfig->getSupportedCardIcons()
+                    'supported_card_icons'     => $supportedCardIcons
                 ],
             ]
         ];

@@ -84,6 +84,16 @@ class ConfigSectionPaymentPlugin
             //on the admin setting page the setting value will inherit from website scope
             $this->parentScopeType = $this->retrieveParentScope($coreConfig);
             $omiseConfigData = $coreConfig->toArray()['groups']['omise'];
+            $cardIconField = $omiseConfigData['groups']['omise_cc']['fields']['supported_card_icons'] ?? null;
+            if ((!is_array($cardIconField) || !array_key_exists('inherit', $cardIconField))
+                && (!is_array($cardIconField)
+                    || !array_key_exists('value', $cardIconField)
+                    || empty($cardIconField['value']))
+            ) {
+                $groups = $coreConfig->getGroups();
+                $groups['omise']['groups']['omise_cc']['fields']['supported_card_icons']['value'] = '';
+                $coreConfig->setData('groups', $groups);
+            }
             if (!empty($omiseConfigData['fields']['is_upa_feature_flag_enabled']['value'])) {
                 $groups = $coreConfig->getGroups();
                 $groups['omise']['fields']['webhook_status'] = ['value' => 1];
@@ -99,7 +109,7 @@ class ConfigSectionPaymentPlugin
                 try {
                     // Fetching capability to check the supplied keys validity
                     $this->capability = OmiseCapability::retrieve($keys['public_key'], $keys['secret_key']);
-
+                    $this->validateSupportedCardIcons($omiseConfigData);
                     /** when using test mode is will fetch all available payment methods
                      *  that omise is supported
                      * */
@@ -117,10 +127,52 @@ class ConfigSectionPaymentPlugin
                         : 'unable to load OmiseCapability api';
 
                     throw new LocalizedException(__($errorMessage));
+                } catch (LocalizedException $e) {
+                    throw $e;
                 } catch (Exception $e) {
                     throw new LocalizedException(__('unable to load OmiseCapability api'));
                 }
             }
+        }
+    }
+
+    /**
+     * Reject card icons that are not available for the Omise account.
+     *
+     * @param array $configData
+     * @throws LocalizedException
+     */
+    private function validateSupportedCardIcons(array $configData)
+    {
+        $fields = $configData['groups']['omise_cc']['fields'] ?? [];
+        if (!isset($fields['supported_card_icons']['value'])) {
+            return;
+        }
+
+        $selectedBrands = $fields['supported_card_icons']['value'];
+        if (is_string($selectedBrands)) {
+            $selectedBrands = $selectedBrands === '' ? [] : explode(',', $selectedBrands);
+        }
+        if (!is_array($selectedBrands) || empty($selectedBrands)) {
+            return;
+        }
+
+        $cardBackends = $this->capability->getPaymentMethods(
+            $this->capability->filterPaymentMethodName('card')
+        );
+        $supportedBrands = [];
+        if ($cardBackends) {
+            $cardBackend = current($cardBackends);
+            $supportedBrands = isset($cardBackend->card_brands) ? $cardBackend->card_brands : [];
+        }
+
+        $supportedIconValues = $this->helper->normalizeCardBrands($supportedBrands);
+        
+        $unsupportedBrands = array_diff($selectedBrands, $supportedIconValues);
+        if (!empty($unsupportedBrands)) {
+            throw new LocalizedException(__(
+                'The Omise account does not support the selected card brand(s).',
+            ));
         }
     }
 

@@ -72,7 +72,7 @@
             <!-- /ko -->
 
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payment_form_' + getCode()}, visible: !hasSavedCards()">
-                <div class="omise-card-form" data-bind="omiseCardForm: true"></div>
+                <div class="omise-card-form" data-bind="omiseCardForm: getCode() == isChecked()"></div>
             </fieldset>
 
         </form>

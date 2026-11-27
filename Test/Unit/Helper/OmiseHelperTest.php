@@ -3,6 +3,7 @@
 namespace Omise\Payment\Test\Unit\Helper;
 
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Model\Source\CardBrandIcon;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\CcGooglePay;
@@ -35,7 +36,12 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
         $this->scopeConfig = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
         $this->omiseCheckoutSession = $this->createMock('Omise\Payment\Model\Api\CheckoutSession');
-        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig, $this->omiseCheckoutSession);
+        $this->model = new OmiseHelper(
+            $this->configMock,
+            $this->scopeConfig,
+            $this->omiseCheckoutSession,
+            new CardBrandIcon()
+        );
     }
 
     /**
@@ -330,7 +336,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $helper = new OmiseHelper(
             $this->configMock,
             $this->scopeConfig,
-            $this->omiseCheckoutSession
+            $this->omiseCheckoutSession,
+            new CardBrandIcon()
         );
 
         $this->assertInstanceOf(OmiseHelper::class, $helper);
@@ -465,6 +472,65 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $this->omiseCheckoutSession->expects($this->never())->method('getSessionInfo');
 
         $this->assertNull($this->model->getOrderChargeId($order));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper::getChargeTransactionDetails
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testGetChargeTransactionDetailsIncludesSessionId(): void
+    {
+        $charge = [
+            'id' => 'ch_123',
+            'status' => 'successful',
+            'amount' => 2500,
+            'currency' => 'thb',
+        ];
+
+        $this->assertSame([
+            'charge_id' => 'ch_123',
+            'status' => 'successful',
+            'amount' => '2500',
+            'currency' => 'thb',
+            'session_id' => 'sess_123',
+        ], $this->model->getChargeTransactionDetails($charge, 'sess_123'));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper::getChargeTransactionDetails
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testGetChargeTransactionDetailsOmitsNullSessionId(): void
+    {
+        $charge = (object) [
+            'id' => 'ch_456',
+            'status' => 'pending',
+            'amount' => 1000,
+            'currency' => 'jpy',
+        ];
+
+        $this->assertSame([
+            'charge_id' => 'ch_456',
+            'status' => 'pending',
+            'amount' => '1000',
+            'currency' => 'jpy',
+        ], $this->model->getChargeTransactionDetails($charge));
+    }
+
+    /**
+     * @covers \Omise\Payment\Helper\OmiseHelper::getDescription
+     * @covers \Omise\Payment\Helper\OmiseHelper::__construct
+     */
+    public function testGetDescriptionUsesOrderIncrementId(): void
+    {
+        $order = new class {
+            public function getOrderIncrementId()
+            {
+                return '00001234';
+            }
+        };
+
+        $this->assertSame('Magento 2 Order id 00001234', $this->model->getDescription($order));
     }
 
     /**
