@@ -213,7 +213,7 @@ define(
                 }
 
                 const { theme, locale, formDesign } = window.checkoutConfig.payment.omise_cc
-                const supportedCardIcons = window.checkoutConfig.payment.omise_cc.supported_card_icons
+                const supportedCardIcons = window.checkoutConfig.payment.omise_cc.supported_card_icons || []
                 const { font, input, checkbox } = formDesign
                 let iframeElementHeight = iframeHeightMatching[input.height]
                 if (hideRememberCard) {

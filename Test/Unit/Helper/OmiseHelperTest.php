@@ -3,6 +3,7 @@
 namespace Omise\Payment\Test\Unit\Helper;
 
 use Omise\Payment\Helper\OmiseHelper;
+use Omise\Payment\Model\Source\CardBrandIcon;
 use Omise\Payment\Model\Config\Truemoney;
 use Omise\Payment\Model\Config\Paynow;
 use Omise\Payment\Model\Config\CcGooglePay;
@@ -35,7 +36,12 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $this->configMock = $this->createMock('Omise\Payment\Model\Config\Config');
         $this->scopeConfig = $this->createMock('Magento\Framework\App\Config\ScopeConfigInterface');
         $this->omiseCheckoutSession = $this->createMock('Omise\Payment\Model\Api\CheckoutSession');
-        $this->model = new OmiseHelper($this->configMock, $this->scopeConfig, $this->omiseCheckoutSession);
+        $this->model = new OmiseHelper(
+            $this->configMock,
+            $this->scopeConfig,
+            $this->omiseCheckoutSession,
+            new CardBrandIcon()
+        );
     }
 
     /**
@@ -330,7 +336,8 @@ class OmiseHelperTest extends \PHPUnit\Framework\TestCase
         $helper = new OmiseHelper(
             $this->configMock,
             $this->scopeConfig,
-            $this->omiseCheckoutSession
+            $this->omiseCheckoutSession,
+            new CardBrandIcon()
         );
 
         $this->assertInstanceOf(OmiseHelper::class, $helper);

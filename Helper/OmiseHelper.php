@@ -36,6 +36,7 @@ use Omise\Payment\Model\Config\Conveniencestore;
 use Omise\Payment\Model\Config\WeChatPay;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Omise\Payment\Model\Api\CheckoutSession as OmiseCheckoutSession;
+use Omise\Payment\Model\Source\CardBrandIcon;
 
 /** @SuppressWarnings("php:S1448") */
 class OmiseHelper extends AbstractHelper
@@ -226,6 +227,11 @@ class OmiseHelper extends AbstractHelper
      * @var OmiseCheckoutSession
      */
     protected $omiseCheckoutSession;
+
+    /** 
+     * @var CardBrandIcon 
+    */
+    private $cardBrandIcon;
     
     /**
      * @param Header $header
@@ -236,11 +242,13 @@ class OmiseHelper extends AbstractHelper
     public function __construct(
         Config $config,
         ScopeConfigInterface $scopeConfig,
-        OmiseCheckoutSession $omiseCheckoutSession
+        OmiseCheckoutSession $omiseCheckoutSession,
+        CardBrandIcon $cardBrandIcon
     ) {
         $this->config = $config;
         $this->scopeConfig = $scopeConfig;
         $this->omiseCheckoutSession = $omiseCheckoutSession;
+        $this->cardBrandIcon = $cardBrandIcon;
         $this->omisePaymentMethods = array_merge(
             $this->offsitePaymentMethods,
             $this->offlinePaymentMethods,
@@ -294,6 +302,36 @@ class OmiseHelper extends AbstractHelper
     public function getDescription($order)
     {
         return 'Magento 2 Order id ' . $order->getOrderIncrementId();
+    }
+
+    /**
+     * Convert Capability API brand names into supported card icon config values.
+     *
+     * @param array $brands
+     * @return array
+     */
+    public function normalizeCardBrands(array $brands): array
+    {
+        $options = $this->cardBrandIcon->toOptionArray();
+        $normalizedBrands = [];
+
+        foreach ($brands as $brand) {
+            if (!is_string($brand)) {
+                continue;
+            }
+
+            $normalizedBrand = $this->normalizeCardBrand($brand);
+            foreach ($options as $option) {
+                if ($normalizedBrand === $this->normalizeCardBrand((string) $option['label'])
+                    || $normalizedBrand === $this->normalizeCardBrand((string) $option['value'])
+                ) {
+                    $normalizedBrands[] = $option['value'];
+                    break;
+                }
+            }
+        }
+
+        return array_values(array_unique($normalizedBrands));
     }
 
     /**
@@ -611,5 +649,13 @@ class OmiseHelper extends AbstractHelper
             }
         }
         return end($paymentsWithChargeId);
+    }
+
+    /**
+     * Normalize case, spaces, and punctuation for card brand comparisons.
+     */
+    private function normalizeCardBrand(string $brand): string
+    {
+        return strtolower((string) preg_replace('/[^a-z0-9]/i', '', $brand));
     }
 }
